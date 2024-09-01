@@ -2,22 +2,62 @@ import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../../components/shared/modal/Modal";
-import { useGetCategoriesQuery } from "@/services/category/categoryApi";
-import AddCategory from './add-category';
+import { useGetCategoriesQuery,useSoftDeleteCategoryMutation  } from "@/services/category/categoryApi";
+import AddCategory from "./add-category";
+import { LiaInfoCircleSolid } from "react-icons/lia";
+import DeleteConfirmationModal from '../../components/shared/modal/DeleteConfirmationModal'; // Import the modal
+
+import {
+  AiTwotoneDelete,
+  AiTwotoneEdit,
+} from "react-icons/ai";
 
 const ListCategory = () => {
   const { data, isLoading, error } = useGetCategoriesQuery();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const categories = Array.isArray(data?.data) ? data.data : []; 
+  const [softDeleteCategory ] = useSoftDeleteCategoryMutation();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const categories = Array.isArray(data?.data) ? data.data : [];
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (category) => {
     setIsModalOpen(false);
+    
   };
 
+  const openDeleteModal = (category) => {
+    setCategoryToDelete(category);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setCategoryToDelete(null);
+  };
+  const openEditModal = (category) => {
+    setCategoryToEdit(category);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setCategoryToEdit(null);
+  };
+  const handleDelete = async () => {
+    try {
+      console.log(categoryToDelete._id)
+      await softDeleteCategory(categoryToDelete._id).unwrap();
+      closeDeleteModal();
+    } catch (error) {
+      console.error('Error deleting category', error);
+    }
+  };
   if (isLoading) {
     return <p>در حال بارگذاری...</p>;
   }
@@ -45,34 +85,101 @@ const ListCategory = () => {
         <section className="h-full w-full">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 z-10">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <thead className="text-xs text-gray-700 uppercase text-center bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3">ردیف</th>
-                  <th scope="col" className="px-6 py-3">شناسه</th>
-                  <th scope="col" className="px-6 py-3">عنوان</th>
-                  <th scope="col" className="px-6 py-3">توضیحات</th>
-                  <th scope="col" className="px-6 py-3">تعداد</th>
-                  <th scope="col" className="px-6 py-3">تاریخ ایجاد</th>
-                  <th scope="col" className="px-6 py-3">اسلاگ</th>
-                  <th scope="col" className="px-6 py-3">عملیات</th>
+                  <th scope="col" className="px-6 py-3">
+                    ردیف
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    عملیات
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    شناسه
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    وضعیت
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    عنوان
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    توضیحات
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    تعداد
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    تاریخ ایجاد
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    اسلاگ
+                  </th>
                 </tr>
               </thead>
               <tbody>
-              {categories.map((category, index) => (
-    <tr key={category._id} className="bg-white hover:bg-secondary/50 transition-colors">
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{index + 1}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{category._id}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{category.title}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{category.description}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">---</td> {/* تعداد یا سایر اطلاعات */}
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{new Date(category.createdAt).toLocaleDateString("fa-IR")}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{category.slug}</td>
-      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-        {/* دکمه‌های عملیات (مثل ویرایش یا حذف) */}
-      </td>
-    </tr>
-  ))}
+                {categories.map((category, index) => (
+                  <tr
+                    key={category._id}
+                    className="bg-white hover:bg-secondary/50 transition-colors"
+                  >
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-1">
+                        <AiTwotoneDelete 
+                        className="w-6 h-6 hover:text-red-500 cursor-pointer"
+                        onClick={() => openDeleteModal(category)}
+
+                        />
+                        <AiTwotoneEdit 
+                        className="w-10 h-6  hover:text-blue-500 cursor-pointer" 
+                        onClick={() => openEditModal(category)}
+
+                        />
+                        <LiaInfoCircleSolid className="w-6 h-6 hover:text-green-500 cursor-pointer" />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {category.row}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox h-5 w-5 text-green-600"
+                          checked={category.status}
+                          onChange={() => toggleStatus(category._id)}
+                        />
+                        <span className="ml-2">
+                          {category.status ? "فعال" : "غیرفعال"}
+                        </span>
+                      </label>
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {category.title}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {category.description}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      ---
+                    </td>{" "}
+                    {/* تعداد یا سایر اطلاعات */}
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {new Date(category.createdAt).toLocaleDateString("fa-IR")}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {category.slug}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
+              <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDelete}
+      />
             </table>
           </div>
         </section>

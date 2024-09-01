@@ -34,7 +34,14 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
 
     }),
 
-    // get Category
+    softDeleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "PATCH",
+        
+      }),
+      invalidatesTags: ['Category'], 
+    }),
  
   }),
 });
@@ -44,6 +51,6 @@ export const {
   useGetCategoriesQuery,
   useGetCategoryQuery,
   useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
+  useSoftDeleteCategoryMutation,
   useGetFilteredCategorysMutation,
 } = categoryApi;

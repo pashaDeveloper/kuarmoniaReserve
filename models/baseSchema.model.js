@@ -7,6 +7,10 @@ const baseSchema = new Schema(
       unique: true,
       required: true,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

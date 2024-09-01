@@ -51,3 +51,32 @@ export async function getCategories(req) {
     };
   }
 }
+export async function softDeleteCategory(req) {
+  try {
+    const { id } = req.query; 
+
+    const category = await Category.find(
+      id,
+      { isDeleted: true }, 
+      { new: true }
+    );
+
+    if (category) {
+      return {
+        success: true,
+        message: "دسته‌بندی با موفقیت حذف شد",
+        data: category,
+      };
+    } else {
+      return {
+        success: false,
+        message: "دسته‌بندی پیدا نشد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
