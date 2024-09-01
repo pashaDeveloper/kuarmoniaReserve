@@ -54,13 +54,12 @@ export async function getCategories(req) {
 export async function softDeleteCategory(req) {
   try {
     const { id } = req.query; 
-
-    const category = await Category.find(
+    const category = await Category.findByIdAndUpdate(
       id,
-      { isDeleted: true }, 
-      { new: true }
+      { isDeleted: true }
+    
     );
-
+console.log("category",category)
     if (category) {
       return {
         success: true,
