@@ -14,7 +14,7 @@ import {
 } from "react-icons/ai";
 
 const ListCategory = () => {
-  const { data, isLoading, error } = useGetCategoriesQuery();
+  const { data, isLoading, error,refetch } = useGetCategoriesQuery();
   const [softDeleteCategory] = useSoftDeleteCategoryMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,13 +52,25 @@ const ListCategory = () => {
   };
   const handleDelete = async () => {
     try {
-      console.log(categoryToDelete._id)
-      await softDeleteCategory(categoryToDelete._id).unwrap();
+      const response = await softDeleteCategory(categoryToDelete._id).unwrap();
       closeDeleteModal();
+
+      if (response.success) {
+        toast.success(response.message );
+        refetch(); 
+
+      } else {
+        toast.error(response.message );
+      }
     } catch (error) {
+      toast.error(error.message);
       console.error('Error deleting category', error);
     }
   };
+
+  const handleAddCategorySuccess = () => {
+    refetch();
+  }
   useEffect(() => {
     if (isLoading) {
       toast.loading("در حال ساخت دسته بندی...", { id: "add-category" });
@@ -197,8 +209,8 @@ const ListCategory = () => {
         onClose={closeModal}
         className="lg:w-1/3 md:w-1/2 w-full z-50"
       >
-        <AddCategory onClose={closeModal} />
-      </Modal>
+        <AddCategory onClose={closeModal} onSuccess={handleAddCategorySuccess} />
+        </Modal>
     </>
   );
 };

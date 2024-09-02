@@ -30,18 +30,18 @@ export async function addCategory(req) {
 
 export async function getCategories(req) {
   try {
-    const categories = await Category.find({}); // Retrieve all categories from the database
+    const categories = await Category.find({ isDeleted: false }); // Retrieve all categories from the database
 
     if (categories.length > 0) {
       return {
         success: true,
         data: categories,
-        message: "Categories retrieved successfully",
+        message: "دسته بندی با موفقیت دریافت شد",
       };
     } else {
       return {
         success: false,
-        message: "No categories found",
+        message: "هیچ دسته بندی یافت نشد",
       };
     }
   } catch (error) {
@@ -59,7 +59,6 @@ export async function softDeleteCategory(req) {
       { isDeleted: true }
     
     );
-console.log("category",category)
     if (category) {
       return {
         success: true,
