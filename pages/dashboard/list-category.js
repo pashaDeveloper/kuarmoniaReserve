@@ -1,11 +1,12 @@
 import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
-import { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from "../../components/shared/modal/Modal";
 import { useGetCategoriesQuery,useSoftDeleteCategoryMutation  } from "@/services/category/categoryApi";
 import AddCategory from "./add-category";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from '../../components/shared/modal/DeleteConfirmationModal'; // Import the modal
+import { toast } from "react-hot-toast";
 
 import {
   AiTwotoneDelete,
@@ -14,7 +15,7 @@ import {
 
 const ListCategory = () => {
   const { data, isLoading, error } = useGetCategoriesQuery();
-  const [softDeleteCategory ] = useSoftDeleteCategoryMutation();
+  const [softDeleteCategory] = useSoftDeleteCategoryMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const categories = Array.isArray(data?.data) ? data.data : [];
@@ -58,14 +59,20 @@ const ListCategory = () => {
       console.error('Error deleting category', error);
     }
   };
-  if (isLoading) {
-    return <p>در حال بارگذاری...</p>;
-  }
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("در حال ساخت دسته بندی...", { id: "add-category" });
+    }
 
-  if (error) {
-    return <p>خطا در بارگذاری داده‌ها: {error.message}</p>;
-  }
+    if (data) {
+      toast.success(data?.message, { id: "add-category" });
+    
+    }
 
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "add-category" });
+    }
+  }, [data, error, isLoading]);
   return (
     <>
       <button
