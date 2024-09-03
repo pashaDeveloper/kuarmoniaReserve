@@ -1,4 +1,4 @@
-import { Schema, models, model } from "mongoose";
+import { Schema } from "mongoose";
 
 const baseSchema = new Schema(
   {
@@ -9,7 +9,7 @@ const baseSchema = new Schema(
     },
     status: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isDeleted: {
       type: Boolean,

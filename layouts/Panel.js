@@ -17,7 +17,7 @@ import { TbUserEdit, TbUserShare } from "react-icons/tb";
 import { BsCartCheck } from "react-icons/bs";
 import { FaBlog } from "react-icons/fa";
 import { FaListUl } from "react-icons/fa";
-
+import ProgressBar from '../components/shared/loading/progressBar'
 const Panel = ({ children }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ const Panel = ({ children }) => {
     },
     {
       name: "دسته بندی ها",
-      path: "/dashboard/list-category",
+      path: "/dashboard/categories/list",
       icon: <FaListUl className="w-5 h-5" />,
     },
     {
@@ -97,6 +97,8 @@ const Panel = ({ children }) => {
 
   return (
     <section className="h-screen w-screen">
+            <ProgressBar />
+
       <div className="max-w-7xl mx-auto h-full flex flex-col gap-y-4 p-2">
         <nav className="px-4 py-2.5 flex flex-row items-center justify-between gap-x-2 rounded">
           <p className="flex flex-row items-center gap-x-2 text-sm capitalize whitespace-nowrap overflow-x-auto scrollbar-hide text-ellipsis">

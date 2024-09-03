@@ -1,5 +1,3 @@
-
-
 const { kuarmoniaApi } = require("../kuarmonia");
 
 const categoryApi = kuarmoniaApi.injectEndpoints({
@@ -31,18 +29,31 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
         url: "/category/",
         method: "GET",
       }),
-
+    }),
+    updateCategory: builder.mutation({
+      query: ({ id, ...formData }) => ({
+        url: `/category/${id}`,
+        method: "PATCH",
+        body: formData,
+      }),
     }),
 
+    //Delete
     softDeleteCategory: builder.mutation({
       query: (id) => ({
         url: `/category/${id}`,
         method: "PATCH",
-        
       }),
-      invalidatesTags: ['Category'], 
+      invalidatesTags: ["Category"],
     }),
- 
+
+    //Change Status
+    toggleCategoryStatus: builder.mutation({
+      query: (categoryId) => ({
+        url: `/categories/${categoryId}/toggle-status`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 

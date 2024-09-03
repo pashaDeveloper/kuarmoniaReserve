@@ -1,8 +1,6 @@
-
-
 import { useState } from "react";
 
-const Tooltip = ({ text, children }) => {
+const Tooltip = ({ text, children, bgColor = "bg-primary/30" ,txtColor="text-black" }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -13,7 +11,9 @@ const Tooltip = ({ text, children }) => {
     >
       {children}
       {showTooltip && (
-        <span className="absolute top-full mt-1 left-0 z-50 p-2 bg-primary/30 rounded text-xs">
+        <span
+          className={`absolute top-full mt-1 left-0 z-50 p-2 rounded text-xs ${txtColor} ${bgColor}`}
+        >
           {text}
         </span>
       )}
