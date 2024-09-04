@@ -35,6 +35,22 @@ const postSchema = new Schema(
          required: [true, "عنوان پست الزامی است"],
          slug: { type: String, unique: true, required: true }
         },
+        
+    slug: {
+      type: String,
+      unique: true,
+      required: false,
+      default: function() {
+        return this.title.toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/[\s\ـ]+/g, "-") 
+        .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "") 
+        .replace(/-+/g, "-") 
+        .replace(/^-+|-+$/g, "");
+      },  
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
@@ -44,5 +60,6 @@ const postSchema = new Schema(
   },
   { timestamps: true }
 );
+
 
 export default models.Post || model("Post", postSchema);

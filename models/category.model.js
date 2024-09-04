@@ -1,6 +1,7 @@
 import { Schema, models, model } from "mongoose";
 import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";  
+import Counter from "./counter.model"; // اضافه کردن import
 
 connectDB();
 
@@ -20,37 +21,47 @@ const categorySchema = new Schema(
       unique: true,
       required: false,
       default: function() {
-        return this.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
-      },  // مقدار پیش‌فرض برای جلوگیری از خطا
+        return this.title.toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/[\s\ـ]+/g, "-")
+        .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    
+      },  
     },
     description: {
       type: String,
       maxLength: [200, "توضیحات نمی‌تواند بیشتر از ۲۰۰ کاراکتر باشد"],
     } ,
+    categoryId: {
+      type: Number,
+      unique: true
+    },
     ...baseSchema.obj
   },
   { timestamps: true }
 );
 
-
-categorySchema.pre("validate", async function (next) {
-  const category = this;
-
-  if (!category.row) {
-    const lastCategory = await models.Category.findOne().sort({ row: -1 });
-    category.row = lastCategory ? lastCategory.row + 1 : 1;
+categorySchema.pre('save', async function(next) {
+  if (this.isNew) {
+    this.categoryId = await getNextSequenceValue('categoryId');
   }
-
-  if (!category.slug && category.title) {
-    category.slug = category.title
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-  }
-
   next();
 });
-
 const Category = models.Category || model("Category", categorySchema);
 
 export default Category;
+
+
+////
+async function getNextSequenceValue(sequenceName) {
+  const sequenceDocument = await Counter.findOneAndUpdate(
+    { model: sequenceName },
+    { $inc: { sequence_value: 1 } },
+    { new: true, upsert: true }
+  );
+  return sequenceDocument.sequence_value;
+}

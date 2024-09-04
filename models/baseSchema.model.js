@@ -2,12 +2,7 @@ import { Schema } from "mongoose";
 
 const baseSchema = new Schema(
   {
-    row: {
-      type: Number,
-      unique: true,
-      required: true,
-    },
-    status: {
+      status: {
       type: Boolean,
       default: true,
     },
@@ -26,11 +21,8 @@ const baseSchema = new Schema(
   },
   { timestamps: true }
 );
-baseSchema.pre("save", async function (next) {
-  if (this.isNew) {
-    const lastDoc = await this.constructor.findOne().sort({ row: -1 });
-    this.row = lastDoc ? lastDoc.row + 1 : 1;
-  }
-  next();
-});
+
+
+
+
 export default baseSchema;
