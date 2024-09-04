@@ -29,7 +29,7 @@ const Panel = ({ children }) => {
     },
     {
       name: "دسته بندی ها",
-      path: "/dashboard/categories/list",
+      path: "/dashboard/categories",
       icon: <FaListUl className="w-5 h-5" />,
     },
     {

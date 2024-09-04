@@ -3,9 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import Modal from "../../../components/shared/modal/Modal";
 import {
-  useGetCategoriesQuery,
-  useSoftDeleteCategoryMutation,
-} from "@/services/category/categoryApi";
+  useGetCategoriesQuery,useUpdateCategoryMutation} from "@/services/category/categoryApi";
 import AddCategory from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
@@ -15,7 +13,7 @@ import Tooltip from "../../../components/shared/tooltip/Tooltip";
 import Info from "./info";
 const ListCategory = () => {
   const { data, isLoading, error, refetch } = useGetCategoriesQuery();
-  const [softDeleteCategory] = useSoftDeleteCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const categories = Array.isArray(data?.data) ? data.data : [];
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,7 +23,7 @@ const ListCategory = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [categoryToView, setCategoryToView] = useState(null);
 
-  const openModal = () => {
+  const openModal = () => { 
     setIsModalOpen(true);
   };
 
@@ -64,9 +62,12 @@ const ListCategory = () => {
   };
   const handleDelete = async () => {
     try {
-      const response = await softDeleteCategory(categoryToDelete._id).unwrap();
+      const response = await updateCategory({
+        id: categoryToDelete._id,
+        isDeleted: true,
+      }).unwrap();
       closeDeleteModal();
-
+  
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -78,14 +79,18 @@ const ListCategory = () => {
       console.error("Error deleting category", error);
     }
   };
-
-  const toggleStatus = async () => {
+  
+  const toggleStatus = async (categoryId, currentStatus) => {
+    console.log(currentStatus)
     try {
-      
-      const response = await toggleCategoryStatus(categoryId).unwrap();
+      const response = await updateCategory({
+        id: categoryId,
+        status: !currentStatus,
+      }).unwrap();
+  
       if (response.success) {
         toast.success(response.message);
-        refetch(); 
+        refetch();
       } else {
         toast.error(response.message);
       }
@@ -94,8 +99,7 @@ const ListCategory = () => {
       console.error("Error toggling status", error);
     }
   };
-
-
+  
   const handleAddCategorySuccess = () => {
     refetch();
   };
@@ -216,8 +220,7 @@ const ListCategory = () => {
                           type="checkbox"
                           class="sr-only peer"
                           checked={category.status}
-                          onChange={() => toggleStatus(category._id)}
-                        />
+                          onChange={() => toggleStatus(category._id, category.status)}                        />
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                         <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                           {category.status ? "فعال" : "غیرفعال"}

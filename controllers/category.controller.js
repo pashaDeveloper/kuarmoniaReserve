@@ -28,7 +28,7 @@ export async function addCategory(req) {
   }
 }
 
-export async function getCategories(req) {
+export async function getCategories() {
   try {
     const categories = await Category.find({ isDeleted: false }); // Retrieve all categories from the database
 
@@ -51,18 +51,24 @@ export async function getCategories(req) {
     };
   }
 }
-export async function softDeleteCategory(req) {
+export async function updateCategory(req) {
+
+
   try {
-    const { id } = req.query; 
-    const category = await Category.findByIdAndUpdate(
-      id,
-      { isDeleted: true }
-    
-    );
+    const { id } = req.query;
+    const { title, description, status, isDeleted } = req.body || {};
+    const updateFields = {};
+    if (title !== undefined) updateFields.title = title;
+    if (description !== undefined) updateFields.description = description;
+    if (status !== undefined) updateFields.status = status;
+    if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
+
+    const category = await Category.findByIdAndUpdate(id, updateFields, { new: true });
+
     if (category) {
       return {
         success: true,
-        message: "دسته‌بندی با موفقیت حذف شد",
+        message: "دسته‌بندی با موفقیت به‌روزرسانی شد",
         data: category,
       };
     } else {
