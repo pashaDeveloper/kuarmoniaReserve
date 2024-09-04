@@ -17,6 +17,7 @@ import { TbUserEdit, TbUserShare } from "react-icons/tb";
 import { BsCartCheck } from "react-icons/bs";
 import { FaBlog } from "react-icons/fa";
 import { FaListUl } from "react-icons/fa";
+import { BsTags } from "react-icons/bs";
 import ProgressBar from '../components/shared/loading/progressBar'
 const Panel = ({ children }) => {
   const router = useRouter();
@@ -31,6 +32,10 @@ const Panel = ({ children }) => {
       name: "دسته بندی ها",
       path: "/dashboard/categories",
       icon: <FaListUl className="w-5 h-5" />,
+    },   {
+      name: "تگ ها",
+      path: "/dashboard/tags",
+      icon: <BsTags className="w-5 h-5" />,
     },
     {
       name: "بلاگ",

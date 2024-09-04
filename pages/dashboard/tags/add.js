@@ -1,21 +1,21 @@
 import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
-import { useAddCategoryMutation, useUpdateCategoryMutation } from "@/services/category/categoryApi";
+import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
-const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
+const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [addCategory, { isLoading: isAdding, data: addData, error: addError }] = useAddCategoryMutation();
-  const [updateCategory, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateCategoryMutation();
+  const [addTag, { isLoading: isAdding, data: addData, error: addError }] = useAddTagMutation();
+  const [updateTag, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateTagMutation();
 
   useEffect(() => {
-    if (categoryToEdit) {
+    if (TagToEdit) {
       // پر کردن فرم با داده‌های موجود
-      setValue("title", categoryToEdit.title);
-      setValue("description", categoryToEdit.description);
+      setValue("title", tagToEdit.title);
+      setValue("description", tagToEdit.description);
     }
-  }, [categoryToEdit, setValue]);
+  }, [TagToEdit, setValue]);
 
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
@@ -23,11 +23,11 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
     const error = addError || updateError;
 
     if (isLoading) {
-      toast.loading("در حال پردازش...", { id: "category" });
+      toast.loading("در حال پردازش...", { id: "tag" });
     }
 
     if (data) {
-      toast.success(data?.message, { id: "category" });
+      toast.success(data?.message, { id: "tag" });
       reset();
       if (onSuccess) {
         onSuccess(); // به‌روزرسانی لیست
@@ -38,26 +38,27 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "category" });
+      toast.error(error?.data?.message, { id: "Tag" });
     }
   }, [addData, updateData, addError, updateError, isAdding, isUpdating, reset, onClose, onSuccess]);
 
-  const handleAddOrUpdateCategory = (formData) => {
+  const handleAddOrUpdateTag = (formData) => {
     try {
-      if (categoryToEdit) {
-        updateCategory({ id: categoryToEdit._id, ...formData }).unwrap();
+      if (TagToEdit) {
+        updateTag({ id: TagToEdit._id, ...formData }).unwrap();
       } else {
-        addCategory(formData).unwrap();
+        console.log(formData)
+        addTag(formData).unwrap();
       }
     } catch (err) {
-      console.error("خطا در نگام پردازش دسته بندی: ", err);
+      console.error("خطا در هنگام پردازش تگ: ", err);
     }
   };
 
   return (
     <form
       className="text-sm w-full h-full flex flex-col gap-y-4"
-      onSubmit={handleSubmit(handleAddOrUpdateCategory)}
+      onSubmit={handleSubmit(handleAddOrUpdateTag)}
     >
       <div className="flex gap-4 flex-col">
         <label htmlFor="title" className="flex flex-col gap-y-2">
@@ -67,7 +68,7 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
             name="title"
             id="title"
             maxLength={50}
-            placeholder="عنوان دسته‌بندی را تایپ کنید..."
+            placeholder="عنوان تگ را تایپ کنید..."
             className="rounded"
             autoFocus
             {...register("title", { required: true })}
@@ -79,18 +80,18 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
             name="description"
             id="description"
             maxLength={200}
-            placeholder="توضیحات دسته‌بندی را تایپ کنید..."
+            placeholder="توضیحات تگ را تایپ کنید..."
             className="rounded h-32"
             {...register("description")}
           />
         </label>
         
         <Button type="submit" className="py-2 mt-4">
-          {categoryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
+          {TagToEdit ? "ویرایش کردن" : "ایجاد کردن"}
         </Button>
       </div>
     </form>
   );
 };
 
-export default AddCategory;
+export default AddTag;

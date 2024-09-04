@@ -5,7 +5,7 @@ import Counter from "./counter.model"; // اضافه کردن import
 
 connectDB();
 
-const categorySchema = new Schema(
+const tagSchema = new Schema(
   {
     title: {
       type: String,
@@ -56,7 +56,7 @@ const categorySchema = new Schema(
       type: Schema.Types.Mixed,
       required: false,
     },
-    categoryId: {
+    tagId: {
       type: Number,
       unique: true
     },
@@ -65,15 +65,15 @@ const categorySchema = new Schema(
   { timestamps: true }
 );
 
-categorySchema.pre('save', async function(next) {
+tagSchema.pre('save', async function(next) {
   if (this.isNew) {
-    this.categoryId = await getNextSequenceValue('categoryId');
+    this.tagId = await getNextSequenceValue('tagId');
   }
   next();
 });
-const Category = models.Category || model("Category", categorySchema);
+const tag = models.tag || model("tag", tagSchema);
 
-export default Category;
+export default tag;
 
 
 ////

@@ -1,23 +1,23 @@
-import Category from '@/models/category.model';
+import tag from '@/models/tag.model';
 
-// Add a new category
-export async function addCategory(req) {
+// Add a new tag
+export async function addTag(req) {
   try {
     const { title, description } = req.body;
 
-    const category = await Category.create({
+    const tag = await tag.create({
       title,
       description,
     });
-    if (category) {
+    if (tag) {
       return {
         success: true,
-        message: "دسته بندی با موفقیت ایجاد شد",
+        message: " تگ با موفقیت ایجاد شد",
       };
     } else {
       return {
         success: false,
-        message: "خطا در ساخت دسته بندی",
+        message: "خطا در ساخت تگ",
       };
     }
   } catch (error) {
@@ -28,19 +28,19 @@ export async function addCategory(req) {
   }
 }
 
-export async function getCategories() {
+export async function getTags() {
   try {
-    const categories = await Category.find({ isDeleted: false }); // Retrieve all categories from the database
-    if (categories.length > 0) {
+    const tags = await tag.find({ isDeleted: false }); // Retrieve all categories from the database
+    if (tags.length > 0) {
       return {
         success: true,
-        data: categories,
-        message: "دسته بندی با موفقیت دریافت شد",
+        data: tags,
+        message: " تگ ها با موفقیت دریافت شد",
       };
     } else {
       return {
         success: false,
-        message: "هیچ دسته بندی یافت نشد",
+        message: "هیچ تگی یافت نشد",
       };
     }
   } catch (error) {
@@ -50,7 +50,7 @@ export async function getCategories() {
     };
   }
 }
-export async function updateCategory(req) {
+export async function updateTag(req) {
 
 
   try {
@@ -62,18 +62,18 @@ export async function updateCategory(req) {
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
 
-    const category = await Category.findByIdAndUpdate(id, updateFields, { new: true });
+    const tag = await tag.findByIdAndUpdate(id, updateFields, { new: true });
 
-    if (category) {
+    if (tag) {
       return {
         success: true,
-        message: "دسته‌بندی با موفقیت به‌روزرسانی شد",
-        data: category,
+        message: "تگ با موفقیت به‌روزرسانی شد",
+        data: tag,
       };
     } else {
       return {
         success: false,
-        message: "دسته‌بندی پیدا نشد",
+        message: "تگی پیدا نشد",
       };
     }
   } catch (error) {

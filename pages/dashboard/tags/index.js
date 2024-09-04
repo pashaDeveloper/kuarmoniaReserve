@@ -3,67 +3,67 @@ import { FaPlus } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import Modal from "../../../components/shared/modal/Modal";
 import {
-  useGetCategoriesQuery,useUpdateCategoryMutation} from "@/services/category/categoryApi";
-import AddCategory from "./add";
+  useGetTagsQuery,useUpdateTagMutation} from "@/services/tag/tagApi";
+import AddTag from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
 import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import Tooltip from "../../../components/shared/tooltip/Tooltip";
 import Info from "./info";
-const ListCategory = () => {
-  const { data, isLoading, error, refetch } = useGetCategoriesQuery();
-  const [updateCategory] = useUpdateCategoryMutation();
+const ListTag = () => {
+  const { data, isLoading, error, refetch } = useGetTagsQuery();
+  const [updateTag] = useUpdateTagMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const categories = Array.isArray(data?.data) ? data.data : [];
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [TagToDelete, setTagToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const [TagToEdit, setTagToEdit] = useState(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [categoryToView, setCategoryToView] = useState(null);
+  const [TagToView, setTagToView] = useState(null);
 
   const openModal = () => { 
     setIsModalOpen(true);
   };
 
-  const closeModal = (category) => {
+  const closeModal = (Tag) => {
     setIsModalOpen(false);
   };
 
-  const openDeleteModal = (category) => {
-    setCategoryToDelete(category);
+  const openDeleteModal = (Tag) => {
+    setTagToDelete(Tag);
     setIsDeleteModalOpen(true);
   };
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
-    setCategoryToDelete(null);
+    setTagToDelete(null);
   };
 
-  const openEditModal = (category) => {
-    setCategoryToEdit(category);
+  const openEditModal = (Tag) => {
+    setTagToEdit(Tag);
     setIsEditModalOpen(true);
   };
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
-    setCategoryToEdit(null);
+    setTagToEdit(null);
   };
 
-  const openInfoModal = (category) => {
-    setCategoryToView(category);
+  const openInfoModal = (Tag) => {
+    setTagToView(Tag);
     setIsInfoModalOpen(true);
   };
 
   const closeInfoModal = () => {
     setIsInfoModalOpen(false);
-    setCategoryToView(null);
+    setTagToView(null);
   };
   const handleDelete = async () => {
     try {
-      const response = await updateCategory({
-        id: categoryToDelete._id,
+      const response = await updateTag({
+        id: TagToDelete._id,
         isDeleted: true,
       }).unwrap();
       closeDeleteModal();
@@ -76,16 +76,16 @@ const ListCategory = () => {
       }
     } catch (error) {
       toast.error(error.message);
-      console.error("Error deleting category", error);
+      console.error("Error deleting Tag", error);
     }
   };
   
-  const toggleStatus = async (categoryId, currentStatus) => {
-    console.log("Categories before deletion:", categories);
+  const toggleStatus = async (tagId, currentStatus) => {
+    console.log("tags before deletion:", tags);
 
     try {
-      const response = await updateCategory({
-        id: categoryId,
+      const response = await updateTag({
+        id: TagId,
         status: !currentStatus,
       }).unwrap();
   
@@ -101,26 +101,24 @@ const ListCategory = () => {
     }
   };
   
-  const handleAddCategorySuccess = () => {
+  const handleAddTagSuccess = () => {
     refetch();
   };
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("در حال دریافت دسته بندی...", { id: "add-category" });
+      toast.loading("در حال دریافت تگ...", { id: "add-Tag" });
     }
 
     if (data) {
-      toast.success(data?.message, { id: "add-category" });
+      toast.success(data?.message, { id: "add-Tag" });
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "add-category" });
+      toast.error(error?.data?.message, { id: "add-Tag" });
     }
   }, [data, error, isLoading]);
-  useEffect(() => {
-    console.log("Categories:", categories);
-  }, [categories]);
+ 
   return (
     <>
       <button
@@ -172,10 +170,10 @@ const ListCategory = () => {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((category, index) => (
+                {categories.map((Tag, index) => (
 
                   <tr
-                    key={category._id}
+                    key={Tag._id}
                     className="bg-white hover:bg-secondary/50 transition-colors"
                   >
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
@@ -190,7 +188,7 @@ const ListCategory = () => {
                         >
                           <AiTwotoneDelete
                             className="w-6 h-6 hover:text-red-500 cursor-pointer"
-                            onClick={() => openDeleteModal(category)}
+                            onClick={() => openDeleteModal(Tag)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -200,7 +198,7 @@ const ListCategory = () => {
                         >
                           <AiTwotoneEdit
                             className="w-10 h-6 hover:text-blue-500 cursor-pointer"
-                            onClick={() => openEditModal(category)}
+                            onClick={() => openEditModal(Tag)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -210,41 +208,41 @@ const ListCategory = () => {
                         >
                           <LiaInfoCircleSolid
                             className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                            onClick={() => openInfoModal(category)}
+                            onClick={() => openInfoModal(Tag)}
                           />
                         </Tooltip>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.categoryId}
+                      {Tag.TagId}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       <label class="inline-flex items-center me-5 cursor-pointer">
                         <input
                           type="checkbox"
                           class="sr-only peer"
-                          checked={category.status}
-                          onChange={() => toggleStatus(category._id, category.status)}                        />
+                          checked={Tag.status}
+                          onChange={() => toggleStatus(Tag._id, Tag.status)}                        />
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                         <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                          {category.status ? "فعال" : "غیرفعال"}
+                          {Tag.status ? "فعال" : "غیرفعال"}
                         </span>
                       </label>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.title}
+                      {Tag.title}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.description}
+                      {Tag.description}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       ---
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {new Date(category.createdAt).toLocaleDateString("fa-IR")}
+                      {new Date(Tag.createdAt).toLocaleDateString("fa-IR")}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.slug}
+                      {Tag.slug}
                     </td>
                   </tr>
                 ))}
@@ -265,20 +263,20 @@ const ListCategory = () => {
         onClose={isModalOpen ? closeModal : closeEditModal}
         className="lg:w-1/3 md:w-1/2 w-full z-50"
       >
-        <AddCategory
+        <AddTag
           onClose={isModalOpen ? closeModal : closeEditModal}
-          onSuccess={handleAddCategorySuccess}
-          categoryToEdit={categoryToEdit}
+          onSuccess={handleAddTagSuccess}
+          TagToEdit={TagToEdit}
         />
       </Modal>
 
       <Info
         isOpen={isInfoModalOpen}
         onClose={closeInfoModal}
-        category={categoryToView}
+        Tag={TagToView}
       />
     </>
   );
 };
 
-export default ListCategory;
+export default ListTag;
