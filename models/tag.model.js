@@ -58,7 +58,7 @@ const tagSchema = new Schema(
     },
     tagId: {
       type: Number,
-      unique: true
+      unique: true  
     },
     ...baseSchema.obj
   },

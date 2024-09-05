@@ -2,8 +2,7 @@ import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import Modal from "../../../components/shared/modal/Modal";
-import {
-  useGetTagsQuery,useUpdateTagMutation} from "@/services/tag/tagApi";
+import { useGetTagsQuery, useUpdateTagMutation } from "@/services/tag/tagApi";
 import AddTag from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
@@ -23,7 +22,7 @@ const ListTag = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [TagToView, setTagToView] = useState(null);
 
-  const openModal = () => { 
+  const openModal = () => {
     setIsModalOpen(true);
   };
 
@@ -67,7 +66,7 @@ const ListTag = () => {
         isDeleted: true,
       }).unwrap();
       closeDeleteModal();
-  
+
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -79,7 +78,7 @@ const ListTag = () => {
       console.error("Error deleting Tag", error);
     }
   };
-  
+
   const toggleStatus = async (tagId, currentStatus) => {
     console.log("tags before deletion:", tags);
 
@@ -88,7 +87,7 @@ const ListTag = () => {
         id: TagId,
         status: !currentStatus,
       }).unwrap();
-  
+
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -100,7 +99,7 @@ const ListTag = () => {
       console.error("Error toggling status", error);
     }
   };
-  
+
   const handleAddTagSuccess = () => {
     refetch();
   };
@@ -118,7 +117,7 @@ const ListTag = () => {
       toast.error(error?.data?.message, { id: "add-Tag" });
     }
   }, [data, error, isLoading]);
- 
+
   return (
     <>
       <button
@@ -159,7 +158,16 @@ const ListTag = () => {
                     توضیحات
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    تعداد
+                    کلمات کلیدی
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    ربات‌ها
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    URL کاننیکال
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    تصویر
                   </th>
                   <th scope="col" className="px-6 py-3">
                     تاریخ ایجاد
@@ -169,9 +177,9 @@ const ListTag = () => {
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {categories.map((Tag, index) => (
-
                   <tr
                     key={Tag._id}
                     className="bg-white hover:bg-secondary/50 transition-colors"
@@ -214,7 +222,7 @@ const ListTag = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.TagId}
+                      {Tag.tagId}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       <label class="inline-flex items-center me-5 cursor-pointer">
@@ -222,7 +230,8 @@ const ListTag = () => {
                           type="checkbox"
                           class="sr-only peer"
                           checked={Tag.status}
-                          onChange={() => toggleStatus(Tag._id, Tag.status)}                        />
+                          onChange={() => toggleStatus(Tag._id, Tag.status)}
+                        />
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                         <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                           {Tag.status ? "فعال" : "غیرفعال"}
@@ -236,7 +245,26 @@ const ListTag = () => {
                       {Tag.description}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      ---
+                      {Tag.keywords && Tag.keywords.length > 0
+                        ? Tag.keywords.join(", ")
+                        : "ندارد"}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {Tag.robots}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {Tag.canonicalUrl ? Tag.canonicalUrl : "ندارد"}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {Tag.image ? (
+                        <img
+                          src={Tag.image}
+                          alt="Tag Image"
+                          className="w-16 h-16 object-cover"
+                        />
+                      ) : (
+                        "تصویر ندارد"
+                      )}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       {new Date(Tag.createdAt).toLocaleDateString("fa-IR")}
@@ -247,6 +275,7 @@ const ListTag = () => {
                   </tr>
                 ))}
               </tbody>
+
               <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={closeDeleteModal}
@@ -270,11 +299,7 @@ const ListTag = () => {
         />
       </Modal>
 
-      <Info
-        isOpen={isInfoModalOpen}
-        onClose={closeInfoModal}
-        Tag={TagToView}
-      />
+      <Info isOpen={isInfoModalOpen} onClose={closeInfoModal} Tag={TagToView} />
     </>
   );
 };
