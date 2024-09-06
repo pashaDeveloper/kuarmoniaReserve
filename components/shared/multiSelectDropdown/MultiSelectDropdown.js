@@ -32,18 +32,18 @@ const MultiSelectDropdown = ({ options, selectedOptions, onChange }) => {
 
   const handleOptionClick = (option) => {
     let updatedSelected;
-    if (selected.includes(option)) {
-      updatedSelected = selected.filter((item) => item !== option);
+    if (selected.some(item => item.value === option.value)) {
+      updatedSelected = selected.filter(item => item.value !== option.value);
     } else {
       updatedSelected = [...selected, option];
     }
-
+  
     setSelected(updatedSelected);
     onChange(updatedSelected); // ارسال گزینه‌های انتخاب شده به بیرون
   };
-
+  
   const removeSelectedOption = (option) => {
-    const updatedSelected = selected.filter((item) => item !== option);
+    const updatedSelected = selected.filter((item) => item.value !== option.value); // فیلتر کردن با value
     setSelected(updatedSelected);
     onChange(updatedSelected);
   };
@@ -59,10 +59,10 @@ const MultiSelectDropdown = ({ options, selectedOptions, onChange }) => {
           {selected.length > 0 ? (
             selected.map((option) => (
               <div
-                key={option}
+                key={option.id} // حالا با استفاده از id
                 className="m-1 bg-green-100 text-green-700 border-[1px] border-green-700 rounded-full pr-2 gap-2 py-1 flex items-center"
               >
-                {option}
+                {option.label}
                 <button
                   className="ml-2 text-red-500"
                   onClick={(e) => {
@@ -70,7 +70,7 @@ const MultiSelectDropdown = ({ options, selectedOptions, onChange }) => {
                     removeSelectedOption(option);
                   }}
                 >
-                <RxCross2 />
+                  <RxCross2 />
                 </button>
               </div>
             ))
@@ -95,12 +95,17 @@ const MultiSelectDropdown = ({ options, selectedOptions, onChange }) => {
       {isOpen && (
         <div className="absolute mt-1 w-full bg-white border border-gray-600 rounded shadow-lg z-10">
           {options.map((option) => (
-            <Tooltip key={option.value} text={option.tooltip || ""} bgColor={"bg-green-500"} txtColor={"text-white"}>
+            <Tooltip
+              key={option.value}
+              text={option.tooltip || ""}
+              bgColor={"bg-green-500"}
+              txtColor={"text-white"}
+            >
               <div
                 className={`p-2 cursor-pointer hover:bg-green-100 ${
-                  selected.includes(option.value) ? "bg-green-100" : ""
+                  selected.some(item => item.value === option.value) ? "bg-green-100" : ""
                 }`}
-                onClick={() => handleOptionClick(option.value)}
+                onClick={() => handleOptionClick(option)} // اصلاح شده
               >
                 {option.label}
               </div>

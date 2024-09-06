@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
-
 import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
 import React, { useEffect,useState } from "react";
 import { toast } from "react-hot-toast";
 
-const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
+const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [selectedRobots, setSelectedRobots] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
@@ -19,16 +17,15 @@ const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
   ] = useUpdateTagMutation();
 
   useEffect(() => {
-    if (TagToEdit) {
+    if (tagToEdit) {
       // پر کردن فرم با داده‌های موجود
       setValue("title", TagToEdit.title);
       setValue("description", TagToEdit.description);
       setValue("keywords", TagToEdit.keywords.join(", "));
       setValue("robots", TagToEdit.robots);
-      setValue("canonicalUrl", TagToEdit.canonicalUrl);
       setValue("image", TagToEdit.image);
     }
-  }, [TagToEdit, setValue]);
+  }, [tagToEdit, setValue]);
 
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
@@ -70,7 +67,11 @@ const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
       formData.keywords = formData.keywords
         .split(",")
         .map((keyword) => keyword.trim());
-      if (TagToEdit) {
+        
+      // ذخیره‌سازی با id و value
+      formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
+      
+      if (tagToEdit) {
         updateTag({ id: TagToEdit._id, ...formData }).unwrap();
       } else {
         addTag(formData).unwrap();
@@ -79,15 +80,17 @@ const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
       console.error("خطا در هنگام پردازش تگ: ", err);
     }
   };
-  const robotOptions = [
-    { value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },
-    { value: 'noindex', label: 'Noindex', tooltip: 'از ایندکس کردن صفحه توسط موتورهای جستجو جلوگیری می‌کند' },
-    { value: 'follow', label: 'Follow', tooltip: 'اجازه می‌دهد موتورهای جستجو لینک‌های موجود در صفحه را دنبال کنند' },
-    { value: 'nofollow', label: 'Nofollow', tooltip: 'از دنبال کردن لینک‌های موجود در صفحه توسط موتورهای جستجو جلوگیری می‌کند' }
-  ];
+  
+ const robotOptions = [
+  { id: 1, value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },
+  { id: 2, value: 'noindex', label: 'Noindex', tooltip: 'از ایندکس کردن صفحه توسط موتورهای جستجو جلوگیری می‌کند' },
+  { id: 3, value: 'follow', label: 'Follow', tooltip: 'اجازه می‌دهد موتورهای جستجو لینک‌های موجود در صفحه را دنبال کنند' },
+  { id: 4, value: 'nofollow', label: 'Nofollow', tooltip: 'از دنبال کردن لینک‌های موجود در صفحه توسط موتورهای جستجو جلوگیری می‌کند' }
+];
     const handleOptionsChange = (newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions);
   };
+
 
   return (
     <>
@@ -146,34 +149,9 @@ const AddTag = ({ onClose, onSuccess, TagToEdit = null }) => {
         selectedOptions={selectedOptions}
         onChange={handleOptionsChange}
       />
-      
-
-        {/* canonicalUrl */}
-        <label htmlFor="canonicalUrl" className="flex flex-col gap-y-2">
-          URL کاننیکال
-          <input
-            type="url"
-            name="canonicalUrl"
-            id="canonicalUrl"
-            placeholder="آدرس URL کاننیکال را وارد کنید..."
-            className="rounded"
-            {...register("canonicalUrl")}
-            />
-        </label>
-
-        {/* image */}
-        <label htmlFor="image" className="flex flex-col gap-y-2">
-          تصویر
-          <input
-            type="text"
-            name="image"
-            id="image"
-            placeholder="آدرس تصویر را وارد کنید..."
-            className="rounded"
-            {...register("image")}
-            />
-        </label>
-
+          
+     
+          
         <Button type="submit" className="py-2 mt-4 mb-4">
           {TagToEdit ? "ویرایش کردن" : "ایجاد کردن"}
         </Button>

@@ -1,7 +1,7 @@
 import { Schema, models, model } from "mongoose";
 import connectDB from "@/libs/db";
-import baseSchema from "./baseSchema.model";  
-import Counter from "./counter.model"; // اضافه کردن import
+import baseSchema from "./baseSchema.model";
+import Counter from "./counter.model";
 
 connectDB();
 
@@ -27,30 +27,42 @@ const tagSchema = new Schema(
     slug: {
       type: String,
       unique: true,
-      required: true,
-      trim: true,
-      set: (value) => value.trim().toLowerCase().replace(/\s+/g, '-'),
+      required: false,
+      default: function() {
+        const slug = this.title.toString()
+          .trim()
+          .toLowerCase()
+          .replace(/[\u200B-\u200D\uFEFF]/g, "")
+          .replace(/[\s\ـ]+/g, "-")
+          .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")
+          .replace(/-+/g, "-")
+          .replace(/^-+|-+$/g, "");
+    
+        console.log('Generated slug:', slug); // نمایش مقدار تولید شده برای slug
+        return slug;
+      }
     },
+    
     canonicalUrl: {
       type: String,
       required: false,
       trim: true,
       validate: {
         validator: function(v) {
-          return /^(https?:\/\/[^\s$.?#].[^\s]*)$/.test(v); // ساده‌ترین اعتبارسنجی URL
+          return /^(https?:\/\/[^\s$.?#].[^\s]*)$/.test(v);
         },
         message: "URL معتبر نیست",
       },
     },
-    image: {
-      type: String,
-      required: false,
-      trim: true,
-    },
     robots: {
-      type: String,
-      enum: ['index', 'noindex', 'follow', 'nofollow'],
-      default: 'index',
+      type: [{
+        id: Number,
+        value: {
+          type: String,
+          enum: ['index', 'noindex', 'follow', 'nofollow'],
+        }
+      }],
+      default: [],
     },
     schema: {
       type: Schema.Types.Mixed,
@@ -58,25 +70,29 @@ const tagSchema = new Schema(
     },
     tagId: {
       type: Number,
-      unique: true  
+      unique: true
     },
     ...baseSchema.obj
   },
   { timestamps: true }
 );
 
+const defaultDomain = process.env.NEXT_PUBLIC_BASE_URL;
+
 tagSchema.pre('save', async function(next) {
   if (this.isNew) {
     this.tagId = await getNextSequenceValue('tagId');
   }
+  if (!this.canonicalUrl) {
+    this.canonicalUrl = `${defaultDomain}/tags/${this.slug}`;
+  }
   next();
 });
-const tag = models.tag || model("tag", tagSchema);
 
-export default tag;
+const Tag = models.Tag || model("Tag", tagSchema);
 
+export default Tag;
 
-////
 async function getNextSequenceValue(sequenceName) {
   const sequenceDocument = await Counter.findOneAndUpdate(
     { model: sequenceName },

@@ -3,10 +3,14 @@ const { kuarmoniaApi } = require("../kuarmonia");
 const tagApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
     addTag: builder.mutation({
-      query: (body) => {
-        console.log(body)
-      },
-
+      query: (body) => ({
+        url: "/tag/",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body,
+      }),
       invalidatesTags: [
         "Rent",
         "User",

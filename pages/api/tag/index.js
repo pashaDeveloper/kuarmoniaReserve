@@ -11,9 +11,10 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const result = await addTag(req);
+        console.log(result)
         res.status(200).json(result);
       } catch (error) {
-        return res.status(500).jsoT({
+        return res.status(500).json({
           success: false,
           message: error.message,
         });

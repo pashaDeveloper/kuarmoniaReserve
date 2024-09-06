@@ -1,37 +1,40 @@
 import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
-import Modal from "../../../components/shared/modal/Modal";
+import Modal from "@/components/shared/modal/Modal";
+import Popover from "@/components/shared/modal/Popover";
+import DeleteConfirmationModal from "@/components/shared/modal/DeleteConfirmationModal";
 import { useGetTagsQuery, useUpdateTagMutation } from "@/services/tag/tagApi";
 import AddTag from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
-import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
 import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
-import Tooltip from "../../../components/shared/tooltip/Tooltip";
+import Tooltip from "@/components/shared/tooltip/Tooltip";
 import Info from "./info";
 const ListTag = () => {
   const { data, isLoading, error, refetch } = useGetTagsQuery();
   const [updateTag] = useUpdateTagMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const categories = Array.isArray(data?.data) ? data.data : [];
+  const tags = Array.isArray(data?.data) ? data.data : [];
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [TagToDelete, setTagToDelete] = useState(null);
+  const [tagToDelete, setTagToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [TagToEdit, setTagToEdit] = useState(null);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [TagToView, setTagToView] = useState(null);
+  const [tagToEdit, setTagToEdit] = useState(null);
+  const [tagToView, setTagToView] = useState(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
+
+  
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = (Tag) => {
+  const closeModal = (tag) => {
     setIsModalOpen(false);
   };
 
-  const openDeleteModal = (Tag) => {
-    setTagToDelete(Tag);
+  const openDeleteModal = (tag) => {
+    setTagToDelete(tag);
     setIsDeleteModalOpen(true);
   };
 
@@ -40,8 +43,8 @@ const ListTag = () => {
     setTagToDelete(null);
   };
 
-  const openEditModal = (Tag) => {
-    setTagToEdit(Tag);
+  const openEditModal = (tag) => {
+    setTagToEdit(tag);
     setIsEditModalOpen(true);
   };
 
@@ -50,19 +53,16 @@ const ListTag = () => {
     setTagToEdit(null);
   };
 
-  const openInfoModal = (Tag) => {
-    setTagToView(Tag);
-    setIsInfoModalOpen(true);
+  const togglePopover = (tag) => {
+    setTagToView(tag);
+    setIsPopoverOpen(!isPopoverOpen); 
   };
+  
 
-  const closeInfoModal = () => {
-    setIsInfoModalOpen(false);
-    setTagToView(null);
-  };
   const handleDelete = async () => {
     try {
       const response = await updateTag({
-        id: TagToDelete._id,
+        id: tagToDelete._id,
         isDeleted: true,
       }).unwrap();
       closeDeleteModal();
@@ -80,8 +80,6 @@ const ListTag = () => {
   };
 
   const toggleStatus = async (tagId, currentStatus) => {
-    console.log("tags before deletion:", tags);
-
     try {
       const response = await updateTag({
         id: TagId,
@@ -166,9 +164,7 @@ const ListTag = () => {
                   <th scope="col" className="px-6 py-3">
                     URL کاننیکال
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    تصویر
-                  </th>
+               
                   <th scope="col" className="px-6 py-3">
                     تاریخ ایجاد
                   </th>
@@ -179,9 +175,9 @@ const ListTag = () => {
               </thead>
 
               <tbody>
-                {categories.map((Tag, index) => (
+                {tags.map((tag, index) => (
                   <tr
-                    key={Tag._id}
+                    key={tag._id}
                     className="bg-white hover:bg-secondary/50 transition-colors"
                   >
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
@@ -196,7 +192,7 @@ const ListTag = () => {
                         >
                           <AiTwotoneDelete
                             className="w-6 h-6 hover:text-red-500 cursor-pointer"
-                            onClick={() => openDeleteModal(Tag)}
+                            onClick={() => openDeleteModal(tag)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -206,7 +202,7 @@ const ListTag = () => {
                         >
                           <AiTwotoneEdit
                             className="w-10 h-6 hover:text-blue-500 cursor-pointer"
-                            onClick={() => openEditModal(Tag)}
+                            onClick={() => openEditModal(tag)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -216,61 +212,50 @@ const ListTag = () => {
                         >
                           <LiaInfoCircleSolid
                             className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                            onClick={() => openInfoModal(Tag)}
+                            onClick={() =>  togglePopover(tag)}
                           />
                         </Tooltip>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.tagId}
+                      {tag.tagId}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      <label class="inline-flex items-center me-5 cursor-pointer">
+                  
                         <input
                           type="checkbox"
                           class="sr-only peer"
-                          checked={Tag.status}
-                          onChange={() => toggleStatus(Tag._id, Tag.status)}
+                          checked={tag.status}
+                          onChange={() => toggleStatus(Tag._id, tag.status)}
                         />
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                          {Tag.status ? "فعال" : "غیرفعال"}
-                        </span>
-                      </label>
+                      
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.title}
+                      {tag.title}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.description}
+                      {tag.description}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.keywords && Tag.keywords.length > 0
-                        ? Tag.keywords.join(", ")
+                      {tag.keywords && tag.keywords.length > 0
+                        ? tag.keywords.join(", ")
                         : "ندارد"}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.robots}
+                      {tag.robots && tag.robots.length > 0
+                        ? tag.robots.map((robot) => robot.value).join(", ")
+                        : "ندارد"}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.canonicalUrl ? Tag.canonicalUrl : "ندارد"}
+                      {tag.canonicalUrl ? tag.canonicalUrl : "ندارد"}
+                    </td>
+
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                      {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.image ? (
-                        <img
-                          src={Tag.image}
-                          alt="Tag Image"
-                          className="w-16 h-16 object-cover"
-                        />
-                      ) : (
-                        "تصویر ندارد"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {new Date(Tag.createdAt).toLocaleDateString("fa-IR")}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {Tag.slug}
+                      {tag.slug}
                     </td>
                   </tr>
                 ))}
@@ -295,11 +280,19 @@ const ListTag = () => {
         <AddTag
           onClose={isModalOpen ? closeModal : closeEditModal}
           onSuccess={handleAddTagSuccess}
-          TagToEdit={TagToEdit}
+          TagToEdit={tagToEdit}
         />
       </Modal>
 
-      <Info isOpen={isInfoModalOpen} onClose={closeInfoModal} Tag={TagToView} />
+      <Popover
+        isOpen={isPopoverOpen}
+        onClose={() => setIsPopoverOpen(false)}
+        content={
+          <Info  tag={tagToView} />   
+        }
+      />
+
+
     </>
   );
 };

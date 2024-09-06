@@ -1,18 +1,21 @@
-import tag from '@/models/tag.model';
+import Tag from '@/models/tag.model';
 
 // Add a new tag
 export async function addTag(req) {
   try {
-    const { title, description } = req.body;
+    const { title, description, keywords, robots } = req.body; // استفاده از داده‌های فیک
 
-    const tag = await tag.create({
+    const tag = await Tag.create({
       title,
       description,
+      keywords,
+      robots
     });
+
     if (tag) {
       return {
         success: true,
-        message: " تگ با موفقیت ایجاد شد",
+        message: "تگ با موفقیت ایجاد شد",
       };
     } else {
       return {
@@ -21,6 +24,7 @@ export async function addTag(req) {
       };
     }
   } catch (error) {
+    console.error("Error:", error.message); // چاپ خطا برای مشاهده جزئیات
     return {
       success: false,
       message: error.message,
@@ -28,9 +32,10 @@ export async function addTag(req) {
   }
 }
 
+
 export async function getTags() {
   try {
-    const tags = await tag.find({ isDeleted: false }); // Retrieve all categories from the database
+    const tags = await Tag.find({ isDeleted: false }); // Retrieve all categories from the database
     if (tags.length > 0) {
       return {
         success: true,
@@ -52,9 +57,8 @@ export async function getTags() {
 }
 export async function updateTag(req) {
 
-
+  const { id } = req.query;
   try {
-    const { id } = req.query;
     const { title, description, status, isDeleted } = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
@@ -62,7 +66,7 @@ export async function updateTag(req) {
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
 
-    const tag = await tag.findByIdAndUpdate(id, updateFields, { new: true });
+    const tag = await Tag.findByIdAndUpdate(id, updateFields, { new: true });
 
     if (tag) {
       return {

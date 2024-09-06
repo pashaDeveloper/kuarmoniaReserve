@@ -19,9 +19,18 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "3000",
-        pathname: "/**",
+        pathname: "/dashboard/tags",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/dashboard/tags",
+        permanent: false,
+      },
+    ];
   },
   async headers() {
     return [

@@ -1,4 +1,5 @@
 import { updateTag } from "@/controllers/tag.controller";
+import upload from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
