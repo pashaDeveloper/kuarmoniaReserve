@@ -56,16 +56,17 @@ export async function getTags() {
   }
 }
 export async function updateTag(req) {
-
+console.log(req.body)
   const { id } = req.query;
   try {
-    const { title, description, status, isDeleted } = req.body || {};
+    const { title, description, status, isDeleted ,robots,keywords} = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
-
+    if (robots !== undefined) updateFields.robots = robots;
+    if (keywords !== undefined) updateFields.keywords = keywords;
     const tag = await Tag.findByIdAndUpdate(id, updateFields, { new: true });
 
     if (tag) {

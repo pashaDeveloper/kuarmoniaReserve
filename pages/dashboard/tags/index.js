@@ -9,6 +9,7 @@ import AddTag from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 import Info from "./info";
 const ListTag = () => {
@@ -185,36 +186,89 @@ const ListTag = () => {
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip
-                          text="حذف"
-                          bgColor="bg-red-500"
-                          txtColor="text-white"
-                        >
-                          <AiTwotoneDelete
-                            className="w-6 h-6 hover:text-red-500 cursor-pointer"
-                            onClick={() => openDeleteModal(tag)}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          text="ویرایش"
-                          bgColor="bg-blue-500"
-                          txtColor="text-white"
-                        >
-                          <AiTwotoneEdit
-                            className="w-10 h-6 hover:text-blue-500 cursor-pointer"
-                            onClick={() => openEditModal(tag)}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          text="جزئیات"
-                          bgColor="bg-green-500"
-                          txtColor="text-white"
-                        >
-                          <LiaInfoCircleSolid
-                            className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                            onClick={() =>  togglePopover(tag)}
-                          />
-                        </Tooltip>
+                        {/* Hidden on mobile, visible on larger screens */}
+      <div className="hidden sm:flex gap-1">
+        <Tooltip
+          text="حذف"
+          bgColor="bg-red-500"
+          txtColor="text-white"
+        >
+          <AiTwotoneDelete
+            className="w-6 h-6 hover:text-red-500 cursor-pointer"
+            onClick={() => openDeleteModal(tag)}
+          />
+        </Tooltip>
+        <Tooltip
+          text="ویرایش"
+          bgColor="bg-blue-500"
+          txtColor="text-white"
+        >
+          <AiTwotoneEdit
+            className="w-10 h-6 hover:text-blue-500 cursor-pointer"
+            onClick={() => openEditModal(tag)}
+          />
+        </Tooltip>
+        <Tooltip
+          text="جزئیات"
+          bgColor="bg-green-500"
+          txtColor="text-white"
+        >
+          <LiaInfoCircleSolid
+            className="w-6 h-6 hover:text-green-500 cursor-pointer"
+            onClick={() => togglePopover(tag)}
+          />
+        </Tooltip>
+      </div>
+
+      {/* Three-dot menu on mobile */}
+      <div className="sm:hidden relative">
+        <BsThreeDotsVertical
+          className="w-6 h-6 cursor-pointer"
+          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        />
+        
+        {/* Popover for mobile */}
+        {isPopoverOpen && (
+          <Popover
+            isOpen={isPopoverOpen}
+            onClose={() => setIsPopoverOpen(false)}
+            className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10"
+          >
+            <div className="flex flex-col items-start p-2">
+              <button
+                onClick={() => {
+                  openDeleteModal(tag);
+                  setIsPopoverOpen(false);
+                }}
+                className="flex items-center gap-2 w-full text-right text-red-500 hover:bg-red-100 p-2 rounded"
+              >
+                <AiTwotoneDelete className="w-5 h-5" />
+                حذف
+              </button>
+              <button
+                onClick={() => {
+                  openEditModal(tag);
+                  setIsPopoverOpen(false);
+                }}
+                className="flex items-center gap-2 w-full text-right text-blue-500 hover:bg-blue-100 p-2 rounded"
+              >
+                <AiTwotoneEdit className="w-5 h-5" />
+                ویرایش
+              </button>
+              <button
+                onClick={() => {
+                  togglePopover(tag);
+                  setIsPopoverOpen(false);
+                }}
+                className="flex items-center gap-2 w-full text-right text-green-500 hover:bg-green-100 p-2 rounded"
+              >
+                <LiaInfoCircleSolid className="w-5 h-5" />
+                جزئیات
+              </button>
+            </div>
+          </Popover>
+        )}
+      </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
@@ -280,7 +334,7 @@ const ListTag = () => {
         <AddTag
           onClose={isModalOpen ? closeModal : closeEditModal}
           onSuccess={handleAddTagSuccess}
-          TagToEdit={tagToEdit}
+          tagToEdit={tagToEdit}
         />
       </Modal>
 

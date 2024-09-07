@@ -18,12 +18,18 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
 
   useEffect(() => {
     if (tagToEdit) {
-      // پر کردن فرم با داده‌های موجود
-      setValue("title", TagToEdit.title);
-      setValue("description", TagToEdit.description);
-      setValue("keywords", TagToEdit.keywords.join(", "));
-      setValue("robots", TagToEdit.robots);
-      setValue("image", TagToEdit.image);
+      setValue("title", tagToEdit.title);
+      setValue("description", tagToEdit.description);
+      setValue("keywords", tagToEdit.keywords.join(", "));
+      setValue("robots", tagToEdit.robots);
+
+      // تنظیم گزینه‌های انتخاب‌شده برای robots
+      const initialSelectedOptions = tagToEdit.robots.map(robot => {
+        const foundOption = robotOptions.find(option => option.value === robot.value);
+        return foundOption ? { id: foundOption.id, value: foundOption.value, label: foundOption.label } : null;
+      }).filter(Boolean); // حذف آیتم‌های null
+
+      setSelectedOptions(initialSelectedOptions);
     }
   }, [tagToEdit, setValue]);
 
@@ -40,10 +46,10 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
       toast.success(data?.message, { id: "tag" });
       reset();
       if (onSuccess) {
-        onSuccess(); // به‌روزرسانی لیست
+        onSuccess();
       }
       if (onClose) {
-        onClose(); // بستن مدال
+        onClose();
       }
     }
 
@@ -67,12 +73,10 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
       formData.keywords = formData.keywords
         .split(",")
         .map((keyword) => keyword.trim());
-        
-      // ذخیره‌سازی با id و value
       formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
       
       if (tagToEdit) {
-        updateTag({ id: TagToEdit._id, ...formData }).unwrap();
+        updateTag({ id: tagToEdit._id, ...formData }).unwrap();
       } else {
         addTag(formData).unwrap();
       }
@@ -81,26 +85,23 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
     }
   };
   
- const robotOptions = [
-  { id: 1, value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },
-  { id: 2, value: 'noindex', label: 'Noindex', tooltip: 'از ایندکس کردن صفحه توسط موتورهای جستجو جلوگیری می‌کند' },
-  { id: 3, value: 'follow', label: 'Follow', tooltip: 'اجازه می‌دهد موتورهای جستجو لینک‌های موجود در صفحه را دنبال کنند' },
-  { id: 4, value: 'nofollow', label: 'Nofollow', tooltip: 'از دنبال کردن لینک‌های موجود در صفحه توسط موتورهای جستجو جلوگیری می‌کند' }
-];
-    const handleOptionsChange = (newSelectedOptions) => {
+  const robotOptions = [
+    { id: 1, value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },
+    { id: 2, value: 'noindex', label: 'Noindex', tooltip: 'از ایندکس کردن صفحه توسط موتورهای جستجو جلوگیری می‌کند' },
+    { id: 3, value: 'follow', label: 'Follow', tooltip: 'اجازه می‌دهد موتورهای جستجو لینک‌های موجود در صفحه را دنبال کنند' },
+    { id: 4, value: 'nofollow', label: 'Nofollow', tooltip: 'از دنبال کردن لینک‌های موجود در صفحه توسط موتورهای جستجو جلوگیری می‌کند' }
+  ];
+
+  const handleOptionsChange = (newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions);
   };
 
-
   return (
-    <>
     <form
       className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
       onSubmit={handleSubmit(handleAddOrUpdateTag)}
     >
-
       <div className="flex gap-4 flex-col">
-        {/* عنوان */}
         <label htmlFor="title" className="flex flex-col gap-y-2">
           عنوان
           <input
@@ -112,10 +113,9 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
             className="rounded"
             autoFocus
             {...register("title", { required: true })}
-            />
+          />
         </label>
 
-        {/* توضیحات */}
         <label htmlFor="description" className="flex flex-col gap-y-2">
           توضیحات
           <textarea
@@ -125,10 +125,9 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
             placeholder="توضیحات تگ را تایپ کنید..."
             className="rounded h-32"
             {...register("description")}
-            />
+          />
         </label>
 
-        {/* کلمات کلیدی */}
         <label htmlFor="keywords" className="flex flex-col gap-y-2">
           کلمات کلیدی
           <input
@@ -138,27 +137,24 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
             placeholder="کلمات کلیدی را با , جدا کنید"
             className="rounded"
             {...register("keywords")}
-            />
+          />
         </label>
 
         {/* robots */}
         ربات‌ها
-  
-      <MultiSelectDropdown
-        options={robotOptions}
-        selectedOptions={selectedOptions}
-        onChange={handleOptionsChange}
-      />
-          
-     
+        <MultiSelectDropdown
+          options={robotOptions}
+          selectedOptions={selectedOptions}
+          onChange={handleOptionsChange}
+        />
           
         <Button type="submit" className="py-2 mt-4 mb-4">
-          {TagToEdit ? "ویرایش کردن" : "ایجاد کردن"}
+          {tagToEdit ? "ویرایش کردن" : "ایجاد کردن"}
         </Button>
       </div>
     </form>
-            </>
   );
 };
+
 
 export default AddTag;
