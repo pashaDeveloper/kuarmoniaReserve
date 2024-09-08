@@ -22,7 +22,10 @@ const ListTag = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [tagToEdit, setTagToEdit] = useState(null);
   const [tagToView, setTagToView] = useState(null);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  // وضعیت پاپ‌آورها
+  const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false); // برای موبایل
+  const [isTooltipPopoverOpen, setIsTooltipPopoverOpen] = useState(false);
+  const [popoverPosition, setPopoverPosition] = useState({ top: null, right: null });
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -52,9 +55,17 @@ const ListTag = () => {
     setTagToEdit(null);
   };
 
-  const togglePopover = (tag) => {
+  const toggleMobilePopover = (e) => {
+    const rect = e.target.getBoundingClientRect(); // موقعیت آیکون سه‌نقطه
+    setPopoverPosition({
+      top: rect.top + rect.height +20, // پایین آیکون
+      left: rect.left-50, // هم‌راستای آیکون
+    });
+    setIsMobilePopoverOpen(!isMobilePopoverOpen);
+  };
+  const toggleTooltipPopover = (tag) => {
     setTagToView(tag);
-    setIsPopoverOpen(!isPopoverOpen);
+    setIsTooltipPopoverOpen(!isTooltipPopoverOpen);
   };
 
   const handleDelete = async () => {
@@ -132,8 +143,10 @@ const ListTag = () => {
       <Panel>
         <section className="h-full w-full">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left scroll-mb-36 text-gray-500 z-10"   style={{ marginBottom: '25px' }} >
-
+            <table
+              className="w-full text-sm text-left scroll-mb-36 text-gray-500 z-10"
+              style={{ marginBottom: "25px" }}
+            >
               <thead className="text-xs text-gray-700 uppercase mb-3 text-center bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -145,7 +158,8 @@ const ListTag = () => {
                   <th scope="col" className="px-6 py-3">
                     شناسه
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col"   className="px-6 py-3 hidden sm:table-cell" 
+                  >
                     وضعیت
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -213,7 +227,7 @@ const ListTag = () => {
                           >
                             <LiaInfoCircleSolid
                               className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                              onClick={() => togglePopover(tag)}
+                              onClick={() => toggleTooltipPopover(tag)}
                             />
                           </Tooltip>
                         </div>
@@ -222,21 +236,32 @@ const ListTag = () => {
                         <div className="sm:hidden relative">
                           <BsThreeDotsVertical
                             className="w-6 h-6 cursor-pointer"
-                            onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-                          />
+                            onClick={toggleMobilePopover}
+
+                            />
 
                           {/* Popover for mobile */}
-                          {isPopoverOpen && (
+                          {isMobilePopoverOpen && (
                             <Popover
-                              isOpen={isPopoverOpen}
-                              onClose={() => setIsPopoverOpen(false)}
+                              isOpen={isMobilePopoverOpen}
+                              onClose={() => setIsMobilePopoverOpen(false)}
+                              position={popoverPosition} // موقعیت پاپ‌آور
                               className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10"
-                            >
-                              <div className="flex flex-col items-start p-2">
+                              content={
+                                 <div className="flex flex-col item-center p-2">
+                                                             <button
+  onClick={() => {
+    toggleStatus(tag._id, tag.status);
+    setIsMobilePopoverOpen(false);
+  }}
+  className="flex items-center justify-center gap-2 w-full  p-2 "
+>
+<div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div> 
+</button>
                                 <button
                                   onClick={() => {
                                     openDeleteModal(tag);
-                                    setIsPopoverOpen(false);
+                                    setIsMobilePopoverOpen(false);
                                   }}
                                   className="flex items-center gap-2 w-full text-right text-red-500 hover:bg-red-100 p-2 rounded"
                                 >
@@ -246,7 +271,7 @@ const ListTag = () => {
                                 <button
                                   onClick={() => {
                                     openEditModal(tag);
-                                    setIsPopoverOpen(false);
+                                    setIsMobilePopoverOpen(false);
                                   }}
                                   className="flex items-center gap-2 w-full text-right text-blue-500 hover:bg-blue-100 p-2 rounded"
                                 >
@@ -255,15 +280,19 @@ const ListTag = () => {
                                 </button>
                                 <button
                                   onClick={() => {
-                                    togglePopover(tag);
-                                    setIsPopoverOpen(false);
+                                    toggleTooltipPopover(tag);
+                                    setIsMobilePopoverOpen(false);
                                   }}
                                   className="flex items-center gap-2 w-full text-right text-green-500 hover:bg-green-100 p-2 rounded"
                                 >
                                   <LiaInfoCircleSolid className="w-5 h-5" />
                                   جزئیات
                                 </button>
-                              </div>
+
+                              </div>}
+                       
+                       >
+                             
                             </Popover>
                           )}
                         </div>
@@ -272,7 +301,7 @@ const ListTag = () => {
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
                       {tag.tagId}
                     </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap hidden sm:table-cell">
                       <input
                         type="checkbox"
                         class="sr-only peer"
@@ -338,8 +367,8 @@ const ListTag = () => {
       </Modal>
 
       <Popover
-        isOpen={isPopoverOpen}
-        onClose={() => setIsPopoverOpen(false)}
+        isOpen={isTooltipPopoverOpen}
+        onClose={() => setIsTooltipPopoverOpen(false)}
         content={<Info tag={tagToView} />}
       />
     </>
