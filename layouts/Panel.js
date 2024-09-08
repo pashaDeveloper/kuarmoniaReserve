@@ -39,7 +39,7 @@ const Panel = ({ children }) => {
     },
     {
       name: "بلاگ",
-      path: "/dashboard/list-posts",
+      path: "/dashboard/blogs",
       icon: <FaBlog className="w-5 h-5" />,
     },
     {

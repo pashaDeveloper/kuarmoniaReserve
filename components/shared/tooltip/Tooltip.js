@@ -8,6 +8,8 @@ const Tooltip = ({ text, children, bgColor = "bg-primary/30" ,txtColor="text-bla
       className="relative h-full w-full"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
+      // اضافه کردن z-index به صورت داخلی
+
     >
       {children}
       {showTooltip && (

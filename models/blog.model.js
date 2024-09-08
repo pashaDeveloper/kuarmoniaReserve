@@ -1,0 +1,90 @@
+import { Schema, models, model } from "mongoose";
+import connectDB from "@/libs/db";
+import baseSchema from "./baseSchema.model";
+import Counter from "./counter.model";
+
+connectDB();
+
+const blogSchema = new Schema(
+  {
+    blogId: {
+        type: Number,
+        unique: true
+    },
+    title: {
+      type: String,
+      required: [true, "عنوان پست الزامی است"],
+      trim: true,
+      minLength: [3, "عنوان پست باید حداقل ۳ کاراکتر باشد"],
+      maxLength: [100, "عنوان پست نمی‌تواند بیشتر از ۱۰۰ کاراکتر باشد"],
+    },
+    slug: {
+      type: String,
+      unique: true,
+      required: false,
+      default: function() {
+        return this.title.toString()
+          .trim()
+          .toLowerCase()
+          .replace(/[\u200B-\u200D\uFEFF]/g, "")
+          .replace(/[\s\ـ]+/g, "-")
+          .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")
+          .replace(/-+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      },
+    },
+    description: {
+      type: String,
+      maxLength: [200, "توضیحات نمی‌تواند بیشتر از ۲۰۰ کاراکتر باشد"],
+    },
+    content: {
+      type: String,
+      required: [true, "محتوا الزامی است"],
+    },
+    publishDate: {
+      type: Date,
+      required: [true, "تاریخ انتشار الزامی است"],
+    },
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Tag", // ارجاع به مدل تگ
+      }
+    ],
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: [true, "دسته‌بندی پست الزامی است"],
+    },
+    featuredImage: {
+      type: String,
+      default: "",
+    }, authorId: {
+        type: Schema.Types.ObjectId,
+        ref: "User", 
+        required: [true, "شناسه نویسنده الزامی است"],
+      },
+    ...baseSchema.obj
+  },
+  { timestamps: true }
+);
+
+blogSchema.pre('save', async function(next) {
+  if (this.isNew) {
+    this.blogId = await getNextSequenceValue('blogId');
+  }
+  next();
+});
+
+const Blog = models.Blog || model("Blog", blogSchema);
+
+export default Blog;
+
+async function getNextSequenceValue(sequenceName) {
+  const sequenceDocument = await Counter.findOneAndUpdate(
+    { model: sequenceName },
+    { $inc: { sequence_value: 1 } },
+    { new: true, upsert: true }
+  );
+  return sequenceDocument.sequence_value;
+}
