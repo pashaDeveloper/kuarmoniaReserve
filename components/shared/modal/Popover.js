@@ -1,37 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 const Popover = ({
   isOpen,
   onClose,
   content,
-  position = { top: null, left: null }, // برای تنظیم موقعیت سفارشی
+  position = { top: null, left: null },
   bgColor = "bg-white",
   txtColor = "text-black",
 }) => {
-  if (!isOpen) return null;
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    } else {
+      // زمانی برای اعمال انیمیشن قبل از حذف کامل از DOM
+      const timer = setTimeout(() => setIsVisible(false), 300); // 300 میلی‌ثانیه برای انیمیشن
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!isVisible) return null;
 
   const { top, left } = position;
 
   return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center z-50"
+      className={`fixed inset-0 z-25 flex items-center justify-center transition-opacity duration-300 ${
+        isOpen ? "opacity-100" : "opacity-0"
+      }`}
       onClick={onClose}
     >
       <div
-        className={`absolute p-4 rounded shadow-lg ${bgColor} ${txtColor}`}
-        style={{
-          top: top !== null ? `${top}px` : "50%",
-          left: left !== null ? `${left}px` : "50%",
-          transform:
-            top !== null && left !== null ? "translate(0, 0)" : "translate(-50%, -50%)",
-        }}
-        onClick={(e) => e.stopPropagation()} // جلوگیری از بستن مدال هنگام کلیک درون آن
+        className={`absolute p-4 rounded shadow-lg transform transition-transform duration-300 ${
+          isOpen ? "scale-100" : "scale-95"
+        } ${bgColor} ${txtColor}`}
+        style={{ top, left }}
+        onClick={(e) => e.stopPropagation()}
       >
         {content}
       </div>
     </div>,
-    document.body // رندر کردن مدال در body
+    document.body
   );
 };
 

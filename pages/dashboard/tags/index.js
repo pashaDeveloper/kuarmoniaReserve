@@ -47,7 +47,7 @@ const ListTag = () => {
   return (
     <>
       <button
-        className="fixed bottom-16 right-[400px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
+        className="fixed bottom-16 right-[20px] md:right-[300px] lg:right-[330px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
         style={{ width: "64px", height: "64px", transition: "background-color 0.3s !important, transform 0.1s !important" }}
         onClose={() => handleClose(setTagToView, setIsEditModalOpen, setIsModalOpen)}
         onClick={() => {
