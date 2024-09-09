@@ -8,8 +8,8 @@ connectDB();
 const blogSchema = new Schema(
   {
     blogId: {
-        type: Number,
-        unique: true
+      type: Number,
+      unique: true,
     },
     title: {
       type: String,
@@ -22,8 +22,9 @@ const blogSchema = new Schema(
       type: String,
       unique: true,
       required: false,
-      default: function() {
-        return this.title.toString()
+      default: function () {
+        return this.title
+          .toString()
           .trim()
           .toLowerCase()
           .replace(/[\u200B-\u200D\uFEFF]/g, "")
@@ -49,7 +50,7 @@ const blogSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Tag", // ارجاع به مدل تگ
-      }
+      },
     ],
     category: {
       type: Schema.Types.ObjectId,
@@ -59,19 +60,43 @@ const blogSchema = new Schema(
     featuredImage: {
       type: String,
       default: "",
-    }, authorId: {
+    },
+    authorId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "شناسه نویسنده الزامی است"],
+    },
+
+    // اضافه کردن لایک و دیسلایک
+    likes: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "User", 
-        required: [true, "شناسه نویسنده الزامی است"],
+        ref: "LikeDislike", // ارجاع به مدل لایک و دیسلایک
       },
-    ...baseSchema.obj
+    ],
+    dislikes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "LikeDislike", // ارجاع به مدل لایک و دیسلایک
+      },
+    ],
+
+    // اضافه کردن کامنت‌ها
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment", // ارجاع به مدل کامنت
+      },
+    ],
+
+    ...baseSchema.obj,
   },
   { timestamps: true }
 );
 
-blogSchema.pre('save', async function(next) {
+blogSchema.pre("save", async function (next) {
   if (this.isNew) {
-    this.blogId = await getNextSequenceValue('blogId');
+    this.blogId = await getNextSequenceValue("blogId");
   }
   next();
 });

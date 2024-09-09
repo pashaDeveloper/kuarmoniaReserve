@@ -22,15 +22,19 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
       setValue("description", tagToEdit.description);
       setValue("keywords", tagToEdit.keywords.join(", "));
       setValue("robots", tagToEdit.robots);
-
+  
       const initialSelectedOptions = tagToEdit.robots.map(robot => {
         const foundOption = robotOptions.find(option => option.value === robot.value);
         return foundOption ? { id: foundOption.id, value: foundOption.value, label: foundOption.label } : null;
       }).filter(Boolean); // حذف آیتم‌های null
-
+  
       setSelectedOptions(initialSelectedOptions);
+      
+    } else {
+      reset();
+      setSelectedOptions([]);
     }
-  }, [tagToEdit, setValue]);
+  }, [tagToEdit, setValue, reset]);
 
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
