@@ -14,7 +14,7 @@ const Table = ({ columns, data, onEdit, onDelete, toggleTooltipPopover,onEnable 
     top: null,
     right: null,
   });
-
+console.log
   const toggleMobilePopover = (e) => {
     const { clientX, clientY } = e;
     const left = window.innerWidth - clientX + 140;
@@ -113,10 +113,9 @@ const Table = ({ columns, data, onEdit, onDelete, toggleTooltipPopover,onEnable 
                                 <input
                                   type="checkbox"
                                   className="sr-only peer"
-                                  checked={item.status}
-                                  onChange={() =>
-                                    handleStatus(item._id, item.status)
-                                  }
+                                  checked={!item.status}
+                                  onChange={() => onEnable(item)} 
+
                                 />
                                 <div className="relative w-12 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                               </label>
@@ -152,7 +151,7 @@ const Table = ({ columns, data, onEdit, onDelete, toggleTooltipPopover,onEnable 
                     type="checkbox"
                     class="sr-only peer"
                     checked={item.status}
-                    onChange={() => onEnable(item._id, item.status)} 
+                    onChange={() => onEnable(item)} 
                     />
                   <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                 </label>
