@@ -26,7 +26,7 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
       const initialSelectedOptions = tagToEdit.robots.map(robot => {
         const foundOption = robotOptions.find(option => option.value === robot.value);
         return foundOption ? { id: foundOption.id, value: foundOption.value, label: foundOption.label } : null;
-      }).filter(Boolean); // حذف آیتم‌های null
+      }).filter(Boolean); 
   
       setSelectedOptions(initialSelectedOptions);
       

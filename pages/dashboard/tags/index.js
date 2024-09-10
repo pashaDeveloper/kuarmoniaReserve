@@ -7,7 +7,7 @@ import { useGetTagsQuery, useUpdateTagMutation } from "@/services/tag/tagApi";
 import AddTag from "./add";
 import Info from "./info";
 import Table from "@/components/shared/table/Table";
-import { handleView, openModal, toggleTooltipPopover, handleClose, handleEdit, handleDelete } from '@/utils/functionHelpers';
+import { handleView, openModal, toggleTooltipPopover, handleClose, handleEdit, handleDelete ,handleStatus } from '@/utils/functionHelpers';
 import { toast } from "react-hot-toast";
 
 const ListTag = () => {
@@ -23,8 +23,8 @@ const ListTag = () => {
     { key: 'tagId', label: 'شناسه' },
     { key: 'title', label: 'عنوان' },
     { key: 'description', label: 'توضیحات' },
-    { key: 'keywords', label: 'کلمات کلیدی', render: (item) => item.keywords && item.keywords.length > 0 ? item.keywords.join(", ") : "ندارد" },
-    { key: 'robots', label: 'ربات‌ها', render: (item) => item.robots && item.robots.length > 0 ? item.robots.map((robot) => robot.value).join(", ") : "ندارد" },
+    { key: 'keywords', label: 'کلمات کلیدی', render: (item) => item.keywords &&  item.keywords.join(", ")  },
+    { key: 'robots', label: 'ربات‌ها', render: (item) => item.robots && item.robots.map((robot) => robot.value).join(", ") },
     { key: 'canonicalUrl', label: 'URL کاننیکال' },
     { key: 'createdAt', label: 'تاریخ ایجاد', render: (item) => new Date(item.createdAt).toLocaleDateString("fa-IR") },
     { key: 'slug', label: 'اسلاگ' },
@@ -47,7 +47,7 @@ const ListTag = () => {
   return (
     <>
       <button
-        className="fixed bottom-16 right-[20px] md:right-[300px] lg:right-[330px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
+        className="fixed bottom-16 right-[20px] md:right-[30px] lg:right-[400px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
         style={{ width: "64px", height: "64px", transition: "background-color 0.3s !important, transform 0.1s !important" }}
         onClose={() => handleClose(setTagToView, setIsEditModalOpen, setIsModalOpen)}
         onClick={() => {
@@ -67,6 +67,7 @@ const ListTag = () => {
             onClose={() => handleClose(setTagToView, setIsEditModalOpen, setIsModalOpen)}
             onView={(tag) => handleView(tag, setTagToView, toggleTooltipPopover)}
             toggleTooltipPopover={(tag) => toggleTooltipPopover(tag, setTagToView, setIsMobilePopoverOpen, isMobilePopoverOpen)}
+            onEnable={(tag)=>handleStatus(tag,updateTag,refetch)}
           />
         </section>
       </Panel>

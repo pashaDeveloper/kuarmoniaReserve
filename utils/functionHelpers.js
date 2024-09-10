@@ -17,10 +17,32 @@ export  const handleDelete = async (item, updateItem, refetch) => {
       }
     } catch (error) {
       toast.error(error.message);
-      console.error("Error deleting item", error);
+      console.error("خطا رد حذف ", error);
     }
   };
 
+ export const handleStatus = async (item, updateItem,refetch) => {
+    try {
+      console.log(item)
+      console.log(updateItem)
+
+      const response = await updateItem({
+        id: item._id,
+        status: !item.status,
+      }).unwrap();
+  
+      if (response.success) {
+        toast.success(response.message);
+        refetch();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("خطا در تغییر ");
+      console.error("Error toggling status", error);
+    }
+  };
+  
 // تابع عمومی برای نمایش اطلاعات (view)
 export const handleView = (item, setViewState, togglePopover) => {
     setViewState(item);

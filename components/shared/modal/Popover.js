@@ -15,8 +15,7 @@ const Popover = ({
     if (isOpen) {
       setIsVisible(true);
     } else {
-      // زمانی برای اعمال انیمیشن قبل از حذف کامل از DOM
-      const timer = setTimeout(() => setIsVisible(false), 300); // 300 میلی‌ثانیه برای انیمیشن
+      const timer = setTimeout(() => setIsVisible(false), 300); // 300 میلی‌ثانیه 
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
