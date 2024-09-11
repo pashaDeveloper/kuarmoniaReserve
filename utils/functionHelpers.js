@@ -59,3 +59,28 @@ export const handleView = (item, setViewState, togglePopover) => {
     setModalState(false);
   };
   
+
+export const handleSetGalleryPreview = (event, setGalleryPreview) => {
+  const files = event.target.files;
+  const previewImages = [];
+
+  if (files.length > 5) {
+    alert("You can only upload a maximum of 5 images.");
+    window.location.reload();
+    return;
+  }
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      previewImages.push(e.target.result);
+      if (previewImages.length === files.length) {
+        setGalleryPreview(previewImages);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }
+};
