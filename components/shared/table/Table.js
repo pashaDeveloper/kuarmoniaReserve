@@ -5,8 +5,20 @@ import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteConfirmationModal from "@/components/shared/modal/DeleteConfirmationModal";
+import Pagination from "@/components/shared/pagination/Pagination"; 
 
-const Table = ({ columns, data, onEdit, onDelete, toggleTooltipPopover,onEnable }) => {
+const Table = ({
+  columns,
+  data,
+  onEdit,
+  onDelete,
+  toggleTooltipPopover,
+  onEnable,
+  onPageChange,
+  currentPage, 
+  totalPages,
+  itemsPerPage 
+}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false);
@@ -14,7 +26,7 @@ const Table = ({ columns, data, onEdit, onDelete, toggleTooltipPopover,onEnable 
     top: null,
     right: null,
   });
-console.log
+
   const toggleMobilePopover = (e) => {
     const { clientX, clientY } = e;
     const left = window.innerWidth - clientX + 140;
@@ -37,6 +49,8 @@ console.log
   };
 
   return (
+    <>
+
     <div className="overflow-x-auto">
       <table className="w-full  text-sm text-left mb-8 whitespace-nowrap text-gray-500">
         <thead className="text-xs text-gray-700 text-center bg-gray-50">
@@ -58,7 +72,9 @@ console.log
               key={item._id}
               className="bg-white hover:bg-green-50 transition-colors"
             >
-              <td className="px-6 py-4 text-right">{index + 1}</td>
+              <td className="px-6 py-4 text-right">
+        {index + 1 + (currentPage - 1) * itemsPerPage}
+      </td>
               <td className="px-6 py-4 ltr text-right">
                 <div className="flex items-center justify-end gap-1">
                   <div className="hidden sm:flex gap-1">
@@ -114,8 +130,7 @@ console.log
                                   type="checkbox"
                                   className="sr-only peer"
                                   checked={!item.status}
-                                  onChange={() => onEnable(item)} 
-
+                                  onChange={() => onEnable(item)}
                                 />
                                 <div className="relative w-12 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                               </label>
@@ -151,8 +166,8 @@ console.log
                     type="checkbox"
                     class="sr-only peer"
                     checked={item.status}
-                    onChange={() => onEnable(item)} 
-                    />
+                    onChange={() => onEnable(item)}
+                  />
                   <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                 </label>
               </td>
@@ -182,6 +197,14 @@ console.log
         onConfirm={handleDelete}
       />
     </div>
+    <div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
+    </>
   );
 };
 

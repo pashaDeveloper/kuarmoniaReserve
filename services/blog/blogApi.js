@@ -1,10 +1,10 @@
 const { kuarmoniaApi } = require("../kuarmonia");
 
-const tagApi = kuarmoniaApi.injectEndpoints({
+const blogApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
-    addTag: builder.mutation({
+    addBlog: builder.mutation({
       query: (body) => ({
-        url: "/tag/",
+        url: "/blog/",
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -21,25 +21,26 @@ const tagApi = kuarmoniaApi.injectEndpoints({
       ],
     }),
 
-    GetTags: builder.query({
+    getBlogs: builder.query({
       query: ({ page = 1, limit = 7 }) => ({
-        url: `/tag/?page=${page}&limit=${limit}`,
+        url: `/blog/?page=${page}&limit=${limit}`,
         method: "GET",
       }),
     }),
  
-    updateTag: builder.mutation({
+    updateBlog: builder.mutation({
       query: ({ id, ...formData }) => ({
-        url: `/tag/${id}`,
+        url: `/blog/${id}`,
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["tag"],
+      invalidatesTags: ["blog"],
     }),
   }),
 });
+
 export const {
-  useAddTagMutation,
-  useGetTagsQuery,
-  useUpdateTagMutation,
-} = tagApi;
+  useAddBlogMutation,
+  useGetBlogsQuery,
+  useUpdateBlogMutation,
+} = blogApi;

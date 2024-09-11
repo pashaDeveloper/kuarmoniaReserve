@@ -33,14 +33,23 @@ export async function addTag(req) {
 }
 
 
-export async function getTags() {
+export async function getTags(req) {
   try {
-    const tags = await Tag.find({ isDeleted: false }); // Retrieve all categories from the database
+    const { page = 1, limit = 7 } = req.query; 
+    const skip = (page - 1) * limit;
+
+    const tags = await Tag.find({ isDeleted: false })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Tag.countDocuments({ isDeleted: false });
+
     if (tags.length > 0) {
       return {
         success: true,
         data: tags,
-        message: " تگ ها با موفقیت دریافت شد",
+        total,
+        message: "تگ‌ها با موفقیت دریافت شد",
       };
     } else {
       return {
@@ -55,8 +64,8 @@ export async function getTags() {
     };
   }
 }
+
 export async function updateTag(req) {
-console.log(req.body)
   const { id } = req.query;
   try {
     const { title, description, status, isDeleted ,robots,keywords} = req.body || {};
