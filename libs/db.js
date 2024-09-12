@@ -4,7 +4,7 @@ const connectDB = async () => {
   try {
     const conn = await connect(process.env.ATLAS_URI, {
       dbName: process.env.DB_NAME,
-      useUnifiedTopology: true,
+     
     });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     

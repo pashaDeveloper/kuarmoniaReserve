@@ -23,15 +23,15 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/dashboard/tags",
-        permanent: false,
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/dashboard/tags",
+  //       permanent: false,
+  //     },
+  //   ];
+  // },
   async headers() {
     return [
       {
