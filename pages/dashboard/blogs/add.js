@@ -9,7 +9,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import CKEditorComponent from "@/components/shared/editor/ClassicEditor";
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
 
@@ -39,7 +39,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
       setEditorData(blogToEdit.content);
     }
   }, [blogToEdit, setValue]);
-  const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0]; // خواندن تاریخ یا تنظیم پیش‌فرض
+  const publishDate =
+    watch("publishDate") || new Date().toISOString().split("T")[0]; // خواندن تاریخ یا تنظیم پیش‌فرض
 
   useEffect(() => {
     // تنظیم تاریخ امروز به صورت پیش‌فرض
@@ -68,7 +69,9 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   };
 
   const handleFieldTypeChange = (id, type) => {
-    setFields(fields.map(field => field.id === id ? { ...field, type } : field)); // به‌روزرسانی نوع فیلد بر اساس انتخاب
+    setFields(
+      fields.map((field) => (field.id === id ? { ...field, type } : field))
+    ); // به‌روزرسانی نوع فیلد بر اساس انتخاب
   };
 
   const handleEditorDataChange = (id, data) => {
@@ -176,19 +179,18 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
               </label>
             </div>
             <div className="flex-1">
-      <label htmlFor="publishDate" className="flex flex-col gap-y-2">
-        تاریخ انتشار
-        <input
-          type="date"
-          name="publishDate"
-          id="publishDate"
-          className="rounded"
-          {...register("publishDate")}
-          defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
-
-        />
-      </label>
-    </div>
+              <label htmlFor="publishDate" className="flex flex-col gap-y-2">
+                تاریخ انتشار
+                <input
+                  type="date"
+                  name="publishDate"
+                  id="publishDate"
+                  className="rounded"
+                  {...register("publishDate")}
+                  defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
+                />
+              </label>
+            </div>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
             <div className="flex-1">
@@ -222,54 +224,59 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
               </label>
             </div>
           </div>
-         
 
-      {fields.map((field, index) => (
-        <div key={field.id} className="mb-4">
-          <button 
-            onClick={() => handleFieldTypeChange(field.id, "description")} 
-            className="p-2 bg-gray-200 rounded mr-2"
+          {fields.map((field, index) => (
+            <div key={field.id} className="mb-4">
+              <button
+                onClick={() => handleFieldTypeChange(field.id, "description")}
+                className="p-2 bg-gray-200 rounded mr-2"
+              >
+                توضیحات
+              </button>
+              <button
+                onClick={() => handleFieldTypeChange(field.id, "content")}
+                className="p-2 bg-gray-200 rounded"
+              >
+                محتوا
+              </button>
+
+              {field.type === "description" && (
+                <label
+                  htmlFor={`description-${field.id}`}
+                  className="flex flex-col gap-y-2 mt-2"
+                >
+                  توضیحات
+                  <textarea
+                    name={`description-${field.id}`}
+                    id={`description-${field.id}`}
+                    maxLength={160}
+                    placeholder="توضیحات بلاگ را تایپ کنید..."
+                    className="rounded h-32"
+                    {...register(`description-${field.id}`)}
+                  />
+                </label>
+              )}
+
+              {field.type === "content" && (
+                <label
+                  htmlFor={`content-${field.id}`}
+                  className="flex flex-col gap-y-2 mt-2"
+                >
+                  محتوا
+                  <CKEditorComponent
+                    value={editorData[field.id] || ""}
+                    onChange={(data) => handleEditorDataChange(field.id, data)}
+                  />
+                </label>
+              )}
+            </div>
+          ))}
+          <button
+            onClick={handleAddField}
+            className="p-2 bg-blue-500 text-white rounded mb-4"
           >
-            توضیحات
+            +
           </button>
-          <button 
-            onClick={() => handleFieldTypeChange(field.id, "content")} 
-            className="p-2 bg-gray-200 rounded"
-          >
-            محتوا
-          </button>
-
-          {field.type === "description" && (
-            <label htmlFor={`description-${field.id}`} className="flex flex-col gap-y-2 mt-2">
-              توضیحات
-              <textarea
-                name={`description-${field.id}`}
-                id={`description-${field.id}`}
-                maxLength={160}
-                placeholder="توضیحات بلاگ را تایپ کنید..."
-                className="rounded h-32"
-                {...register(`description-${field.id}`)}
-              />
-            </label>
-          )}
-
-          {field.type === "content" && (
-            <label htmlFor={`content-${field.id}`} className="flex flex-col gap-y-2 mt-2">
-              محتوا
-              <CKEditorComponent
-                value={editorData[field.id] || ""}
-                onChange={(data) => handleEditorDataChange(field.id, data)}
-              />
-            </label>
-          )}
-        </div>
-      ))}
-       <button 
-        onClick={handleAddField} 
-        className="p-2 bg-blue-500 text-white rounded mb-4"
-      >
-        +
-      </button>
           <label htmlFor="description" className="flex flex-col gap-y-2">
             توضیحات
             <textarea
@@ -306,141 +313,144 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
 
       {/* پیش‌نمایش */}
       <div className="flex-1 p-4 h-full sm:h-screen border border-gray-300 rounded-lg overflow-y-auto bg-gray-50">
-      <button
-        className=" bg-white p-2 rounded-full shadow cursor-pointer z-10"
-        onClick={toggleVisibility}
-      >
-        {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-      </button>
-      <div className="flex items-center justify-center">
-      
-        <div className={`w-[616px] h-[275px] scale-[0.9] bg-white shadow-lg rounded-lg overflow-hidden flex ${isHidden ? 'hidden' : 'opacity-100'}`}>
-          <div className="w-1/2 p-6">
-          <h2 className="text-2xl font-bold mb-2">
-  {watch("title") ? `${watch("title")} :` : "عنوان کارت"}
-</h2>            <p className="text-gray-700">  
-  {watch("description") ? `${watch("description")} :` : "توضیحات کارت کارت"}
-  </p>
-          </div>
-          <div className="flex-1 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white"></div>
-            <img
-              className="h-full w-full object-cover"
-              src="https://blog.spoongraphics.co.uk/wp-content/uploads/2011/optik/optik-website.jpg"
-              alt="Image"
-            />
+        <button
+          className=" bg-white p-2 rounded-full shadow cursor-pointer z-10"
+          onClick={toggleVisibility}
+        >
+          {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+        </button>
+        <div className="flex items-center justify-center">
+          <div
+            className={`w-[616px] h-[275px] scale-[0.9] bg-white shadow-lg rounded-lg overflow-hidden flex ${
+              isHidden ? "hidden" : "opacity-100"
+            }`}
+          >
+            <div className="w-1/2 p-6">
+              <h2 className="text-2xl font-bold mb-2">
+                {watch("title") ? `${watch("title")} :` : "عنوان کارت"}
+              </h2>{" "}
+              <p className="text-gray-700">
+                {watch("description")
+                  ? `${watch("description")} :`
+                  : "توضیحات کارت کارت"}
+              </p>
+            </div>
+            <div className="flex-1 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white"></div>
+              <img
+                className="h-full w-full object-cover"
+                src="https://blog.spoongraphics.co.uk/wp-content/uploads/2011/optik/optik-website.jpg"
+                alt="Image"
+              />
+            </div>
           </div>
         </div>
-      </div>
         <div
           ref={previewRef}
           className={`w-full h-full bg-gray-50 flex mt-10 items-center justify-center transition-all duration-500 ${
             isFullscreen ? "fixed inset-0 z-50" : "relative"
           }`}
           style={{
-            boxShadow: '0 -10px 20px rgba(0, 0, 0, 0.2)', // سایه از بالا
+            boxShadow: "0 -10px 20px rgba(0, 0, 0, 0.2)", // سایه از بالا
           }}
         >
-             <button
-        className=" bg-white p-2 rounded-full shadow cursor-pointer  absolute   top-2 right-2 z-10"
-        onClick={toggleFullscreen}
-      >
-        {isFullscreen ? <TfiFullscreen size={20} /> : <BsArrowsFullscreen size={20} />}
-      </button>
-        
-          <div className="flex-1 p-4 h-full sm:h-screen rounded-lg overflow-y-auto bg-gray-50">
+          <button
+            className=" bg-white p-2 rounded-full shadow cursor-pointer  absolute   top-2 right-2 z-10"
+            onClick={toggleFullscreen}
+          >
+            {isFullscreen ? (
+              <TfiFullscreen size={20} />
+            ) : (
+              <BsArrowsFullscreen size={20} />
+            )}
+          </button>
+
+          <div className="flex-1 p-4 mt-4 h-full sm:h-screen rounded-lg overflow-y-auto bg-gray-50">
             {/* محتوا */}
             <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
-            <div
-              className="bg-cover bg-center text-center overflow-hidden"
-              style={{
-                minHeight: "500px",
-                backgroundImage:
-                  "url('https://api.time.com/wp-content/uploads/2020/07/never-trumpers-2020-election-01.jpg?quality=85&amp;w=1201&amp;h=676&amp;crop=1')",
-              }}
-              title="Woman holding a mug"
-            ></div>
+              <div
+                className="bg-cover bg-center text-center overflow-hidden"
+                style={{
+                  minHeight: "500px",
+                  backgroundImage:
+                    "url('https://api.time.com/wp-content/uploads/2020/07/never-trumpers-2020-election-01.jpg?quality=85&amp;w=1201&amp;h=676&amp;crop=1')",
+                }}
+                title="Woman holding a mug"
+              ></div>
               <div className="max-w-3xl mx-auto">
                 <div className="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
                   <div className="bg-white relative top-0 -mt-32 p-5 sm:p-10">
                     <h1 className="text-gray-900 font-bold text-3xl mb-2 text-center">
-                    {watch("title") ? `${watch("title")}` : "عنوان بلاگ"}
+                      {watch("title") ? `${watch("title")}` : "عنوان بلاگ"}
                     </h1>
                     <div className="flex items-center mt-2">
-                    {/* تصویر پروفایل */}
-                    <div className="relative">
-                      <img
-                        src="/path/to/profile.jpg"
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full border-2 border-indigo-600"
-                      />
-                      <span className="absolute inset-0 rounded-full border-2 border-indigo-600 animate-pulse"></span>
+                      {/* تصویر پروفایل */}
+                      <div className="relative">
+                        <img
+                          src="/path/to/profile.jpg"
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full border-2 border-indigo-600"
+                        />
+                        <span className="absolute inset-0 rounded-full border-2 border-indigo-600 animate-pulse"></span>
+                      </div>
+                      {/* اطلاعات نویسنده و تاریخ */}
+                      <div className="ml-3 text-gray-700 mr-2  text-xs">
+                        <p>
+                          <a
+                            href="#"
+                            className="text-indigo-600 font-medium hover:text-gray-900 transition duration-500 ease-in-out"
+                          >
+                            مرجان سلطانی{" "}
+                          </a>
+                        </p>
+                        <p>
+                          <span className="font-medium">
+                            {new Date(publishDate).toLocaleDateString("fa-IR", {
+                              weekday: "long",
+                            })}
+                            -{" "}
+                            {new Date(publishDate).toLocaleDateString("fa-IR")}
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                    {/* اطلاعات نویسنده و تاریخ */}
-                    <div className="ml-3 text-gray-700 mr-2  text-xs">
-                      <p>
-                       
-                        <a
-                          href="#"
-                          className="text-indigo-600 font-medium hover:text-gray-900 transition duration-500 ease-in-out"
-                        >
-مرجان سلطانی                        </a>
-                      </p>
-                      <p>
-        <span className="font-medium">
-          {new Date(publishDate).toLocaleDateString("fa-IR", { weekday: 'long' })} 
-          - {new Date(publishDate).toLocaleDateString("fa-IR")}
-        </span>
-      </p>
-                    </div>
-                  </div>
                     {/* محتوای مقاله */}
-                
-                  <h3 className="text-2xl text-center font-bold my-5">
-                    #1. لورم ایپسوم چیست؟
-                  </h3>
-                  <p className="text-base leading-8 my-5 text-justify">
-                    لورم ایپسوم متنی بی‌معنی است که در صنعت چاپ و حروف‌ چینی
-                    استفاده می‌شود. لورم ایپسوم به‌عنوان متن استاندارد بی‌معنی
-                    از دهه 1500 شناخته شده است، زمانی که یک چاپگر ناشناس تکه‌های
-                    متنی را گرفت و آن‌ها را برای ایجاد یک کتاب نمونه نوع حروف به
-                    هم ریخت. این متن نه تنها پنج قرن را دوام آورده، بلکه با ورود
-                    به حروف‌چینی الکترونیکی نیز بدون تغییر اساسی باقی مانده است.
-                    در دهه 1960، با انتشار برگه‌های Letraset حاوی متون لورم
-                    ایپسوم محبوبیت یافت و اخیراً با نرم‌افزارهای نشر رومیزی
-                    مانند Aldus PageMaker که نسخه‌هایی از لورم ایپسوم را شامل
-                    می‌شدند.
-                  </p>
-                  <blockquote className="border-r-4  text-base italic leading-8 my-5 p-5 text-indigo-600">
-                    لورم ایپسوم متنی بی‌معنی در صنعت چاپ و حروف‌چینی است. لورم
-                    ایپسوم به‌عنوان متن استاندارد بی‌معنی از دهه 1500 شناخته شده
-                    است.
-                  </blockquote>
-                  <p className="text-base leading-8 my-5 text-center text-justify">
-                    لورم ایپسوم متنی بی‌معنی است که در صنعت چاپ و حروف‌ چینی
-                    استفاده می‌شود. لورم ایپسوم به‌عنوان متن استاندارد بی‌معنی
-                    از دهه 1500 شناخته شده است، زمانی که یک چاپگر ناشناس تکه‌های
-                    متنی را گرفت و آن‌ها را برای ایجاد یک کتاب نمونه نوع حروف به
-                    هم ریخت. این متن نه تنها پنج قرن را دوام آورده، بلکه با ورود
-                    به حروف‌ چینی الکترونیکی نیز بدون تغییر اساسی باقی مانده
-                    است. در دهه 1960، با انتشار برگه‌های Letraset حاوی متون لورم
-                    ایپسوم محبوبیت یافت و اخیراً با نرم‌افزارهای نشر رومیزی
-                    مانند Aldus PageMaker که نسخه‌هایی از لورم ایپسوم را شامل
-                    می‌شدند.
-                  </p>
 
-                  {selectedTags.length ? (
-                    selectedTags.map((tag) => (
+                    <h3 className="text-2xl text-center font-bold my-5">
+                      #1. لورم ایپسوم چیست؟
+                    </h3>
+                    <p
+                      className="text-base leading-8 my-5 text-justify"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          editorData ||
+                          ` لورم ایپسوم متنی بی‌معنی است که در صنعت چاپ و حروف‌ چینی
+                      استفاده می‌شود. لورم ایپسوم به‌عنوان متن استاندارد بی‌معنی
+                      از دهه 1500 شناخته شده است، زمانی که یک چاپگر ناشناس
+                      تکه‌های متنی را گرفت و آن‌ها را برای ایجاد یک کتاب نمونه
+                      نوع حروف به هم ریخت. این متن نه تنها پنج قرن را دوام
+                      آورده، بلکه با ورود به حروف‌ چینی الکترونیکی نیز بدون
+                      تغییر اساسی باقی مانده است. در دهه 1960، با انتشار
+                      برگه‌های Letraset حاوی متون لورم ایپسوم محبوبیت یافت و
+                      اخیراً با نرم‌افزارهای نشر رومیزی مانند که
+                      نسخه‌هایی از لورم ایپسوم را شامل می‌شدند. `,
+                      }}
+                    ></p>
+                    
+                    
+                   
+
+                    {selectedTags.length ? (
+                      selectedTags.map((tag) => (
+                        <span className="px-2 py-1 mr-1 rounded text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-800">
+                          {tag.label}
+                        </span>
+                      ))
+                    ) : (
                       <span className="px-2 py-1 mr-1 rounded text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-800">
-                        {tag.label}
+                        هیچ تگی انتخاب نشده است
                       </span>
-                    ))
-                  ) : (
-                    <span className="px-2 py-1 mr-1 rounded text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-800">
-                      هیچ تگی انتخاب نشده است
-                    </span>
-                  )}
-
+                    )}
                   </div>
                 </div>
               </div>

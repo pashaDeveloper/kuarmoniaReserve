@@ -1,10 +1,25 @@
 // components/CKEditorComponent.js
-import React from 'react';
+import React , { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import { BsArrowsFullscreen } from "react-icons/bs";
+import { TfiFullscreen } from "react-icons/tfi";
 const CKEditorComponent = ({ value, onChange }) => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+  };
   return (
+    <div className={` pt-4 px-3 ${isFullScreen ? 'fullscreen-editor' : ''}`}>
+    <button 
+    className={'bg-white p-2 mb-2 rounded-full shadow cursor-pointer z-10'}
+    onClick={toggleFullScreen}>
+      {isFullScreen ?               
+      <TfiFullscreen size={20} />
+      : <BsArrowsFullscreen size={20} />
+      
+  }
+    </button>
     <CKEditor
       editor={ClassicEditor}
       data={value}
@@ -13,7 +28,7 @@ const CKEditorComponent = ({ value, onChange }) => {
         onChange(data);
       }}
       config={{
-        language: 'fa', // Set Persian language
+        language: 'fa', // تنظیم زبان فارسی
         toolbar: [
           'heading',
           '|',
@@ -27,7 +42,7 @@ const CKEditorComponent = ({ value, onChange }) => {
           'mediaEmbed',
           'undo',
           'redo',
-          'imageUpload' // Add image upload button
+          'imageUpload' // افزودن دکمه آپلود تصویر
         ],
         image: {
           toolbar: [
@@ -37,13 +52,13 @@ const CKEditorComponent = ({ value, onChange }) => {
           ]
         },
         simpleUpload: {
-          uploadUrl: '/path/to/your/image/upload/endpoint',
-          headers: {
-            'X-CSRF-TOKEN': 'YOUR_CSRF_TOKEN' // Optional, if you use CSRF tokens
-          }
-        }
+          uploadUrl: '@/public/uploads',
+         
+        },
       }}
     />
+        </div>
+
   );
 };
 
