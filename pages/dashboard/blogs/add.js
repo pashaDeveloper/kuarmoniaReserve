@@ -156,6 +156,7 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
 
   return (
     <div className="m-6 flex flex-col gap-6 sm:flex-row">
+
       {/* فرم */}
       <div className="flex-1">
         <form
@@ -327,11 +328,11 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
           >
             <div className="w-1/2 p-6">
               <h2 className="text-2xl font-bold mb-2">
-                {watch("title") ? `${watch("title")} :` : "عنوان کارت"}
+                {watch("title") ? `${watch("title")} ` : "عنوان کارت"}
               </h2>{" "}
               <p className="text-gray-700">
                 {watch("description")
-                  ? `${watch("description")} :`
+                  ? `${watch("description")} `
                   : "توضیحات کارت کارت"}
               </p>
             </div>

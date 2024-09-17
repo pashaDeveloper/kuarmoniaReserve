@@ -18,6 +18,7 @@ const Blogs = () => {
       }}
     >
       <Container>
+
         <section className="w-full h-full flex flex-col gap-y-12">
           <div className="flex flex-col gap-y-12">
             <article className="flex flex-col gap-y-4">

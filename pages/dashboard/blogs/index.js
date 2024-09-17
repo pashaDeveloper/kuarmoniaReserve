@@ -5,7 +5,7 @@ import Popover from "@/components/shared/modal/Popover";
 import InfoTable from "@/components/shared/table/InfoTable";
 import { useGetBlogsQuery, useUpdateBlogMutation } from "@/services/blog/blogApi"; // Blog API hooks
 import Table from "@/components/shared/table/Table";
-import { handleView, openModal, toggleTooltipPopover, handleClose, handleEdit, handleDelete, handleStatus } from '@/utils/functionHelpers';
+import { handleView, toggleTooltipPopover, handleClose, handleEdit, handleDelete, handleStatus } from '@/utils/functionHelpers';
 import { toast } from "react-hot-toast";
 import { blogColumns } from '@/utils/columnsConfig';
 import { useRouter } from 'next/router';
@@ -14,9 +14,6 @@ const ListBlog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error, refetch } = useGetBlogsQuery({ page: currentPage, limit: 7 }); 
   const [updateBlog] = useUpdateBlogMutation(); 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [blogToEdit, setBlogToEdit] = useState(null);
   const [blogToView, setBlogToView] = useState(null);
   const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false);
   const router = useRouter();
