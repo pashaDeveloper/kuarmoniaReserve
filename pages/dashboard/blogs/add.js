@@ -8,10 +8,11 @@ import {
 import React, { useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
-import CKEditorComponent from "@/components/shared/editor/ClassicEditor";
+import RTEditor from "@/components/shared/editor/RTEditor";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
+import SkeletonProfile from "@/components/shared/skeleton/SkeletonProfile"; // وارد کردن کامپوننت اسکلت پروفایل
 
 const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
@@ -29,7 +30,12 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   const previewRef = useRef(null);
   const [isHidden, setIsHidden] = useState(false);
   const [fields, setFields] = useState([]); // آرایه‌ای برای ذخیره فیلدهای اضافه‌شده
+  const [isLoading, setIsLoading] = useState(true);
+  const profileImage = "https://avatar.iran.liara.run/public"; // آدرس عکس واقعی
 
+  const handleChange = (data) => {
+    setEditorData(data);
+  };
   const toggleVisibility = () => {
     setIsHidden(!isHidden);
   };
@@ -153,10 +159,12 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
     }
     setIsFullscreen(!isFullscreen);
   };
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
     <div className="m-6 flex flex-col gap-6 sm:flex-row">
-
       {/* فرم */}
       <div className="flex-1">
         <form
@@ -263,11 +271,7 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
                   htmlFor={`content-${field.id}`}
                   className="flex flex-col gap-y-2 mt-2"
                 >
-                  محتوا
-                  <CKEditorComponent
-                    value={editorData[field.id] || ""}
-                    onChange={(data) => handleEditorDataChange(field.id, data)}
-                  />
+                  <RTEditor value={editorData} onChange={handleChange} />
                 </label>
               )}
             </div>
@@ -292,10 +296,7 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
 
           <label htmlFor="content" className="flex flex-col gap-y-2">
             محتوا
-            <CKEditorComponent
-              value={editorData}
-              onChange={(data) => setEditorData(data)}
-            />
+            <RTEditor value={editorData} onChange={handleChange} />
           </label>
 
           <GalleryUpload
@@ -378,24 +379,32 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
                 }}
                 title="Woman holding a mug"
               ></div>
+
+              {/* تصویر پروفایل */}
+
               <div className="max-w-3xl mx-auto">
-                <div className="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
+              <div className="relative">
+              {isLoading && <SkeletonProfile />}
+
+        <div className="absolute top-[-260px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
+       <img
+        src={profileImage}
+        alt="Profile"
+        className={`w-32 rounded-full object-cover ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onLoad={handleImageLoad}
+        style={{ position: 'relative', zIndex: 10 }}
+      />
+            <div className="absolute top-[-10px] left-[-10px] w-[calc(100%+20px)] h-[calc(100%+20px)] border-4 border-dashed border-gray-400 rounded-full animate-spin-slow"></div>
+
+        </div>
+    
                   <div className="bg-white relative top-0 -mt-32 p-5 sm:p-10">
                     <h1 className="text-gray-900 font-bold text-3xl mb-2 text-center">
                       {watch("title") ? `${watch("title")}` : "عنوان بلاگ"}
                     </h1>
                     <div className="flex items-center mt-2">
-                      {/* تصویر پروفایل */}
-                      <div className="relative">
-                        <img
-                          src="/path/to/profile.jpg"
-                          alt="Profile"
-                          className="w-10 h-10 rounded-full border-2 border-indigo-600"
-                        />
-                        <span className="absolute inset-0 rounded-full border-2 border-indigo-600 animate-pulse"></span>
-                      </div>
                       {/* اطلاعات نویسنده و تاریخ */}
-                      <div className="ml-3 text-gray-700 mr-2  text-xs">
+                      <div className="ml-3 text-gray-700 mr-2 text-xs">
                         <p>
                           <a
                             href="#"
@@ -415,8 +424,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
                         </p>
                       </div>
                     </div>
-                    {/* محتوای مقاله */}
 
+                    {/* محتوای مقاله */}
                     <h3 className="text-2xl text-center font-bold my-5">
                       #1. لورم ایپسوم چیست؟
                     </h3>
@@ -437,9 +446,6 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
                       نسخه‌هایی از لورم ایپسوم را شامل می‌شدند. `,
                       }}
                     ></p>
-                    
-                    
-                   
 
                     {selectedTags.length ? (
                       selectedTags.map((tag) => (

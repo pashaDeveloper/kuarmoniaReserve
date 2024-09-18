@@ -4,7 +4,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
 import UploadAdapter from '@/utils/uploadAdapter';
-import Font from '@ckeditor/ckeditor5-font/src/font';
+
 const CKEditorComponent = ({ value, onChange }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const toggleFullScreen = () => {
@@ -28,7 +28,7 @@ const CKEditorComponent = ({ value, onChange }) => {
         }}
         config={{
           language: 'fa',
-          plugins: [ ...ClassicEditor.builtinPlugins, Font ], // Ensure FontSize plugin is included
+          plugins: [ ...ClassicEditor.builtinPlugins ],
           toolbar: [
             'heading',
             '|',
@@ -40,38 +40,25 @@ const CKEditorComponent = ({ value, onChange }) => {
             'blockQuote',
             'insertTable',
             'mediaEmbed',
-            'fontSize', // Include fontSize in the toolbar
+            'fontSize',
+            'fontColor',  // اضافه کردن انتخاب رنگ فونت
+            'fontBackgroundColor',  // اضافه کردن انتخاب رنگ پس‌زمینه
             'undo',
             'redo',
             'imageUpload'  
           ],
           fontSize: {
             options: [
-              8,
-              10,
-              12,
-              14,
-              16,
-              18,
-              20,
-              22,
-              24,
-              26,
-              28,
-              30,
-              32,
-              34,
-              36,
-              40,
-              44,
-              48,
-              52,
-              56,
-              60,
-              64,
-              68,
-              72
+              8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72
             ]
+          },
+          fontColor: {
+            columns: 5,
+            documentColors: 10
+          },
+          fontBackgroundColor: {
+            columns: 5,
+            documentColors: 10
           },
           image: {
             toolbar: [
