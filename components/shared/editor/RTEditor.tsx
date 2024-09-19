@@ -12,7 +12,7 @@ const RTEditor = ({ value, onChange, ...props }: any) => {
     };
 
     return (
-        <div className={`pt-4 px-3 ${isFullScreen ? 'fullscreen-editor' : ''}`} dir="rtl">
+        <div className={`pt-4 px-3  ${isFullScreen ? 'fullscreen-editor' : 'w-[99%]'}`} dir="rtl">
             <button 
                 className={'bg-white p-2 mb-2 rounded-full shadow cursor-pointer z-10'}
                 onClick={toggleFullScreen}
@@ -26,8 +26,78 @@ const RTEditor = ({ value, onChange, ...props }: any) => {
                     onChange?.(editor.getData());
                 }}
                 config={{
-                    language: 'fa'
+                    language: 'fa',
+                    toolbar: [
+                        'AccessibilityHelp', 
+                        'heading', 
+                        'Undo',
+                        'Redo',
+                        'FindAndReplace',
+                        'PageBreak',
+                        '|', 
+                        'bold', 
+                        'italic', 
+                        'Strikethrough',
+                        'Subscript',
+                        'Superscript',
+                        'FontSize',
+                        'FontFamily',
+                        'FontColor',
+                        'FontBackgroundColor',
+                        'Highlight',
+                        '|', 
+                        'SpecialCharacters',
+                        'SpecialCharactersArrows',
+                        'SpecialCharactersCurrency',
+                        'SpecialCharactersEssentials',
+                        'SpecialCharactersLatin',
+                        'SpecialCharactersMathematical',
+                        'SpecialCharactersText',
+                        'link', 
+                        'bulletedList', 
+                        'numberedList', 
+                        'insertTable', 
+                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        'Alignment',
+                        'AutoImage',
+                        'AutoLink',
+                        'Indent',
+                        'IndentBlock',
+                        'Outdent', // کاهش تورفتگی
+                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        'ImageUpload',
+                        'MediaEmbed',
+                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        'SourceEditing',
+                        'RemoveFormat',
+                        'ShowBlocks',
+                        'PasteFromOffice',
+                        'CodeBlock',
+                        'Code',
+                        'Mention',
+                        'TextPartLanguage',
+                        'TextTransformation',
+                        'LegacyList',
+                        'LegacyListProperties',
+                        'LegacyTodoList',
+                        'CloudServices',
+                        'DataFilter',
+                        'DataSchema',
+                        'WordCount',
+                        'HtmlComment',
+                        'HtmlEmbed',
+                        'GeneralHtmlSupport',
+                        'Base64UploadAdapter',
+                        'BlockQuote',
+                        'Paragraph',
+                        'ShowBlocks',
+                        'SelectAll',
+                        'RemoveFormat'
+                    ],
+                    
+
                 }}
+               
             />
         </div>
     );

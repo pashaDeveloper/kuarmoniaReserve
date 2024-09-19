@@ -12,6 +12,13 @@ module.exports = {
         primary: "1.5rem",
         secondary: "9999px",
       },
+      fontSize: {
+        tiny: '0.625rem',   // 10px
+        small: '0.75rem',   // 12px
+        default: '1rem',    // 16px
+        big: '1.25rem',     // 20px
+        huge: '1.5rem',     // 24px
+      },
       padding: {
         primary: "1rem",
         secondary: "1.5rem",

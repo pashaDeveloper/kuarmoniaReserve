@@ -140,5 +140,17 @@ blockquote {
 }
 
 .animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+  animation: spin-slow 30s linear infinite;
+}
+.table {
+  border-collapse: collapse; /* برای کنار هم قرار گرفتن مرزها */
+}
+
+.table td, .table th {
+  border: 2px solid #3490dc; /* رنگ و ضخامت مرز سلول‌ها */
+  padding: 8px; /* فاصله داخلی سلول‌ها */
+}
+
+.table th {
+  background-color: #f4f4f4; /* رنگ پس‌زمینه هدر */
 }

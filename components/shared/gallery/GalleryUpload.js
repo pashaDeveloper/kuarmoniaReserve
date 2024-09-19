@@ -1,53 +1,39 @@
 import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import LoadImage from "@/components/shared/image/LoadImage";
 
 const GalleryUpload = ({
-  galleryPreview = [],
   setGalleryPreview,
-  maxFiles = 5, // حداکثر تعداد فایل‌های مجاز
+  maxFiles = 5,
   register,
   required = false,
 }) => {
-     const handleSetGalleryPreview = (event, setGalleryPreview) => {
-        const files = event.target.files;
-        const previewImages = [];
-      
-        if (files.length > 5) {
-          alert("You can only upload a maximum of 5 images.");
-          window.location.reload();
-          return;
-        }
-      
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const reader = new FileReader();
-      
-          reader.onload = (e) => {
-            previewImages.push(e.target.result);
-            if (previewImages.length === files.length) {
-              setGalleryPreview(previewImages);
-            }
-          };
-      
-          reader.readAsDataURL(file);
+  const handleSetGalleryPreview = (event) => {
+    const files = event.target.files;
+    const previewImages = [];
+
+    if (files.length > maxFiles) {
+      alert(`You can only upload a maximum of ${maxFiles} images.`);
+      window.location.reload();
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        previewImages.push(e.target.result);
+        if (previewImages.length === files.length) {
+          setGalleryPreview(previewImages); // ارسال پیش‌نمایش به والد
         }
       };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="flex flex-row overflow-x-auto gap-x-2">
-        {galleryPreview?.length > 0 &&
-          galleryPreview?.map((image, index) => (
-            <LoadImage
-              key={index}
-              src={image}
-              alt="gallery"
-              height={100}
-              width={100}
-              className="h-[100px] w-[100px] rounded object-cover"
-            />
-          ))}
-      </div>
       <label htmlFor="gallery" className="relative">
         <button
           type="button"
@@ -65,8 +51,7 @@ const GalleryUpload = ({
           multiple
           {...register("gallery", {
             required,
-            onChange: (event) =>
-              handleSetGalleryPreview(event, setGalleryPreview),
+            onChange: (event) => handleSetGalleryPreview(event),
           })}
         />
       </label>
