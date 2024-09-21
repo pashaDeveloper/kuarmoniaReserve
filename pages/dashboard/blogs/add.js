@@ -14,6 +14,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi"
  // وارد کردن کامپوننت اسکلت 
+ 
 import SkeletonProfile from "@/components/shared/skeleton/SkeletonProfile";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
@@ -288,9 +289,21 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
             </div>
 
             <div className="flex-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white"></div>
-                {galleryPreview ? <DisplayImages galleryPreview={galleryPreview} />  :               <SkeletonImage />
-              }   
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white">
+                
+              </div>
+                         <div
+                className="bg-cover bg-center text-center overflow-hidden"
+                style={{
+                  minHeight: "300px",
+
+                  backgroundImage:
+                    "url('https://via.placeholder.com/1150x500')",
+                }}
+                title="profile"
+              ></div>
+
+                
  <SkeletonImage />
             </div>
           </div>
@@ -319,48 +332,49 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
             {/* محتوا */}
             <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
               <div
-                className="bg-cover bg-center text-center overflow-hidden"
+                className="bg-cover bg-center text-center overflow-hidden rounded-lg"
                 style={{
                   minHeight: "500px",
                   backgroundImage:
-                    "url('https://api.time.com/wp-content/uploads/2020/07/never-trumpers-2020-election-01.jpg?quality=85&amp;w=1201&amp;h=676&amp;crop=1')",
+                    "url('https://via.placeholder.com/1150x500')",
                 }}
-                title="Woman holding a mug"
+                title="profile"
               ></div>
 
               {/* تصویر پروفایل */}
 
               <div className="max-w-3xl mx-auto">
-                <div className="relative">
-
-                  <div className="absolute top-[-130px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
-                  {isLoading && <SkeletonProfile />}
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      className={`w-32 rounded-full object-cover ${
-                        isLoading ? "opacity-0" : "opacity-100"
-                      }`}
-                      onLoad={handleImageLoad}
-                      style={{ position: "relative", zIndex: 10 }}
-                    />
-                    <div className="absolute top-[-10px] left-[-10px] w-[calc(100%+20px)] h-[calc(100%+20px)] border-[3px] border-dashed border-white rounded-full animate-spin-slow"></div>
+                <div className="relative rounded-full">
+                  
+                <div className=" ">
+             
+                <div className="absolute top-[-130px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
+  {isLoading && <SkeletonProfile size="w-32 h-32" />}
+  <img
+    src={profileImage}
+    alt="Profile"
+    className={`w-32 h-32 rounded-full object-cover ${isLoading ? "hidden" : "opacity-100"}`}
+    onLoad={handleImageLoad}
+    style={{ position: "relative", zIndex: 10 }}
+  />
+</div>
                   </div>
 
-                  <div className="bg-white relative top-0 -mt-32 p-5 sm:p-10">
-                    <div className="flex items-center mt-8 justify-center">
+                  <div className="bg-white relative shadow-lg top-0 -mt-32 p-5 sm:p-10  rounded-b-lg ">
+
+                    <div className="flex items-center mt-14 justify-center">
                       {/* اطلاعات نویسنده و تاریخ */}
                       <div className=" text-gray-700  ">
-                        <p>
+                        <p >
                           <a
                             href="#"
-                            className="text-indigo-600 font-medium hover:text-gray-900 transition duration-500 ease-in-out"
+                            className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out"
                           >
-                            <span className="text-2xl">مرجان سلطانی</span>
+                            <span className="text-2xl ">مرجان سلطانی</span>
                           </a>
                         </p>
-                        <p>
-                          <span className="font-medium">
+                        <p className="text-center">
+                          <span className="font-medium ">
                             {new Date(publishDate).toLocaleDateString("fa-IR", {
                               weekday: "long",
                             })}
