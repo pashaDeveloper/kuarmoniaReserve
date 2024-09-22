@@ -39,7 +39,7 @@ const PreviewSection = ({
       </div>
       <div
         ref={previewRef}
-        className={`w-full h-full bg-gray-50 flex mt-10 items-center justify-center transition-all duration-500 ${
+        className={`w-full h-full bg-gray-50 flex mt-10 items-start justify-center transition-all duration-500 ${
           isFullscreen ? "fixed inset-0 z-50" : "relative"
         }`}
         style={{

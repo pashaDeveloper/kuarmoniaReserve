@@ -1,35 +1,35 @@
 // FormSection.js
-import React from "react";
+import React from 'react';
 import { useForm } from "react-hook-form";
-import Button from "@/components/shared/button/Button";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
+import Button from "@/components/shared/button/Button";
 import RTEditor from "@/components/shared/editor/RTEditor";
 
 const FormSection = ({
-  onSubmit,
-  watch,
+  handleSubmit,
+  handleAddOrUpdateBlog,
   register,
   setValue,
   selectedTags,
   setSelectedTags,
   selectedCategory,
   setSelectedCategory,
+  editorData,
+  setEditorData,
+  galleryPreview,
+  setGalleryPreview,
   blogToEdit,
-  reset,
+  publishDate,
+  categoryOptions,
+  handleTagsChange,
+  handleCategoryChange
 }) => {
-  const categoryOptions = [
-    { id: "1", value: "Tech", label: "Technology" },
-    { id: "2", value: "Lifestyle", label: "Lifestyle" },
-    { id: "3", value: "Education", label: "Education" },
-  ];
-
-  const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
-
+  
   return (
     <form
       className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(handleAddOrUpdateBlog)}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
         <div className="flex-1">
@@ -56,7 +56,7 @@ const FormSection = ({
               id="publishDate"
               className="rounded"
               {...register("publishDate")}
-              defaultValue={publishDate}
+              defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
             />
           </label>
         </div>
@@ -68,7 +68,7 @@ const FormSection = ({
             <MultiSelectDropdown
               options={categoryOptions}
               selectedOptions={selectedTags}
-              onChange={setSelectedTags}
+              onChange={handleTagsChange}
               className="w-full"
               name="tags"
             />
@@ -79,7 +79,7 @@ const FormSection = ({
             دسته‌بندی
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => handleCategoryChange(e.target.value)}
               className="rounded w-full"
               {...register("category")}
             >
@@ -108,10 +108,9 @@ const FormSection = ({
 
       <label htmlFor="content" className="flex flex-col gap-y-2">
         محتوا
-        <RTEditor value={watch("content")} onChange={(data) => setValue("content", data)} />
+        <RTEditor value={editorData} onChange={setEditorData} />
       </label>
-
-      <label htmlFor="featuredImage" className="flex flex-col gap-y-2">
+      <label htmlFor="content" className="flex flex-col gap-y-2">
         تصویر عنوان وبلاگ
         <GalleryUpload
           galleryPreview={galleryPreview}
