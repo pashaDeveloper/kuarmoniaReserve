@@ -84,3 +84,17 @@ export const handleSetGalleryPreview = (event, setGalleryPreview) => {
     reader.readAsDataURL(file);
   }
 };
+
+
+export const toggleFullscreen = (isFullscreen, setIsFullscreen, previewRef) => {
+  if (isFullscreen) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  } else {
+    if (previewRef.current.requestFullscreen) {
+      previewRef.current.requestFullscreen();
+    }
+  }
+  setIsFullscreen(!isFullscreen);
+};

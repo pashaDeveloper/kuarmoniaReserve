@@ -8,16 +8,12 @@ import {
 import React, { useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
-import DisplayImages from "@/components/shared/gallery/DisplayImages";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
-import { TfiFullscreen } from "react-icons/tfi"
- // وارد کردن کامپوننت اسکلت 
- 
-import SkeletonProfile from "@/components/shared/skeleton/SkeletonProfile";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
-import SkeletonText from "@/components/shared/skeleton/SkeletonText";
+import { TfiFullscreen } from "react-icons/tfi";
+import BlogCard from "@/components/shared/card/BlogCard";
+import MainContent from "@/components/shared/content/MainContent";
 
 const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
@@ -159,7 +155,6 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
     <div className="m-6 flex flex-col gap-6 sm:flex-row">
       {/* فرم */}
       <div className="flex-1">
-   
         <form
           className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
           onSubmit={handleSubmit(handleAddOrUpdateBlog)}
@@ -243,15 +238,16 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
             محتوا
             <RTEditor value={editorData} onChange={handleChange} />
           </label>
-          <DisplayImages galleryPreview={galleryPreview} imageSize={150} />
-
-          <GalleryUpload
-            galleryPreview={galleryPreview}
-            setGalleryPreview={setGalleryPreview}
-            register={register}
-            maxFiles={2}
-            required={true} // اجباری بودن آپلود عکس
-          />
+          <label htmlFor="content" className="flex flex-col gap-y-2">
+            تصویر عنوان وبلاگ
+            <GalleryUpload
+              galleryPreview={galleryPreview}
+              setGalleryPreview={setGalleryPreview}
+              register={register}
+              maxFiles={1}
+              required={true} // اجباری بودن آپلود عکس
+            />
+          </label>
 
           <Button type="submit" className="py-2 mt-4 mb-4">
             {blogToEdit ? "ویرایش کردن" : "ایجاد کردن"}
@@ -267,46 +263,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
         >
           {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
         </button>
-        <div className="flex items-center justify-center">
-          <div
-            className={`w-[616px] h-[275px] scale-[0.9] bg-white shadow-lg rounded-lg overflow-hidden flex ${
-              isHidden ? "hidden" : "opacity-100"
-            }`}
-          >
-            <div className="w-1/2 p-6">
-              <h2 className="text-2xl font-bold mb-2">
-                {watch("title") ? `${watch("title")} ` :  <SkeletonText lines={1} />
-            
-              }
-              </h2>{" "}
-              <p className="text-gray-700">
-  {watch("description") ? (
-    `${watch("description")}`
-  ) : (
-<SkeletonText lines={8} />
-  )}
-</p>
-            </div>
-
-            <div className="flex-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white">
-                
-              </div>
-                         <div
-                className="bg-cover bg-center text-center overflow-hidden"
-                style={{
-                  minHeight: "300px",
-
-                  backgroundImage:
-                    "url('https://via.placeholder.com/1150x500')",
-                }}
-                title="profile"
-              ></div>
-
-                
- <SkeletonImage />
-            </div>
-          </div>
+        <div className={` ${isHidden ? "hidden" : "opacity-100"}`}>
+          <BlogCard watch={watch} galleryPreview={galleryPreview} />
         </div>
         <div
           ref={previewRef}
@@ -330,92 +288,17 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
 
           <div className="flex-1 p-4 mt-4 h-full sm:h-screen rounded-lg overflow-y-auto bg-gray-50">
             {/* محتوا */}
-            <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
-              <div
-                className="bg-cover bg-center text-center overflow-hidden rounded-lg"
-                style={{
-                  minHeight: "500px",
-                  backgroundImage:
-                    "url('https://via.placeholder.com/1150x500')",
-                }}
-                title="profile"
-              ></div>
 
-              {/* تصویر پروفایل */}
-
-              <div className="max-w-3xl mx-auto">
-                <div className="relative rounded-full">
-                  
-                <div className=" ">
-             
-                <div className="absolute top-[-130px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
-  {isLoading && <SkeletonProfile size="w-32 h-32" />}
-  <img
-    src={profileImage}
-    alt="Profile"
-    className={`w-32 h-32 rounded-full object-cover ${isLoading ? "hidden" : "opacity-100"}`}
-    onLoad={handleImageLoad}
-    style={{ position: "relative", zIndex: 10 }}
-  />
-</div>
-                  </div>
-
-                  <div className="bg-white relative shadow-lg top-0 -mt-32 p-5 sm:p-10  rounded-b-lg ">
-
-                    <div className="flex items-center mt-14 justify-center">
-                      {/* اطلاعات نویسنده و تاریخ */}
-                      <div className=" text-gray-700  ">
-                        <p >
-                          <a
-                            href="#"
-                            className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out"
-                          >
-                            <span className="text-2xl ">مرجان سلطانی</span>
-                          </a>
-                        </p>
-                        <p className="text-center">
-                          <span className="font-medium ">
-                            {new Date(publishDate).toLocaleDateString("fa-IR", {
-                              weekday: "long",
-                            })}
-                            -{" "}
-                            {new Date(publishDate).toLocaleDateString("fa-IR")}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                    <h1 className="text-gray-900 font-bold text-3xl mb-2 mt-12 text-center">
-                      {watch("title") ? `${watch("title")}` : <SkeletonText lines={1} />
-                    }
-                    </h1>
-                    {/* محتوای مقاله */}
-
-                    <div className="text-base leading-8 my-5 text-justify">
-      {editorData ? (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: editorData,
-          }}
-        ></div>
-      ) : (
-<SkeletonText lines={22} />
-      )}
-    </div>
-
-                    {selectedTags.length ? (
-                      selectedTags.map((tag) => (
-                        <span className="px-2 py-1 mr-1 rounded text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-800">
-                          {tag.label}
-                        </span>
-                      ))
-                    ) : (
-                      <SkeletonText lines={1} />
-
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <MainContent
+              galleryPreview={galleryPreview}
+              profileImage={profileImage}
+              isLoading={isLoading}
+              handleImageLoad={handleImageLoad}
+              publishDate={publishDate}
+              watch={watch}
+              editorData={editorData}
+              selectedTags={selectedTags}
+            />
           </div>
         </div>
       </div>
