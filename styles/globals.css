@@ -154,3 +154,7 @@ blockquote {
 .table th {
   background-color: #f4f4f4; /* رنگ پس‌زمینه هدر */
 }
+
+.ck-dropdown__panel{
+  padding-right:200px !important;
+}

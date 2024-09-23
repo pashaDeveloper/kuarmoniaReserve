@@ -64,6 +64,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
           handleCategoryChange={handleCategoryChange}
         />
       </div>
+      <div className="flex-1">
+
       <PreviewSection
         galleryPreview={galleryPreview}
         isLoading={false}
@@ -74,6 +76,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
         selectedTags={selectedTags}
       />
     </div>
+    </div>
+
   );
 };
 

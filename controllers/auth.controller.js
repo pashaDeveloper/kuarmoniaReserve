@@ -1,5 +1,3 @@
-
-
 import User from "@/models/user.model";
 import generateAccessToken from "@/utils/jwt.util";
 
@@ -13,7 +11,7 @@ export async function signUpUser(req) {
       avatar: {
         url: req.body.filePath,
         public_id: req.file.filename,
-        originalName: originalName || 'unknown', 
+        originalName: originalName || "unknown",
       },
     });
 
@@ -42,10 +40,10 @@ export async function signUpUser(req) {
 export async function signInUser(req) {
   try {
     const user = await User.findOne({ email: req.body.email });
-
+    console.log("user", user);
     if (user) {
       if (await user.comparePassword(req.body.password, user.password)) {
-        if (user.status === "active") {
+        if (user.status === true) {
           const accessToken = generateAccessToken(user);
 
           return {

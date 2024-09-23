@@ -4,15 +4,14 @@ import crypto from "crypto";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadFolder = req.body.folder || 'uploads';
+    console.log("folder",req)
+    const uploadFolder = req.body.folder ? path.join('uploads', req.body.folder) : 'uploads';
     cb(null, path.join(process.cwd(), 'public', uploadFolder));
   },
   filename: (req, file, cb) => {
-    const prefix = req.body.prefix || '';
     const hashedName = crypto.randomBytes(16).toString('hex'); // ایجاد نام هش‌شده
     const originalName = file.originalname.replace(/[^\w\s.-]/g, "").replace(/\s+/g, "-").toLowerCase();
-    const filename = `${prefix}_${hashedName}${path.extname(file.originalname)}`;
-
+    const filename = `${hashedName}${path.extname(file.originalname)}`;
     const relativePath = path.join(req.body.folder || 'uploads', filename).replace(/\\/g, "/");
 
     cb(null, filename);

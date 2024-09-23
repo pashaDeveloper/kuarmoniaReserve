@@ -27,7 +27,7 @@ const PreviewSection = ({
         toggleFullscreen(isFullscreen, setIsFullscreen, previewRef);
       };
   return (
-    <div>
+    <div className="bg-gray-50 border-[1px] p-2 rounded border-green-300">
       <button
         className="bg-white p-2 rounded-full shadow cursor-pointer z-10"
         onClick={toggleVisibility}
