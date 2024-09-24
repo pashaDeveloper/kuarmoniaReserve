@@ -1,6 +1,6 @@
 
 
-import Image from "next/image";
+  import Image from "next/image";
 import React, { useState } from "react";
 
 const LoadImage = ({ src, alt, height, width, ...rest }) => {

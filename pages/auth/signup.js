@@ -1,5 +1,3 @@
-
-
 import Button from "@/components/shared/button/Button";
 import LoadImage from "@/components/shared/image/LoadImage";
 import Logo from "@/components/shared/logo/Logo";
@@ -29,7 +27,7 @@ const Signup = () => {
       toast.error(error?.data?.message, { id: "signup" });
     }
     if (isLoading) {
-      toast.loading("Signing up...", { id: "signup" });
+      toast.loading("در حال ثبت‌نام...", { id: "signup" });
     }
   }, [data, error, isLoading, reset, router]);
 
@@ -74,97 +72,104 @@ const Signup = () => {
           onSubmit={handleSubmit(handleSignup)}
         >
           {/* avatar */}
-          <div className="flex flex-col gap-y-2">
-            <div className="flex flex-row overflow-x-auto gap-x-2">
+          <div className="flex  flex-col gap-y-2">
+            <div className="flex flex-row justify-center overflow-x-auto gap-x-2">
               {avatarPreview && (
+          <div className="image-wrapper shine-effect rounded-full ">
+
                 <LoadImage
                   src={avatarPreview}
                   alt="avatar"
                   height={100}
                   width={100}
-                  className="h-[100px] w-[100px] rounded object-cover"
+                  className="h-[100px] w-[100px] profile-pic rounded-full  "
                 />
+            </div>
+
               )}
             </div>
             <label htmlFor="avatar" className="relative">
-              <button
-                type="button"
-                className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit text-sm"
-              >
-                <IoCloudUploadOutline className="h-5 w-5" />
-                Choose an avatar*
-              </button>
-              <input
-                type="file"
-                name="avatar"
-                id="avatar"
-                accept="image/png, image/jpg, image/jpeg"
-                className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
-                {...register("avatar", {
-                  required: true,
-                  onChange: (event) => handleAvatarChange(event),
-                })}
-              />
-            </label>
+              <div  className=" flex justify-center">
+
+    <button
+      type="button"
+      className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit text-sm"
+      >
+      <IoCloudUploadOutline className="h-5 w-5" />
+      انتخاب عکس پروفایل*
+    </button>
+      </div>
+    <input
+      type="file"
+      name="avatar"
+      id="avatar"
+      accept="image/png, image/jpg, image/jpeg"
+      className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
+      {...register("avatar", {
+        required: true,
+        onChange: (event) => handleAvatarChange(event),
+      })}
+    />
+  </label>
           </div>
 
           <label htmlFor="name" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Name</span>
+            <span className="text-sm">نام خود را وارد کنید</span>
             <input
               type="text"
               name="name"
               id="name"
               {...register("name", { required: true })}
-              placeholder="i.e. Hasibul Islam"
+              placeholder="نام"
               className=""
-              maxlength="100"
+              maxLength="100"
             />
           </label>
 
           <label htmlFor="email" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Email</span>
+            <span className="text-sm">ایمیل خود را وارد کنید</span>
             <input
               type="email"
               name="email"
               id="email"
               {...register("email", { required: true })}
-              placeholder="majid.pashayi443@gmail.com"
+              placeholder="ایمیل"
               className=""
             />
           </label>
 
           <label htmlFor="password" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Password</span>
+            <span className="text-sm">رمز عبور خود را وارد کنید</span>
             <input
               type="password"
               name="password"
               id="password"
               {...register("password", { required: true })}
-              placeholder="i.e. Hasib@123"
+              placeholder="رمز عبور"
               className=""
             />
           </label>
 
           <label htmlFor="phone" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Phone Number</span>
+            <span className="text-sm">شماره تلفن خود را وارد کنید</span>
             <input
               type="tel"
               name="phone"
               id="phone"
               {...register("phone", { required: true })}
-              placeholder="i.e. +8801906315901"
+              placeholder="شماره تلفن"
               className=""
             />
           </label>
 
-          <Button type="submit" className="py-2 mt-4">
-            Sign up
+          <Button type="submit" className="py-2 mt-4 ">
+            ثبت‌نام
           </Button>
         </form>
         <div className="text-xs flex flex-row justify-center items-center gap-x-2">
-          <Link href="/auth/forgot-password">Forgot Password</Link>
+          <Link href="/auth/forgot-password">فراموشی رمز عبور</Link>
           <div className="h-4 border-l"></div>
-          <Link href="/auth/signin">Sign In</Link>
+          <Link href="/auth/signin">ورود</Link>
         </div>
       </div>
     </section>
@@ -172,4 +177,3 @@ const Signup = () => {
 };
 
 export default Signup;
-

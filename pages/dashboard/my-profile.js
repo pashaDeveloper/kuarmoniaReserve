@@ -101,8 +101,8 @@ const MyProfile = () => {
           {/* avatar */}
           <div className="flex flex-col gap-y-2 w-fit">
             <LoadImage
-              src={avatarPreview || defaultValues?.avatar?.url}
-              alt={defaultValues?.avatar?.public_id || "avatar"}
+  src={avatarPreview || `/${defaultValues?.avatar?.url}`}
+  alt={defaultValues?.avatar?.public_id || "avatar"}
               height={100}
               width={100}
               className="h-[100px] w-[100px] rounded object-cover"

@@ -158,3 +158,59 @@ blockquote {
 .ck-dropdown__panel{
   padding-right:200px !important;
 }
+
+
+
+
+.profile-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  border: 2px solid rgba(255, 255, 255, 0.8); 
+
+}
+
+.profile-pic {
+  width: 95%; 
+  height: 95%; 
+  object-fit: cover;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); 
+}
+
+.shine-effect::before, 
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 20%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: skewX(-45deg);
+  border: 2px solid rgba(255, 255, 255, 0.8); 
+  animation: shine 3s infinite;
+}
+
+.shine-effect::before {
+  left: -100%; /* شروع از چپ */
+}
+
+
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%; /* خروج کامل از تصویر */
+  }
+}
+
+

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {  useMemo } from "react";
+import {useSelector } from "react-redux";
+
 import SkeletonProfile from "@/components/shared/skeleton/SkeletonProfile";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 
 const MainContent = ({ 
@@ -13,10 +14,21 @@ const MainContent = ({
   editorData, 
   selectedTags,
 }) => {
+  const user = useSelector((state) => state?.auth);
+
+  const defaultValues = useMemo(() => {
+    return {
+      name: user?.name,
+      email: user?.email,
+      phone: user?.phone,
+      avatar: user?.avatar,
+      address: user?.address,
+    };
+  }, [user]);
   return (
     <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
       <div
-        className="bg-cover bg-center text-center overflow-hidden rounded-lg"
+        className="bg-cover bg-center text-center overflow-hidden  rounded-lg"
         style={{
           minHeight: "500px",
           backgroundImage:
@@ -29,21 +41,25 @@ const MainContent = ({
 
       <div className="max-w-3xl mx-auto">
         <div className="relative rounded-full">
-          <div className="">
-            <div className="absolute top-[-130px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
-              {isLoading && <SkeletonProfile size="w-32 h-32" />}
-              
-              <img
-                src={profileImage}
-                alt="Profile"
-                className={`w-32 h-32 rounded-full object-cover ${
-                  isLoading ? "hidden" : "opacity-100"
-                }`}
-                onLoad={handleImageLoad}
-                style={{ position: "relative", zIndex: 10 }}
-              />
-            </div>
-          </div>
+     
+          <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
+  {isLoading && (
+    <SkeletonProfile size="w-32 h-32 "  />
+  )}
+<div className="image-wrapper shine-effect profile-container rounded-full">
+
+  <img
+    src={`/${defaultValues?.avatar?.url}`}
+    alt="Profile"
+    className={`w-32 h-32 rounded-full profile-pic ${
+      isLoading ? "hidden" : "opacity-100"
+    }`}
+    onLoad={handleImageLoad}
+    style={{ position: "relative" }}
+    />
+    </div>
+</div>
+
 
           <div className="bg-white relative shadow-lg top-0 -mt-20 p-5 sm:p-10 rounded-b-lg ">
             <div className="flex items-center mt-14 justify-center">
@@ -53,7 +69,7 @@ const MainContent = ({
                     href="#"
                     className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out"
                   >
-                    <span className="text-2xl">مرجان سلطانی</span>
+                    <span className="text-2xl"> {defaultValues?.name}</span>
                   </a>
                 </p>
                 <p className="text-center">
