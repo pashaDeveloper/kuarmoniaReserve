@@ -1,20 +1,27 @@
+import React, { useEffect, useState } from "react";
 import Button from "@/components/shared/button/Button";
 import LoadImage from "@/components/shared/image/LoadImage";
+import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
 import Logo from "@/components/shared/logo/Logo";
 import { useSignupMutation } from "@/services/auth/authApi";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { IoCloudUploadOutline } from "react-icons/io5";
+import ProfileImageSelector from "@/components/shared/gallery/ProfileImageSelector";
+import { useTheme } from "@/pages/ThemeContext"; 
+
 
 const Signup = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const [signup, { isLoading, data, error }] = useSignupMutation();
   const router = useRouter();
+  const { toggleTheme } = useTheme();
+
+  const handleImageSelect = (image) => {
+    setAvatarPreview(image);
+  };
 
   useEffect(() => {
     if (data) {
@@ -31,24 +38,8 @@ const Signup = () => {
     }
   }, [data, error, isLoading, reset, router]);
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-
-    if (!avatarPreview) {
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setAvatarPreview(reader.result);
-        };
-
-        reader.readAsDataURL(file);
-      }
-    }
-  };
-
   const handleSignup = (data) => {
     const formData = new FormData();
-
     formData.append("avatar", data.avatar[0]);
     formData.append("name", data.name);
     formData.append("email", data.email);
@@ -59,60 +50,36 @@ const Signup = () => {
   };
 
   return (
-    <section className="min-w-full min-h-screen flex justify-center items-center p-4">
+    <section
+      className={`bg-white dark:bg-[#1a202c] text-black dark:text-white min-h-screen flex justify-center items-center p-4`}
+    >
       <div className="max-w-md w-full flex flex-col gap-y-4 border p-8 rounded-primary">
         <div className="flex flex-row items-center gap-x-2">
           <hr className="w-full" />
           <Logo />
           <hr className="w-full" />
         </div>
+
         <form
           action=""
-          className="w-full flex flex-col gap-y-4"
+          className="w-full flex flex-col gap-y-4 justify-center"
           onSubmit={handleSubmit(handleSignup)}
         >
           {/* avatar */}
-          <div className="flex  flex-col gap-y-2">
-            <div className="flex flex-row justify-center overflow-x-auto gap-x-2">
-              {avatarPreview && (
-          <div className="image-wrapper shine-effect rounded-full ">
-
+          <div className="flex flex-col items-center">
+            {avatarPreview && (
+              <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
                 <LoadImage
                   src={avatarPreview}
                   alt="avatar"
                   height={100}
                   width={100}
-                  className="h-[100px] w-[100px] profile-pic rounded-full  "
+                  className="h-[100px] w-[100px] profile-pic rounded-full"
                 />
-            </div>
-
-              )}
-            </div>
-            <label htmlFor="avatar" className="relative">
-              <div  className=" flex justify-center">
-
-    <button
-      type="button"
-      className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit text-sm"
-      >
-      <IoCloudUploadOutline className="h-5 w-5" />
-      انتخاب عکس پروفایل*
-    </button>
-      </div>
-    <input
-      type="file"
-      name="avatar"
-      id="avatar"
-      accept="image/png, image/jpg, image/jpeg"
-      className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
-      {...register("avatar", {
-        required: true,
-        onChange: (event) => handleAvatarChange(event),
-      })}
-    />
-  </label>
+              </div>
+            )}
+            <ProfileImageSelector onImageSelect={handleImageSelect} />
           </div>
-
           <label htmlFor="name" className="flex flex-col gap-y-1">
             <span className="text-sm">نام خود را وارد کنید</span>
             <input
@@ -121,8 +88,8 @@ const Signup = () => {
               id="name"
               {...register("name", { required: true })}
               placeholder="نام"
-              className=""
               maxLength="100"
+              className={`p-2 rounded border    bg-white dark-text-black`}
             />
           </label>
 
@@ -134,7 +101,7 @@ const Signup = () => {
               id="email"
               {...register("email", { required: true })}
               placeholder="ایمیل"
-              className=""
+              className={`p-2 rounded border   bg-white `}
             />
           </label>
 
@@ -146,7 +113,7 @@ const Signup = () => {
               id="password"
               {...register("password", { required: true })}
               placeholder="رمز عبور"
-              className=""
+              className={`p-2 rounded border   bg-white "}`}
             />
           </label>
 
@@ -158,7 +125,7 @@ const Signup = () => {
               id="phone"
               {...register("phone", { required: true })}
               placeholder="شماره تلفن"
-              className=""
+              className={`p-2 rounded border"dark-bg-gray-800  bg-white dark-text-black`}
             />
           </label>
 
@@ -166,11 +133,13 @@ const Signup = () => {
             ثبت‌نام
           </Button>
         </form>
+
         <div className="text-xs flex flex-row justify-center items-center gap-x-2">
           <Link href="/auth/forgot-password">فراموشی رمز عبور</Link>
           <div className="h-4 border-l"></div>
           <Link href="/auth/signin">ورود</Link>
         </div>
+        <ToggleThemeButton  />
       </div>
     </section>
   );

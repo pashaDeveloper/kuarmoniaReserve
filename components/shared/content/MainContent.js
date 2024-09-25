@@ -36,7 +36,7 @@ const MainContent = ({
               ? `url(${galleryPreview[0]})`
               : "url('https://via.placeholder.com/1150x500')",
         }}
-        title="profile"
+        title="title"
       ></div>
 
       <div className="max-w-3xl mx-auto">

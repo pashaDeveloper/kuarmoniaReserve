@@ -171,16 +171,16 @@ blockquote {
   justify-content: center; 
   align-items: center; 
   border: 2px solid rgba(255, 255, 255, 0.8); 
+  background: rgba(255, 255, 255, 0.2);
 
 }
 
 .profile-pic {
-  width: 95%; 
-  height: 95%; 
+  width: 90%; 
+  height: 90%; 
   object-fit: cover;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); 
 }
 
@@ -212,5 +212,7 @@ blockquote {
     left: 200%; /* خروج کامل از تصویر */
   }
 }
+
+
 
 

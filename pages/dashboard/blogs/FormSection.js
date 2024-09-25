@@ -1,6 +1,5 @@
 // FormSection.js
 import React from 'react';
-import { useForm } from "react-hook-form";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import Button from "@/components/shared/button/Button";
