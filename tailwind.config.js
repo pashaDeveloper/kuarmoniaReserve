@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'custom-green': 'rgba(0, 135, 113, 0.08)',
+      },
       borderRadius: {
         DEFAULT: "10px",
         primary: "1.5rem",

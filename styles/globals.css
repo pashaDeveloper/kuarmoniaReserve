@@ -19,13 +19,13 @@ html {
 }
 
 body {
-  font-family:"Vazir", "Poppins", sans-serif !important;
-  direction:rtl;
+  font-family: "Vazir", "Poppins", sans-serif !important;
+  direction: rtl;
 }
 
 h1,
 h2 {
- font-family:"Vazir"
+  font-family: "Vazir";
 }
 
 p {
@@ -49,7 +49,7 @@ p {
 
 /* Thumb */
 ::-webkit-scrollbar-thumb {
-  background-color:rgb(1 188 31 / 0.8);
+  background-color: rgb(1 188 31 / 0.8);
   border-radius: 10px;
 }
 
@@ -97,9 +97,16 @@ textarea {
 input,
 textarea,
 select {
-  @apply focus:!ring-0 focus:!outline-0 focus:!outline-offset-0 focus:!border-primary;
+  @apply !rounded-full 
+  focus:!ring-0 focus:!outline-0 
+  focus:!outline-offset-0 
+  focus:!border-primary
+  dark:!bg-gray-700 
+  dark:focus:!border-blue-500
+  dark:focus:!bg-[#0a2d4d]
+  h-12
+  !bg-[#dce9f5];
 }
-
 textarea {
   @apply form-textarea rounded text-sm resize-none;
 }
@@ -107,8 +114,6 @@ textarea {
 select {
   @apply form-select rounded text-sm resize-none;
 }
-
-
 
 blockquote {
   border-right: 4px solid rgb(0 0 0 / 0.4); /* رنگ ایندگو */
@@ -146,7 +151,8 @@ blockquote {
   border-collapse: collapse; /* برای کنار هم قرار گرفتن مرزها */
 }
 
-.table td, .table th {
+.table td,
+.table th {
   border: 2px solid #3490dc; /* رنگ و ضخامت مرز سلول‌ها */
   padding: 8px; /* فاصله داخلی سلول‌ها */
 }
@@ -155,53 +161,53 @@ blockquote {
   background-color: #f4f4f4; /* رنگ پس‌زمینه هدر */
 }
 
-.ck-dropdown__panel{
-  padding-right:200px !important;
+.ck-dropdown__panel {
+  padding-right: 200px !important;
 }
-
-
-
 
 .profile-container {
   position: relative;
   width: 150px;
   height: 150px;
   overflow: hidden;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  border: 2px solid rgba(255, 255, 255, 0.8); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(220, 233, 245, 1)  ;
+  background: rgba(220, 233, 245, 0.8);
+}
+.dark .profile-container{
+  border: 2px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.2);
 
 }
-
 .profile-pic {
-  width: 90%; 
-  height: 90%; 
+  width: 90%;
+  height: 90%;
   object-fit: cover;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); 
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
-.shine-effect::before, 
+.shine-effect::before,
 .shine-effect::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   width: 20%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(220, 233, 245, 0.4)  ;
   transform: skewX(-45deg);
-  border: 2px solid rgba(255, 255, 255, 0.8); 
+  border: 2px solid rgba(220, 233, 245, 0.8);
   animation: shine 3s infinite;
 }
 
-.shine-effect::before {
-  left: -100%; /* شروع از چپ */
+.dark .shine-effect::before {
+  background: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+
 }
-
-
 
 @keyframes shine {
   0% {
@@ -212,7 +218,49 @@ blockquote {
     left: 200%; /* خروج کامل از تصویر */
   }
 }
+.wave {
+  opacity: 0.8;
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  width: 6000px;
+  height: 6000px;
+  background-color: rgba(0, 135, 113, 0.08);
+  margin-left: -3000px;
+  transform-origin: 50% 48%;
+  border-radius: 46%;
+  pointer-events: none;
+  transform: rotate(100deg);
+}
 
+.wave2 {
+  opacity: 0.8;
+  transform: rotate(70deg);
+}
 
+.wave3 {
+  opacity: 0.6;
+  transform: rotate(80deg);
+}
 
+.dark .wave {
+  background: rgba(14, 73, 181, 0.2);
+}
 
+.dark .wave {
+  background: rgba(14, 73, 181, 0.2);
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow:hover,
+focus {
+  animation: spin-slow 5s linear infinite;
+}

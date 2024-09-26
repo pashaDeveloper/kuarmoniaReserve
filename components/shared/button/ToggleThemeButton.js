@@ -16,17 +16,25 @@ const ToggleThemeButton = () => {
   };
 
   return (
-    <div className="flex justify-center !w-12 !h-12 profile-container rounded-full shine-effect">
-      <button
-        onClick={handleToggle}
-        className="rounded-full !w-12 !h-12 flex items-center justify-center dark:bg-gray-800 shadow-lg backdrop-blur-lg profile-pic"
-      >
-        {isDarkMode ? (
-          <BsSun className="text-white " size={24} />
-        ) : (
-          <BsMoonStarsFill className="text-gray-700" size={24} />
-        )}
-      </button>
+    <div className="flex justify-center items-center">
+      <div className="w-12 h-12 relative rounded-full shadow-lg dark:bg-gray-800">
+        <button
+          onClick={handleToggle}
+          className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center shadow-lg backdrop-blur-lg focus:outline-none"
+        >
+          {isDarkMode ? (
+            <BsSun
+              className="text-white transform transition-transform  animate-spin-slow "
+              size={24}
+            />
+          ) : (
+            <BsMoonStarsFill
+              className="text-gray-700 transform transition-transform  hover:translate-y-1"
+              size={24}
+            />
+          )}
+        </button>
+      </div>
     </div>
   );
 };

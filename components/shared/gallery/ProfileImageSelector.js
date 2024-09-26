@@ -23,9 +23,9 @@ const ProfileImageSelector = ({ onImageSelect }) => {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit text-sm"
+          className="py-1 px-4 flex flex-row gap-x-2 dark:bg-blue-100 bg-green-100 border dark:text-blue-700 dark:border-blue-900 border-green-900 text-green-900 rounded-secondary w-fit text-sm"
         >
-          <IoCloudUploadOutline className="h-5 w-5" />
+          <IoCloudUploadOutline className="h-5 w-5 dark:!text-blue-700" />
           انتخاب عکس پروفایل*
         </button>
   

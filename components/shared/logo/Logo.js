@@ -11,8 +11,8 @@ const Logo = () => {
   return (
     <>
      <div className="flex items-center cursor-pointer" onClick={() => router.push("/")}>
-  <span className="text-green-500 font-bold text-2xl">کار</span>
-  <span className="text-black  font-bold text-2xl">مونیا</span>
+  <span className="text-green-500 dark:text-blue-500 font-bold text-2xl">کار</span>
+  <span className="text-black dark:text-white font-bold text-2xl">مونیا</span>
 </div>
     </>
   );
