@@ -1,13 +1,68 @@
-// StepSignUpForm.jsx
-import { useState } from "react";
-import ProfileImageSelector from "@/components/shared/gallery/ProfileImageSelector";
-import LoadImage from "@/components/shared/image/LoadImage";
+// components/signup/StepSignUpForm.jsx
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSignupMutation } from "@/services/auth/authApi";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 
-const StepSignUpForm = ({ register, handleImageSelect, avatarPreview, onSubmit, errors }) => {
+import AvatarStep from "./steps/AvatarStep";
+import NameStep from "./steps/NameStep";
+import EmailStep from "./steps/EmailStep";
+import PasswordStep from "./steps/PasswordStep";
+import PhoneStep from "./steps/PhoneStep";
+import StepIndicator from "./steps/StepIndicator"; // ایمپورت StepIndicator
+
+const StepSignUpForm = () => {
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const { register, reset, formState: { errors }, watch, getValues } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
+  const [signup, { isLoading, data, error }] = useSignupMutation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (data) {
+      toast.success(data?.message, { id: "signup" });
+      window.open("/auth/signin", "_self");
+      setAvatarPreview(null);
+      reset();
+    }
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "signup" });
+    }
+    if (isLoading) {
+      toast.loading("در حال ثبت‌نام...", { id: "signup" });
+    }
+  }, [data, error, isLoading, reset, router]);
+
+  const handleImageSelect = (image) => {
+    const imageUrl = URL.createObjectURL(image);
+    setAvatarPreview(imageUrl);
+  };
 
   const nextStep = () => {
+    // Check for validation based on current step
+    // if (currentStep === 1 && !avatarPreview) {
+    //   toast.error("لطفاً عکس پروفایل خود را انتخاب کنید");
+    //   return;
+    // }
+    // if (currentStep === 2 && !getValues("name")) {
+    //   toast.error("لطفاً نام خود را وارد کنید");
+    //   return;
+    // }
+    // if (currentStep === 3 && !getValues("email")) {
+    //   toast.error("لطفاً ایمیل خود را وارد کنید");
+    //   return;
+    // }
+    // if (currentStep === 4 && !getValues("password")) {
+    //   toast.error("لطفاً رمز عبور خود را وارد کنید");
+    //   return;
+    // }
+    // if (currentStep === 5 && !getValues("phone")) {
+    //   toast.error("لطفاً شماره تلفن خود را وارد کنید");
+    //   return;
+    // }
+
     setCurrentStep((prevStep) => prevStep + 1);
   };
 
@@ -15,149 +70,91 @@ const StepSignUpForm = ({ register, handleImageSelect, avatarPreview, onSubmit, 
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
+  const handleSignup = (formData) => {
+    signup(formData);
+  };
+
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
         return (
-          <>
-            <div className="flex flex-col items-center">
-              {avatarPreview && (
-                <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
-                  <LoadImage
-                    src={avatarPreview}
-                    alt="avatar"
-                    height={100}
-                    width={100}
-                    className="h-[100px] w-[100px] profile-pic rounded-full"
-                  />
-                </div>
-              )}
-              <ProfileImageSelector onImageSelect={handleImageSelect} />
-            </div>
-            <div className="flex justify-end mt-4">
-              <button type="button" onClick={nextStep} className="btn">
-                مرحله بعد
-              </button>
-            </div>
-          </>
+          <AvatarStep
+            avatarPreview={avatarPreview}
+            handleImageSelect={handleImageSelect}
+            nextStep={nextStep}
+          />
         );
       case 2:
         return (
-          <>
-            <label htmlFor="name" className="flex flex-col gap-y-1">
-              <span className="text-sm">نام خود را وارد کنید</span>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                {...register("name", { required: "وارد کردن نام الزامی است" })}
-                placeholder="نام"
-                maxLength="100"
-                className="p-2 rounded border bg-white dark-text-black"
-              />
-              {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
-            </label>
-            <div className="flex justify-between mt-4">
-              <button type="button" onClick={prevStep} className="btn">
-                مرحله قبل
-              </button>
-              <button type="button" onClick={nextStep} className="btn">
-                مرحله بعد
-              </button>
-            </div>
-          </>
+          <NameStep
+            register={register}
+            errors={errors}
+            prevStep={prevStep}
+            nextStep={nextStep}
+          />
         );
       case 3:
         return (
-          <>
-            <label htmlFor="email" className="flex flex-col gap-y-1">
-              <span className="text-sm">ایمیل خود را وارد کنید</span>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                {...register("email", { required: "وارد کردن ایمیل الزامی است" })}
-                placeholder="john@example.com"
-                className="p-2 rounded border bg-white dark-text-black"
-              />
-              {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
-            </label>
-            <div className="flex justify-between mt-4">
-              <button type="button" onClick={prevStep} className="btn">
-                مرحله قبل
-              </button>
-              <button type="button" onClick={nextStep} className="btn">
-                مرحله بعد
-              </button>
-            </div>
-          </>
+          <EmailStep
+            register={register}
+            errors={errors}
+            prevStep={prevStep}
+            nextStep={nextStep}
+          />
         );
       case 4:
         return (
-          <>
-            <label htmlFor="password" className="flex flex-col gap-y-1">
-              <span className="text-sm">رمز عبور خود را وارد کنید</span>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                {...register("password", { required: "وارد کردن رمز عبور الزامی است" })}
-                placeholder="رمز عبور"
-                className="p-2 rounded border bg-white dark-text-black"
-              />
-              {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
-            </label>
-            <div className="flex justify-between mt-4">
-              <button type="button" onClick={prevStep} className="btn">
-                مرحله قبل
-              </button>
-              <button type="button" onClick={nextStep} className="btn">
-                مرحله بعد
-              </button>
-            </div>
-          </>
+          <PasswordStep
+            register={register}
+            errors={errors}
+            prevStep={prevStep}
+            nextStep={nextStep}
+          />
         );
       case 5:
         return (
-          <>
-            <label htmlFor="phone" className="flex flex-col gap-y-1">
-              <span className="text-sm">شماره تلفن خود را وارد کنید</span>
-              <input
-                type="tel"
-                name="phone"
-                id="phone"
-                {...register("phone", { required: "وارد کردن شماره تلفن الزامی است" })}
-                placeholder="شماره تلفن"
-                className="p-2 rounded border bg-white dark-text-black"
-              />
-              {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
-            </label>
-            <div className="flex justify-between mt-4">
-              <button type="button" onClick={prevStep} className="btn">
-                مرحله قبل
-              </button>
-              <button type="submit" className="btn">
-                ارسال فرم
-              </button>
-            </div>
-          </>
+          <PhoneStep
+            register={register}
+            errors={errors}
+            prevStep={prevStep}
+          />
         );
       default:
         return null;
     }
   };
 
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    if (data.avatar && data.avatar[0]) {
+      formData.append("avatar", data.avatar[0]);
+    }
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("phone", data.phone);
+
+    handleSignup(formData);
+  };
+
+  // تابع برای مدیریت کلیک روی مراحل
+  const handleStepClick = (step) => {
+    // فقط اجازه جابجایی به مراحل قبلی یا جاری را بدهید
+    if (step <= currentStep) {
+      setCurrentStep(step);
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <div className="mb-4">
-        <span>مرحله {currentStep} از {totalSteps}</span>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-          <div
-            className="bg-blue-600 h-2.5 rounded-full"
-            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-          ></div>
-        </div>
-      </div>
+      {/* نمایشگر مراحل */}
+      <StepIndicator
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+        onStepClick={handleStepClick} // ارسال تابع handleStepClick
+      />
+
+      {/* محتویات مرحله */}
       {renderStepContent(currentStep)}
     </form>
   );

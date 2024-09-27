@@ -97,15 +97,14 @@ textarea {
 input,
 textarea,
 select {
-  @apply !rounded-full 
+  @apply 
   focus:!ring-0 focus:!outline-0 
   focus:!outline-offset-0 
   focus:!border-primary
   dark:!bg-gray-700 
   dark:focus:!border-blue-500
   dark:focus:!bg-[#0a2d4d]
-  h-12
-  !bg-[#dce9f5];
+  h-12;
 }
 textarea {
   @apply form-textarea rounded text-sm resize-none;
