@@ -4,21 +4,31 @@ import { useForm } from "react-hook-form";
 import { useSignupMutation } from "@/services/auth/authApi";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-
 import AvatarStep from "./steps/AvatarStep";
 import NameStep from "./steps/NameStep";
 import EmailStep from "./steps/EmailStep";
 import PasswordStep from "./steps/PasswordStep";
 import PhoneStep from "./steps/PhoneStep";
-import StepIndicator from "./steps/StepIndicator"; // ایمپورت StepIndicator
+import StepIndicator from "./steps/StepIndicator"; 
+import NavigationButton from "@/components/shared/button/NavigationButton";
+import { IoIosSend } from "react-icons/io";
 
 const StepSignUpForm = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const { register, reset, formState: { errors }, watch, getValues } = useForm();
+  const { register, setValue, reset, formState: { errors }, trigger, handleSubmit, watch } = useForm({
+    mode: "onChange",
+  });
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [signup, { isLoading, data, error }] = useSignupMutation();
   const router = useRouter();
+
+  // وضعیت اعتبارسنجی مراحل
+  const [completedSteps, setCompletedSteps] = useState({});
+  const [invalidSteps, setInvalidSteps] = useState({});
+
+  // مشاهده تغییرات فیلدها
+  const watchedFields = watch();
 
   useEffect(() => {
     if (data) {
@@ -38,32 +48,61 @@ const StepSignUpForm = () => {
   const handleImageSelect = (image) => {
     const imageUrl = URL.createObjectURL(image);
     setAvatarPreview(imageUrl);
+    setValue("avatar", image, { shouldValidate: true });
   };
 
-  const nextStep = () => {
-    // Check for validation based on current step
-    // if (currentStep === 1 && !avatarPreview) {
-    //   toast.error("لطفاً عکس پروفایل خود را انتخاب کنید");
-    //   return;
-    // }
-    // if (currentStep === 2 && !getValues("name")) {
-    //   toast.error("لطفاً نام خود را وارد کنید");
-    //   return;
-    // }
-    // if (currentStep === 3 && !getValues("email")) {
-    //   toast.error("لطفاً ایمیل خود را وارد کنید");
-    //   return;
-    // }
-    // if (currentStep === 4 && !getValues("password")) {
-    //   toast.error("لطفاً رمز عبور خود را وارد کنید");
-    //   return;
-    // }
-    // if (currentStep === 5 && !getValues("phone")) {
-    //   toast.error("لطفاً شماره تلفن خود را وارد کنید");
-    //   return;
-    // }
+  const nextStep = async () => {
+    let valid = false;
+    switch (currentStep) {
+      case 1:
+        if (!avatarPreview) {
+          toast.error("لطفاً عکس پروفایل خود را انتخاب کنید");
+          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+          return;
+        }
+        valid = true;
+        break;
+      case 2:
+        valid = await trigger("name");
+        if (!valid) {
+          toast.error("لطفاً نام خود را وارد کنید");
+          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+          return;
+        }
+        break;
+      case 3:
+        valid = await trigger("email");
+        if (!valid) {
+          toast.error("لطفاً ایمیل خود را به شکل صحیح وارد کنید");
+          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+          return;
+        }
+        break;
+      case 4:
+        valid = await trigger("password");
+        if (!valid) {
+          toast.error("لطفاً رمز عبور خود را به طور صحیح وارد کنید");
+          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+          return;
+        }
+        break;
+      case 5:
+        valid = await trigger("phone");
+        if (!valid) {
+          toast.error("لطفاً شماره تلفن خود را به شکل صحیح وارد کنید");
+          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+          return;
+        }
+        break;
+      default:
+        break;
+    }
 
-    setCurrentStep((prevStep) => prevStep + 1);
+    if (valid) {
+      setCompletedSteps((prev) => ({ ...prev, [currentStep]: true }));
+      setInvalidSteps((prev) => ({ ...prev, [currentStep]: false }));
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   const prevStep = () => {
@@ -74,6 +113,31 @@ const StepSignUpForm = () => {
     signup(formData);
   };
 
+  const onSubmit = async (data) => {
+  alert()
+    const formData = new FormData();
+    if (data.avatar && data.avatar[0]) {
+      formData.append("avatar", data.avatar[0]);
+    }
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("phone", data.phone);
+
+    handleSignup(formData);
+  };
+
+  const getStepFromField = (field) => {
+    const fieldToStep = {
+      avatar: 1,
+      name: 2,
+      email: 3,
+      password: 4,
+      phone: 5,
+    };
+    return fieldToStep[field];
+  };
+
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
@@ -82,6 +146,8 @@ const StepSignUpForm = () => {
             avatarPreview={avatarPreview}
             handleImageSelect={handleImageSelect}
             nextStep={nextStep}
+            register={register}
+            errors={errors.avatar}
           />
         );
       case 2:
@@ -124,38 +190,87 @@ const StepSignUpForm = () => {
     }
   };
 
-  const onSubmit = (data) => {
-    const formData = new FormData();
-    if (data.avatar && data.avatar[0]) {
-      formData.append("avatar", data.avatar[0]);
-    }
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("phone", data.phone);
-
-    handleSignup(formData);
-  };
-
-  // تابع برای مدیریت کلیک روی مراحل
-  const handleStepClick = (step) => {
-    // فقط اجازه جابجایی به مراحل قبلی یا جاری را بدهید
-    if (step <= currentStep) {
+  const handleStepClick = async (step) => {
+    if (step < currentStep) {
       setCurrentStep(step);
+    } else if (step > currentStep) {
+      let canProceed = true;
+      for (let i = 1; i < step; i++) {
+        if (!completedSteps[i]) {
+          canProceed = false;
+          toast.error(`لطفاً ابتدا مرحله ${i} را تکمیل کنید.`);
+          setCurrentStep(i);
+          break;
+        }
+      }
+      if (canProceed) {
+        setCurrentStep(step);
+      }
     }
   };
+
+  useEffect(() => {
+    const fieldToStep = {
+      avatar: 1,
+      name: 2,
+      email: 3,
+      password: 4,
+      phone: 5,
+    };
+  
+    const newInvalidSteps = {};
+    Object.keys(errors).forEach((field) => {
+      const step = fieldToStep[field];
+      if (step) {
+        newInvalidSteps[step] = true;
+      }
+    });
+    setInvalidSteps(newInvalidSteps);
+  
+    const newCompletedSteps = {};
+    Object.entries(watchedFields).forEach(([field, value]) => {
+      if (field === "avatar") {
+        newCompletedSteps[fieldToStep[field]] = !!value;
+      } else {
+        newCompletedSteps[fieldToStep[field]] = value && value.length > 0;
+      }
+    });
+    setCompletedSteps(newCompletedSteps);
+  }, [errors, watchedFields]);
 
   return (
-    <form onSubmit={onSubmit}>
-      {/* نمایشگر مراحل */}
+    <form onSubmit={handleSubmit(onSubmit)}>
       <StepIndicator
         currentStep={currentStep}
         totalSteps={totalSteps}
-        onStepClick={handleStepClick} // ارسال تابع handleStepClick
+        onStepClick={handleStepClick} 
+        completedSteps={completedSteps}
+        invalidSteps={invalidSteps}
       />
 
-      {/* محتویات مرحله */}
       {renderStepContent(currentStep)}
+
+      {currentStep === totalSteps && (
+        <div className="flex justify-between mt-12">
+          
+          <button
+            type="submit"
+            className="group inline-flex items-center border border-green-300 dark:border-blue-600 px-4 py-2 rounded-md text-green-500 dark:text-blue-500 hover:bg-green-50 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-blue-500 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span>در حال ارسال...</span>
+            ) : (
+              <>
+                  
+               <IoIosSend className="h-6 w-6 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1" />
+                <span className="mr-2">ارسال فرم</span>
+              </>
+            )}
+          </button>
+          <NavigationButton direction="prev" onClick={prevStep} />
+        </div>
+      )}
     </form>
   );
 };

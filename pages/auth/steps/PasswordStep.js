@@ -1,5 +1,6 @@
 // components/signup/steps/PasswordStep.jsx
 import React from "react";
+import NavigationButton from "@/components/shared/button/NavigationButton";
 
 const PasswordStep = ({ register, errors, prevStep, nextStep }) => {
   return (
@@ -12,6 +13,14 @@ const PasswordStep = ({ register, errors, prevStep, nextStep }) => {
           id="password"
           {...register("password", {
             required: "وارد کردن رمز عبور الزامی است",
+            minLength: {
+              value: 4,
+              message: "رمز عبور باید حداقل 4 کاراکتر باشد",
+            },
+            maxLength: {
+              value: 30,
+              message: "رمز عبور نباید بیشتر از ۳۰ کاراکتر باشد",
+            },
           })}
           placeholder="رمز عبور"
           className="p-2 rounded border bg-white dark-text-black"
@@ -22,13 +31,10 @@ const PasswordStep = ({ register, errors, prevStep, nextStep }) => {
           </span>
         )}
       </label>
-      <div className="flex justify-between mt-4">
-        <button type="button" onClick={nextStep} className="btn">
-          مرحله بعد
-        </button>
-        <button type="button" onClick={prevStep} className="btn">
-          مرحله قبل
-        </button>
+      <div className="flex justify-between mt-12">
+      <NavigationButton direction="next" onClick={nextStep} />
+
+<NavigationButton direction="prev" onClick={prevStep} />
       </div>
     </>
   );

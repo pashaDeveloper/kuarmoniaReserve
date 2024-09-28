@@ -1,7 +1,8 @@
 // components/signup/steps/PhoneStep.jsx
 import React from "react";
+import NavigationButton from "@/components/shared/button/NavigationButton";
 
-const PhoneStep = ({ register, errors, prevStep }) => {
+const PhoneStep = ({ register, errors }) => {
   return (
     <>
       <label htmlFor="phone" className="flex flex-col gap-y-1">
@@ -12,9 +13,13 @@ const PhoneStep = ({ register, errors, prevStep }) => {
           id="phone"
           {...register("phone", {
             required: "وارد کردن شماره تلفن الزامی است",
+            pattern: {
+              value: /^\+?[0-9]{10,15}$/,
+              message: "شماره تلفن صحیح نیست",
+            },
           })}
           placeholder="شماره تلفن"
-          className="p-2 rounded border bg-white dark-text-black"
+          className="p-2 rounded border "
         />
         {errors.phone && (
           <span className="text-red-500 text-sm">
@@ -22,14 +27,7 @@ const PhoneStep = ({ register, errors, prevStep }) => {
           </span>
         )}
       </label>
-      <div className="flex justify-between mt-4">
-        <button type="submit" className="btn">
-          ارسال فرم
-        </button>
-        <button type="button" onClick={prevStep} className="btn">
-          مرحله قبل
-        </button>
-      </div>
+    
     </>
   );
 };

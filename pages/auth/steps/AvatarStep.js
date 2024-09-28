@@ -3,8 +3,14 @@ import React from "react";
 import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import ProfileImageSelector from "@/components/shared/gallery/ProfileImageSelector";
+import NavigationButton from "@/components/shared/button/NavigationButton";
 
-const AvatarStep = ({ avatarPreview, handleImageSelect, nextStep }) => {
+const AvatarStep = ({
+  avatarPreview,
+  handleImageSelect,
+  nextStep,
+  errors,
+}) => {
   return (
     <>
       <div className="flex flex-col items-center">
@@ -22,15 +28,15 @@ const AvatarStep = ({ avatarPreview, handleImageSelect, nextStep }) => {
           )}
         </div>
         <ProfileImageSelector onImageSelect={handleImageSelect} />
+        {errors && (
+          <span className="text-red-500 text-sm mt-2">
+            {errors.message || "لطفاً عکس پروفایل خود را انتخاب کنید"}
+          </span>
+        )}
       </div>
-      <div className="flex justify-start mt-4">
-      <button
-  type="button"
-  onClick={nextStep}
-  className=" "
->
-بعدی
-</button>
+
+      <div className="flex justify-start mt-12">
+        <NavigationButton direction="next" onClick={nextStep} />
       </div>
     </>
   );
