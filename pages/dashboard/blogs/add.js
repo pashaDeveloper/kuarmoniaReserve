@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
 import FormSection from "./FormSection";
 import PreviewSection from "./PreviewSection";
+import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
 
 const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
@@ -42,7 +43,8 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   };
 
   return (
-    <div className="m-6 flex flex-col gap-6 sm:flex-row">
+    <div className="p-6 flex flex-col gap-6 sm:flex-row dark:bg-gray-600 dark:text-gray-100">
+      <ToggleThemeButton />
       <div className="flex-1">
         <FormSection
           handleSubmit={handleSubmit}

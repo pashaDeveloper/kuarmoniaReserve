@@ -4,14 +4,35 @@ import generateAccessToken from "@/utils/jwt.util";
 // signup
 export async function signUpUser(req) {
   try {
-    const { originalName } = req.body;
+    const { email, phone, originalName } = req.body;
+
+  
+    const existingUser = await User.findOne({
+      $or: [{ email: email }, { phone: phone }],
+    });
+
+    if (existingUser) {
+      return {
+        success: false,
+        message: "کاربری با این ایمیل یا شماره تلفن قبلاً ثبت‌نام کرده است. لطفاً به صفحه ورود بروید.",
+        redirectToLogin: true,
+      };
+    }
+
+    const userCount = await User.countDocuments();
+
+    const role = userCount === 0 ? "superAdmin" : "user";  
+  
+    const status = userCount === 0 ? "active" : "inactive";  
 
     const user = await User.create({
       ...req.body,
+      role: role,  
+      status: status,  
       avatar: {
         url: req.body.filePath,
         public_id: req.file.filename,
-        originalName: originalName || "unknown",
+        originalName: originalName || "ناشناخته",
       },
     });
 
@@ -20,62 +41,80 @@ export async function signUpUser(req) {
     if (result) {
       return {
         success: true,
-        message: "User created successfully",
+        message: "ثبت نام شما با موفقیت انجام شد",
       };
     } else {
       return {
         success: false,
-        message: "User not created",
+        message: "ثبت نام شما با شکست مواجه شد",
       };
     }
   } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      let message = "مشکلی در ثبت نام وجود دارد.";
+      if (field === "email") {
+        message = "ایمیل وارد شده قبلاً ثبت شده است. لطفاً از ایمیل دیگری استفاده کنید یا به صفحه ورود بروید.";
+      } else if (field === "phone") {
+        message = "شماره تلفن وارد شده قبلاً ثبت شده است. لطفاً از شماره دیگری استفاده کنید یا به صفحه ورود بروید.";
+      }
+      return {
+        success: false,
+        message: message,
+      };
+    }
+
+    // خطای عمومی
     return {
       success: false,
-      message: error.message,
+      message: `خطا: ${error.message}`,
     };
   }
 }
+
+
 
 // signin
 export async function signInUser(req) {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log("user", user);
+
     if (user) {
       if (await user.comparePassword(req.body.password, user.password)) {
-        if (user.status === true) {
+        if (user.status === "active") {
           const accessToken = generateAccessToken(user);
 
           return {
             success: true,
-            message: "User logged in successfully",
+            message: "ورود با موفقیت انجام شد",
             accessToken,
           };
         } else {
           return {
             success: false,
-            message: "Your account is deactivated",
+            message: "حساب کاربری شما غیرفعال است",
           };
         }
       } else {
         return {
           success: false,
-          message: "Incorrect password",
+          message: "رمز عبور اشتباه است",
         };
       }
     } else {
       return {
         success: false,
-        message: "User not found",
+        message: "کاربری با این ایمیل یافت نشد",
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: `خطا: ${error.message}`,
     };
   }
 }
+
 
 // forgot password
 export async function forgotPassword(req) {

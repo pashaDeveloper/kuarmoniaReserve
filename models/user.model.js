@@ -48,15 +48,11 @@ const userSchema = new Schema(
 
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["superAdmin","admin","author","user", "admin","operator"],
       default: "user",
     },
 
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
-    },
+ 
 
     address: {
       type: String,
@@ -116,7 +112,6 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-/* encrypted user account password */
 userSchema.methods.encryptPassword = function (password) {
   const salt = genSaltSync(10);
   const hashedPassword = hashSync(password, salt);
@@ -124,7 +119,6 @@ userSchema.methods.encryptPassword = function (password) {
   return hashedPassword;
 };
 
-// compare user given password with db stored password
 userSchema.methods.comparePassword = async function (
   currentPassword,
   storedPassword

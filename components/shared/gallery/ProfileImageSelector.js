@@ -8,7 +8,7 @@ const ProfileImageSelector = ({ onImageSelect }) => {
   const handleDeviceSelection = (e) => {
     const file = e.target.files[0];
     if (file) {
-      onImageSelect(file); // ارسال شیء File
+      onImageSelect(file); // ارسال فایل انتخاب شده به `onImageSelect`
       setShowModal(false); // بستن مدال
     }
   };
@@ -30,7 +30,7 @@ const ProfileImageSelector = ({ onImageSelect }) => {
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
               <div className="w-1/2 h-full flex flex-col justify-center items-center">
                 <span>گالری</span>
-                {/* می‌توانید قابلیت انتخاب از گالری را اضافه کنید */}
+                {/* اضافه کردن قابلیت انتخاب از گالری */}
               </div>
               <div className="w-1/2 h-full flex flex-col justify-center items-center">
                 <label

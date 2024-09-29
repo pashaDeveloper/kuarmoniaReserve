@@ -19,14 +19,12 @@ const MainContent = ({
   const defaultValues = useMemo(() => {
     return {
       name: user?.name,
-      email: user?.email,
-      phone: user?.phone,
       avatar: user?.avatar,
-      address: user?.address,
+  id:user?._id
     };
   }, [user]);
   return (
-    <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
+    <div className="max-w-screen-xl min-w-[500px] dark:bg-gray-600 mx-auto p-5 sm:p-10 md:p-16 relative">
       <div
         className="bg-cover bg-center text-center overflow-hidden  rounded-lg"
         style={{
@@ -51,7 +49,7 @@ const MainContent = ({
   <img
     src={`/${defaultValues?.avatar?.url}`}
     alt="Profile"
-    className={`w-32 h-32 rounded-full profile-pic ${
+    className={`w-32 h-32  rounded-full profile-pic ${
       isLoading ? "hidden" : "opacity-100"
     }`}
     onLoad={handleImageLoad}
@@ -61,18 +59,18 @@ const MainContent = ({
 </div>
 
 
-          <div className="bg-white relative shadow-lg top-0 -mt-20 p-5 sm:p-10 rounded-b-lg ">
+          <div className=" relative bg-gray-50 dark:bg-gray-600 shadow-lg  top-0 -mt-20 p-5 sm:p-10 rounded-b-lg ">
             <div className="flex items-center mt-14 justify-center">
-              <div className="text-gray-700">
+              <div className="text-gray-700 dark:text-gray-100">
                 <p>
                   <a
                     href="#"
-                    className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out"
+                    className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out dark:text-gray-300"
                   >
                     <span className="text-2xl"> {defaultValues?.name}</span>
                   </a>
                 </p>
-                <p className="text-center">
+                <p className="text-center text-sm mt-1">
                   <span className="font-medium">
                     {new Date(publishDate).toLocaleDateString("fa-IR", {
                       weekday: "long",
@@ -81,10 +79,10 @@ const MainContent = ({
                 </p>
               </div>
             </div>
-            <h1 className="text-gray-900 font-bold text-3xl mb-2 mt-12 text-center">
+            <h1 className=" font-bold text-3xl mb-2 mt-12 text-center">
               {watch("title") ? `${watch("title")}` : <SkeletonText lines={1} />}
             </h1>
-            <div className="text-base leading-8 my-5 text-justify">
+            <div className="text-base dark:bg-text-100 leading-8 my-5 text-justify">
               {editorData ? (
                 <div
                   dangerouslySetInnerHTML={{

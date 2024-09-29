@@ -23,22 +23,21 @@ const StepSignUpForm = () => {
   const [signup, { isLoading, data, error }] = useSignupMutation();
   const router = useRouter();
 
-  // وضعیت اعتبارسنجی مراحل
   const [completedSteps, setCompletedSteps] = useState({});
   const [invalidSteps, setInvalidSteps] = useState({});
 
-  // مشاهده تغییرات فیلدها
   const watchedFields = watch();
 
   useEffect(() => {
-    if (data) {
+    if (data?.success ) {
+      console.log(data)
       toast.success(data?.message, { id: "signup" });
-      window.open("/auth/signin", "_self");
       setAvatarPreview(null);
+      window.open("/auth/signin", "_self"); 
       reset();
     }
-    if (error?.data) {
-      toast.error(error?.data?.message, { id: "signup" });
+    if (!data?.success) {
+      toast.error(data?.message, { id: "signup" });
     }
     if (isLoading) {
       toast.loading("در حال ثبت‌نام...", { id: "signup" });
@@ -48,9 +47,8 @@ const StepSignUpForm = () => {
   const handleImageSelect = (image) => {
     const imageUrl = URL.createObjectURL(image);
     setAvatarPreview(imageUrl);
-    setValue("avatar", image, { shouldValidate: true });
+    setValue("avatar", image, { shouldValidate: true }); // ذخیره کردن فایل در فرم
   };
-
   const nextStep = async () => {
     let valid = false;
     switch (currentStep) {
@@ -114,10 +112,9 @@ const StepSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
-  alert()
     const formData = new FormData();
-    if (data.avatar && data.avatar[0]) {
-      formData.append("avatar", data.avatar[0]);
+    if (data.avatar) {
+      formData.append("avatar", data.avatar); 
     }
     formData.append("name", data.name);
     formData.append("email", data.email);
@@ -218,26 +215,31 @@ const StepSignUpForm = () => {
       phone: 5,
     };
   
-    const newInvalidSteps = {};
-    Object.keys(errors).forEach((field) => {
-      const step = fieldToStep[field];
-      if (step) {
-        newInvalidSteps[step] = true;
-      }
+    setInvalidSteps((prevInvalidSteps) => {
+      const newInvalidSteps = { ...prevInvalidSteps };
+      Object.keys(errors).forEach((field) => {
+        const step = fieldToStep[field];
+        if (step) {
+          newInvalidSteps[step] = true;
+        }
+      });
+      return JSON.stringify(prevInvalidSteps) !== JSON.stringify(newInvalidSteps) ? newInvalidSteps : prevInvalidSteps;
     });
-    setInvalidSteps(newInvalidSteps);
   
-    const newCompletedSteps = {};
-    Object.entries(watchedFields).forEach(([field, value]) => {
-      if (field === "avatar") {
-        newCompletedSteps[fieldToStep[field]] = !!value;
-      } else {
-        newCompletedSteps[fieldToStep[field]] = value && value.length > 0;
-      }
+    setCompletedSteps((prevCompletedSteps) => {
+      const newCompletedSteps = { ...prevCompletedSteps };
+      Object.entries(watchedFields).forEach(([field, value]) => {
+        if (field === "avatar") {
+          newCompletedSteps[fieldToStep[field]] = !!value;
+        } else {
+          newCompletedSteps[fieldToStep[field]] = value && value.length > 0;
+        }
+      });
+      return JSON.stringify(prevCompletedSteps) !== JSON.stringify(newCompletedSteps) ? newCompletedSteps : prevCompletedSteps;
     });
-    setCompletedSteps(newCompletedSteps);
   }, [errors, watchedFields]);
-
+  
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <StepIndicator

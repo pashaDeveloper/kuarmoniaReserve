@@ -101,7 +101,7 @@ const Panel = ({ children }) => {
   ];
 
   return (
-    <section className="h-screen w-screen">
+    <section className="h-screen w-screen ">
             <ProgressBar />
 
       <div className="max-w-7xl mx-auto h-full flex flex-col gap-y-4 p-2">
