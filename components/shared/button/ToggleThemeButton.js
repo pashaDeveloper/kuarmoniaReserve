@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-import { useTheme } from "@/pages/ThemeContext"; // دریافت تم از کانتکست
+import { useTheme } from "@/components/shared/theme/ThemeContext"; // دریافت تم از کانتکست
 
 const ToggleThemeButton = () => {
   const { toggleTheme } = useTheme(); // گرفتن تابع toggleTheme از ThemeContext
