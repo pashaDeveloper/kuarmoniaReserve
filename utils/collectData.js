@@ -1,7 +1,7 @@
 // utils/collectData.js
 export const collectUserData = async (data) => {
     try {
-      const response = await fetch('/api/collect', {
+      const response = await fetch('/api/logs/collect', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

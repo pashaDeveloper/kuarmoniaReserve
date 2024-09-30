@@ -1,15 +1,21 @@
 // hooks/useUserTracking.js
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { collectUserData } from '@/utils/collectData';
 import { logPageView } from '@/utils/logManager';
+import { useSelector } from "react-redux";
 
 const useUserTracking = () => {
   const router = useRouter();
+  const user = useSelector((state) => state?.auth);
+  const defaultValues = useMemo(() => {
+    return {
+      id: user?._id,
+    };
+  }, [user]);
 
   useEffect(() => {
-    // دریافت اطلاعات کاربر از localStorage
-    const userId = localStorage.getItem('userId'); // فرض بر این است که userId در localStorage ذخیره شده است
+    const userId = defaultValues?.id; 
 
     const handleRouteChange = (url) => {
       const data = {
@@ -30,23 +36,21 @@ const useUserTracking = () => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events, defaultValues]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const userId = defaultValues?.id;
     const cleanup = logPageView(userId);
 
     return () => {
       cleanup();
     };
-  }, []);
+  }, [defaultValues]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
     const handleClick = (event) => {
       const data = {
-        userId: userId || null,
+        userId: defaultValues?.id || null,
         pageUrl: window.location.pathname + window.location.search,
         interaction: {
           type: 'click',
@@ -63,14 +67,12 @@ const useUserTracking = () => {
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [defaultValues]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
     const handleScroll = () => {
       const data = {
-        userId: userId || null,
+        userId: defaultValues?.id || null,
         pageUrl: window.location.pathname + window.location.search,
         interaction: {
           type: 'scroll',
@@ -85,16 +87,14 @@ const useUserTracking = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [defaultValues]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
     const handleDownload = (event) => {
       const target = event.target.closest('a');
       if (target && target.getAttribute('href')?.match(/\.(jpg|jpeg|png|gif)$/)) {
         const data = {
-          userId: userId || null,
+          userId: defaultValues?.id || null,
           pageUrl: window.location.pathname + window.location.search,
           interaction: {
             type: 'download',
@@ -110,7 +110,7 @@ const useUserTracking = () => {
     return () => {
       document.removeEventListener('click', handleDownload);
     };
-  }, []);
+  }, [defaultValues]);
 };
 
 export default useUserTracking;

@@ -36,7 +36,7 @@ const StepSignUpForm = () => {
       window.open("/auth/signin", "_self"); 
       reset();
     }
-    if (!data?.success) {
+    if (!data?.success && data?.message) {
       toast.error(data?.message, { id: "signup" });
     }
     if (isLoading) {

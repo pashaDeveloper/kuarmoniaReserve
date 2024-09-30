@@ -13,6 +13,7 @@ import Gallery from "@/components/home/gallery/Gallery";
 import NewsLetter from "@/components/home/news-letter/NewsLetter";
 
 export default function Home() {
+
   return (
     <main>
       <Head>
@@ -28,6 +29,10 @@ export default function Home() {
         <Advantage />
         <Reviews />
         <Gallery />
+        <Blogs />
+        <Steps />
+        <PopularDestination />
+        <NewsLetter />
       </Main>
     </main>
   );
