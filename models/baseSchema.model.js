@@ -2,9 +2,10 @@ import { Schema } from "mongoose";
 
 const baseSchema = new Schema(
   {
-      status: {
-      type: Boolean,
-      default: true,
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
     },
     isDeleted: {
       type: Boolean,

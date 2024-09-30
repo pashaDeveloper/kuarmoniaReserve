@@ -26,10 +26,11 @@ body {
 h1,
 h2 {
   font-family: "Vazir";
+  @apply dark:text-gray-100
 }
 
 p {
-  @apply text-neutral;
+  @apply text-neutral dark:text-gray-100
 }
 
 ::selection {
