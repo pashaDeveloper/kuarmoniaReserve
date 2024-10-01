@@ -38,7 +38,3 @@ export default function Home() {
   );
 }
 
-/**
- * Using CORS in Next.js to handle cross-origin requests
- * https://blog.logrocket.com/using-cors-next-js-handle-cross-origin-requests/
- */

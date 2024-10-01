@@ -55,6 +55,8 @@ export async function updateCategory(req) {
 
   try {
     const { id } = req.query;
+    console.log(req.body)
+
     const { title, description, status, isDeleted } = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;

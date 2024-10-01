@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Popover from "@/components/shared/modal/Popover";
 import InfoTable from "@/components/shared/table/InfoTable";
 import { useGetBlogsQuery, useUpdateBlogMutation } from "@/services/blog/blogApi"; // Blog API hooks
-import Table from "@/components/shared/table/Table";
+import TableComponent from "@/components/shared/table/Table";
 import { handleView, toggleTooltipPopover, handleClose, handleEdit, handleDelete, handleStatus } from '@/utils/functionHelpers';
 import { toast } from "react-hot-toast";
 import { blogColumns } from '@/utils/columnsConfig';
@@ -53,7 +53,7 @@ const ListBlog = () => {
       <Panel>
         <section className="h-full w-full">
         
-          <Table
+          <TableComponent
             columns={blogColumns} 
             data={Array.isArray(data?.data) ? data.data : []}
             onEdit={(blog) => handleEdit(blog, setBlogToEdit, setIsEditModalOpen)} 

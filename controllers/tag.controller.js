@@ -1,9 +1,8 @@
 import Tag from '@/models/tag.model';
 
-// Add a new tag
 export async function addTag(req) {
   try {
-    const { title, description, keywords, robots } = req.body; // استفاده از داده‌های فیک
+    const { title, description, keywords, robots } = req.body; 
 
     const tag = await Tag.create({
       title,
@@ -67,6 +66,7 @@ export async function getTags(req) {
 
 export async function updateTag(req) {
   const { id } = req.query;
+  console.log(req.body)
   try {
     const { title, description, status, isDeleted ,robots,keywords} = req.body || {};
     const updateFields = {};

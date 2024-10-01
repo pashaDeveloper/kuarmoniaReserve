@@ -6,7 +6,7 @@ import Popover from "@/components/shared/modal/Popover";
 import InfoTable from "@/components/shared/table/InfoTable";
 import { useGetTagsQuery, useUpdateTagMutation } from "@/services/tag/tagApi";
 import AddTag from "./add";
-import Table from "@/components/shared/table/Table";
+import TableComponent from "@/components/shared/table/Table";
 import { handleView, openModal, toggleTooltipPopover, handleClose, handleEdit, handleDelete ,handleStatus } from '@/utils/functionHelpers';
 import { tagColumns } from '@/utils/columnsConfig';
 import { toast } from "react-hot-toast";
@@ -57,7 +57,7 @@ const ListTag = () => {
 
       <Panel>
         <section className="h-full w-full">
-          <Table
+          <TableComponent
             columns={tagColumns}
             data={Array.isArray(data?.data) ? data.data : []}
             onEdit={(tag) => handleEdit(tag, setTagToEdit,setIsEditModalOpen)}
