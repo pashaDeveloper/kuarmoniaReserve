@@ -43,7 +43,7 @@ const Add = ({ onClose, onSuccess, blogToEdit = null }) => {
   };
 
   return (
-    <div className="p-6 flex flex-col gap-6 sm:flex-row dark:bg-gray-600 dark:text-gray-100">
+    <div className="p-6 flex flex-col gap-6 sm:flex-row ">
       <ToggleThemeButton />
       <div className="flex-1">
         <FormSection

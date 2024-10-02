@@ -27,9 +27,9 @@ const PreviewSection = ({
         toggleFullscreen(isFullscreen, setIsFullscreen, previewRef);
       };
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 border-[1px] p-2 rounded border-primary dark:border-blue-500">
+    <div className="border-[1px] p-2 rounded border-primary ">
       <button
-        className="bg-white p-3 dark:bg-gray-500 rounded-full shadow cursor-pointer z-10"
+        className="p-3  rounded-full shadow cursor-pointer z-10"
         onClick={toggleVisibility}
       >
         {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
@@ -39,7 +39,7 @@ const PreviewSection = ({
       </div>
    
 
-        <div className={`flex-1 p-4 mt-4 h-full sm:h-screen rounded-lg overflow-y-auto bg-gray-50 dark:bg-gray-600
+        <div className={`flex-1 p-4 mt-4 h-full sm:h-screen rounded-lg overflow-y-auto  
         ${
           isFullscreen ? "fixed inset-0 z-50" : "relative"
         }
@@ -51,7 +51,7 @@ const PreviewSection = ({
 
       >
          <button
-          className="bg-gray-50 dark:bg-rgray-800 p-3 rounded-full shadow cursor-pointer absolute top-2 right-2 z-10"
+          className="  p-3 rounded-full shadow cursor-pointer absolute top-2 right-2 z-10"
           onClick={handleToggleFullscreen}
         >
           {isFullscreen ? (

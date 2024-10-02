@@ -52,11 +52,11 @@ const ListTag = () => {
           openModal(setIsModalOpen, setTagToView);
         }}        
       >
-        <FaPlus size={24} color="white" />
+        <FaPlus size={24} color="white " />
       </button>
 
       <Panel>
-        <section className="h-full w-full">
+        <section className="h-full w-full  ">
           <TableComponent
             columns={tagColumns}
             data={Array.isArray(data?.data) ? data.data : []}
@@ -65,7 +65,7 @@ const ListTag = () => {
             onClose={() => handleClose(setTagToView, setIsEditModalOpen, setIsModalOpen)}
             onView={(tag) => handleView(tag, setTagToView, toggleTooltipPopover)}
             toggleTooltipPopover={(tag) => toggleTooltipPopover(tag, setTagToView, setIsMobilePopoverOpen, isMobilePopoverOpen)}
-            onEnable={(tag)=>handleStatus(tag,updateTag,refetch)}
+            onEnable={(tag) => handleStatus(tag, updateTag, refetch)} // پاس دادن handleStatus
             currentPage={currentPage}
             totalPages={Math.ceil(data?.total / 10)} // محاسبه تعداد کل صفحات
             onPageChange={handlePageChange}

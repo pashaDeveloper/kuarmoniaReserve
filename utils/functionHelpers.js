@@ -22,9 +22,11 @@ export const handleDelete = async (item, updateItem, refetch) => {
 
  export const handleStatus = async (item, updateItem,refetch) => {
     try {
+      const newStatus = item.status === 'active' ? 'inActive' : 'active';
+
       const response = await updateItem({
         id: item._id,
-        status: !item.status,
+        status: newStatus,
       }).unwrap();
       if (response.success) {
         toast.success(response.message);

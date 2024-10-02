@@ -18,8 +18,8 @@ export default function Home() {
     <main>
       <Head>
         <title>
-          Travel Landing Page by Travello - Comprehensive travel platform for
-          diverse booking needs
+          {/* Travel Landing Page by Travello - Comprehensive travel platform for
+          diverse booking needs */}
         </title>
       </Head>
       <Main>

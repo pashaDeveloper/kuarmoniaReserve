@@ -42,13 +42,13 @@ const Sidebar = ({ routes }) => {
             window.open("/", "_self");
           }}
         >
-          {/* <LoadImage
-            src={user?.avatar?.url}
+          <LoadImage
+            src={`/${user?.avatar?.url}`}
             alt={user?.avatar?.public_id}
             height={30}
             width={30}
             className="rounded-secondary object-cover w-[30px] h-[30px]"
-          /> */}
+          />
           <article className="flex flex-col gap-y-0.5">
             <h2 className="line-clamp-1 text-base">{user?.name}</h2>
             <span className="text-xs">خروج</span>

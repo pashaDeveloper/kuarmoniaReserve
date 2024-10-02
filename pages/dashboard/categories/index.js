@@ -84,7 +84,6 @@ const ListCategory = () => {
   
   const toggleStatus = async (categoryId, currentStatus) => {
     try {
-      const newStatus = currentStatus === 'active' ? 'inActive' : 'active';
       const response = await updateCategory({
         id: categoryId,
         status: newStatus,
@@ -137,9 +136,9 @@ const ListCategory = () => {
       </button>
 
       <Panel>
-        <section className="h-full w-full">
+        <section className="h-full w-full ">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 z-10">
+            <table className="w-full text-sm text-left text-gray-500 z-10 ">
               <thead className="text-xs text-gray-700 uppercase text-center bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">

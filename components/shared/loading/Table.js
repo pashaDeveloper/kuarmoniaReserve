@@ -4,7 +4,7 @@ import React from "react";
 
 const Table = ({ repeat }) => {
   return (
-    <tr className="bg-white hover:bg-secondary/50 transition-colors">
+    <tr className=" hover:bg-secondary/50 transition-colors">
       {Array(repeat)
         .fill(0)
         .map((_, index) => (

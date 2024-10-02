@@ -24,7 +24,7 @@ const MainContent = ({
     };
   }, [user]);
   return (
-    <div className="max-w-screen-xl min-w-[500px] dark:bg-gray-600 mx-auto p-5 sm:p-10 md:p-16 relative">
+    <div className="max-w-screen-xl min-w-[500px]  mx-auto p-5 sm:p-10 md:p-16 relative">
       <div
         className="bg-cover bg-center text-center overflow-hidden  rounded-lg"
         style={{
@@ -54,9 +54,9 @@ const MainContent = ({
             </div>
           </div>
 
-          <div className=" relative bg-gray-50 dark:bg-gray-600 shadow-lg  top-0 -mt-20 p-5 sm:p-10 rounded-b-lg ">
+          <div className=" relative bg-gray-50  shadow-lg  top-0 -mt-20 p-5 sm:p-10 rounded-b-lg ">
             <div className="flex items-center mt-14 justify-center">
-              <div className="text-gray-700 dark:text-gray-100">
+              <div className="text-gray-700 ">
                 <p>
                   <a
                     href="#"
@@ -82,7 +82,7 @@ const MainContent = ({
                 <SkeletonText lines={1} />
               )}
             </h1>
-            <div className="text-base dark:bg-text-100 leading-8 my-5 text-justify">
+            <div className="text-base  leading-8 my-5 text-justify">
               {editorData ? (
                 <div
                   dangerouslySetInnerHTML={{

@@ -43,7 +43,7 @@ const ListBlog = () => {
     <>
 
   <button
-        className="fixed bottom-16 right-[20px] md:right-[30px] lg:right-[400px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
+        className="fixed bottom-16 right-[20px] md:right-[30px] lg:right-[400px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95 "
         style={{ width: '64px', height: '64px', transition: 'background-color 0.3s !important, transform 0.1s !important' }}
         onClick={() => router.push('/dashboard/blogs/add')}
       >
@@ -51,8 +51,10 @@ const ListBlog = () => {
       </button>
 
       <Panel>
-        <section className="h-full w-full">
-        
+      
+
+        <section className="h-full w-full  p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
           <TableComponent
             columns={blogColumns} 
             data={Array.isArray(data?.data) ? data.data : []}
@@ -66,7 +68,7 @@ const ListBlog = () => {
             totalPages={Math.ceil(data?.total / 10)} 
             onPageChange={handlePageChange}
             itemsPerPage={7}
-          />
+            />
         </section>
       </Panel>
 

@@ -18,7 +18,9 @@ import { BsCartCheck } from "react-icons/bs";
 import { FaBlog } from "react-icons/fa";
 import { FaListUl } from "react-icons/fa";
 import { BsTags } from "react-icons/bs";
-import ProgressBar from '../components/shared/loading/progressBar'
+import ProgressBar from '../components/shared/loading/progressBar';
+import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
+
 const Panel = ({ children }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -80,7 +82,7 @@ const Panel = ({ children }) => {
     },
     {
       name: (
-        <p className="text-black flex flex-row gap-x-2 items-center w-full h-fit">
+        <p className="flex flex-row gap-x-2 items-center w-full h-fit">
           لیست کاربران{" "}
           <span
             className="border border-cyan-900 text-cyan-900 bg-cyan-100/50 px-1.5 py-0 rounded uppercase"
@@ -101,10 +103,10 @@ const Panel = ({ children }) => {
   ];
 
   return (
-    <section className="h-screen w-screen ">
+    <section className="h-screen w-screen bg-gray-100 dark:bg-gray-600 dark:text-gray-100">
             <ProgressBar />
 
-      <div className="max-w-7xl mx-auto h-full flex flex-col gap-y-4 p-2">
+      <div className="max-w-7xl mx-auto h-full flex flex-col gap-y-4 p-2 ">
         <nav className="px-4 py-2.5 flex flex-row items-center justify-between gap-x-2 rounded">
           <p className="flex flex-row items-center gap-x-2 text-sm capitalize whitespace-nowrap overflow-x-auto scrollbar-hide text-ellipsis">
             <Link href="/">
@@ -119,6 +121,7 @@ const Panel = ({ children }) => {
               </React.Fragment>
             ))}
           </p>
+          <ToggleThemeButton />
 
           {open ? (
             <>
@@ -142,10 +145,10 @@ const Panel = ({ children }) => {
         </nav>
 
         <div className="h-full overflow-y-auto scrollbar-hide grid grid-cols-12 gap-x-4 relative">
-          <aside className="lg:col-span-3 md:col-span-4 col-span-12 md:block hidden overflow-y-auto bg-secondary rounded p-2">
+          <aside className="lg:col-span-3 md:col-span-4 col-span-12 md:block hidden overflow-y-auto bg-secondary dark:bg-gray-900 rounded p-2">
             <Sidebar routes={routes} />
           </aside>
-          <section className="lg:col-span-9 md:col-span-8  col-span-12 overflow-y-auto">
+          <section className="lg:col-span-9 overflow-hidden md:col-span-8  col-span-12  rounded ">
             {children}
           </section>
 

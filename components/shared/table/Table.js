@@ -50,16 +50,13 @@ const TableComponent = ({
   };
 
   const handleToggleStatus = (item) => {
-    console.log(item)
-    const newStatus = item.status === 'active' ? 'inActive' : 'active';
-    onEnable({id:item._id, status: newStatus });
+    onEnable(item); 
   };
-
   return (
     <>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left mb-8 whitespace-nowrap text-gray-500">
-          <thead className="text-xs text-gray-700 text-center bg-gray-50">
+      <div className="overflow-x-auto mt-2 ">
+        <table className="w-full text-sm text-left mb-4  whitespace-nowrap  rounded">
+          <thead className="text-xs  text-center dark:bg-gray-700 dark:text-gray-100">
             <tr>
               <th className="px-6 py-3">ردیف</th>
               <th className="px-6 py-3">عملیات</th>
@@ -71,10 +68,10 @@ const TableComponent = ({
               ))}
             </tr>
           </thead>
-          <tbody className="text-right">
+          <tbody className="text-right ">
             {data?.length === 0 || isLoading ? (
               <>
-                {[1, 2, 3,4,5,6,7,8,9].map((i) => (
+                {[1, 2, 3,4,5,6,7].map((i) => (
                   <LoadingTable key={i} repeat={14} />
                 ))}
               </>
@@ -82,7 +79,7 @@ const TableComponent = ({
               data.map((item, index) => (
                 <tr
                   key={item._id}
-                  className="bg-white hover:bg-green-50 transition-colors"
+                  className=" hover:bg-green-50 transition-colors"
                 >
                   <td className="px-6 py-4 text-right">
                     {index + 1 + (currentPage - 1) * itemsPerPage}
@@ -140,7 +137,7 @@ const TableComponent = ({
                                       type="checkbox"
                                       className="sr-only peer"
                                       checked={item.status === 'active'}
-                                      onChange={() => handleToggleStatus(item)}
+                                      onChange={() => handleToggleStatus(item._id,item.status)}
                                     />
                                     <div className="relative w-12 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:bg-green-600 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
                                   </label>
