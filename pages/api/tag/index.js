@@ -1,4 +1,4 @@
-import { addTag ,getTags} from "@/controllers/tag.controller";
+import { addTag ,getTags,getTagsForDropDownMenu} from "@/controllers/tag.controller";
 
 export const config = {
   api: {
@@ -23,6 +23,11 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
+        if (req.query.type === "dropdown") {
+          const result = await getTagsForDropDownMenu();
+          console.log(req.query)
+          return res.status(200).json(result);
+        }
         const result = await getTags(req);
         return res.status(200).json(result);
       } catch (error) {

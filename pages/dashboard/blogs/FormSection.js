@@ -1,19 +1,16 @@
 // FormSection.js
-import React from 'react';
+import React from "react";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import Button from "@/components/shared/button/Button";
 import RTEditor from "@/components/shared/editor/RTEditor";
+import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 
 const FormSection = ({
   handleSubmit,
   handleAddOrUpdateBlog,
   register,
-  setValue,
   selectedTags,
-  setSelectedTags,
-  selectedCategory,
-  setSelectedCategory,
   editorData,
   setEditorData,
   galleryPreview,
@@ -21,10 +18,11 @@ const FormSection = ({
   blogToEdit,
   publishDate,
   categoryOptions,
+  tagsOptions,
   handleTagsChange,
-  handleCategoryChange
+  handleCategoryChange,
 }) => {
-  
+
   return (
     <form
       className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
@@ -64,31 +62,22 @@ const FormSection = ({
         <div className="flex-1">
           <label htmlFor="tags" className="flex flex-col gap-y-2">
             تگ ها
-            <MultiSelectDropdown
-              options={categoryOptions}
+            { <MultiSelectDropdown
+              options={tagsOptions}
               selectedOptions={selectedTags}
-              onChange={handleTagsChange}
-              className="w-full"
+              handleChange={handleCategoryChange}       
+             className="w-full"
               name="tags"
-            />
+            /> }
           </label>
         </div>
         <div className="flex-1">
           <label htmlFor="category" className="flex flex-col gap-y-2">
             دسته‌بندی
-            <select
-              value={selectedCategory}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              className="rounded w-full"
-              {...register("category")}
-            >
-              <option value="">انتخاب دسته‌بندی</option>
-              {categoryOptions.map((option) => (
-                <option key={option.id} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <SearchableDropdown 
+  categoryOptions={categoryOptions} 
+  handleCategoryChange={handleCategoryChange} 
+/>
           </label>
         </div>
       </div>

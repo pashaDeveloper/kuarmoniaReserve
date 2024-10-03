@@ -64,6 +64,31 @@ export async function getTags(req) {
   }
 }
 
+export async function getTagsForDropDownMenu() {
+  try {
+    const tags = await Tag.find({ isDeleted: false, status: 'active' }).select('_id title description');
+    console.log("tags",tags); // اصلاح تایپی
+
+    if (tags.length > 0) {
+      return {
+        success: true,
+        data: tags,
+        message: "تگ ها با موفقیت برای دریافت شدند",
+      };
+    } else {
+      return {
+        success: false,
+        message: "هیچ تگ فعالی  یافت نشد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
 export async function updateTag(req) {
   const { id } = req.query;
   console.log(req.body)

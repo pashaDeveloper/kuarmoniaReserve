@@ -7,7 +7,7 @@ export const kuarmoniaApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api`,
   }),
-  tagTypes: ["User", "Cart", "Rent", "Favorite", "Purchase", "Review","Category","Tag"],
+  tagTypes: ["User", "Cart", "Rent", "Favorite", "Purchase", "Review","Category","Tag","CategoryDropdown","TagDropdown"],
   refetchOnMountOrArgChange: true,
   endpoints: () => ({}),
 });

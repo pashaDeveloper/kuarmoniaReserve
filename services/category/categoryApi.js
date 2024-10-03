@@ -1,4 +1,4 @@
-const { kuarmoniaApi } = require("../kuarmonia");
+import { kuarmoniaApi } from "../kuarmonia";
 
 const categoryApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,7 +11,6 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
         },
         body,
       }),
-
       invalidatesTags: [
         "Rent",
         "User",
@@ -27,8 +26,18 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
         url: "/category/",
         method: "GET",
       }),
+      providesTags: ["Category"],
     }),
- 
+
+    getCategoriesForDropDownMenu: builder.query({
+      query: () => ({
+        url: "/category/",
+        method: "GET",
+        params: { type: "dropdown" }, 
+      }),
+      providesTags: ["CategoryDropdown"],
+    }),
+
     updateCategory: builder.mutation({
       query: ({ id, ...formData }) => ({
         url: `/category/${id}`,
@@ -39,8 +48,10 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
     }),
   }),
 });
+
 export const {
   useAddCategoryMutation,
   useGetCategoriesQuery,
+  useGetCategoriesForDropDownMenuQuery,
   useUpdateCategoryMutation,
 } = categoryApi;

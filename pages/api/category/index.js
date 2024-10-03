@@ -1,4 +1,4 @@
-import { addCategory ,getCategories,softDeleteCategory} from "@/controllers/category.controller";
+import { addCategory, getCategories, getCategoriesForDropDownMenu, softDeleteCategory } from "@/controllers/category.controller";
 
 export const config = {
   api: {
@@ -22,6 +22,10 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
+        if (req.query.type === "dropdown") {
+          const result = await getCategoriesForDropDownMenu();
+          return res.status(200).json(result);
+        }
         const result = await getCategories(req);
         return res.status(200).json(result);
       } catch (error) {
@@ -39,4 +43,3 @@ export default async function handler(req, res) {
       });
   }
 }
-

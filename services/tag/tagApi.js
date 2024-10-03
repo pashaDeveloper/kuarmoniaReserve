@@ -27,19 +27,30 @@ const tagApi = kuarmoniaApi.injectEndpoints({
         method: "GET",
       }),
     }),
- 
+
+    getTagsForDropDownMenu: builder.query({
+      query: () => ({
+        url: "/tag/",
+        method: "GET",
+        params: { type: "dropdown" }, 
+      }),
+      providesTags: ["TagDropdown"], 
+    }),
+
+
     updateTag: builder.mutation({
       query: ({ id, ...formData }) => ({
         url: `/tag/${id}`,
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["tag"],
+      invalidatesTags: ["Tag"],
     }),
   }),
 });
 export const {
   useAddTagMutation,
   useGetTagsQuery,
+  useGetTagsForDropDownMenuQuery,
   useUpdateTagMutation,
 } = tagApi;

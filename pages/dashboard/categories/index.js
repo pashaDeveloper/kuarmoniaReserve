@@ -11,8 +11,6 @@ import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import Tooltip from "../../../components/shared/tooltip/Tooltip";
 import Info from "./info";
-import Table from "@/components/shared/loading/Table";
-
 const ListCategory = () => {
   const { data, isLoading, error, refetch } = useGetCategoriesQuery();
   const [updateCategory] = useUpdateCategoryMutation();

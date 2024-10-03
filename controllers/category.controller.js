@@ -50,6 +50,31 @@ export async function getCategories() {
     };
   }
 }
+
+export async function getCategoriesForDropDownMenu() {
+  try {
+    const categories = await Category.find({ isDeleted: false, status: 'active' }).select('id title description');
+    
+    if (categories.length > 0) {
+      return {
+        success: true,
+        data: categories,
+        message: "دسته‌بندی‌ها با موفقیت برای DropDownMenu دریافت شدند",
+      };
+    } else {
+      return {
+        success: false,
+        message: "هیچ دسته‌بندی فعال برای DropDownMenu یافت نشد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
 export async function updateCategory(req) {
 
 
