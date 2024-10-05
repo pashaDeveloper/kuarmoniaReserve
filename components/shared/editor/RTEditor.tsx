@@ -14,7 +14,7 @@ const RTEditor = ({ value, onChange, ...props }: any) => {
     return (
         <div className={`pt-4 px-3  ${isFullScreen ? 'fullscreen-editor' : 'w-[99%]'}`} dir="rtl">
             <button 
-                className={' p-3 mb-2 rounded-full shadow cursor-pointer z-10'}
+                className={' p-3 mb-2 rounded-full dark:bg-gray-900 bg-white  shadow-lg cursor-pointer z-10'}
                 onClick={toggleFullScreen}
             >
                 {isFullScreen ? <TfiFullscreen size={20} /> : <BsArrowsFullscreen size={20} />}

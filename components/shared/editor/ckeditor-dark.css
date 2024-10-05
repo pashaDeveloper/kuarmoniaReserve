@@ -1,0 +1,35 @@
+/* cke-dark.css */
+.dark .ck-editor__editable {
+    background-color: #1f2937 !important;
+    color: #d1d5db !important;
+  }
+  
+  .dark .ck-toolbar {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+  }
+  
+  .dark .ck-button, 
+  .dark .ck-dropdown, 
+  .dark .ck-toolbar .ck-button:hover, 
+  .dark .ck-toolbar .ck-button:focus {
+    background-color: #4b5563 !important;
+    color: #d1d5db !important;
+  }
+  
+  .dark .ck-button:hover, 
+  .dark .ck-dropdown:hover {
+    background-color: #6b7280 !important;
+  }
+  
+  .dark .ck-button.ck-on, 
+  .dark .ck-dropdown.ck-on {
+    background-color: #9ca3af !important;
+  }
+  
+  .dark .ck-content a {
+    color: #3b82f6 !important;
+  }
+  
+  /* افزودن استایل‌های بیشتر با !important در صورت نیاز */
+  

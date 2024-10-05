@@ -37,6 +37,8 @@ const blogSchema = new Schema(
     description: {
       type: String,
       maxLength: [200, "توضیحات نمی‌تواند بیشتر از ۲۰۰ کاراکتر باشد"],
+      required: [true, "توضیحات الزامی است"],
+
     },
     content: {
       type: String,
@@ -44,12 +46,19 @@ const blogSchema = new Schema(
     },
     publishDate: {
       type: Date,
-      required: [true, "تاریخ انتشار الزامی است"],
+    },
+    publishStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+      required: [true, "وضعیت انتشار الزامی است"],
     },
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Tag", // ارجاع به مدل تگ
+        ref: "Tag", 
+        required: [true, "تگ پست الزامی است"],
+
       },
     ],
     category: {
@@ -88,6 +97,11 @@ const blogSchema = new Schema(
         ref: "Comment", // ارجاع به مدل کامنت
       },
     ],
+  views: {
+      type: Number,
+      default: 0,
+      min: [0, "تعداد بازدید نمی‌تواند منفی باشد"],
+    },
 
     ...baseSchema.obj,
   },

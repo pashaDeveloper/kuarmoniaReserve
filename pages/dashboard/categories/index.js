@@ -1,9 +1,10 @@
 import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
-import Modal from "../../../components/shared/modal/Modal";
 import {
-  useGetCategoriesQuery,useUpdateCategoryMutation} from "@/services/category/categoryApi";
+  useGetCategoriesQuery,
+  useUpdateCategoryMutation
+} from "@/services/category/categoryApi";
 import AddCategory from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
@@ -11,63 +12,35 @@ import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import Tooltip from "../../../components/shared/tooltip/Tooltip";
 import Info from "./info";
+
 const ListCategory = () => {
   const { data, isLoading, error, refetch } = useGetCategoriesQuery();
   const [updateCategory] = useUpdateCategoryMutation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const categories = Array.isArray(data?.data) ? data.data : [];
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState(null);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [categoryToView, setCategoryToView] = useState(null);
 
-  const openModal = () => { 
-    setIsModalOpen(true);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    type: null, // 'add', 'edit', 'delete', 'info'
+    category: null,
+  });
+
+  const openModal = (type, category = null) => {
+    setModalState({ isOpen: true, type, category });
   };
 
-  const closeModal = (category) => {
-    setIsModalOpen(false);
+  const closeModal = () => {
+    setModalState({ isOpen: false, type: null, category: null });
   };
 
-  const openDeleteModal = (category) => {
-    setCategoryToDelete(category);
-    setIsDeleteModalOpen(true);
-  };
-
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setCategoryToDelete(null);
-  };
-
-  const openEditModal = (category) => {
-    setCategoryToEdit(category);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-    setCategoryToEdit(null);
-  };
-
-  const openInfoModal = (category) => {
-    setCategoryToView(category);
-    setIsInfoModalOpen(true);
-  };
-
-  const closeInfoModal = () => {
-    setIsInfoModalOpen(false);
-    setCategoryToView(null);
-  };
   const handleDelete = async () => {
+    const categoryToDelete = modalState.category;
     try {
       const response = await updateCategory({
         id: categoryToDelete._id,
         isDeleted: true,
       }).unwrap();
-      closeDeleteModal();
-  
+      closeModal();
+
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -79,14 +52,15 @@ const ListCategory = () => {
       console.error("Error deleting category", error);
     }
   };
-  
+
   const toggleStatus = async (categoryId, currentStatus) => {
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
     try {
       const response = await updateCategory({
         id: categoryId,
         status: newStatus,
       }).unwrap();
-  
+
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -98,23 +72,23 @@ const ListCategory = () => {
       console.error("Error toggling status", error);
     }
   };
-  
-  
+
   const handleAddCategorySuccess = () => {
     refetch();
   };
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("در حال دریافت دسته بندی...", { id: "add-category" });
+      toast.loading("در حال دریافت دسته بندی...", { id: "category-loading" });
     }
 
-    if (data) {
-      toast.success(data?.message, { id: "add-category" });
+    if (data && !isLoading) {
+      // فرض می‌کنیم که داده‌های موفقیت‌آمیز بدون نیاز به نمایش toast باشند
+      // اگر نیاز به نمایش دارید، می‌توانید این قسمت را تغییر دهید
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "add-category" });
+      toast.error(error?.data?.message, { id: "category-loading" });
     }
   }, [data, error, isLoading]);
 
@@ -128,7 +102,7 @@ const ListCategory = () => {
           transition:
             "background-color 0.3s !important, transform 0.1s !important",
         }}
-        onClick={openModal}
+        onClick={() => openModal('add')}
       >
         <FaPlus size={24} color="white" />
       </button>
@@ -139,33 +113,15 @@ const ListCategory = () => {
             <table className="w-full text-sm text-left text-gray-500 z-10 ">
               <thead className="text-xs text-gray-700 uppercase text-center bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3">
-                    ردیف
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    عملیات
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    شناسه
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    وضعیت
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    عنوان
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    توضیحات
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    تعداد
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    تاریخ ایجاد
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    اسلاگ
-                  </th>
+                  <th className="px-6 py-3">ردیف</th>
+                  <th className="px-6 py-3">عملیات</th>
+                  <th className="px-6 py-3">شناسه</th>
+                  <th className="px-6 py-3">وضعیت</th>
+                  <th className="px-6 py-3">عنوان</th>
+                  <th className="px-6 py-3">توضیحات</th>
+                  <th className="px-6 py-3">تعداد</th>
+                  <th className="px-6 py-3">تاریخ ایجاد</th>
+                  <th className="px-6 py-3">اسلاگ</th>
                 </tr>
               </thead>
               <tbody>
@@ -186,7 +142,7 @@ const ListCategory = () => {
                         >
                           <AiTwotoneDelete
                             className="w-6 h-6 hover:text-red-500 cursor-pointer"
-                            onClick={() => openDeleteModal(category)}
+                            onClick={() => openModal('delete', category)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -196,7 +152,7 @@ const ListCategory = () => {
                         >
                           <AiTwotoneEdit
                             className="w-10 h-6 hover:text-blue-500 cursor-pointer"
-                            onClick={() => openEditModal(category)}
+                            onClick={() => openModal('edit', category)}
                           />
                         </Tooltip>
                         <Tooltip
@@ -206,7 +162,7 @@ const ListCategory = () => {
                         >
                           <LiaInfoCircleSolid
                             className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                            onClick={() => openInfoModal(category)}
+                            onClick={() => openModal('info', category)}
                           />
                         </Tooltip>
                       </div>
@@ -215,15 +171,14 @@ const ListCategory = () => {
                       {category.categoryId}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      <label class="inline-flex items-center me-5 cursor-pointer">
+                      <label className="inline-flex items-center me-5 cursor-pointer">
                         <input
                           type="checkbox"
-                          class="sr-only peer"
+                          className="sr-only peer"
                           checked={category.status === 'active'}
-
-                          onChange={() => toggleStatus(category._id, category.status)}                        />
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                 
+                          onChange={() => toggleStatus(category._id, category.status)}
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                       </label>
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
@@ -244,34 +199,35 @@ const ListCategory = () => {
                   </tr>
                 ))}
               </tbody>
+            </table>
+            {/* حذف مدال در داخل جدول به خاطر ساختار JSX */}
+            {modalState.type === 'delete' && (
               <DeleteConfirmationModal
-                isOpen={isDeleteModalOpen}
-                onClose={closeDeleteModal}
+                isOpen={modalState.isOpen}
+                onClose={closeModal}
                 onConfirm={handleDelete}
               />
-            </table>
+            )}
           </div>
         </section>
       </Panel>
 
-      {/* مدال افزودن/ویرایش دسته‌بندی */}
-      <Modal
-        isOpen={isModalOpen || isEditModalOpen}
-        onClose={isModalOpen ? closeModal : closeEditModal}
-        className="lg:w-1/3 md:w-1/2 w-full z-50"
-      >
-        <AddCategory
-          onClose={isModalOpen ? closeModal : closeEditModal}
-          onSuccess={handleAddCategorySuccess}
-          categoryToEdit={categoryToEdit}
-        />
-      </Modal>
-
-      <Info
-        isOpen={isInfoModalOpen}
-        onClose={closeInfoModal}
-        category={categoryToView}
+      {/* کامپوننت AddCategory که خودش مدال را مدیریت می‌کند */}
+      <AddCategory
+        isOpen={modalState.isOpen && (modalState.type === 'add' || modalState.type === 'edit')}
+        onClose={closeModal}
+        onSuccess={handleAddCategorySuccess}
+        categoryToEdit={modalState.type === 'edit' ? modalState.category : null}
       />
+
+      {/* مدال جزئیات */}
+      {modalState.type === 'info' && (
+        <Info
+          isOpen={modalState.isOpen}
+          onClose={closeModal}
+          category={modalState.category}
+        />
+      )}
     </>
   );
 };

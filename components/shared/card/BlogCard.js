@@ -24,7 +24,7 @@ const BlogCard = ({ watch, galleryPreview }) => {
           </p>
         </div>
         <div className="flex-1 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white "></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white dark:to-slate-800 "></div>
           <div
             className="bg-cover bg-center text-center overflow-hidden"
             style={{

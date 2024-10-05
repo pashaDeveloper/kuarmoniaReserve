@@ -1,10 +1,12 @@
+// AddCategory.jsx
 import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import { useAddCategoryMutation, useUpdateCategoryMutation } from "@/services/category/categoryApi";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
+import Modal from "../../../components/shared/modal/Modal"; // اطمینان حاصل کنید که مسیر درست است
 
-const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
+const AddCategory = ({ isOpen, onClose, onSuccess, categoryToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [addCategory, { isLoading: isAdding, data: addData, error: addError }] = useAddCategoryMutation();
   const [updateCategory, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateCategoryMutation();
@@ -14,8 +16,10 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
       // پر کردن فرم با داده‌های موجود
       setValue("title", categoryToEdit.title);
       setValue("description", categoryToEdit.description);
+    } else {
+      reset(); // ریست کردن فرم اگر در حالت افزودن هستیم
     }
-  }, [categoryToEdit, setValue]);
+  }, [categoryToEdit, setValue, reset]);
 
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
@@ -50,46 +54,52 @@ const AddCategory = ({ onClose, onSuccess, categoryToEdit = null }) => {
         addCategory(formData).unwrap();
       }
     } catch (err) {
-      console.error("خطا در نگام پردازش دسته بندی: ", err);
+      console.error("خطا در هنگام پردازش دسته بندی: ", err);
     }
   };
 
   return (
-    <form
-      className="text-sm w-full h-full flex flex-col gap-y-4"
-      onSubmit={handleSubmit(handleAddOrUpdateCategory)}
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="lg:w-1/3 md:w-1/2 w-full z-50"
     >
-      <div className="flex gap-4 flex-col">
-        <label htmlFor="title" className="flex flex-col gap-y-2">
-          عنوان
-          <input
-            type="text"
-            name="title"
-            id="title"
-            maxLength={50}
-            placeholder="عنوان دسته‌بندی را تایپ کنید..."
-            className="rounded"
-            autoFocus
-            {...register("title", { required: true })}
-          />
-        </label>
-        <label htmlFor="description" className="flex flex-col gap-y-2">
-          توضیحات
-          <textarea
-            name="description"
-            id="description"
-            maxLength={200}
-            placeholder="توضیحات دسته‌بندی را تایپ کنید..."
-            className="rounded h-32"
-            {...register("description")}
-          />
-        </label>
-        
-        <Button type="submit" className="py-2 mt-4">
-          {categoryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
-        </Button>
-      </div>
-    </form>
+      <form
+        className="text-sm w-full h-full flex flex-col gap-y-4"
+        onSubmit={handleSubmit(handleAddOrUpdateCategory)}
+      >
+        <div className="flex gap-4 flex-col">
+          <label htmlFor="title" className="flex flex-col gap-y-2">
+            عنوان
+            <input
+              type="text"
+              name="title"
+              id="title"
+              maxLength={50}
+              placeholder="عنوان دسته‌بندی را تایپ کنید..."
+              className="rounded"
+              autoFocus
+              {...register("title", { required: true })}
+            />
+          </label>
+          <label htmlFor="description" className="flex flex-col gap-y-2">
+            توضیحات
+            <textarea
+              name="description"
+              id="description"
+              maxLength={200}
+              placeholder="توضیحات دسته‌بندی را تایپ کنید..."
+              className="rounded h-32"
+              {...register("description")}
+            />
+          </label>
+          
+          <Button type="submit" className="py-2 mt-4">
+            {categoryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 

@@ -1,11 +1,14 @@
 // PreviewSection.js
-import React,{useState,useRef} from "react";
+import React,{useState,useRef,useMemo} from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
 import BlogCard from "@/components/shared/card/BlogCard";
 import MainContent from "@/components/shared/content/MainContent";
-import {toggleFullscreen  } from '@/utils/functionHelpers'
+import {toggleFullscreen  } from '@/utils/functionHelpers';
+import { useForm } from "react-hook-form";
+import {  useSelector } from "react-redux";
+
 const PreviewSection = ({
   watch,
   galleryPreview,
@@ -18,7 +21,7 @@ const PreviewSection = ({
     const [isHidden, setIsHidden] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const previewRef = useRef(null);
-    const profileImage = "https://avatar.iran.liara.run/public"; // آدرس عکس واقعی
+
 
     const toggleVisibility = () => {
         setIsHidden(!isHidden);
@@ -27,9 +30,9 @@ const PreviewSection = ({
         toggleFullscreen(isFullscreen, setIsFullscreen, previewRef);
       };
   return (
-    <div className="border-[1px] p-2 rounded border-primary ">
+    <div className="border-[1px] p-2 rounded border-primary dark:border-blue-600">
       <button
-        className="p-3  rounded-full shadow cursor-pointer z-10"
+        className="p-3  rounded-full dark:bg-gray-900 bg-white shadow-lg cursor-pointer z-10"
         onClick={toggleVisibility}
       >
         {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
@@ -39,7 +42,7 @@ const PreviewSection = ({
       </div>
    
 
-        <div className={`flex-1 p-4 mt-4 h-full sm:h-screen rounded-lg overflow-y-auto  
+        <div className={`flex-1 p-4 mt-4 h-full sm:h-screen bg-gray-50 dark:bg-slate-800 dark:text-gray-100  rounded-lg overflow-y-auto  
         ${
           isFullscreen ? "fixed inset-0 z-50" : "relative"
         }
@@ -51,7 +54,7 @@ const PreviewSection = ({
 
       >
          <button
-          className="  p-3 rounded-full shadow cursor-pointer absolute top-2 right-2 z-10"
+          className="  p-3 rounded-full shadow-lg cursor-pointer absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
           onClick={handleToggleFullscreen}
         >
           {isFullscreen ? (
@@ -62,7 +65,6 @@ const PreviewSection = ({
         </button>
           <MainContent
             galleryPreview={galleryPreview}
-            profileImage={profileImage}
             isLoading={isLoading}
             handleImageLoad={handleImageLoad}
             publishDate={publishDate}

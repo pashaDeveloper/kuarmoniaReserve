@@ -3,11 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 import { RxCross2 } from "react-icons/rx";
 
-const MultiSelectDropdown = ({ options, handleChange }) => {
+const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState([]); // حالت برای 
-  console.log("options",options)
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
@@ -33,28 +31,33 @@ const MultiSelectDropdown = ({ options, handleChange }) => {
 
   const handleOptionSelect = (option) => {
     let updatedSelected;
-    if (selectedOptions.some((item) => item.value === option.value)) {
-      updatedSelected = selectedOptions.filter((item) => item.value !== option.value);
+    if (selectedOptions.some((item) => item.id === option.id)) {
+      // اگر گزینه انتخاب شده بود، آن را حذف کن
+      updatedSelected = selectedOptions.filter((item) => item.id !== option.id);
     } else {
+      // اگر انتخاب نشده بود، آن را اضافه کن
       updatedSelected = [...selectedOptions, option];
     }
 
-    setSelectedOptions(updatedSelected);
-    handleChange(updatedSelected.map((opt) => opt.value)); 
-    // فراخوانی تابع تغییر دسته‌بندی با مقادیر جدید
+    handleChange(updatedSelected);
   };
 
   const removeSelectedOption = (option) => {
-    const updatedSelected = selectedOptions.filter((item) => item.value !== option.value);
-    setSelectedOptions(updatedSelected);
-    handleChange(updatedSelected.map((opt) => opt.value));
+    const updatedSelected = selectedOptions.filter((item) => item.id !== option.id);
+    handleChange(updatedSelected);
+  };
+
+  // تابع برای بررسی اینکه آیا گزینه انتخاب شده است یا خیر
+  const isOptionSelected = (option) => {
+    return selectedOptions.some((item) => item.id === option.id);
   };
 
   return (
     <div className="flex items-center justify-center">
       <div className="w-full relative" ref={dropdownRef}>
         <div
-          className="flex items-center justify-between p-2 border border-gray-300 focus-within:border-blue-500 rounded-md cursor-pointer bg-white"
+          tabIndex={0} // اضافه کردن tabIndex برای قابل فوکوس شدن
+          className={`flex items-center justify-between p-2 border border-gray-300 dark:border-blue-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-md cursor-pointer bg-white`}
           onClick={toggleDropdown}
         >
           <div className="flex flex-wrap">
@@ -62,9 +65,9 @@ const MultiSelectDropdown = ({ options, handleChange }) => {
               selectedOptions.map((option) => (
                 <div
                   key={option.id}
-                  className="m-1 bg-green-100 text-green-700 border border-green-700 rounded-full pr-2 gap-2 py-1 flex items-center"
+                  className="m-1 bg-green-100 dark:bg-blue-100 text-green-700 dark:text-blue-700 border border-green-700 dark:border-blue-700 rounded-full pr-2 gap-2 py-1 flex items-center"
                 >
-                  {option.label}
+                  {option.value}
                   <button
                     className="ml-2 text-red-500"
                     onClick={(e) => {
@@ -96,36 +99,37 @@ const MultiSelectDropdown = ({ options, handleChange }) => {
         </div>
 
         {isOpen && (
-          <div className="w-full absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1">
+          <div className="w-full dark:bg-slate-600 dark:text-gray-100 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10">
             <input
               id="search-input"
-              className="block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 focus:outline-none"
+              className="block w-full px-4 py-2 text-gray-800 dark:text-gray-100 border rounded-md border-gray-300 focus:outline-none"
               type="text"
               placeholder="عبارت مورد نظر جستجو کنید"
               value={searchTerm}
               onChange={handleSearch}
               autoComplete="off"
             />
-              {options
-    .filter((option) =>
-      option.value.toLowerCase().includes(searchTerm)
-    )
-    .map((option) => (
-      <a
-        key={option.id}
-        onClick={() => handleOptionSelect(option)} // تغییر تابع انتخاب
-        className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md`}
-      >
-        <Tooltip
-          key={option.value}
-          text={option.description || ""}
-          bgColor={"bg-green-500"}
-          txtColor={"text-white"}
-        >
-          {option.value}
-        </Tooltip>
-      </a>
-    ))}
+            {options
+              .filter((option) =>
+                option.value.toLowerCase().includes(searchTerm)
+              )
+              .map((option) => (
+                <a
+                  key={option.id}
+                  onClick={() => handleOptionSelect(option)}
+                  className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-blue-100 cursor-pointer rounded-md ${
+                    isOptionSelected(option) ? 'bg-gray-200 dark:bg-slate-800 ' : ''
+                  }`}
+                >
+                  <Tooltip
+                    key={option.value}
+                    text={option.description || ""}
+                    txtColor={"text-white"}
+                  >
+                    {option.value}
+                  </Tooltip>
+                </a>
+              ))}
           </div>
         )}
       </div>

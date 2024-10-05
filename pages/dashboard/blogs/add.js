@@ -54,7 +54,7 @@ console.log(tags)
 
 
   return (
-    <div className="p-6 flex flex-col gap-6 sm:flex-row">
+    <div className="p-6 flex flex-col gap-6 sm:flex-row dark:bg-slate-800 dark:text-gray-100">
       <ToggleThemeButton />
       <div className="flex-1">
         <FormSection
