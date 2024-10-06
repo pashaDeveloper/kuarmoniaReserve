@@ -16,7 +16,7 @@ const ToggleThemeButton = () => {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center z-60 relative" >
       <div className="w-12 h-12 relative rounded-full shadow-lg dark:bg-gray-800">
         <button
           onClick={handleToggle}

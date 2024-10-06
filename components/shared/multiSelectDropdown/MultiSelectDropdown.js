@@ -57,7 +57,7 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
       <div className="w-full relative" ref={dropdownRef}>
         <div
           tabIndex={0} // اضافه کردن tabIndex برای قابل فوکوس شدن
-          className={`flex items-center justify-between p-2 border border-gray-300 dark:border-blue-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-md cursor-pointer bg-white`}
+          className={`flex items-center justify-between  ${selectedOptions.length > 0 ? 'p-1':'p-3'} border border-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-lg cursor-pointer bg-white`}
           onClick={toggleDropdown}
         >
           <div className="flex flex-wrap">

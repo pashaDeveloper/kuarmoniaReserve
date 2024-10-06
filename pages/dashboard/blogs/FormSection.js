@@ -101,7 +101,7 @@ const FormSection = ({
           </div>
           <div className="flex-1 flex items-center justify-between gap-2 gap-y-2">
             <div className="flex flex-col  flex-1 ">
-              <label htmlFor="category">
+              <label htmlFor="category" className="flex flex-col gap-y-2">
                 دسته‌بندی
                 <SearchableDropdown
                   categoryOptions={categoryOptions}
@@ -109,10 +109,10 @@ const FormSection = ({
                 />
               </label>
             </div>
-            <div className="mt-5 flex justify-start">
+            <div className="mt-7 flex justify-start ">
   <button
     type="button"
-    className="p-3 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600dark:hover:bg-blue-400 transition-colors"
+    className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600dark:hover:bg-blue-400 transition-colors"
     onClick={() => openModal("add")}
     aria-label="افزودن دسته‌بندی جدید"
   >

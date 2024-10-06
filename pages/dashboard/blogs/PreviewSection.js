@@ -35,10 +35,12 @@ const PreviewSection = ({
         className="p-3  rounded-full dark:bg-gray-900 bg-white shadow-lg cursor-pointer z-10"
         onClick={toggleVisibility}
       >
-        {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+        {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20}             publishDate={publishDate}
+ />}
       </button>
-      <div className={`${isHidden ? "hidden" : "opacity-100"}`}>
-        <BlogCard watch={watch} galleryPreview={galleryPreview} />
+      <div className={`${isHidden ? "hidden" : "opacity-100"}  flex mt-5 justify-center`}>
+        <BlogCard title={watch("title")} description={watch("description")}  galleryPreview={galleryPreview}             publishDate={publishDate}
+ />
       </div>
    
 

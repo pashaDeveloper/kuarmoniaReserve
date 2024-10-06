@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Tooltip = ({ text, children, bgColor = "bg-primary/30 dark:bg-blue-600" ,txtColor="text-black" }) => {
+const Tooltip = ({ text, children, bgColor = "bg-primary dark:bg-blue-600" ,txtColor="text-black" }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (

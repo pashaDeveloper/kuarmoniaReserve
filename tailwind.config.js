@@ -10,7 +10,8 @@ module.exports = {
     extend: {
       colors: {
         'custom-green': 'rgba(0, 135, 113, 0.08)',
-        'custom-gray':'#E7E9EB'
+        'custom-gray': '#E7E9EB',
+        'slat': '#1E293B',
       },
       borderRadius: {
         DEFAULT: "10px",

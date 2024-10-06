@@ -47,6 +47,7 @@ const MainContent = ({
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
             <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
             {isLoading && <SkeletonImage height={100} width={100} className="rounded-full" />} {/* نمایش اسکلتی */}
+            <SkeletonImage height={100} width={100} className="rounded-full" />
           <LoadImage
             src={`/${defaultValues?.avatar?.url}`}
             alt="avatar"

@@ -19,7 +19,6 @@ const Add = ({  blogToEdit = null }) => {
   const { data: tagsData } = useGetTagsForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
-console.log(tags)
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
 
   const categoryOptions = categories?.map(category => ({
@@ -54,42 +53,51 @@ console.log(tags)
 
 
   return (
-    <div className="p-6 flex flex-col gap-6 sm:flex-row dark:bg-slate-800 dark:text-gray-100">
-      <ToggleThemeButton />
-      <div className="flex-1">
-        <FormSection
-          handleSubmit={handleSubmit}
-          handleAddOrUpdateBlog={handleAddOrUpdateBlog}
-          register={register}
-          setValue={setValue}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          editorData={editorData}
-          setEditorData={setEditorData}
-          galleryPreview={galleryPreview}
-          setGalleryPreview={setGalleryPreview}
-          blogToEdit={blogToEdit}
-          publishDate={publishDate}
-          categoryOptions={categoryOptions} 
-          tagsOptions={tagsOptions} 
-          handleTagsChange={handleTagsChange}
-          handleCategoryChange={handleCategoryChange}
-        />
-      </div>
-      <div className="flex-1">
-        <PreviewSection
-          galleryPreview={galleryPreview}
-          isLoading={false}
-          handleImageLoad={() => {}}
-          publishDate={publishDate}
-          watch={watch}
-          editorData={editorData}
-          selectedTags={selectedTags}
-        />
-      </div>
-    </div>
+
+  <div className="p-6 bg-gray-50 dark:bg-slate-800 dark:text-gray-100">
+  <div className="fixed top-4 -translate-x-1/2 left-1/2" style={{zIndex:9999}} >
+    <ToggleThemeButton />
+  </div>
+  <div className=" mt-12 flex flex-col gap-6 sm:flex-row">
+
+
+  <div className="flex-1">
+    <FormSection
+      handleSubmit={handleSubmit}
+      handleAddOrUpdateBlog={handleAddOrUpdateBlog}
+      register={register}
+      setValue={setValue}
+      selectedTags={selectedTags}
+      setSelectedTags={setSelectedTags}
+      selectedCategory={selectedCategory}
+      setSelectedCategory={setSelectedCategory}
+      editorData={editorData}
+      setEditorData={setEditorData}
+      galleryPreview={galleryPreview}
+      setGalleryPreview={setGalleryPreview}
+      blogToEdit={blogToEdit}
+      publishDate={publishDate}
+      categoryOptions={categoryOptions}
+      tagsOptions={tagsOptions}
+      handleTagsChange={handleTagsChange}
+      handleCategoryChange={handleCategoryChange}
+    />
+  </div>
+  
+  <div className="flex-1">
+    <PreviewSection
+      galleryPreview={galleryPreview}
+      isLoading={false}
+      handleImageLoad={() => {}}
+      publishDate={publishDate}
+      watch={watch}
+      editorData={editorData}
+      selectedTags={selectedTags}
+    />
+  </div>
+  </div>
+</div>
+
   );
 };
 
