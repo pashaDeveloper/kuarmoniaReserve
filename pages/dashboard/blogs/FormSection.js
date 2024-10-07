@@ -1,14 +1,12 @@
 // FormSection.js
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import Button from "@/components/shared/button/Button";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
-import AddCategory from "../categories/add";
-import AddTag from "../tags/add";
-import { FaPlus } from "react-icons/fa"; // ایمپورت آیکون +
+import AddCategory from "../categories/add"; 
+import { FaPlus } from "react-icons/fa";
 
 const FormSection = ({
   handleSubmit,
@@ -25,26 +23,17 @@ const FormSection = ({
   tagsOptions,
   handleTagsChange,
   handleCategoryChange,
-  onCategoryAdded, // تابع برای به‌روزرسانی دسته‌بندی‌ها پس از افزودن
+  onCategoryAdded, // تابع برای رفرش لیست دسته‌بندی‌ها پس از افزودن
 }) => {
-  const [modalState, setModalState] = useState({
-    isOpen: false,
-    type: "add", // نوع مدال، در اینجا فقط افزودن
-    category: null,
-  });
-
-  const openModal = (type = "add", category = null) => {
-    setModalState({ isOpen: true, type, category });
-  };
-
-  const closeModal = () => {
-    setModalState({ isOpen: false, type: "add", category: null });
-  };
+  const [modalOpen, setIsModalOpen] = useState(false);
+  
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const handleAddCategorySuccess = () => {
     closeModal();
     if (onCategoryAdded) {
-      onCategoryAdded(); // فراخوانی تابع والد برای به‌روزرسانی لیست دسته‌بندی‌ها
+      onCategoryAdded(); // فراخوانی تابع والد برای رفرش لیست دسته‌بندی‌ها
     }
   };
 
@@ -54,6 +43,7 @@ const FormSection = ({
         className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
         onSubmit={handleSubmit(handleAddOrUpdateBlog)}
       >
+        {/* بخش‌های فرم */}
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
           <div className="flex-1">
             <label htmlFor="title" className="flex flex-col gap-y-2">
@@ -86,8 +76,6 @@ const FormSection = ({
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
           <div className="flex-1 relative">
-            {" "}
-            {/* اضافه کردن relative برای موقعیت دکمه + */}
             <label htmlFor="tags" className="flex flex-col gap-y-2">
               تگ ها
               <MultiSelectDropdown
@@ -100,7 +88,7 @@ const FormSection = ({
             </label>
           </div>
           <div className="flex-1 flex items-center justify-between gap-2 gap-y-2">
-            <div className="flex flex-col  flex-1 ">
+            <div className="flex flex-col flex-1">
               <label htmlFor="category" className="flex flex-col gap-y-2">
                 دسته‌بندی
                 <SearchableDropdown
@@ -109,16 +97,16 @@ const FormSection = ({
                 />
               </label>
             </div>
-            <div className="mt-7 flex justify-start ">
-  <button
-    type="button"
-    className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600dark:hover:bg-blue-400 transition-colors"
-    onClick={() => openModal("add")}
-    aria-label="افزودن دسته‌بندی جدید"
-  >
-    <FaPlus />
-  </button>
-</div>
+            <div className="mt-7 flex justify-start">
+            <button
+  type="button"
+  className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600 dark:hover:bg-blue-400 transition-colors"
+  onClick={openModal} // بدون ارسال پارامتر
+  aria-label="افزودن دسته‌بندی جدید"
+>
+  <FaPlus />
+</button>
+            </div>
           </div>
         </div>
 
@@ -147,19 +135,18 @@ const FormSection = ({
             maxFiles={1}
             required={true}
           />
-        </label>
+        </label> 
 
-        <Button type="submit" className="py-2 mt-4 mb-4">
+         <Button type="submit" className="py-2 mt-4 mb-4">
           {blogToEdit ? "ویرایش کردن" : "ایجاد کردن"}
-        </Button>
+        </Button> 
       </form>
 
-      {/* مدال افزودن دسته‌بندی */}
       <AddCategory
-        isOpen={modalState.isOpen && modalState.type === "add"}
+        isOpen={modalOpen}
         onClose={closeModal}
         onSuccess={handleAddCategorySuccess}
-        categoryToEdit={null} // در حالت افزودن، دسته‌بندی برای ویرایش نیست
+        // حذف categoryToEdit
       />
     </>
   );
