@@ -74,18 +74,8 @@ const ListTag = () => {
         </section>
       </Panel>
 
-      <Modal
-        isOpen={isModalOpen || isEditModalOpen}
-        onClose={() => handleClose(setTagToEdit, setIsEditModalOpen, setIsModalOpen)}
-        className="lg:w-1/3 md:w-1/2 w-full z-50"
-      >
-        <AddTag
-          onClose={() => handleClose(setTagToEdit, setIsEditModalOpen, setIsModalOpen)}
-          onSuccess={refetch}
-          tagToEdit={tagToEdit}
-        />
-      </Modal>
-
+     
+     
       <Popover
         isOpen={isMobilePopoverOpen}
         onClose={() => setIsMobilePopoverOpen(false)}

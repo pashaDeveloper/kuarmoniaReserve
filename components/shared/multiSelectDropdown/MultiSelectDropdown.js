@@ -80,7 +80,7 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
                 </div>
               ))
             ) : (
-              <span className="text-gray-500">می‌توانید چند مورد انتخاب کنید</span>
+              <span className="text-gray-500"> چند مورد انتخاب کنید</span>
             )}
           </div>
           <div>
@@ -109,6 +109,8 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
               onChange={handleSearch}
               autoComplete="off"
             />
+                <div className="max-h-60 overflow-y-auto"> {/* اضافه کردن اسکرول و محدودیت ارتفاع */}
+
             {options
               .filter((option) =>
                 option.value.toLowerCase().includes(searchTerm)
@@ -130,6 +132,7 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
                   </Tooltip>
                 </a>
               ))}
+          </div>
           </div>
         )}
       </div>

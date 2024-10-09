@@ -1,15 +1,30 @@
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import React, { useState } from 'react';
-import Editor from "./ckeditor/build/ckeditor";
+// RTEditor.jsx
+import React, { useState, useEffect } from 'react';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
 
-const RTEditor = ({ value, onChange, ...props }: any) => {
+const RTEditor = ({ value, onChange, ...props }) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [CKEditor, setCKEditor] = useState(null);
+    const [Editor, setEditor] = useState(null);
 
     const toggleFullScreen = () => {
         setIsFullScreen(!isFullScreen);
     };
+
+    useEffect(() => {
+        // Dynamically import CKEditor and the custom editor build
+        import("@ckeditor/ckeditor5-react").then(module => {
+            setCKEditor(() => module.CKEditor);
+        });
+        import("./ckeditor/build/ckeditor").then(module => {
+            setEditor(() => module.Editor);
+        });
+    }, []);
+
+    if (!CKEditor || !Editor) {
+        return null; // Render nothing while loading
+    }
 
     return (
         <div className={`pt-4 px-3  ${isFullScreen ? 'fullscreen-editor' : 'w-[99%]'}`} dir="rtl">
@@ -20,7 +35,7 @@ const RTEditor = ({ value, onChange, ...props }: any) => {
                 {isFullScreen ? <TfiFullscreen size={20} /> : <BsArrowsFullscreen size={20} />}
             </button>
             <CKEditor
-                editor={Editor.Editor}
+                editor={Editor}
                 data={value}
                 onChange={(event, editor) => {
                     onChange?.(editor.getData());
@@ -89,10 +104,7 @@ const RTEditor = ({ value, onChange, ...props }: any) => {
                         'SelectAll',
                         'RemoveFormat'
                     ],
-                    
-
                 }}
-               
             />
         </div>
     );

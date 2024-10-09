@@ -4,8 +4,9 @@ import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSe
 import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
 import React, { useEffect,useState } from "react";
 import { toast } from "react-hot-toast";
+import Modal from "@/components/shared/modal/Modal";
 
-const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
+const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -44,6 +45,7 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
     if (isLoading) {
       toast.loading("در حال پردازش...", { id: "tag" });
     }
+    console.log("formData")
 
     if (data) {
       toast.success(data?.message, { id: "tag" });
@@ -100,6 +102,11 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
   };
 
   return (
+    <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    className="lg:w-1/3 md:w-1/2 w-full z-50"
+  >
     <form
       className="text-sm w-full h-full flex flex-col gap-y-4 mb-3"
       onSubmit={handleSubmit(handleAddOrUpdateTag)}
@@ -146,16 +153,21 @@ const AddTag = ({ onClose, onSuccess, tagToEdit = null }) => {
         {/* robots */}
         ربات‌ها
         <MultiSelectDropdown
-          options={robotOptions}
-          selectedOptions={selectedOptions}
-          onChange={handleOptionsChange}
-        />
+              options={robotOptions}
+              selectedOptions={selectedOptions}
+              handleChange={handleOptionsChange}
+              className="w-full"
+              name="tags"
+            />
+  
           
         <Button type="submit" className="py-2 mt-4 mb-4">
           {tagToEdit ? "ویرایش کردن" : "ایجاد کردن"}
         </Button>
       </div>
     </form>
+    </Modal>
+
   );
 };
 

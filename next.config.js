@@ -21,6 +21,12 @@ const nextConfig = {
         port: "3000",
         pathname: "/dashboard/tags",
       },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",  // Add this line
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   // async redirects() {

@@ -44,7 +44,7 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
    ${isOpen ? 'dark:border-blue-500 dark:bg-[#0a2d4d]' : 'dark:bg-gray-600'} `}
           onClick={toggleDropdown}
         >
-          <span className="ml-2">{selectedOption ? selectedOption.value : "یک مورد انتخاب کن"}</span>
+          <span className="ml-2 text-gray-500">{selectedOption ? selectedOption.value : "یک مورد انتخاب کن"}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5  -mr-1"
@@ -61,7 +61,7 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
         </button>
 
         {isOpen && (
-          <div className="w-full absolute right-0 dark:bg-slate-600 dark:text-gray-100 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1">
+          <div className="w-full absolute right-0 dark:bg-slate-600 dark:text-gray-100 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10 ">
             <input
               id="search-input"
               className="block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 focus:outline-none"
@@ -71,6 +71,8 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
               onChange={handleSearch}
               autoComplete="off"
             />
+                <div className="max-h-60 overflow-y-auto"> 
+
             {categoryOptions
               .filter((option) =>
                 option.value.toLowerCase().includes(searchTerm)
@@ -78,7 +80,7 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
               .map((option) => (
                 <a
                   key={option.id}
-                  onClick={() => handleOptionSelect(option)} // تغییر تابع انتخاب
+                  onClick={() => handleOptionSelect(option)} 
                   className="block px-4 py-2 text-gray-700 dark:text-gray-100 dark:hover:bg-slate-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
                 >
                   <Tooltip
@@ -89,7 +91,9 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
                     {option.value}
                   </Tooltip>
                 </a>
-              ))}
+
+))}
+</div>
           </div>
         )}
       </div>

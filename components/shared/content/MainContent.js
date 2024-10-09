@@ -14,7 +14,8 @@ const MainContent = ({
   selectedTags,
 }) => {
   const user = useSelector((state) => state?.auth);
-  const [isLoading, setIsLoading] = useState(true); // State برای بارگذاری عکس
+  const [isLoading, setIsLoading] = useState(true); 
+  const [hasError, setHasError] = useState(false); 
 
   const defaultValues = useMemo(() => {
     return {
@@ -24,12 +25,20 @@ const MainContent = ({
     };
   }, [user]);
 
-  // حالت بارگذاری
   const handleImageLoad = () => {
-    setIsLoading(false); // عکس بارگذاری شد
+    setIsLoading(false); 
   };
+
+  const handleImageError = () => {
+    setIsLoading(false); 
+    setHasError(true); 
+  };
+
+  const avatarSrc = defaultValues?.avatar?.url && !hasError
+    ? `/${defaultValues.avatar.url}`
+    : "https://via.placeholder.com/100"; 
   return (
-    <div className="max-w-screen-xl min-w-[400px] bg-gray-50 dark:bg-slate-800 dark:text-gray-100 mx-auto p-5 sm:p-10 md:p-16 relative">
+    <div className="max-w-screen-xl  bg-gray-50 dark:bg-slate-800 dark:text-gray-100 mx-auto  relative">
       <div
         className="bg-cover bg-center text-center overflow-hidden rounded-lg"
         style={{
@@ -37,7 +46,7 @@ const MainContent = ({
           backgroundImage:
             galleryPreview.length > 0
               ? `url(${galleryPreview[0]})`
-              : "url('https://via.placeholder.com/1150x500')",
+              : "url('')",
         }}
         title="title"
       ></div>
@@ -46,17 +55,20 @@ const MainContent = ({
         <div className="relative rounded-full">
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
             <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
-            {isLoading && <SkeletonImage height={100} width={100} className="rounded-full" />} {/* نمایش اسکلتی */}
-            <SkeletonImage height={100} width={100} className="rounded-full" />
-          <LoadImage
-            src={`/${defaultValues?.avatar?.url}`}
-            alt="avatar"
-            height={100}
-            width={100}
-            className="h-[100px] w-[100px] profile-pic rounded-full"
-            onLoad={handleImageLoad} // وقتی عکس بارگذاری شد
-            onError={() => setIsLoading(false)} // در صورت خطا
-          />
+              {isLoading && (
+                <SkeletonImage height={100} width={100} className="rounded-full" />
+              )} 
+              <LoadImage
+                src={avatarSrc}
+                alt="avatar"
+                height={100}
+                width={100}
+                className={`h-[100px] w-[100px] profile-pic rounded-full ${
+                  isLoading ? "hidden" : "block"
+                }`}
+                onLoad={handleImageLoad} 
+                onError={handleImageError} 
+              />
             </div>
           </div>
 
@@ -113,20 +125,20 @@ const MainContent = ({
               <SkeletonText lines={1} />
             )}
 
-            {/* Rectangular Container for Social Links */}
             <div className="absolute top-1/2 right-0 transform translate-x-1/2 translate-y-[-50%] bg-white dark:bg-slate-900 py-3 px-2 md:px-2 lg:px-3 rounded-full border border-gray-300 dark:border-gray-700">
-  <a href="https://instagram.com" className="flex items-center mb-2" target="_blank" rel="noopener noreferrer">
-    <FaInstagram className="text-pink-500 w-5 h-5" />
-  </a>
-  <a href="https://twitter.com" className="flex items-center mb-2" target="_blank" rel="noopener noreferrer">
-    <FaTwitter className="text-blue-500 w-5 h-5" />
-  </a>
-  <a href="https://telegram.org" className="flex items-center" target="_blank" rel="noopener noreferrer">
-    <FaTelegramPlane className="text-blue-600 w-5 h-5" />
-  </a>
-</div>
+              <a href="https://instagram.com" className="flex items-center mb-2" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="text-pink-500 w-5 h-5" />
+              </a>
+              <a href="https://twitter.com" className="flex items-center mb-2" target="_blank" rel="noopener noreferrer">
+                <FaTwitter className="text-blue-500 w-5 h-5" />
+              </a>
+              <a href="https://telegram.org" className="flex items-center" target="_blank" rel="noopener noreferrer">
+                <FaTelegramPlane className="text-blue-600 w-5 h-5" />
+              </a>
+            </div>
 
           </div>
+      
         </div>
       </div>
     </div>

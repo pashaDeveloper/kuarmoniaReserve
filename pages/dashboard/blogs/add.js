@@ -1,5 +1,5 @@
 // Add.js
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
 import FormSection from "./FormSection";
@@ -7,6 +7,8 @@ import PreviewSection from "./PreviewSection";
 import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
+import AddCategory from "../categories/add"; 
+import AddTag from "../tags/add"; 
 
 const Add = ({ blogToEdit = null }) => {
   const { register, handleSubmit, watch } = useForm();
@@ -17,7 +19,7 @@ const Add = ({ blogToEdit = null }) => {
   const [addBlog] = useAddBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
   const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
-  const { data: tagsData } = useGetTagsForDropDownMenuQuery();
+  const { data: tagsData, refetch: refetchTag } = useGetTagsForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
@@ -51,16 +53,46 @@ const Add = ({ blogToEdit = null }) => {
     setSelectedCategory(newCategory);
   };
 
-  const handleCategoryAdded = () => {
-    refetchCategories(); // رفرش کردن لیست دسته‌بندی‌ها پس از افزودن یک دسته‌بندی جدید
-  };
+  const handleCategoryAdded = useCallback(() => {
+    refetchCategories();
+  }, [refetchCategories]);
+
+  const handleTagAdded = useCallback(() => {
+    refetchTag();
+  }, [refetchTag]);
+
+  // مدیریت وضعیت مدال در والد با useCallback
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+
+  const openCategoryModal = useCallback(() => {
+    console.log("باز کردن مدال");
+    setIsCategoryModalOpen(true);
+  }, []);
+
+  const closeCategoryModal = useCallback(() => {
+    console.log("بستن مدال");
+    setIsCategoryModalOpen(false);
+  }, []);
+
+  const openTagModal = useCallback(() => {
+    console.log("باز کردن مدال");
+    setIsTagModalOpen(true);
+  }, []);
+
+  const closeTagModal = useCallback(() => {
+    console.log("بستن مدال");
+    setIsTagModalOpen(false);
+  }, []);
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-slate-800 dark:text-gray-100">
+    <div className="lg:p-6 p-2 md:p-6 bg-gray-50 dark:bg-slate-800 dark:text-gray-100">
+      {/* دکمه تغییر تم */}
       <div className="fixed top-4 -translate-x-1/2 left-1/2" style={{ zIndex: 9999 }}>
         <ToggleThemeButton />
       </div>
-      <div className="mt-12 flex flex-col gap-6 sm:flex-row">
+
+      <div className="mt-12 flex flex-col gap-6 md:flex-row sm:flex-row">
         <div className="flex-1">
           <FormSection
             handleSubmit={handleSubmit}
@@ -80,7 +112,10 @@ const Add = ({ blogToEdit = null }) => {
             tagsOptions={tagsOptions}
             handleTagsChange={handleTagsChange}
             handleCategoryChange={handleCategoryChange}
-            onCategoryAdded={handleCategoryAdded} // پاس کردن تابع رفرش به FormSection
+            onCategoryAdded={handleCategoryAdded}
+            onTagAdded={handleTagAdded}
+            openTagModal={openTagModal} 
+            openCategoryModal={openCategoryModal} // پاس کردن تابع باز کردن مدال
           />
         </div>
         
@@ -95,7 +130,20 @@ const Add = ({ blogToEdit = null }) => {
             selectedTags={selectedTags}
           />
         </div>
+       
       </div>
+
+      {/* مدال افزودن دسته‌بندی */}
+      <AddCategory
+        isOpen={isCategoryModalOpen}
+        onClose={closeCategoryModal}
+        onSuccess={handleCategoryAdded}
+      />
+       <AddTag
+        isOpen={isTagModalOpen}
+        onClose={closeTagModal}
+        onSuccess={handleTagAdded}
+      />
     </div>
   );
 };

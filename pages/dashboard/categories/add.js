@@ -4,7 +4,7 @@ import Button from "@/components/shared/button/Button";
 import { useAddCategoryMutation, useUpdateCategoryMutation } from "@/services/category/categoryApi";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import Modal from "../../../components/shared/modal/Modal";
+import Modal from "@/components/shared/modal/Modal";
 
 const AddCategory = ({ isOpen, onClose, onSuccess, categoryToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -25,19 +25,20 @@ const AddCategory = ({ isOpen, onClose, onSuccess, categoryToEdit = null }) => {
       toast.loading("در حال پردازش...", { id: "category" });
     }
 
-    // بررسی موفقیت‌آمیز بودن عملیات افزودن
     if ((addData?.success || updateData?.success) && !addError && !updateError) {
       toast.success((addData || updateData).message, { id: "category" });
       reset();
       if (onSuccess) {
-        onSuccess(); // به‌روزرسانی لیست
+        onSuccess(); 
+        onClose(); 
+
       }
       if (onClose) {
-        onClose(); // بستن مودال
+        onClose(); 
       }
     }
 
-    // بررسی وجود خطا
+
     if (addError?.data || updateError?.data) {
       toast.error((addError?.data || updateError?.data)?.message, { id: "category" });
     }
