@@ -1,7 +1,8 @@
+// MainContent.js
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // فرض کنید که این کامپوننت وجود دارد
+import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import LoadImage from "@/components/shared/image/LoadImage";
 
 import { FaInstagram, FaTwitter, FaTelegramPlane } from 'react-icons/fa';
@@ -14,8 +15,14 @@ const MainContent = ({
   selectedTags,
 }) => {
   const user = useSelector((state) => state?.auth);
-  const [isLoading, setIsLoading] = useState(true); 
-  const [hasError, setHasError] = useState(false); 
+  
+  // وضعیت‌های بارگذاری و خطا برای تصویر اصلی
+  const [isMainImageLoading, setIsMainImageLoading] = useState(true);
+  const [hasMainImageError, setHasMainImageError] = useState(false);
+
+  // وضعیت‌های بارگذاری و خطا برای آواتار
+  const [isAvatarLoading, setIsAvatarLoading] = useState(true);
+  const [hasAvatarError, setHasAvatarError] = useState(false);
 
   const defaultValues = useMemo(() => {
     return {
@@ -25,49 +32,93 @@ const MainContent = ({
     };
   }, [user]);
 
-  const handleImageLoad = () => {
-    setIsLoading(false); 
+  // هندلرهای تصویر اصلی
+  const handleMainImageLoad = () => {
+    setIsMainImageLoading(false);
   };
 
-  const handleImageError = () => {
-    setIsLoading(false); 
-    setHasError(true); 
+  const handleMainImageError = () => {
+    setIsMainImageLoading(false);
+    setHasMainImageError(true);
   };
 
-  const avatarSrc = defaultValues?.avatar?.url && !hasError
+  // هندلرهای آواتار
+  const handleAvatarLoad = () => {
+    setIsAvatarLoading(false);
+  };
+
+  const handleAvatarError = () => {
+    setIsAvatarLoading(false);
+    setHasAvatarError(true);
+  };
+
+  const avatarSrc = defaultValues?.avatar?.url && !hasAvatarError
     ? `/${defaultValues.avatar.url}`
     : "https://via.placeholder.com/100"; 
-  return (
-    <div className="max-w-screen-xl  bg-gray-50 dark:bg-slate-800 dark:text-gray-100 mx-auto  relative">
-      <div
-        className="bg-cover bg-center text-center overflow-hidden rounded-lg"
-        style={{
-          minHeight: "500px",
-          backgroundImage:
-            galleryPreview.length > 0
-              ? `url(${galleryPreview[0]})`
-              : "url('')",
-        }}
-        title="title"
-      ></div>
 
+  return (
+    <div className="max-w-screen-xl bg-gray-50 dark:bg-slate-800 dark:text-gray-100 mx-auto relative">
+      
+      {/* بخش تصویر اصلی با Skeleton */}
+      <div className="relative">
+        {isMainImageLoading && (
+          <SkeletonImage
+            width={1150}
+            height={500}
+            showSize={true}
+            borderRadius="rounded-xl"
+            className="z-10"
+          />
+        )}
+        {!hasMainImageError && galleryPreview.length > 0 && (
+          <img
+            src={galleryPreview[0]}
+            alt="title"
+            className={`object-cover text-center overflow-hidden rounded-lg ${isMainImageLoading ? 'hidden' : 'block z-0'}`}
+            style={{
+              minHeight: "500px",
+              width: '100%',
+              height: '500px',
+            }}
+            onLoad={handleMainImageLoad}
+            onError={handleMainImageError}
+          />
+        )}
+        {hasMainImageError && (
+          <img
+            src="https://via.placeholder.com/1150x500" // تصویر جایگزین در صورت خطا
+            alt="fallback"
+            className="object-cover text-center overflow-hidden rounded-lg z-0"
+            style={{
+              minHeight: "500px",
+              width: '100%',
+              height: '500px',
+            }}
+          />
+        )}
+      </div>
+
+      {/* محتوای اصلی */}
       <div className="max-w-3xl mx-auto">
         <div className="relative rounded-full">
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
             <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
-              {isLoading && (
-                <SkeletonImage height={100} width={100} className="rounded-full" />
+              {isAvatarLoading && (
+                <SkeletonImage
+                  height={100}
+                  width={100}
+                  showSize={false}
+                  borderRadius="rounded-full"
+                />
               )} 
               <LoadImage
                 src={avatarSrc}
                 alt="avatar"
                 height={100}
                 width={100}
-                className={`h-[100px] w-[100px] profile-pic rounded-full ${
-                  isLoading ? "hidden" : "block"
-                }`}
-                onLoad={handleImageLoad} 
-                onError={handleImageError} 
+                className={`h-[100px] w-[100px] profile-pic rounded-full ${isAvatarLoading ? "hidden" : "block"}`}
+                onLoad={handleAvatarLoad} 
+                onError={handleAvatarError} 
               />
             </div>
           </div>

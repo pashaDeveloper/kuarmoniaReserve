@@ -1,3 +1,4 @@
+// MainContent.js
 import { Schema, models, model } from "mongoose";
 import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";
@@ -38,11 +39,47 @@ const blogSchema = new Schema(
       type: String,
       maxLength: [200, "توضیحات نمی‌تواند بیشتر از ۲۰۰ کاراکتر باشد"],
       required: [true, "توضیحات الزامی است"],
-
     },
     content: {
       type: String,
       required: [true, "محتوا الزامی است"],
+    },
+    metaTitle: {
+      type: String,
+      maxLength: [60, "متا تایتل نمی‌تواند بیشتر از ۶۰ کاراکتر باشد"],
+      default: "",
+    },
+    metaDescription: {
+      type: String,
+      maxLength: [160, "متا توضیحات نمی‌تواند بیشتر از ۱۶۰ کاراکتر باشد"],
+      default: "",
+    },
+    metaKeywords: {
+      type: [String],
+      default: [],
+    },
+    readTime: {
+      type: Number, // زمان بر حسب دقیقه
+      default: 0,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    visibility: {
+      type: String,
+      enum: ["public", "private"],
+      default: "public",
+    },
+    relatedPosts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Blog",
+      },
+    ],
+    lastUpdated: {
+      type: Date,
+      default: Date.now,
     },
     publishDate: {
       type: Date,
@@ -58,7 +95,6 @@ const blogSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Tag", 
         required: [true, "تگ پست الزامی است"],
-
       },
     ],
     category: {
@@ -97,7 +133,7 @@ const blogSchema = new Schema(
         ref: "Comment", // ارجاع به مدل کامنت
       },
     ],
-  views: {
+    views: {
       type: Number,
       default: 0,
       min: [0, "تعداد بازدید نمی‌تواند منفی باشد"],
@@ -107,6 +143,20 @@ const blogSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// تعریف فیلد مجازی rating
+blogSchema.virtual('rating').get(function() {
+  const totalReactions = this.likes.length + this.dislikes.length;
+  if (totalReactions === 0) return 0;
+  // محاسبه‌ی میزان رضایت بر اساس نسبت لایک‌ها
+  // اینجا ما rating را بر روی یک مقیاس ۱ تا ۵ تنظیم می‌کنیم
+  const likeRatio = this.likes.length / totalReactions;
+  return Math.round((likeRatio * 5 + Number.EPSILON) * 100) / 100; // گرد کردن به دو رقم اعشار
+});
+
+// اطمینان از اینکه فیلدهای مجازی در خروجی JSON و Object نمایش داده شوند
+blogSchema.set('toJSON', { virtuals: true });
+blogSchema.set('toObject', { virtuals: true });
 
 blogSchema.pre("save", async function (next) {
   if (this.isNew) {

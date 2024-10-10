@@ -1,52 +1,53 @@
 // BlogCard.js
-import React from 'react';
+import React, { useState } from 'react';
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
+import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 
-const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
+const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   return (
     <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-[#0F172A] bg-clip-border text-gray-700 shadow-lg">
-      <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
-      <img
-  src={
-    galleryPreview[0] ||
-    "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1470&amp;q=80"
-  }
-  alt={"Blog Image"}
-  className="w-full h-64 object-cover object-center rounded-xl"
-/>
+      <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
+        {!isImageLoaded && (
+          <SkeletonImage width={1150} height={500} showSize={true} borderRadius="rounded-xl" className="z-10" />
+        )}
+        <img
+          src={galleryPreview[0]}
+          alt="Blog Image"
+          className={`w-full h-64 object-cover object-center rounded-xl ${isImageLoaded ? 'block' : 'hidden'}`}
+          onLoad={() => setIsImageLoaded(true)}
+        />
         <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
         <button
-          className="!absolute top-4 right-4 h-12 max-h-[40px] w-12 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase  transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="!absolute top-4 right-4 h-12 max-h-[40px] w-12 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
           data-ripple-dark="true"
         >
           <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-           <TfiHeart size={30} />
-
-            
+            <TfiHeart size={30} />
           </span>
         </button>
         <button
-          className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase  transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
           data-ripple-dark="true"
         >
           <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <PiBookmarkSimpleDuotone size={30} />
-
+            <PiBookmarkSimpleDuotone size={30} />
           </span>
         </button>
       </div>
       <div className="px-6 py-3">
         <div className="mb-3 flex items-center justify-between">
-          <h5 className="block font-sans text-xl font-medium tracking-normal  dark:text-blue-100 min-w-[80%] ">
-          {title ? (
-            `${title}`
-          ) : (
-            <SkeletonText lines={1} />
-          )}
+          <h5 className="block font-sans text-xl font-medium tracking-normal dark:text-blue-100 min-w-[80%] ">
+            {title ? (
+              `${title}`
+            ) : (
+              <SkeletonText lines={1} />
+            )}
           </h5>
           <p className="flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
             <svg
@@ -66,18 +67,19 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
           </p>
         </div>
         <div className="block font-sans text-base text-justify font-light leading-relaxed text-gray-700 antialiased">
-  {description ? (
-    description
-  ) : (
-    <SkeletonText lines={1} />
-  )}
-</div>
-        <div className="group  inline-flex flex-wrap items-center gap-3">
+          {description ? (
+            description
+          ) : (
+            <SkeletonText lines={1} />
+          )}
+        </div>
+        <div className="group inline-flex flex-wrap items-center gap-3">
           {/* آیکون‌ها */}
           <span
             data-tooltip-target="money"
             className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
           >
+            {/* SVG آیکون پول */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -94,10 +96,12 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
               <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z"></path>
             </svg>
           </span>
+          {/* سایر آیکون‌ها مشابه بالا */}
           <span
             data-tooltip-target="wifi"
             className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
           >
+            {/* SVG آیکون وای‌فای */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -116,6 +120,7 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
             data-tooltip-target="bedrooms"
             className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
           >
+            {/* SVG آیکون اتاق خواب */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -131,6 +136,7 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
             data-tooltip-target="tv"
             className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
           >
+            {/* SVG آیکون تلویزیون */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -150,6 +156,7 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
             data-tooltip-target="fire"
             className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
           >
+            {/* SVG آیکون آتش */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -170,27 +177,30 @@ const BlogCard = ({ title,description, galleryPreview, publishDate }) => {
           >
             +20
           </span>
-          
         </div>
         <div className="flex items-center justify-between ">
-                <div className="flex items-center -space-x-3">
-                    <img alt="natali craig"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1061&amp;q=80"
-                        className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10" />
-                    <img alt="Tania Andrew"
-                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
-                        className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10" />
-                </div>
-                <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                <span className="font-medium">
-                    {new Date(publishDate).toLocaleDateString("fa-IR", {
-                      weekday: "long",
-                    })}{" "}
-                    - {new Date(publishDate).toLocaleDateString("fa-IR")}
-                  </span>                </p>
-            </div>
+          <div className="flex items-center -space-x-3">
+            <img
+              alt="natali craig"
+              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1061&amp;q=80"
+              className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
+            />
+            <img
+              alt="Tania Andrew"
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
+              className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
+            />
+          </div>
+          <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
+            <span className="font-medium">
+              {new Date(publishDate).toLocaleDateString("fa-IR", {
+                weekday: "long",
+              })}{" "}
+              - {new Date(publishDate).toLocaleDateString("fa-IR")}
+            </span>
+          </p>
+        </div>
       </div>
-     
     </div>
   );
 };

@@ -19,6 +19,9 @@ const baseSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    deletedAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

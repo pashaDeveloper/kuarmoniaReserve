@@ -62,7 +62,7 @@ const PreviewSection = ({
       </div>
 
       <div
-        className={`flex-1 p-4 mt-4 h-full sm:h-screen bg-gray-50 dark:bg-slate-800 dark:text-gray-100 rounded-lg overflow-y-auto overflow-x-hidden 
+        className={`flex-1 p-12 mt-4 h-full sm:h-screen bg-gray-50 dark:bg-slate-800 dark:text-gray-100 rounded-lg overflow-y-auto overflow-x-hidden 
           ${
             isFullscreen ? "fixed inset-0 z-50" : "relative"
           }
@@ -73,7 +73,7 @@ const PreviewSection = ({
         ref={previewRef}
       >
         <button
-          className="p-3 rounded-full shadow-lg cursor-pointer absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
+          className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-50 absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
           onClick={handleToggleFullscreen}
         >
           {isFullscreen ? (
