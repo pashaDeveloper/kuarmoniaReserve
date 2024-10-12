@@ -46,45 +46,18 @@ const PreviewSection = ({
   }, []);
 
   return (
-    <div className="border-[1px] p-2 rounded border-primary dark:border-blue-600">
-      <button
-        className="p-3 rounded-full dark:bg-gray-900 bg-white shadow-lg cursor-pointer z-10"
-        onClick={toggleVisibility}
-      >
-        {isHidden ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-      </button>
-      <div className={`${isHidden ? "hidden" : "opacity-100"} flex flex-col mt-5 justify-center`}>
-        {/* نمایش BlogCard در تمامی مراحل */}
-        <BlogCard
-          title={watch("title")}
-          description={watch("description")}
-          galleryPreview={galleryPreview}
-          publishDate={publishDate}
-        />
-        {/* نمایش MainContent پس از مرحله اول */}
-        {currentStep > 1 && (
-          <MainContent
-            content={watch("content")}
-            author={watch("author")}
-            publishDate={publishDate}
-            category={watch("category")}
-          />
-        )}
-      </div>
-
-      <div
-        className={`flex-1 p-12 mt-4 h-full sm:h-screen bg-gray-50 dark:bg-slate-800 dark:text-gray-100 rounded-lg overflow-y-auto overflow-x-hidden 
+    <div >
+       <div
+        className={`flex-1 p-4 mt-4 h-full sm:h-screen  dark:text-gray-100  overflow-y-auto overflow-x-hidden 
           ${
-            isFullscreen ? "fixed inset-0 z-50" : "relative"
+            isFullscreen ? "fixed inset-0 " : "relative"
           }
         `}
-        style={{
-          boxShadow: "0 -10px 20px rgba(0, 0, 0, 0.2)", // سایه از بالا
-        }}
+        
         ref={previewRef}
       >
         <button
-          className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-50 absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
+          className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-50 absolute top-2 right-2  dark:text-gray-100"
           onClick={handleToggleFullscreen}
         >
           {isFullscreen ? (
@@ -93,7 +66,7 @@ const PreviewSection = ({
             <BsArrowsFullscreen size={20} />
           )}
         </button>
-        {/* نمایش MainContent در حالت فول‌اسکرین */}
+   
         <MainContent
           galleryPreview={galleryPreview}
           isLoading={isLoading}
@@ -103,7 +76,7 @@ const PreviewSection = ({
           editorData={editorData}
           selectedTags={selectedTags}
         />
-      </div>
+      </div> 
     </div>
   );
 };

@@ -144,17 +144,14 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-// تعریف فیلد مجازی rating
 blogSchema.virtual('rating').get(function() {
   const totalReactions = this.likes.length + this.dislikes.length;
   if (totalReactions === 0) return 0;
-  // محاسبه‌ی میزان رضایت بر اساس نسبت لایک‌ها
-  // اینجا ما rating را بر روی یک مقیاس ۱ تا ۵ تنظیم می‌کنیم
+
   const likeRatio = this.likes.length / totalReactions;
-  return Math.round((likeRatio * 5 + Number.EPSILON) * 100) / 100; // گرد کردن به دو رقم اعشار
+  return Math.round((likeRatio * 5 + Number.EPSILON) * 100) / 100; 
 });
 
-// اطمینان از اینکه فیلدهای مجازی در خروجی JSON و Object نمایش داده شوند
 blogSchema.set('toJSON', { virtuals: true });
 blogSchema.set('toObject', { virtuals: true });
 

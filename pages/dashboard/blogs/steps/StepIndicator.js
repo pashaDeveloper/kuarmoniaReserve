@@ -3,7 +3,7 @@ import React from 'react';
 
 const StepIndicator = ({ currentStep, totalSteps }) => {
   const steps = [
-    { number: 1, label: 'عنوان و SEO', required: true },
+    { number: 1, label: 'عنوان', required: true },
     { number: 2, label: 'توضیحات و تگ‌ها', required: true },
     { number: 3, label: 'محتوا و رسانه‌ها', required: true },
     { number: 4, label: 'تنظیمات انتشار', required: true },
