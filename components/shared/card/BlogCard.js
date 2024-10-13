@@ -9,10 +9,12 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
-    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-[#0F172A] bg-clip-border text-gray-700 shadow-lg">
+    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800 bg-clip-border text-gray-700 shadow-lg h-[550px]">
       <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
         {!isImageLoaded && (
-          <SkeletonImage width={1150} height={500} showSize={true} borderRadius="rounded-xl" className="z-10" />
+          <SkeletonImage width={1150}  height={500} showSize={true} borderRadius="rounded-xl" className="z-0" 
+
+           />
         )}
         <img
           src={galleryPreview[0]}
@@ -66,11 +68,11 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
             5.0
           </p>
         </div>
-        <div className="block font-sans text-base text-justify font-light leading-relaxed text-gray-700 antialiased">
+        <div className="block font-sans text-base text-justify font-light leading-relaxed text-gray-700 dark:text-blue-100 antialiased">
           {description ? (
             description
           ) : (
-            <SkeletonText lines={1} />
+            <SkeletonText lines={5} />
           )}
         </div>
         <div className="group inline-flex flex-wrap items-center gap-3">

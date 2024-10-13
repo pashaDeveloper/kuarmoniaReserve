@@ -57,7 +57,7 @@ const MainContent = ({
     : "https://via.placeholder.com/100"; 
 
   return (
-    <div className="max-w-screen-xl bg-gray-50 dark:bg-slate-800 dark:text-gray-100 mx-auto relative">
+    <div className="max-w-screen-xl bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
       
       {/* بخش تصویر اصلی با Skeleton */}
       <div className="relative">
@@ -65,6 +65,7 @@ const MainContent = ({
           <SkeletonImage
             width={1150}
             height={500}
+            heightClass={500}
             showSize={true}
             borderRadius="rounded-xl"
             className="z-10"
@@ -123,7 +124,7 @@ const MainContent = ({
             </div>
           </div>
 
-          <div className="relative bg-gray-50 dark:bg-slate-900 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 rounded-b-lg">
+          <div className="relative bg-gray-50 z-10 dark:bg-gray-800 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 rounded-b-lg">
             <div className="flex items-center mt-14 justify-center">
               <div className="text-gray-700">
                 <p>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
+import './ckeditor-dark.css'; // اطمینان حاصل کنید که مسیر صحیح است
 
 const RTEditor = ({ value, onChange, ...props }) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
@@ -13,7 +14,6 @@ const RTEditor = ({ value, onChange, ...props }) => {
     };
 
     useEffect(() => {
-        // Dynamically import CKEditor and the custom editor build
         import("@ckeditor/ckeditor5-react").then(module => {
             setCKEditor(() => module.CKEditor);
         });
@@ -27,9 +27,12 @@ const RTEditor = ({ value, onChange, ...props }) => {
     }
 
     return (
-        <div className={`pt-4 px-3  ${isFullScreen ? 'fullscreen-editor' : 'w-[99%]'}`} dir="rtl">
+        <div 
+            className={`pt-4 px-3 bg-white dark:bg-gray-800 ${isFullScreen ? 'fullscreen-editor h-screen w-screen' : 'w-[99%] h-[400px]'} relative`} 
+            dir="rtl"
+        >
             <button 
-                className={' p-3 mb-2 rounded-full dark:bg-gray-900 bg-white  shadow-lg cursor-pointer z-10'}
+                className={'p-3 mb-2 rounded-full dark:bg-gray-900 bg-white shadow-lg cursor-pointer z-10'}
                 onClick={toggleFullScreen}
             >
                 {isFullScreen ? <TfiFullscreen size={20} /> : <BsArrowsFullscreen size={20} />}
@@ -44,8 +47,6 @@ const RTEditor = ({ value, onChange, ...props }) => {
                 config={{
                     language: 'fa',
                     toolbar: [
-                        'AccessibilityHelp', 
-                        'heading', 
                         'Undo',
                         'Redo',
                         'FindAndReplace',

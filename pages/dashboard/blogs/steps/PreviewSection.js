@@ -46,38 +46,33 @@ const PreviewSection = ({
   }, []);
 
   return (
-    <div >
-       <div
-        className={`flex-1 p-4 mt-4 h-full sm:h-screen  dark:text-gray-100  overflow-y-auto overflow-x-hidden 
-          ${
-            isFullscreen ? "fixed inset-0 " : "relative"
-          }
-        `}
-        
-        ref={previewRef}
-      >
-        <button
-          className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-50 absolute top-2 right-2  dark:text-gray-100"
-          onClick={handleToggleFullscreen}
-        >
-          {isFullscreen ? (
-            <TfiFullscreen size={20} />
-          ) : (
-            <BsArrowsFullscreen size={20} />
-          )}
-        </button>
-   
-        <MainContent
-          galleryPreview={galleryPreview}
-          isLoading={isLoading}
-          handleImageLoad={handleImageLoad}
-          publishDate={publishDate}
-          watch={watch}
-          editorData={editorData}
-          selectedTags={selectedTags}
-        />
-      </div> 
-    </div>
+    <div
+    className={`flex-1 p-4 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
+      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto`}
+    ref={previewRef}
+  >
+    <button
+      className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-50 absolute top-2 right-2  dark:text-gray-100"
+      onClick={handleToggleFullscreen}
+    >
+      {isFullscreen ? (
+        <TfiFullscreen size={20} />
+      ) : (
+        <BsArrowsFullscreen size={20} />
+      )}
+    </button>
+  
+    <MainContent
+      galleryPreview={galleryPreview}
+      isLoading={isLoading}
+      handleImageLoad={handleImageLoad}
+      publishDate={publishDate}
+      watch={watch}
+      editorData={editorData}
+      selectedTags={selectedTags}
+    />
+  </div>
+  
   );
 };
 

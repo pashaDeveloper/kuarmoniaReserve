@@ -3,7 +3,7 @@ import React from "react";
 
 const SkeletonImage = ({
   widthClass = "w-full",
-  heightClass = "h-64",
+  heightClass = "",
   showSize = false,
   width = null, // اندازه عرض به پیکسل
   height = null,
@@ -12,7 +12,7 @@ const SkeletonImage = ({
 }) => {
   return (
     <div
-      className={`relative z-50 ${borderRadius} ${widthClass} ${heightClass} ${className}`}
+      className={`relative h-64 ${borderRadius} ${widthClass} h-[${heightClass}px] ${className}`}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-gray-300 animate-pulse"></div>
       {showSize && (

@@ -2,9 +2,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-const Step1 = () => {
-  const { register, formState: { errors } } = useFormContext();
-  const publishDate =  new Date().toISOString().split("T")[0];
+const Step1 = ({publishDate,register,errors}) => {
 
   return (
     <>
@@ -40,7 +38,7 @@ const Step1 = () => {
       id="description"
       maxLength={276}
       placeholder="توضیحات بلاگ را تایپ کنید..."
-      className="p-2 rounded h-[100px]
+      className="p-2 rounded h-[170px]
        border w-full form-textarea"
        {...register("description", { // اصلاح نام فیلد
         required: "توضیحات الزامی است",
@@ -69,6 +67,7 @@ const Step1 = () => {
               defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
             />
           </label>
+          
     </>
   );
 };
