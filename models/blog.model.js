@@ -3,6 +3,7 @@ import { Schema, models, model } from "mongoose";
 import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";
 import Counter from "./counter.model";
+import Category from "./category.model"; // مدل Category را وارد کنید
 
 connectDB();
 
@@ -93,7 +94,7 @@ const blogSchema = new Schema(
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Tag", 
+        ref: "Tag",
         required: [true, "تگ پست الزامی است"],
       },
     ],
@@ -101,10 +102,6 @@ const blogSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "دسته‌بندی پست الزامی است"],
-    },
-    featuredImage: {
-      type: String,
-      default: "",
     },
     authorId: {
       type: Schema.Types.ObjectId,
@@ -155,9 +152,50 @@ blogSchema.virtual('rating').get(function() {
 blogSchema.set('toJSON', { virtuals: true });
 blogSchema.set('toObject', { virtuals: true });
 
+// Middleware قبل از ذخیره
 blogSchema.pre("save", async function (next) {
   if (this.isNew) {
     this.blogId = await getNextSequenceValue("blogId");
+  }
+
+  if (
+    this.isModified('title') ||
+    this.isModified('category') ||
+    this.metaTitle === "" ||
+    this.metaDescription === "" ||
+    this.metaKeywords.length === 0
+  ) {
+    try {
+      const category = await Category.findById(this.category);
+      if (category) {
+        let combinedMetaTitle = `${this.title} | ${category.name}`;
+        if (combinedMetaTitle.length > 60) {
+          const excessLength = combinedMetaTitle.length - 60;
+          combinedMetaTitle = `${this.title.substring(0, this.title.length - excessLength)} | ${category.name}`;
+        }
+        this.metaTitle = combinedMetaTitle;
+
+        let combinedMetaDescription = `${this.description} | ${category.name}`;
+        if (combinedMetaDescription.length > 160) {
+          const excessLength = combinedMetaDescription.length - 160;
+          combinedMetaDescription = `${this.description.substring(0, this.description.length - excessLength)} | ${category.name}`;
+        }
+        this.metaDescription = combinedMetaDescription;
+
+     
+        const tags = await Tag.find({ _id: { $in: this.tags } });
+        const tagKeywords = tags.map(tag => tag.name);
+        const categoryKeywords = category.keywords || []; 
+        const combinedKeywords = [...new Set([...tagKeywords, ...categoryKeywords])];
+        this.metaKeywords = combinedKeywords.slice(0, 10); 
+      } else {
+        this.metaTitle = this.title.length > 60 ? this.title.substring(0, 57) + "..." : this.title;
+        this.metaDescription = this.description.length > 160 ? this.description.substring(0, 157) + "..." : this.description;
+        this.metaKeywords = this.metaKeywords.length > 0 ? this.metaKeywords.slice(0, 10) : [];
+      }
+    } catch (error) {
+      console.error("خطا در تنظیم metaTitle، metaDescription و metaKeywords:", error);
+    }
   }
   next();
 });

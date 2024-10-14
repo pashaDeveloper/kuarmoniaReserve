@@ -1,10 +1,9 @@
-// RTEditor.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
 import './ckeditor-dark.css'; // اطمینان حاصل کنید که مسیر صحیح است
 
-const RTEditor = ({ value, onChange, ...props }) => {
+const RTEditor = forwardRef(({ value, onChange, ...props }, ref) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [CKEditor, setCKEditor] = useState(null);
     const [Editor, setEditor] = useState(null);
@@ -68,17 +67,17 @@ const RTEditor = ({ value, onChange, ...props }) => {
                         'bulletedList', 
                         'numberedList', 
                         'insertTable', 
-                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        '|', 
                         'Alignment',
                         'AutoImage',
                         'AutoLink',
                         'Indent',
                         'IndentBlock',
-                        'Outdent', // کاهش تورفتگی
-                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        'Outdent', 
+                        '|', 
                         'ImageUpload',
                         'MediaEmbed',
-                        '|', // دسته‌بندی ابزارها با استفاده از خط‌عمودی
+                        '|', 
                         'SourceEditing',
                         'RemoveFormat',
                         'ShowBlocks',
@@ -109,6 +108,6 @@ const RTEditor = ({ value, onChange, ...props }) => {
             />
         </div>
     );
-};
+});
 
 export default RTEditor;

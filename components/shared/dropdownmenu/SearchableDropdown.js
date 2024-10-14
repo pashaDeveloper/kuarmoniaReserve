@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 
-const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
+const SearchableDropdown = ({ categoryOptions, handleCategoryChange, register, errors }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(null); // حالت برای گزینه انتخابی
@@ -39,10 +39,12 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
       <div className="w-full relative group " ref={dropdownRef}>
         <button
           id="dropdown-button"
-          className={`inline-flex justify-between w-full px-1 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-100 focus:outline-none focus:ring-offset-2   dark:focus:!border-blue-500
+          className={`inline-flex  justify-between w-full px-1 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-50 focus:outline-none focus:ring-offset-2   dark:focus:!border-blue-500
             
    ${isOpen ? 'dark:border-blue-500 dark:bg-[#0a2d4d]' : 'dark:bg-gray-600'} `}
           onClick={toggleDropdown}
+          {...register}
+
         >
           <span className="ml-2 text-gray-500">{selectedOption ? selectedOption.value : "یک مورد انتخاب کن"}</span>
           <svg
@@ -64,7 +66,7 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
           <div className="w-full absolute right-0 dark:bg-slate-600 dark:text-gray-100 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10 ">
             <input
               id="search-input"
-              className="block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 focus:outline-none"
+              className="block w-full px-4 py-2 text-gray-800 dark:text-gray-100 border rounded-md border-gray-300 focus:outline-none"
               type="text"
               placeholder="عبارت مورد نظر جستجو کن"
               value={searchTerm}
@@ -97,6 +99,8 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange }) => {
           </div>
         )}
       </div>
+      {errors && <p className="text-red-500 text-sm">{errors.message}</p>}
+
     </div>
   );
 };

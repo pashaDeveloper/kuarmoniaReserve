@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 import { RxCross2 } from "react-icons/rx";
 
-const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
+const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register  }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
@@ -32,14 +32,13 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
   const handleOptionSelect = (option) => {
     let updatedSelected;
     if (selectedOptions.some((item) => item.id === option.id)) {
-      // اگر گزینه انتخاب شده بود، آن را حذف کن
       updatedSelected = selectedOptions.filter((item) => item.id !== option.id);
     } else {
-      // اگر انتخاب نشده بود، آن را اضافه کن
       updatedSelected = [...selectedOptions, option];
     }
 
     handleChange(updatedSelected);
+    
   };
 
   const removeSelectedOption = (option) => {
@@ -56,9 +55,11 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
     <div className="flex items-center justify-center">
       <div className="w-full relative" ref={dropdownRef}>
         <div
-          tabIndex={0} // اضافه کردن tabIndex برای قابل فوکوس شدن
+          tabIndex={0}
           className={`flex items-center justify-between  ${selectedOptions.length > 0 ? 'p-1':'p-3'} border border-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-lg cursor-pointer bg-white`}
           onClick={toggleDropdown}
+          {...register}
+
         >
           <div className="flex flex-wrap">
             {selectedOptions.length > 0 ? (
@@ -74,6 +75,7 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
                       e.stopPropagation();
                       removeSelectedOption(option);
                     }}
+
                   >
                     <RxCross2 />
                   </button>
@@ -108,9 +110,9 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
               value={searchTerm}
               onChange={handleSearch}
               autoComplete="off"
+              
             />
-                <div className="max-h-60 overflow-y-auto"> {/* اضافه کردن اسکرول و محدودیت ارتفاع */}
-
+                <div className="max-h-60 overflow-y-auto"> 
             {options
               .filter((option) =>
                 option.value.toLowerCase().includes(searchTerm)
@@ -118,7 +120,10 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
               .map((option) => (
                 <a
                   key={option.id}
-                  onClick={() => handleOptionSelect(option)}
+                  onClick={(event) => {
+                    register.onChange(event); // ارسال تغییرات به react-hook-form
+                    handleOptionSelect(option);
+                  }}
                   className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-blue-100 cursor-pointer rounded-md ${
                     isOptionSelected(option) ? 'bg-gray-200 dark:bg-slate-800 ' : ''
                   }`}
@@ -136,6 +141,7 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions }) => {
           </div>
         )}
       </div>
+
     </div>
   );
 };

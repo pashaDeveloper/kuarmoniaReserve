@@ -9,7 +9,8 @@ import BlogCard from "@/components/shared/card/BlogCard";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
-import Step4 from "./Step4";
+import Step4 from "./Step4"; 
+import Step5 from "./Step5"; 
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import AddCategory from "../../categories/add"; 
@@ -32,22 +33,21 @@ const AddBlogForm = () => {
       publishStatus: "pending",
       visibility: "public",
       isFeatured: false,
+      publishDate: new Date().toISOString().split("T")[0],
     },
   });
 
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 4;
+  const totalSteps = 5; // افزایش تعداد مراحل به ۵
   const [galleryPreview, setGalleryPreview] = useState([]);
   const [editorData, setEditorData] = useState("");
-  const { watch, handleSubmit, trigger, formState: { errors }, register } = methods;
+  const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue } = methods; 
 
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
 
-  // مدیریت تگ‌ها و دسته‌بندی‌ها
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // فراخوانی داده‌های دسته‌بندی و تگ‌ها
   const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
   const { data: tagsData, refetch: refetchTags } = useGetTagsForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
@@ -64,15 +64,13 @@ const AddBlogForm = () => {
     description: tag.description, 
   }));
 
-  // مدیریت افزودن یا بروزرسانی بلاگ
   const handleAddOrUpdateBlog = (formData) => {
     formData.tags = selectedTags.map((tag) => ({ _id: tag.id }));
     formData.category = selectedCategory;
-    // اینجا می‌توانید منطق ارسال به API را اضافه کنید
     console.log("Form Data:", formData);
+    // ارسال داده به سرور (می‌توانید از توابع API برای ارسال داده استفاده کنید)
   };
 
-  // مدیریت تغییرات تگ‌ها و دسته‌بندی‌ها
   const handleTagsChange = (newSelectedTags) => {
     setSelectedTags(newSelectedTags);
   };
@@ -81,7 +79,6 @@ const AddBlogForm = () => {
     setSelectedCategory(newCategory);
   };
 
-  // مدیریت بازگشت و بروزرسانی لیست‌ها بعد از افزودن دسته‌بندی یا تگ جدید
   const handleCategoryAdded = useCallback(() => {
     refetchCategories();
   }, [refetchCategories]);
@@ -90,7 +87,6 @@ const AddBlogForm = () => {
     refetchTags();
   }, [refetchTags]);
 
-  // مدیریت وضعیت مدال‌ها
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
@@ -114,12 +110,10 @@ const AddBlogForm = () => {
     setIsTagModalOpen(false);
   }, []);
 
-  // مدیریت ارسال فرم
   const onSubmit = (data) => {
     handleAddOrUpdateBlog(data);
   };
 
-  // مدیریت حرکت به مرحله بعدی
   const handleNext = async () => {
     let stepValid = false;
     switch (currentStep) {
@@ -127,25 +121,30 @@ const AddBlogForm = () => {
         stepValid = await trigger([
           "title",
           "description",
-          // اگر فیلدهای دیگری در مرحله اول دارید، آنها را اضافه کنید
+          "publishDate"
         ]);
         break;
       case 2:
-        stepValid = await trigger(["description", "tags", "category"]);
+        stepValid = await trigger([
+          "gallery",
+          "content"
+        ]);
         break;
       case 3:
         stepValid = await trigger([
-          "content",
-          "featuredImage",
-          "galleryPreview",
+       
         ]);
         break;
       case 4:
         stepValid = await trigger([
-          "publishDate",
-          "publishStatus",
-          "visibility",
-          "isFeatured",
+          // فیلدهای مرحله تنظیمات
+          "metaTitle",
+          "metaDescription"
+        ]);
+        break;
+      case 5:
+        stepValid = await trigger([
+          // فیلدهای مرحله پنجم (اگر وجود دارد)
         ]);
         break;
       default:
@@ -199,6 +198,7 @@ const AddBlogForm = () => {
                       editorData={editorData}
                       setEditorData={setEditorData}
                       register={register}
+                      control={control}
                       errors={errors}
                     />
                   )}
@@ -212,9 +212,21 @@ const AddBlogForm = () => {
                       categoryOptions={categoryOptions}
                       openTagModal={openTagModal}
                       openCategoryModal={openCategoryModal}
+                      register={register}
+                      errors={errors}
+                      setValue={setValue}
+                      clearErrors={clearErrors} 
                     />
                   )}
-                  {currentStep === 4 && <Step4 />}
+                  {currentStep === 4 && (
+                    <Step4
+                      register={register}
+                      errors={errors}
+                    />
+                  )}
+                  {currentStep === 5 && (
+                    <Step5 />
+                  )}
 
                   <div className="flex p-6 justify-between mt-4 w-full absolute bottom-0">
                     {currentStep < totalSteps && (

@@ -1,6 +1,5 @@
 // Step1.js
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 
 const Step1 = ({publishDate,register,errors}) => {
 
@@ -56,17 +55,20 @@ const Step1 = ({publishDate,register,errors}) => {
           <span className="text-red-500 text-sm">{errors.description.message}</span>
         )}
   </label>
-          <label htmlFor="publishDate" className="flex flex-col gap-y-2 w-full">
-            تاریخ انتشار
-            <input
-              type="date"
-              name="publishDate"
-              id="publishDate"
-              className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              {...register("publishDate")}
-              defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
-            />
-          </label>
+  <label htmlFor="publishDate" className="flex flex-col gap-y-2 w-full">
+  تاریخ انتشار
+  <input
+    type="date"
+    name="publishDate"
+    id="publishDate"
+    className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    {...register("publishDate", { required: "تاریخ انتشار الزامی است" })}
+    defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
+  />
+  {errors.publishDate && ( 
+    <span className="text-red-500 text-sm">{errors.publishDate.message}</span>
+  )}
+</label>
           
     </>
   );

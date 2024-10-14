@@ -1,3 +1,4 @@
+// GalleryUpload.jsx
 import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
@@ -5,14 +6,13 @@ const GalleryUpload = ({
   setGalleryPreview,
   maxFiles = 5,
   register,
-  required = false,
 }) => {
   const handleSetGalleryPreview = (event) => {
     const files = event.target.files;
     const previewImages = [];
 
     if (files.length > maxFiles) {
-      alert(`You can only upload a maximum of ${maxFiles} images.`);
+      alert(`شما می‌توانید حداکثر ${maxFiles} عکس آپلود کنید.`);
       window.location.reload();
       return;
     }
@@ -48,11 +48,12 @@ const GalleryUpload = ({
           id="gallery"
           accept="image/png, image/jpg, image/jpeg"
           className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
-          multiple
-          {...register("gallery", {
-            required,
-            onChange: (event) => handleSetGalleryPreview(event),
-          })}
+          multiple={false} // با توجه به maxFiles=1
+          {...register}
+          onChange={(event) => {
+            register.onChange(event); // ارسال تغییرات به react-hook-form
+            handleSetGalleryPreview(event);
+          }}
         />
       </label>
     </div>
