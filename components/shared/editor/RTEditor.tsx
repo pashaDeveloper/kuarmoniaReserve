@@ -27,7 +27,7 @@ const RTEditor = forwardRef(({ value, onChange, ...props }, ref) => {
 
     return (
         <div 
-            className={`pt-4 px-3 bg-white dark:bg-gray-800 ${isFullScreen ? 'fullscreen-editor h-screen w-screen' : 'w-[99%] h-[400px]'} relative`} 
+            className={` px-3 bg-white dark:bg-gray-800 ${isFullScreen ? 'fullscreen-editor h-screen w-screen' : 'w-[99%] h-[400px]'} relative`} 
             dir="rtl"
         >
             <button 

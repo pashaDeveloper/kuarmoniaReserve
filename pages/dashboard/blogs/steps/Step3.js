@@ -1,52 +1,49 @@
 // Step3.js
 import React from 'react';
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTag } from "react-icons/fa";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
+import { Controller } from "react-hook-form";
+import { CgTrash } from "react-icons/cg";
+import { FiPlus } from "react-icons/fi";
+import SocialInformationField from './SocialInformationField';
+import { toast } from "react-hot-toast";
 
 const Step3 = ({
-  selectedTags,
-  selectedCategory,
-  handleTagsChange,
-  handleCategoryChange,
-  categoryOptions,
   tagsOptions,
+  categoryOptions,
   openTagModal,
   openCategoryModal,
-  register,
-  setError,
-  clearErrors,
-  errors
+  errors,
+  control,
+  setValue
 }) => {
-  const handleTagsSelect = (selectedOptions) => {
-    console.log(selectedOptions)
-    handleTagsChange(selectedOptions);
-      clearErrors('tags'); 
-  };
-
-  const handleCategorySelect = (selectedOption) => {
-    handleCategoryChange(selectedOption);
-    if (errors.category) {
-      clearErrors('category'); // مخفی کردن خطا
-    }
+  const handleTagChange = (selectedTags) => {
+    setValue("tags", selectedTags);
   };
 
   return (
     <>
-      <div className="flex flex-col items-center justify-between gap-2 gap-y-2 w-full">
+      <div className="flex flex-col items-center justify-between gap-2 gap-y-4 w-full">
+        {/* بخش تگ‌ها */}
         <div className="flex flex-col gap-y-2 w-full ">
           <div className="flex-1 flex items-center justify-between gap-2 gap-y-2 w-full">
             <div className="flex flex-col flex-1">
               <label htmlFor="tags" className="flex flex-col gap-y-2 w-full">
                 تگ‌ها
-                <MultiSelectDropdown
-                  options={tagsOptions}
-                  selectedOptions={selectedTags}
-                  handleChange={handleTagsSelect} 
-                  className="w-full"
+                <Controller
+                  control={control}
                   name="tags"
-                  register={register('tags', { required: 'انتخاب تگ الزامی است' })}
-                  clearErrors={clearErrors} 
+                  rules={{ required: 'انتخاب تگ الزامی است' }}
+                  render={({ field: { onChange, value } }) => (
+                    <MultiSelectDropdown
+                      options={tagsOptions}
+                      selectedOptions={value || []}
+                      handleChange={handleTagChange}
+                      icon={<FaTag />}
+                      placeholder="چند مورد انتخاب کنید"
+                    />
+                  )}
                 />
               </label>
             </div>
@@ -65,17 +62,26 @@ const Step3 = ({
             <span className="text-red-500 text-sm">{errors.tags.message}</span>
           )}
         </div>
+
+        {/* بخش دسته‌بندی */}
         <div className="flex flex-col gap-y-2 w-full ">
           <div className="flex-1 flex items-center justify-between gap-2 gap-y-2 w-full">
             <div className="flex flex-col flex-1">
               <label htmlFor="category" className="flex flex-col gap-y-2">
                 دسته‌بندی
-                <SearchableDropdown
-                  categoryOptions={categoryOptions}
-                  selectedCategory={selectedCategory}
-                  handleCategoryChange={handleCategorySelect} // تغییر در اینجا
-                  register={register('category', { required: 'انتخاب دسته‌بندی الزامی است' })}
-                  errors={errors}
+                <Controller
+                  control={control}
+                  name="category"
+                  rules={{ required: 'انتخاب دسته‌بندی الزامی است' }}
+                  render={({ field: { onChange, value } }) => (
+                    <SearchableDropdown
+                      options={categoryOptions}
+                      handleSelect={onChange}
+                      value={value}
+                      errors={errors.category}
+                      placeholder="یک دسته‌بندی انتخاب کنید"
+                    />
+                  )}
                 />
               </label>
             </div>
@@ -94,7 +100,20 @@ const Step3 = ({
             <span className="text-red-500 text-sm">{errors.category.message}</span>
           )}
         </div>
-        
+
+        {/* بخش بلاگ ویژه بودن */}
+        <div className="flex flex-col gap-y-2 w-full ">
+          <label className="inline-flex items-center cursor-pointer justify-start w-full">
+            <span className="ml-3 text-right">آیا این بلاگ ویژه است؟</span>
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              id="isFeatured"
+              {...control.register('isFeatured')}
+            />
+            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+          </label>
+        </div>
       </div>
     </>
   );

@@ -15,6 +15,8 @@ import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/catego
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import AddCategory from "../../categories/add"; 
 import AddTag from "../../tags/add"; 
+import SendButton from "@/components/shared/button/SendButton"
+import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
 
 const AddBlogForm = () => {
   const methods = useForm({
@@ -28,9 +30,7 @@ const AddBlogForm = () => {
       tags: [],
       category: "",
       content: "",
-      featuredImage: "",
       galleryPreview: [],
-      publishStatus: "pending",
       visibility: "public",
       isFeatured: false,
       publishDate: new Date().toISOString().split("T")[0],
@@ -42,17 +42,15 @@ const AddBlogForm = () => {
   const [galleryPreview, setGalleryPreview] = useState([]);
   const [editorData, setEditorData] = useState("");
   const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue } = methods; 
-
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
-
   const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
+  // حذف state برای selectedCategory
   const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
   const { data: tagsData, refetch: refetchTags } = useGetTagsForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
-
+  const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
+    useAddBlogMutation();
   const categoryOptions = categories?.map(category => ({
     id: category._id,
     value: category.title,
@@ -65,8 +63,8 @@ const AddBlogForm = () => {
   }));
 
   const handleAddOrUpdateBlog = (formData) => {
-    formData.tags = selectedTags.map((tag) => ({ _id: tag.id }));
-    formData.category = selectedCategory;
+    formData.tags = formData.tags.map((tag) => tag.id); // فرض بر این است که tag.id صحیح است
+    // دسته‌بندی به طور خودکار توسط react-hook-form مدیریت می‌شود
     console.log("Form Data:", formData);
     // ارسال داده به سرور (می‌توانید از توابع API برای ارسال داده استفاده کنید)
   };
@@ -75,9 +73,10 @@ const AddBlogForm = () => {
     setSelectedTags(newSelectedTags);
   };
 
-  const handleCategoryChange = (newCategory) => {
-    setSelectedCategory(newCategory);
-  };
+  // حذف handleCategoryChange
+  // const handleCategoryChange = (newCategory) => {
+  //   setSelectedCategory(newCategory);
+  // };
 
   const handleCategoryAdded = useCallback(() => {
     refetchCategories();
@@ -132,19 +131,18 @@ const AddBlogForm = () => {
         break;
       case 3:
         stepValid = await trigger([
-       
+      
         ]);
         break;
       case 4:
         stepValid = await trigger([
-          // فیلدهای مرحله تنظیمات
           "metaTitle",
           "metaDescription"
         ]);
         break;
       case 5:
         stepValid = await trigger([
-          // فیلدهای مرحله پنجم (اگر وجود دارد)
+          // فیلدهای مرحله ۵ (در صورت وجود)
         ]);
         break;
       default:
@@ -155,7 +153,6 @@ const AddBlogForm = () => {
     }
   };
 
-  // مدیریت بازگشت به مرحله قبلی
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
@@ -164,7 +161,6 @@ const AddBlogForm = () => {
     <section
       className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
     >
-      {/* دکمه‌های پس‌زمینه یا تزئینات */}
       <div className="wave"></div>
       <div className="wave wave2"></div>
       <div className="wave wave3"></div>
@@ -182,7 +178,7 @@ const AddBlogForm = () => {
 
             <div className="flex flex-col lg:flex-row-reverse flex-1">
               {/* بخش فرم */}
-              <div className="flex-1 flex flex-col items-center p-4">
+              <div className="flex-1  flex flex-col items-center p-4">
                 <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden text-black dark:text-gray-300 flex flex-col p-8 gap-y-4 shadow-lg relative h-[560px] items-center">
                   {currentStep === 1 && (
                     <Step1
@@ -205,23 +201,23 @@ const AddBlogForm = () => {
                   {currentStep === 3 && (
                     <Step3
                       selectedTags={selectedTags}
-                      selectedCategory={selectedCategory}
                       handleTagsChange={handleTagsChange}
-                      handleCategoryChange={handleCategoryChange}
                       tagsOptions={tagsOptions}
                       categoryOptions={categoryOptions}
                       openTagModal={openTagModal}
                       openCategoryModal={openCategoryModal}
                       register={register}
                       errors={errors}
+                      clearErrors={clearErrors}
+                      control={control}
                       setValue={setValue}
-                      clearErrors={clearErrors} 
                     />
                   )}
                   {currentStep === 4 && (
                     <Step4
                       register={register}
                       errors={errors}
+                      control={control}
                     />
                   )}
                   {currentStep === 5 && (
@@ -235,21 +231,15 @@ const AddBlogForm = () => {
                         onClick={handleNext}
                       />
                     )}
-
+                    {currentStep === totalSteps && (
+                      <SendButton  />
+                    )}
                     <div className="flex-1 flex justify-end">
                       {currentStep > 1 && (
                         <NavigationButton
                           direction="prev"
                           onClick={handleBack}
                         />
-                      )}
-                      {currentStep === totalSteps && (
-                        <button
-                          type="submit"
-                          className="bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                          ارسال
-                        </button>
                       )}
                     </div>
                   </div>
@@ -271,16 +261,16 @@ const AddBlogForm = () => {
 
               {/* بخش PreviewSection با overflow-y responsive */}
               <div className="flex-1 p-4 overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
-                <PreviewSection
-                  watch={watch}
-                  galleryPreview={galleryPreview}
-                  isLoading={false}
-                  handleImageLoad={() => {}}
-                  publishDate={publishDate}
-                  editorData={editorData}
-                  selectedTags={watch("tags")}
-                  currentStep={currentStep}
-                />
+              <PreviewSection
+  watch={watch}
+  galleryPreview={galleryPreview}
+  isLoading={false}
+  handleImageLoad={() => {}}
+  publishDate={publishDate}
+  editorData={editorData}
+  selectedTags={watch("tags")} // استفاده از watch برای دریافت تگ‌ها
+  currentStep={currentStep}
+/>
               </div>
             </div>
           </form>

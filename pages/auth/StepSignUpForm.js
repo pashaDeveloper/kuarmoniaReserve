@@ -12,7 +12,7 @@ import PhoneStep from "./steps/PhoneStep";
 import StepIndicator from "./steps/StepIndicator"; 
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import { IoIosSend } from "react-icons/io";
-
+import SendButton from "@/components/shared/button/SendButton"
 const StepSignUpForm = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const { register, setValue, reset, formState: { errors }, trigger, handleSubmit, watch } = useForm({
@@ -255,21 +255,7 @@ const StepSignUpForm = () => {
       {currentStep === totalSteps && (
         <div className="flex justify-between mt-12">
           
-          <button
-            type="submit"
-            className="group inline-flex items-center border border-green-300 dark:border-blue-600 px-4 py-2 rounded-md text-green-500 dark:text-blue-500 hover:bg-green-50 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-blue-500 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <span>در حال ارسال...</span>
-            ) : (
-              <>
-                  
-               <IoIosSend className="h-6 w-6 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1" />
-                <span className="mr-2">ارسال فرم</span>
-              </>
-            )}
-          </button>
+          <SendButton />
           <NavigationButton direction="prev" onClick={prevStep} />
         </div>
       )}

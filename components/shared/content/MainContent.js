@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import LoadImage from "@/components/shared/image/LoadImage";
-
+import {TagIcon} from "@/utils/SaveIcon"
 import { FaInstagram, FaTwitter, FaTelegramPlane } from 'react-icons/fa';
 
 const MainContent = ({
@@ -56,6 +56,15 @@ const MainContent = ({
     ? `/${defaultValues.avatar.url}`
     : "https://via.placeholder.com/100"; 
 
+    const colors = [
+      { bg: 'bg-orange-200', text: 'text-orange-700' },
+      { bg: 'bg-green-200', text: 'text-green-700' },
+      { bg: 'bg-blue-200', text: 'text-blue-700' },
+      { bg: 'bg-red-200', text: 'text-red-700' },
+      { bg: 'bg-purple-200', text: 'text-purple-700' },
+      { bg: 'bg-yellow-200', text: 'text-yellow-700' },
+      { bg: 'bg-pink-200', text: 'text-pink-700' },
+    ];
   return (
     <div className="max-w-screen-xl bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
       
@@ -163,19 +172,24 @@ const MainContent = ({
                 <SkeletonText lines={22} />
               )}
             </div>
+            
 
             {selectedTags.length ? (
-              selectedTags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 mr-1 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-100 border border-indigo-800 dark:border-indigo-100"
-                >
-                  {tag.value}{index < selectedTags.length - 1 ? ' #' : ''}
-                </span>
-              ))
-            ) : (
-              <SkeletonText lines={1} />
-            )}
+  selectedTags.map((tag, index) => {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    return (
+      <div
+        key={index}
+        className={`ml-2 text-xs inline-flex items-center  leading-sm uppercase px-3 py-1 rounded-full ${randomColor.bg}  ${randomColor.text} mb-2`}
+      >
+<TagIcon className="ml-1" />
+  {tag.value}
+      </div>
+    );
+  })
+) : (
+  <SkeletonText lines={1} />
+)}  
 
             <div className="absolute top-1/2 right-0 transform translate-x-1/2 translate-y-[-50%] bg-white dark:bg-slate-900 py-3 px-2 md:px-2 lg:px-3 rounded-full border border-gray-300 dark:border-gray-700">
               <a href="https://instagram.com" className="flex items-center mb-2" target="_blank" rel="noopener noreferrer">

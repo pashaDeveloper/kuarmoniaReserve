@@ -1,43 +1,114 @@
 // Step4.js
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
+import Dropdown from "@/components/shared/dropdownmenu/Dropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
+import { useFieldArray, Controller } from "react-hook-form";
+import { CgTrash } from "react-icons/cg";
+import { FiPlus } from "react-icons/fi";
+import SocialInformationField from './SocialInformationField';
+import { toast } from "react-hot-toast";
 
-const Step4 = ({register,errors}) => {
+const Step4 = ({ register, errors, control }) => {
+  const {
+    fields: informationFields,
+    append: informationAppend,
+    remove: informationRemove,
+  } = useFieldArray({
+    control,
+    name: "information",
+  });
+
+  const timeOptions = Array.from({ length: 60 }, (_, index) => {
+    const minutes = index + 1; 
+    const label = minutes === 60 ? "1 ساعت" : `${minutes} دقیقه`;
+    return { id: minutes, value: label, description: `زمان تخمینی خواندن: ${label}` };
+  });
+
+  const maxInformationCount = 3; // حداکثر تعداد لینک‌ها
 
   return (
     <>
-      <div className=" flex-col items-center justify-between gap-12 gap-y-12 w-full">
-      <label htmlFor="visibility" className="flex flex-col gap-y-2 w-full">دسترسی *
-  <SearchableDropdown
-    categoryOptions={[
-      { id: 1, value: 'عمومی', description: 'عمومی' },
-      { id: 2, value: 'خصوصی', description: 'خصوصی' }
-    ]}
+      <div className="flex flex-col items-center justify-between gap-4 w-full">
+        {/* دسترسی */}
+        <label htmlFor="visibility" className="flex flex-col gap-y-2 w-full">
+          دسترسی
+          <Controller
+            control={control}
+            name="visibility"
+            render={({ field: { onChange, value } }) => (
+              <Dropdown
+                options={[
+                  { id: 1, value: 'public', label: 'عمومی', description: 'عمومی' },
+                  { id: 2, value: 'private', label: 'خصوصی', description: 'خصوصی' }
+                ]}
+                placeholder="به صورت پیش فرض عمومی است"
+                value={value}
+                onChange={onChange}
+                className="w-full"
+                height="py-3"
+                error={errors.visibility}
+              />
+            )}
+          />
+          {errors.visibility && (
+            <span className="text-red-500 text-sm">{errors.visibility.message}</span>
+          )}
+        </label>
 
-    register={register('visibility', { required: 'دسترسی الزامی است' })}
-    errors={errors}
-   
-  />
-   {errors.visibility && (
-      <span className="text-red-500 text-sm">{errors.visibility.message}</span>
-    )}
-  </label>
-     
-  <label className="inline-flex items-center  cursor-pointer">
-  ویژه بودن
-                        <input
-                          type="checkbox"
-                          className="sr-only peer"
-                           id="isFeatured"type="checkbox"
-                         
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                      </label>
-                            </div>
+        {/* تخمین مدت زمان مطالعه */}
+        <label htmlFor="readTime" className="flex flex-col gap-y-2 w-full">
+          تخمین مدت زمان مطالعه
+          <Controller
+            control={control}
+            name="readTime"
+            rules={{ required: 'تخمین مدت زمان مطالعه الزامی است' }}
+            render={({ field: { onChange, value } }) => (
+              <SearchableDropdown
+                options={timeOptions}
+                handleSelect={onChange} // ارسال onChange به handleSelect
+                value={value} // ارسال مقدار فعلی به SearchableDropdown
+                errors={errors.readTime}
+                placeholder="یک زمان تخمینی برای مطالعه انتخاب کن"
+              />
+            )}
+          />
+          {errors.readTime && (
+            <span className="text-red-500 text-sm">{errors.readTime.message}</span>
+          )}
+        </label>
+      </div>
 
+      {/* افزودن لینک شبکه‌های اجتماعی */}
+      <label htmlFor="information" className="flex w-full flex-col gap-y-2">
+        افزودن لینک شبکه های اجتماعی*
+        <div className="flex flex-col gap-y-4">
+          {informationFields.map((field, index) => (
+            <SocialInformationField
+              key={field.id}
+              control={control}
+              register={register}
+              index={index}
+              remove={informationRemove}
+              errors={errors}
+            />
+          ))}
 
+          {/* دکمه افزودن */}
+          <button
+            type="button"
+            className="bg-green-100 dark:bg-blue-100 border border-green-900 dark:border-blue-900 text-green-900 dark:text-blue-900 py-1 rounded-secondary flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
+            onClick={() => {
+              if (informationFields.length < maxInformationCount) {
+                informationAppend({ information: "", icon: "FaInstagram" });
+              } else {
+                toast.error(`شما نمی‌توانید بیش از ${maxInformationCount} مورد اضافه کنید.`);
+              }
+            }}
+          >
+            <FiPlus className="w-4 h-4" /> افزودن
+          </button>
+        </div>
+      </label>
     </>
   );
 };

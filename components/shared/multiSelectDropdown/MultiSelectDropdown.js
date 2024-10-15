@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 import { RxCross2 } from "react-icons/rx";
 
-const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register  }) => {
+const MultiSelectDropdown = ({ options, handleChange, selectedOptions, icon, placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
@@ -38,7 +38,6 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register 
     }
 
     handleChange(updatedSelected);
-    
   };
 
   const removeSelectedOption = (option) => {
@@ -56,18 +55,17 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register 
       <div className="w-full relative" ref={dropdownRef}>
         <div
           tabIndex={0}
-          className={`flex items-center justify-between  ${selectedOptions.length > 0 ? 'p-1':'p-3'} border border-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-lg cursor-pointer bg-white`}
+          className={`flex items-center justify-between ${selectedOptions.length > 0 ? 'p-1' : 'p-3'} border border-gray-500 dark:border-gray-500 dark:bg-gray-600 dark:focus:bg-[#0a2d4d] dark:focus:border-blue-500 rounded-lg cursor-pointer bg-white`}
           onClick={toggleDropdown}
-          {...register}
-
         >
           <div className="flex flex-wrap">
             {selectedOptions.length > 0 ? (
               selectedOptions.map((option) => (
                 <div
                   key={option.id}
-                  className="m-1 bg-green-100 dark:bg-blue-100 text-green-700 dark:text-blue-700 border border-green-700 dark:border-blue-700 rounded-full pr-2 gap-2 py-1 flex items-center"
+                  className="m-1 bg-green-100 text-xs dark:bg-blue-100 text-green-700 dark:text-blue-700 border border-green-700 dark:border-blue-700 rounded-full px-3 gap-2 py-1 flex items-center"
                 >
+                  {icon && <span className="mr-1">{icon}</span>}
                   {option.value}
                   <button
                     className="ml-2 text-red-500"
@@ -75,14 +73,13 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register 
                       e.stopPropagation();
                       removeSelectedOption(option);
                     }}
-
                   >
                     <RxCross2 />
                   </button>
                 </div>
               ))
             ) : (
-              <span className="text-gray-500"> چند مورد انتخاب کنید</span>
+              <span className="text-gray-500">{placeholder}</span>
             )}
           </div>
           <div>
@@ -103,45 +100,44 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions, register 
         {isOpen && (
           <div className="w-full dark:bg-slate-600 dark:text-gray-100 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10">
             <input
-              id="search-input"
               className="block w-full px-4 py-2 text-gray-800 dark:text-gray-100 border rounded-md border-gray-300 focus:outline-none"
               type="text"
               placeholder="عبارت مورد نظر جستجو کنید"
               value={searchTerm}
               onChange={handleSearch}
               autoComplete="off"
-              
             />
-                <div className="max-h-60 overflow-y-auto"> 
-            {options
-              .filter((option) =>
-                option.value.toLowerCase().includes(searchTerm)
-              )
-              .map((option) => (
-                <a
-                  key={option.id}
-                  onClick={(event) => {
-                    register.onChange(event); // ارسال تغییرات به react-hook-form
-                    handleOptionSelect(option);
-                  }}
-                  className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-blue-100 cursor-pointer rounded-md ${
-                    isOptionSelected(option) ? 'bg-gray-200 dark:bg-slate-800 ' : ''
-                  }`}
-                >
-                  <Tooltip
-                    key={option.value}
-                    text={option.description || ""}
-                    txtColor={"text-white"}
+            <div className="max-h-60 overflow-y-auto">
+              {options
+                .filter((option) =>
+                  option.value.toLowerCase().includes(searchTerm)
+                )
+                .map((option) => (
+                  <div
+                    key={option.id}
+                    onClick={() => handleOptionSelect(option)}
+                    className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-blue-100 cursor-pointer rounded-md ${
+                      isOptionSelected(option) ? 'bg-gray-200 dark:bg-slate-800 ' : ''
+                    }`}
                   >
-                    {option.value}
-                  </Tooltip>
-                </a>
-              ))}
-          </div>
+                    <Tooltip
+                      key={option.value}
+                      text={option.description || ""}
+                      txtColor={"text-white"}
+                    >
+                      {option.value}
+                    </Tooltip>
+                  </div>
+                ))}
+              {options.filter((option) =>
+                option.value.toLowerCase().includes(searchTerm)
+              ).length === 0 && (
+                <p className="text-gray-500 text-center">هیچ گزینه‌ای موجود نیست</p>
+              )}
+            </div>
           </div>
         )}
       </div>
-
     </div>
   );
 };

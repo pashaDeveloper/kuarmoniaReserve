@@ -3,7 +3,7 @@ import React from 'react';
 import { FaHome } from "react-icons/fa";
 import { FaAddressCard } from "react-icons/fa";
 import { BiSolidCategoryAlt } from "react-icons/bi";
-
+import {BranchIcon,ContentIcon,RankIcon} from '@/utils/SaveIcon';
 const steps = [
   {
     number: 1,
@@ -19,7 +19,7 @@ const steps = [
     label: 'تصویر و محتوا',
     required: true,
     icon: (
-      <FaHome size={25} />
+      <ContentIcon />
 
     ),
   },
@@ -28,7 +28,7 @@ const steps = [
     label: 'شاخه بندی',
     required: true,
     icon: (
-      <BiSolidCategoryAlt size={25} />
+      <BranchIcon />
 
     ),
   },
@@ -37,31 +37,15 @@ const steps = [
     label: 'تنظیمات انتشار',
     required: true,
     icon: (
-      <svg
-        className="w-full fill-current"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-      >
-        <path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z" />
-      </svg>
+<span className="si--settings-duotone "></span>
     ),
   },
   {
     number: 5,
-    label: 'تنظیمات انتشار',
-    required: true,
+    label: 'SEO',
+    required: false,
     icon: (
-      <svg
-        className="w-full fill-current"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-      >
-        <path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z" />
-      </svg>
+      <RankIcon />
     ),
   },
 ];
@@ -101,7 +85,7 @@ const CustomProgressBar = ({ currentStep }) => {
                     : 'bg-white border-gray-200'
                 }`}
               >
-                <span className={`text-lg font-medium ${isCompleted || isActive ? 'text-white' : 'text-gray-600'}`}>
+                <span className={`text-lg font-medium flex justify-center items-center ${isCompleted || isActive ? 'text-white' : 'text-gray-600'}`}>
                   {step.icon}
                 </span>
               </div>

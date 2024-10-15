@@ -1,4 +1,5 @@
 
+import {NextIcon,PrevIcon} from "@/utils/SaveIcon"
 
 const NavigationButton = ({ direction = "next", onClick }) => {
     const isNext = direction === "next";
@@ -10,39 +11,16 @@ const NavigationButton = ({ direction = "next", onClick }) => {
       >
         {isNext ? (
           <>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+           <NextIcon 
               className="h-6 w-6 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
+ />
             <span className="mr-2 ">بعدی</span>
           </>
         ) : (
           <>
             <span className="ml-2 ">قبلی</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:-translate-x-1"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M7 8l-4 4m0 0l4 4m-4-4h18"
-              />
-            </svg>
+            <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:-translate-x-1" />
+
           </>
         )}
       </button>

@@ -18,7 +18,7 @@ const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control
         <span className="text-red-500 text-sm">{errors.gallery.message}</span>
       )}
 
-      <label htmlFor="content" className="flex flex-col gap-y-2 w-full h-[200px]">
+      <label htmlFor="content" className="flex flex-col  w-full h-[200px]">
         محتوا
         <Controller
           name="content"

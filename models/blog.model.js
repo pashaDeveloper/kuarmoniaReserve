@@ -108,7 +108,12 @@ const blogSchema = new Schema(
       ref: "User",
       required: [true, "شناسه نویسنده الزامی است"],
     },
-
+    bookmarkedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     // اضافه کردن لایک و دیسلایک
     likes: [
       {

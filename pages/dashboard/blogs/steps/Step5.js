@@ -56,6 +56,8 @@ const Step5 = () => {
           <span className="text-red-500 text-sm">{errors.metaDescription.message}</span>
         )}
       </label>
+       {/* بلاگ ویژه بودن */}
+      
     </>
   );
 };

@@ -1,11 +1,23 @@
+// SearchableDropdown.js
 import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 
-const SearchableDropdown = ({ categoryOptions, handleCategoryChange, register, errors }) => {
+const SearchableDropdown = ({ options = [], handleSelect, value, errors, placeholder = "یک مورد انتخاب کن" }) => { 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null); // حالت برای گزینه انتخابی
+  const [selectedOption, setSelectedOption] = useState(() => {
+    return options.find(option => option.value === value) || null;
+  });
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (value) {
+      const selected = options.find(option => option.value === value);
+      setSelectedOption(selected);
+    } else {
+      setSelectedOption(null);
+    }
+  }, [value, options]);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -29,27 +41,26 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange, register, e
   }, []);
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option); // ذخیره گزینه انتخابی
-    handleCategoryChange(option.value); // فراخوانی تابع تغییر دسته‌بندی
-    setIsOpen(false); // بستن کشو پس از انتخاب گزینه
+    setSelectedOption(option); 
+    if (handleSelect) { 
+      handleSelect(option.value); 
+    }
+    setIsOpen(false); 
   };
 
   return (
     <div className="flex items-center justify-center">
-      <div className="w-full relative group " ref={dropdownRef}>
+      <div className="w-full relative group" ref={dropdownRef}>
         <button
           id="dropdown-button"
-          className={`inline-flex  justify-between w-full px-1 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-50 focus:outline-none focus:ring-offset-2   dark:focus:!border-blue-500
-            
-   ${isOpen ? 'dark:border-blue-500 dark:bg-[#0a2d4d]' : 'dark:bg-gray-600'} `}
+          className={`inline-flex justify-between w-full px-1 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-50 focus:outline-none focus:ring-offset-2 dark:focus:!border-blue-500
+            ${isOpen ? 'dark:border-blue-500 dark:bg-[#0a2d4d]' : 'dark:bg-gray-600'}`}
           onClick={toggleDropdown}
-          {...register}
-
         >
-          <span className="ml-2 text-gray-500">{selectedOption ? selectedOption.value : "یک مورد انتخاب کن"}</span>
+          <span className="ml-2 text-gray-500">{selectedOption ? selectedOption.value : placeholder}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5  -mr-1"
+            className="w-5 h-5 -mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
@@ -63,7 +74,7 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange, register, e
         </button>
 
         {isOpen && (
-          <div className="w-full absolute right-0 dark:bg-slate-600 dark:text-gray-100 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10 ">
+          <div className="w-full absolute right-0 dark:bg-slate-600 dark:text-gray-100 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 z-10">
             <input
               id="search-input"
               className="block w-full px-4 py-2 text-gray-800 dark:text-gray-100 border rounded-md border-gray-300 focus:outline-none"
@@ -73,34 +84,34 @@ const SearchableDropdown = ({ categoryOptions, handleCategoryChange, register, e
               onChange={handleSearch}
               autoComplete="off"
             />
-                <div className="max-h-60 overflow-y-auto"> 
-
-            {categoryOptions
-              .filter((option) =>
-                option.value.toLowerCase().includes(searchTerm)
-              )
-              .map((option) => (
-                <a
-                  key={option.id}
-                  onClick={() => handleOptionSelect(option)} 
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-100 dark:hover:bg-slate-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
-                >
-                  <Tooltip
-                    key={option.value}
-                    text={option.description || ""}
-                    txtColor={"text-white"}
-                  >
-                    {option.value}
-                  </Tooltip>
-                </a>
-
-))}
-</div>
+            <div className="max-h-60 overflow-y-auto"> 
+              {options.length > 0 ? ( 
+                options
+                  .filter((option) =>
+                    option.value.toLowerCase().includes(searchTerm)
+                  )
+                  .map((option) => (
+                    <a
+                      key={option.id}
+                      onClick={() => handleOptionSelect(option)} 
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-100 dark:hover:bg-slate-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
+                    >
+                      <Tooltip
+                        key={option.value}
+                        text={option.description || ""}
+                        txtColor={"text-white"}
+                      >
+                        {option.value}
+                      </Tooltip>
+                    </a>
+                  ))
+              ) : (
+                <p className="text-gray-500 text-center">هیچ گزینه‌ای موجود نیست</p> 
+              )}
+            </div>
           </div>
         )}
       </div>
-      {errors && <p className="text-red-500 text-sm">{errors.message}</p>}
-
     </div>
   );
 };
