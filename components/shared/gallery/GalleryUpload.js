@@ -20,14 +20,12 @@ const GalleryUpload = ({
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
-
       reader.onload = (e) => {
         previewImages.push(e.target.result);
         if (previewImages.length === files.length) {
           setGalleryPreview(previewImages); // ارسال پیش‌نمایش به والد
         }
       };
-
       reader.readAsDataURL(file);
     }
   };

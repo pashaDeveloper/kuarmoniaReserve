@@ -63,9 +63,9 @@ const CustomProgressBar = ({ currentStep }) => {
               {/* خط اتصال */}
               {index !== steps.length - 1 && (
                 <div className="absolute top-5 right-full translate-x-1/2 w-full flex justify-center">
-                  <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div className="w-full bg-pink-500  rounded-full h-1">
                     <div
-                      className="bg-green-300 h-1 rounded-full"
+                      className="bg-green-500 dark:bg-blue-500 h-1 rounded-full"
                       style={{
                         width: isCompleted ? '100%' : '0%',
                         transition: 'width 0.3s ease-in-out',
@@ -77,15 +77,15 @@ const CustomProgressBar = ({ currentStep }) => {
 
               {/* دکمه مرحله */}
               <div
-                className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full border-2 ${
+                className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 ${
                   isCompleted
-                    ? 'bg-green-500 border-green-500'
+                    ? 'bg-green-500 border-green-500 dark:bg-blue-500 dark:border-blue-500 '
                     : isActive
-                    ? 'bg-green-500 border-green-500'
-                    : 'bg-white border-gray-200'
+                    ? 'bg-green-500 border-green-500 dark:border-blue-500 dark:bg-blue-500'
+                    : 'bg-pink-400 border-pink-400'
                 }`}
               >
-                <span className={`text-lg font-medium flex justify-center items-center ${isCompleted || isActive ? 'text-white' : 'text-gray-600'}`}>
+                <span className={`text-lg text-white font-medium flex justify-center items-center `}>
                   {step.icon}
                 </span>
               </div>

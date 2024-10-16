@@ -1,81 +1,32 @@
-import React, { useState } from 'react';
+import React, { forwardRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { BsArrowsFullscreen } from "react-icons/bs";
-import { TfiFullscreen } from "react-icons/tfi";
-import UploadAdapter from '@/utils/uploadAdapter';
+import './ckeditor-dark.css'; // اطمینان حاصل کنید که مسیر صحیح است
 
-const CKEditorComponent = ({ value, onChange }) => {
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const toggleFullScreen = () => {
-    setIsFullScreen(!isFullScreen);
-  };
+const RTEditor = forwardRef(({ value, onChange, ...props }, ref) => {
+    return (
+        <div className={`px-3 bg-white dark:bg-gray-800 relative`} dir="rtl">
+            <CKEditor
+                editor={ClassicEditor}
+                data={value}
+                onChange={(event, editor) => {
+                    onChange?.(editor.getData());
+                }}
+                config={{
+                    language: 'fa',
+                    toolbar: [
+                        'undo',
+                        'redo',
+                        'bold',
+                        'italic',
+                        'link',
+                        'imageUpload',
+                        'fullscreen', // دکمه fullscreen
+                    ],
+                }}
+            />
+        </div>
+    );
+});
 
-  return (
-    <div className={`pt-4 px-3 ${isFullScreen ? 'fullscreen-editor' : ''}`}>
-      <button 
-        className={'bg-white p-2 mb-2 rounded-full shadow cursor-pointer z-10'}
-        onClick={toggleFullScreen}
-      >
-        {isFullScreen ? <TfiFullscreen size={20} /> : <BsArrowsFullscreen size={20} />}
-      </button>
-      <CKEditor
-        editor={ClassicEditor}
-        data={value}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          onChange(data);
-        }}
-        config={{
-          language: 'fa',
-          plugins: [ ...ClassicEditor.builtinPlugins ],
-          toolbar: [
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            'blockQuote',
-            'insertTable',
-            'mediaEmbed',
-            'fontSize',
-            'fontColor',  // اضافه کردن انتخاب رنگ فونت
-            'fontBackgroundColor',  // اضافه کردن انتخاب رنگ پس‌زمینه
-            'undo',
-            'redo',
-            'imageUpload'  
-          ],
-          fontSize: {
-            options: [
-              8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72
-            ]
-          },
-          fontColor: {
-            columns: 5,
-            documentColors: 10
-          },
-          fontBackgroundColor: {
-            columns: 5,
-            documentColors: 10
-          },
-          image: {
-            toolbar: [
-              'imageTextAlternative', 'imageStyle:full', 'imageStyle:side'
-            ]
-          },
-          extraPlugins: [ MyUploadAdapterPlugin ],
-        }}
-      />
-    </div>
-  );
-};
-
-function MyUploadAdapterPlugin(editor) {
-  editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-    return new UploadAdapter(loader);
-  };
-}
-
-export default CKEditorComponent;
+export default RTEditor;

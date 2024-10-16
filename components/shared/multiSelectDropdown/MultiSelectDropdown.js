@@ -63,18 +63,18 @@ const MultiSelectDropdown = ({ options, handleChange, selectedOptions, icon, pla
               selectedOptions.map((option) => (
                 <div
                   key={option.id}
-                  className="m-1 bg-green-100 text-xs dark:bg-blue-100 text-green-700 dark:text-blue-700 border border-green-700 dark:border-blue-700 rounded-full px-3 gap-2 py-1 flex items-center"
+                  className="m-1 bg-green-100 text-xs dark:bg-blue-100 text-green-700 dark:text-blue-700 border border-green-700 dark:border-blue-700 rounded-full px-1 gap-1 py-1 flex items-center"
                 >
                   {icon && <span className="mr-1">{icon}</span>}
                   {option.value}
                   <button
-                    className="ml-2 text-red-500"
+                    className="ml-1 text-red-500"
                     onClick={(e) => {
                       e.stopPropagation();
                       removeSelectedOption(option);
                     }}
                   >
-                    <RxCross2 />
+                    <RxCross2 size={20} />
                   </button>
                 </div>
               ))

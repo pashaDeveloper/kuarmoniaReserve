@@ -3,12 +3,11 @@ import React from 'react';
 import Dropdown from "@/components/shared/dropdownmenu/Dropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 import { useFieldArray, Controller } from "react-hook-form";
-import { CgTrash } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 import SocialInformationField from './SocialInformationField';
 import { toast } from "react-hot-toast";
 
-const Step4 = ({ register, errors, control }) => {
+const Step4 = ({ register, errors, control,getValues }) => {
   const {
     fields: informationFields,
     append: informationAppend,
@@ -61,7 +60,6 @@ const Step4 = ({ register, errors, control }) => {
           <Controller
             control={control}
             name="readTime"
-            rules={{ required: 'تخمین مدت زمان مطالعه الزامی است' }}
             render={({ field: { onChange, value } }) => (
               <SearchableDropdown
                 options={timeOptions}
@@ -90,6 +88,7 @@ const Step4 = ({ register, errors, control }) => {
               index={index}
               remove={informationRemove}
               errors={errors}
+              getValues={getValues}
             />
           ))}
 

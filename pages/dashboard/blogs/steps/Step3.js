@@ -8,6 +8,7 @@ import { CgTrash } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 import SocialInformationField from './SocialInformationField';
 import { toast } from "react-hot-toast";
+import {TagIcon} from "@/utils/SaveIcon"
 
 const Step3 = ({
   tagsOptions,
@@ -40,7 +41,7 @@ const Step3 = ({
                       options={tagsOptions}
                       selectedOptions={value || []}
                       handleChange={handleTagChange}
-                      icon={<FaTag />}
+                      icon={<TagIcon />}
                       placeholder="چند مورد انتخاب کنید"
                     />
                   )}

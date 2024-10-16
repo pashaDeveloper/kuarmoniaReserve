@@ -6,6 +6,26 @@ import Counter from "./counter.model";
 import Category from "./category.model"; // مدل Category را وارد کنید
 
 connectDB();
+const socialLinkSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "نام شبکه اجتماعی الزامی است"],
+    trim: true,
+    enum: {
+      values: ["Facebook", "Twitter", "LinkedIn", "Instagram", "Other"], // می‌توانید نام‌های بیشتری اضافه کنید
+      message: "نام شبکه اجتماعی معتبر نیست",
+    },
+  },
+  url: {
+    type: String,
+    required: [true, "لینک شبکه اجتماعی الزامی است"],
+    trim: true,
+    match: [
+      /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/,
+      "لینک شبکه اجتماعی معتبر نیست",
+    ],
+  },
+});
 
 const blogSchema = new Schema(
   {
@@ -140,7 +160,10 @@ const blogSchema = new Schema(
       default: 0,
       min: [0, "تعداد بازدید نمی‌تواند منفی باشد"],
     },
-
+    socialLinks: {
+      type: [socialLinkSchema],
+      default: [],
+    },
     ...baseSchema.obj,
   },
   { timestamps: true }

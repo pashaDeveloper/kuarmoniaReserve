@@ -11,7 +11,6 @@ import PasswordStep from "./steps/PasswordStep";
 import PhoneStep from "./steps/PhoneStep";
 import StepIndicator from "./steps/StepIndicator"; 
 import NavigationButton from "@/components/shared/button/NavigationButton";
-import { IoIosSend } from "react-icons/io";
 import SendButton from "@/components/shared/button/SendButton"
 const StepSignUpForm = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);

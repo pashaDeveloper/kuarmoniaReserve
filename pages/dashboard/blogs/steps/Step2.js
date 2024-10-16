@@ -2,11 +2,27 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import RTEditor from "@/components/shared/editor/RTEditor";
+import Modal from '@/components/shared/modal/Modal'; 
 
-const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control, errors }) => { 
+const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control, errors,useState }) => { 
+ 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const stripHtmlTags = (html) => {
+      const tempElement = document.createElement("div");
+      tempElement.innerHTML = html;
+      return tempElement.textContent || tempElement.innerText || "";
+    };
   return (
     <>
-      <label htmlFor="gallery" className="flex flex-col gap-y-2">
+      <label htmlFor="gallery" className="flex flex-col text-center gap-y-2">
         تصویر عنوان وبلاگ
         <GalleryUpload
           setGalleryPreview={setGalleryPreview}
@@ -18,27 +34,46 @@ const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control
         <span className="text-red-500 text-sm">{errors.gallery.message}</span>
       )}
 
-      <label htmlFor="content" className="flex flex-col  w-full h-[200px]">
-        محتوا
+      <label htmlFor="content" className="flex flex-col gap-y-4 w-full h-[200px]">
+        * محتوا  
         <Controller
-          name="content"
-          control={control} // Ensure control is passed
-          rules={{ required: 'محتوا الزامی است' }} // Rule for required content
-          render={({ field }) => (
-            <>
-              <RTEditor
-                {...field}
-                value={editorData} // Use editorData here
-                onChange={(value) => {
-                  setEditorData(value); // Update editorData correctly
-                  field.onChange(value); // Call field.onChange too
-                }}
-              />
-              {errors.content && (
-                <span className="text-red-500 text-sm">{errors.content.message}</span>
-              )}
-            </>
-          )}
+            name="content"
+            control={control}
+            rules={{ required: 'محتوا الزامی است' }}
+            render={({ field }) => (
+                <>
+                    <textarea
+                        {...field}
+                        value={stripHtmlTags(editorData)} // حذف تگ‌های HTML
+                        placeholder="برای ویرایش کلیک کنید..."
+                        readOnly
+                        onClick={openModal} // باز کردن مدال هنگام کلیک روی textarea
+                        className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 text-justify dark:text-white min-h-[280px]"
+                    />
+                    
+                    {errors.content && (
+                        <span className="text-red-500 text-sm">{errors.content.message}</span>
+                    )}
+
+                    <Modal isOpen={isModalOpen} onClose={closeModal} className="h-[90vh]">
+                        <RTEditor
+                            value={editorData} 
+                            onChange={(value) => {
+                                setEditorData(value); 
+                                field.onChange(value); 
+                            }}
+                        />
+                        <div className="text-right mt-4">
+                            <button
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={closeModal}
+                            >
+                                ذخیره و بستن
+                            </button>
+                        </div>
+                    </Modal>
+                </>
+            )}
         />
       </label>
     </>

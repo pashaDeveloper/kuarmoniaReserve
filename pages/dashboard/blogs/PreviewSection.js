@@ -73,7 +73,7 @@ const PreviewSection = ({
         ref={previewRef}
       >
         <button
-          className="p-3 rounded-full shadow-lg cursor-pointer bg-white  z-50 absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
+          className="p-3 rounded-full shadow-lg cursor-pointer bg-white  z-10 absolute top-2 right-2 z-10 dark:bg-gray-900 dark:text-gray-100"
           onClick={handleToggleFullscreen}
         >
           {isFullscreen ? (

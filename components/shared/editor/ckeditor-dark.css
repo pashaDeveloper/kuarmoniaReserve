@@ -37,10 +37,12 @@
 /* حالت تاریک برای انتخاب متن */
 
 .ck-content{ 
-  min-height:200px;
-  max-height:200px;
+height:70vh;
   overflow-y: scroll; 
   scrollbar-width: none;
-  -ms-overflow-style: none; 
-  box-sizing: border-box; 
+
 }
+.ck-sticky-panel__content_sticky{
+top:60px !important;
+}
+

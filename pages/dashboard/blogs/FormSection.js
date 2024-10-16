@@ -3,7 +3,7 @@ import React from "react";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 import Button from "@/components/shared/button/Button";
-import RTEditor from "@/components/shared/editor/RTEditor";
+import RTEditor from "@/components/shared/editor/ClassicEditor";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 import { FaPlus } from "react-icons/fa";
 

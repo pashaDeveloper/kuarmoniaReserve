@@ -1,5 +1,4 @@
-// AddBlogForm.js
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback,useEffect  } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import PreviewSection from "./PreviewSection";
 import CustomProgressBar from "./CustomProgressBar";
@@ -17,6 +16,7 @@ import AddCategory from "../../categories/add";
 import AddTag from "../../tags/add"; 
 import SendButton from "@/components/shared/button/SendButton"
 import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
+import { toast } from "react-hot-toast";
 
 const AddBlogForm = () => {
   const methods = useForm({
@@ -33,24 +33,29 @@ const AddBlogForm = () => {
       galleryPreview: [],
       visibility: "public",
       isFeatured: false,
+      socialLinks: [], // فیلد جدید
       publishDate: new Date().toISOString().split("T")[0],
     },
   });
 
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 5; // افزایش تعداد مراحل به ۵
+  const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
   const [editorData, setEditorData] = useState("");
-  const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue } = methods; 
+  const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue,getValues,reset ,onSuccess  } = methods; 
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
   const [selectedTags, setSelectedTags] = useState([]);
-  // حذف state برای selectedCategory
+
   const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
   const { data: tagsData, refetch: refetchTags } = useGetTagsForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
-  const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
+  const [addBlog, { isLoading: isAdding, data: addData, error: addError }] =
     useAddBlogMutation();
+  const [
+    updateBlog,
+    { isLoading: isUpdating, data: updateData, error: updateError },
+  ] = useUpdateBlogMutation();
   const categoryOptions = categories?.map(category => ({
     id: category._id,
     value: category.title,
@@ -62,21 +67,47 @@ const AddBlogForm = () => {
     description: tag.description, 
   }));
 
-  const handleAddOrUpdateBlog = (formData) => {
-    formData.tags = formData.tags.map((tag) => tag.id); // فرض بر این است که tag.id صحیح است
-    // دسته‌بندی به طور خودکار توسط react-hook-form مدیریت می‌شود
-    console.log("Form Data:", formData);
-    // ارسال داده به سرور (می‌توانید از توابع API برای ارسال داده استفاده کنید)
-  };
+  const handleAddOrUpdateBlog = async  (formData) => {
+    formData.tags = formData.tags.map((tag) => tag.id); 
+    console.log("formdata",formData)
+    await addBlog(formData).unwrap();
 
+  };
+  useEffect(() => {
+    const isLoading = isAdding || isUpdating;
+    const data = addData || updateData;
+    const error = addError || updateError;
+
+    if (isLoading) {
+      toast.loading("در حال پردازش...", { id: "blog" });
+    }
+    console.log("formData")
+
+    if (data) {
+      toast.success(data?.message, { id: "blog" });
+      reset();
+      if (onSuccess) {
+        onSuccess();
+      }
+     
+    }
+
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "Tag" });
+    }
+  }, [
+    addData,
+    updateData,
+    addError,
+    updateError,
+    isAdding,
+    isUpdating,
+    reset,
+    onSuccess,
+  ]);
   const handleTagsChange = (newSelectedTags) => {
     setSelectedTags(newSelectedTags);
   };
-
-  // حذف handleCategoryChange
-  // const handleCategoryChange = (newCategory) => {
-  //   setSelectedCategory(newCategory);
-  // };
 
   const handleCategoryAdded = useCallback(() => {
     refetchCategories();
@@ -90,22 +121,18 @@ const AddBlogForm = () => {
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
   const openCategoryModal = useCallback(() => {
-    console.log("باز کردن مدال دسته‌بندی");
     setIsCategoryModalOpen(true);
   }, []);
 
   const closeCategoryModal = useCallback(() => {
-    console.log("بستن مدال دسته‌بندی");
     setIsCategoryModalOpen(false);
   }, []);
 
   const openTagModal = useCallback(() => {
-    console.log("باز کردن مدال تگ");
     setIsTagModalOpen(true);
   }, []);
 
   const closeTagModal = useCallback(() => {
-    console.log("بستن مدال تگ");
     setIsTagModalOpen(false);
   }, []);
 
@@ -196,6 +223,7 @@ const AddBlogForm = () => {
                       register={register}
                       control={control}
                       errors={errors}
+                      useState={useState}
                     />
                   )}
                   {currentStep === 3 && (
@@ -218,6 +246,7 @@ const AddBlogForm = () => {
                       register={register}
                       errors={errors}
                       control={control}
+                      getValues={getValues}
                     />
                   )}
                   {currentStep === 5 && (

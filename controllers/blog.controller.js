@@ -1,24 +1,53 @@
+// controllers/blog.controller.js
 import Blog from '@/models/blog.model';
 
 export async function addBlog(req) {
   try {
-    const { title, description, content, publishDate, tags, category, featuredImage, authorId } = req.body;
+    const { title, description, content, publishDate, tags, category, authorId, socialLinks } = req.body;
+    
+    let featuredImage = "";
+    if (req.file) {
+      // فرض بر این است که فایل‌ها در پوشه public/uploads ذخیره می‌شوند
+      featuredImage = `/uploads/${req.file.filename}`;
+    } else {
+      return {
+        success: false,
+        message: "تصویر شاخص الزامی است",
+      };
+    }
 
+    // تبدیل تگ‌ها به آرایه‌ای از شناسه‌ها
+    const tagsIds = JSON.parse(tags); // فرض بر این است که تگ‌ها به صورت JSON ارسال شده‌اند
+
+    // تبدیل socialLinks به آرایه‌ای از اشیاء
+    let parsedSocialLinks = [];
+    if (socialLinks) {
+      try {
+        parsedSocialLinks = JSON.parse(socialLinks);
+      } catch (e) {
+        console.error("Error parsing socialLinks:", e.message);
+        parsedSocialLinks = [];
+      }
+    }
+
+    // ایجاد بلاگ
     const blog = await Blog.create({
       title,
       description,
       content,
       publishDate,
-      tags,
+      tags: tagsIds,
       category,
-      featuredImage,
-      authorId
+      featuredImage, // ذخیره URL تصویر
+      authorId,
+      socialLinks: parsedSocialLinks, // ذخیره لینک‌های شبکه اجتماعی
     });
 
     if (blog) {
       return {
         success: true,
         message: "بلاگ با موفقیت ایجاد شد",
+        data: blog,
       };
     } else {
       return {
@@ -34,6 +63,7 @@ export async function addBlog(req) {
     };
   }
 }
+
 
 export async function getBlogs(req) {
   try {
