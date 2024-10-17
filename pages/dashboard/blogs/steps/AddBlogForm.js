@@ -1,5 +1,6 @@
-import React, { useState, useCallback,useEffect  } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import React, { useState, useCallback,useEffect , useMemo } from "react";
+import { useForm, FormProvider, } from "react-hook-form";
+import { useSelector } from "react-redux";
 import PreviewSection from "./PreviewSection";
 import CustomProgressBar from "./CustomProgressBar";
 import NavigationButton from "@/components/shared/button/NavigationButton";
@@ -30,14 +31,15 @@ const AddBlogForm = () => {
       tags: [],
       category: "",
       content: "",
-      galleryPreview: [],
+      gallery:"",
+      readTime:"",
       visibility: "public",
       isFeatured: false,
       socialLinks: [], // فیلد جدید
       publishDate: new Date().toISOString().split("T")[0],
     },
   });
-
+  const user = useSelector((state) => state?.auth);
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
@@ -66,10 +68,21 @@ const AddBlogForm = () => {
     value: tag.title,
     description: tag.description, 
   }));
-
+  const defaultValues = useMemo(() => {
+    return {
+      name: user?.name,
+      avatar: user?.avatar,
+      id: user?._id,
+    };
+  }, [user]);
   const handleAddOrUpdateBlog = async  (formData) => {
-    formData.tags = formData.tags.map((tag) => tag.id); 
-    console.log("formdata",formData)
+    formData.tags = formData.tags.map((tag) => tag.id);
+    formData.authorId=defaultValues?.id;
+    if (formData.gallery && formData.gallery.length > 0) {
+      formData.featuredImage= formData.gallery[0]; // فقط یک فایل در این مثال
+    }
+    formData.gallery={}
+    console.log("formdata",formData);
     await addBlog(formData).unwrap();
 
   };
@@ -81,19 +94,16 @@ const AddBlogForm = () => {
     if (isLoading) {
       toast.loading("در حال پردازش...", { id: "blog" });
     }
-    console.log("formData")
 
-    if (data) {
+    if (data?.success) {
       toast.success(data?.message, { id: "blog" });
-      reset();
-      if (onSuccess) {
-        onSuccess();
-      }
-     
+      reset();     
+    }else{
+      toast.error(data?.message, { id: "blog" });
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "Tag" });
+      toast.error(error?.data?.message, { id: "blog" });
     }
   }, [
     addData,
@@ -299,6 +309,7 @@ const AddBlogForm = () => {
   editorData={editorData}
   selectedTags={watch("tags")} // استفاده از watch برای دریافت تگ‌ها
   currentStep={currentStep}
+  defaultValues={defaultValues}
 />
               </div>
             </div>

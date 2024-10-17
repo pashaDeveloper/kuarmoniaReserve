@@ -23,7 +23,6 @@ const userSchema = new Schema(
     avatar: {
       url: {
         type: String,
-        default: "https://placehold.co/300x300.png",
       },
       public_id: {
         type: String,

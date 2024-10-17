@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState,useEffect ,useMemo  } from "react";
 import Sidebar from "./Sidebar";
 import { IoHomeOutline } from "react-icons/io5";
 import {
@@ -20,10 +20,19 @@ import { FaListUl } from "react-icons/fa";
 import { BsTags } from "react-icons/bs";
 import ProgressBar from '../components/shared/loading/progressBar';
 import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
-
+import {
+  useGetUserQuery,
+} from "@/services/user/userApi";
 const Panel = ({ children }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state?.auth);
+  useEffect(() => {
+    if (!user || !user._id) {
+      window.open("/auth/signin", "_self"); 
+    }
+  },)
+
   const routes = [
     {
       name: "پروفایل من",

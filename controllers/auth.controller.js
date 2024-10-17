@@ -29,11 +29,8 @@ export async function signUpUser(req) {
       ...req.body,
       role: role,  
       status: status,  
-      avatar: {
-        url: req.body.filePath,
-        public_id: req.file.filename,
-        originalName: originalName || "ناشناخته",
-      },
+     
+     
     });
 
     const result = await user.save({ validateBeforeSave: true });

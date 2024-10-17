@@ -10,7 +10,7 @@ export default async function verify(req, res, next) {
     if (!token) {
       return res.send({
         acknowledgement: false,
-        message: "Unauthorized, No token found",
+        message: "غیرمجاز، توکن یافت نشد",
       });
     }
 
@@ -24,7 +24,7 @@ export default async function verify(req, res, next) {
   } catch (error) {
     return res.send({
       acknowledgement: false,
-      message: "Unauthorized, Invalid token",
+      message: "غیرمجاز، توکن نامعتبر است",
     });
   }
 }

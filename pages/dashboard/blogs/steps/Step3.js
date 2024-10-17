@@ -4,10 +4,6 @@ import { FaPlus, FaTag } from "react-icons/fa";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 import { Controller } from "react-hook-form";
-import { CgTrash } from "react-icons/cg";
-import { FiPlus } from "react-icons/fi";
-import SocialInformationField from './SocialInformationField';
-import { toast } from "react-hot-toast";
 import {TagIcon} from "@/utils/SaveIcon"
 
 const Step3 = ({
@@ -79,6 +75,7 @@ const Step3 = ({
                       options={categoryOptions}
                       handleSelect={onChange}
                       value={value}
+                      sendId={true}
                       errors={errors.category}
                       placeholder="یک دسته‌بندی انتخاب کنید"
                     />

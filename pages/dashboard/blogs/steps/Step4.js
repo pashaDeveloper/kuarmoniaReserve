@@ -14,7 +14,7 @@ const Step4 = ({ register, errors, control,getValues }) => {
     remove: informationRemove,
   } = useFieldArray({
     control,
-    name: "information",
+    name: "socialLinks",
   });
 
   const timeOptions = Array.from({ length: 60 }, (_, index) => {
@@ -77,7 +77,7 @@ const Step4 = ({ register, errors, control,getValues }) => {
       </div>
 
       {/* افزودن لینک شبکه‌های اجتماعی */}
-      <label htmlFor="information" className="flex w-full flex-col gap-y-2">
+      <label htmlFor="socialLinks" className="flex w-full flex-col gap-y-2">
         افزودن لینک شبکه های اجتماعی*
         <div className="flex flex-col gap-y-4">
           {informationFields.map((field, index) => (
@@ -98,7 +98,7 @@ const Step4 = ({ register, errors, control,getValues }) => {
             className="bg-green-100 dark:bg-blue-100 border border-green-900 dark:border-blue-900 text-green-900 dark:text-blue-900 py-1 rounded-secondary flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
             onClick={() => {
               if (informationFields.length < maxInformationCount) {
-                informationAppend({ information: "", icon: "FaInstagram" });
+                informationAppend({ name: "FaInstagram" });
               } else {
                 toast.error(`شما نمی‌توانید بیش از ${maxInformationCount} مورد اضافه کنید.`);
               }

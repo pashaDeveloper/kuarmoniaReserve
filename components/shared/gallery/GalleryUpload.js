@@ -32,7 +32,7 @@ const GalleryUpload = ({
 
   return (
     <div className="flex flex-col gap-y-2">
-      <label htmlFor="gallery" className="relative">
+      <label htmlFor="featuredImage" className="relative">
         <button
           type="button"
           className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit"
@@ -42,8 +42,8 @@ const GalleryUpload = ({
         </button>
         <input
           type="file"
-          name="gallery"
-          id="gallery"
+          name="featuredImage"
+          id="featuredImage"
           accept="image/png, image/jpg, image/jpeg"
           className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
           multiple={false} // با توجه به maxFiles=1

@@ -1,6 +1,5 @@
 // MainContent.js
-import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import React, {  useState } from "react";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import LoadImage from "@/components/shared/image/LoadImage";
@@ -13,8 +12,8 @@ const MainContent = ({
   watch,
   editorData,
   selectedTags,
+  defaultValues
 }) => {
-  const user = useSelector((state) => state?.auth);
   
   // وضعیت‌های بارگذاری و خطا برای تصویر اصلی
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
@@ -22,15 +21,8 @@ const MainContent = ({
 
   // وضعیت‌های بارگذاری و خطا برای آواتار
   const [isAvatarLoading, setIsAvatarLoading] = useState(true);
-  const [hasAvatarError, setHasAvatarError] = useState(false);
+  const [hasAvatarError, setHasAvatarError] = useState(false); 
 
-  const defaultValues = useMemo(() => {
-    return {
-      name: user?.name,
-      avatar: user?.avatar,
-      id: user?._id,
-    };
-  }, [user]);
 
   // هندلرهای تصویر اصلی
   const handleMainImageLoad = () => {
@@ -52,9 +44,7 @@ const MainContent = ({
     setHasAvatarError(true);
   };
 
-  const avatarSrc = defaultValues?.avatar?.url && !hasAvatarError
-    ? `/${defaultValues.avatar.url}`
-    : "https://via.placeholder.com/100"; 
+
 
     const colors = [
       { bg: 'bg-orange-200', text: 'text-orange-700' },
@@ -113,20 +103,20 @@ const MainContent = ({
         <div className="relative rounded-full">
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
             <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
-              {isAvatarLoading && (
+               {isAvatarLoading && (
                 <SkeletonImage
                   height={100}
                   width={100}
                   showSize={false}
                   borderRadius="rounded-full"
                 />
-              )} 
+              )}    
               <LoadImage
-                src={avatarSrc}
+                src={`/${defaultValues?.avatar?.url}`}
                 alt="avatar"
                 height={100}
                 width={100}
-                className={`h-[100px] w-[100px] profile-pic rounded-full ${isAvatarLoading ? "hidden" : "block"}`}
+                className={`h-[100px] w-[100px] profile-pic rounded-full `}
                 onLoad={handleAvatarLoad} 
                 onError={handleAvatarError} 
               />

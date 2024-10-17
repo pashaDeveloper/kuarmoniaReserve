@@ -58,8 +58,23 @@ const blogSchema = new Schema(
     },
     description: {
       type: String,
-      maxLength: [200, "توضیحات نمی‌تواند بیشتر از ۲۰۰ کاراکتر باشد"],
+      maxLength: [300, "توضیحات نمی‌تواند بیشتر از ۳۰۰ کاراکتر باشد"],
       required: [true, "توضیحات الزامی است"],
+    },
+    featuredImage: {
+      url: {
+        type: String,
+        required: [true, "عکس شاخص الزامی است"],
+      },
+      public_id: {
+        type: String,
+        default: "N/A",
+      },
+      originalName: {
+        type: String,
+        default: "N/A",
+      },
+
     },
     content: {
       type: String,
@@ -80,7 +95,7 @@ const blogSchema = new Schema(
       default: [],
     },
     readTime: {
-      type: Number, // زمان بر حسب دقیقه
+      type: String, // زمان بر حسب دقیقه
       default: 0,
     },
     isFeatured: {

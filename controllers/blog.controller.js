@@ -3,30 +3,33 @@ import Blog from '@/models/blog.model';
 
 export async function addBlog(req) {
   try {
-    const { title, description, content, publishDate, tags, category, authorId, socialLinks } = req.body;
-    
-    let featuredImage = "";
-    if (req.file) {
-      // فرض بر این است که فایل‌ها در پوشه public/uploads ذخیره می‌شوند
-      featuredImage = `/uploads/${req.file.filename}`;
-    } else {
-      return {
-        success: false,
-        message: "تصویر شاخص الزامی است",
-      };
-    }
+    const {
+      title,
+      description,
+      content,
+      publishDate,
+      tags, // نیازی به JSON.parse نیست
+      category,
+      authorId,
+      socialLinks,
+      metaTitle,
+      metaDescription,
+      readTime,
+      isFeatured,
+      visibility,
+      relatedPosts,
+      featuredImage, // تغییرات در این قسمت اعمال شده است
+    } = req.body;
 
-    // تبدیل تگ‌ها به آرایه‌ای از شناسه‌ها
-    const tagsIds = JSON.parse(tags); // فرض بر این است که تگ‌ها به صورت JSON ارسال شده‌اند
+    console.log('req.body', req.body);
 
-    // تبدیل socialLinks به آرایه‌ای از اشیاء
+    // بررسی و تجزیه socialLinks
     let parsedSocialLinks = [];
     if (socialLinks) {
       try {
         parsedSocialLinks = JSON.parse(socialLinks);
       } catch (e) {
         console.error("Error parsing socialLinks:", e.message);
-        parsedSocialLinks = [];
       }
     }
 
@@ -36,11 +39,21 @@ export async function addBlog(req) {
       description,
       content,
       publishDate,
-      tags: tagsIds,
+      tags, // استفاده مستقیم از tags
       category,
-      featuredImage, // ذخیره URL تصویر
+      featuredImage: {
+        url: req.body.filePath, // اطمینان حاصل کنید که filePath موجود باشد
+        public_id: req.file?.filename || "N/A", // اگر req.file وجود دارد
+        originalName: req.body.originalName || "ناشناخته",
+      },
       authorId,
-      socialLinks: parsedSocialLinks, // ذخیره لینک‌های شبکه اجتماعی
+      socialLinks: parsedSocialLinks,
+      metaTitle,
+      metaDescription,
+      readTime,
+      isFeatured,
+      visibility,
+      relatedPosts
     });
 
     if (blog) {

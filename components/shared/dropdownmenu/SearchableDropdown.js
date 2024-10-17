@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 
-const SearchableDropdown = ({ options = [], handleSelect, value, errors, placeholder = "یک مورد انتخاب کن" }) => { 
+const SearchableDropdown = ({ options = [], handleSelect, value, errors, placeholder = "یک مورد انتخاب کن",sendId = false }) => { 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(() => {
@@ -43,7 +43,7 @@ const SearchableDropdown = ({ options = [], handleSelect, value, errors, placeho
   const handleOptionSelect = (option) => {
     setSelectedOption(option); 
     if (handleSelect) { 
-      handleSelect(option.value); 
+      handleSelect(sendId ? option.id : option.value); 
     }
     setIsOpen(false); 
   };
@@ -52,6 +52,7 @@ const SearchableDropdown = ({ options = [], handleSelect, value, errors, placeho
     <div className="flex items-center justify-center">
       <div className="w-full relative group" ref={dropdownRef}>
         <button
+          type="button"  
           id="dropdown-button"
           className={`inline-flex justify-between w-full px-1 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-50 focus:outline-none focus:ring-offset-2 dark:focus:!border-blue-500
             ${isOpen ? 'dark:border-blue-500 dark:bg-[#0a2d4d]' : 'dark:bg-gray-600'}`}

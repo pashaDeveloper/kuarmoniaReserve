@@ -119,6 +119,7 @@ const StepSignUpForm = () => {
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("phone", data.phone);
+    console.log('formData isngup',formData.avatar)
 
     handleSignup(formData);
   };

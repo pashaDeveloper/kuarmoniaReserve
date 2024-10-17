@@ -1,9 +1,7 @@
 // PreviewSection.js
 import React, { useState, useRef, useEffect } from "react";
-import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
-import BlogCard from "@/components/shared/card/BlogCard";
 import MainContent from "@/components/shared/content/MainContent";
 import { toggleFullscreen } from '@/utils/functionHelpers';
 
@@ -15,15 +13,12 @@ const PreviewSection = ({
   publishDate,
   editorData,
   selectedTags,
-  currentStep,
+  defaultValues
 }) => {
   const [isHidden, setIsHidden] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const previewRef = useRef(null);
 
-  const toggleVisibility = () => {
-    setIsHidden(!isHidden);
-  };
 
   const handleToggleFullscreen = () => {
     toggleFullscreen(previewRef);
@@ -70,6 +65,7 @@ const PreviewSection = ({
       watch={watch}
       editorData={editorData}
       selectedTags={selectedTags}
+      defaultValues={defaultValues}
     />
   </div>
   
