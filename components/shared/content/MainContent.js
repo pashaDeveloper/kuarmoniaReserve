@@ -1,5 +1,5 @@
 // MainContent.js
-import React, {  useState } from "react";
+import React, {  useState ,useEffect} from "react";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import LoadImage from "@/components/shared/image/LoadImage";
@@ -12,7 +12,8 @@ const MainContent = ({
   watch,
   editorData,
   selectedTags,
-  defaultValues
+  author,
+  avatar
 }) => {
   
   // وضعیت‌های بارگذاری و خطا برای تصویر اصلی
@@ -45,7 +46,11 @@ const MainContent = ({
   };
 
 
-
+  useEffect(() => {
+    if (!galleryPreview || !galleryPreview[0]) {
+      setIsMainImageLoading(true);
+    }
+  }, [galleryPreview]);
     const colors = [
       { bg: 'bg-orange-200', text: 'text-orange-700' },
       { bg: 'bg-green-200', text: 'text-green-700' },
@@ -70,9 +75,9 @@ const MainContent = ({
             className="z-10"
           />
         )}
-        {!hasMainImageError && galleryPreview.length > 0 && (
+        {!hasMainImageError &&  galleryPreview?.length > 0  && (
           <img
-            src={galleryPreview[0]}
+            src={galleryPreview ? galleryPreview[0] :''}
             alt="title"
             className={`object-cover text-center overflow-hidden rounded-lg ${isMainImageLoading ? 'hidden' : 'block z-0'}`}
             style={{
@@ -112,7 +117,7 @@ const MainContent = ({
                 />
               )}    
               <LoadImage
-                src={`/${defaultValues?.avatar?.url}`}
+                src={`/${avatar}`}
                 alt="avatar"
                 height={100}
                 width={100}
@@ -131,7 +136,7 @@ const MainContent = ({
                     href="#"
                     className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out dark:text-gray-300"
                   >
-                    <span className="text-2xl"> {defaultValues?.name}</span>
+                    <span className="text-2xl"> {author}</span>
                   </a>
                 </p>
                 <p className="text-center text-sm mt-1">

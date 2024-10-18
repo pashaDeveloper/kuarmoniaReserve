@@ -1,9 +1,10 @@
-import { addBlog, getBlogs, updateBlog } from "@/controllers/blog.controller";
+import { addBlog, getBlogs, updateBlog, getBlofsForDropDownMenu} from "@/controllers/blog.controller";
 import upload from "@/middleware/upload.middleware"; // مسیر صحیح به middleware
 
 export const config = {
   api: {
-    bodyParser: true,  
+    bodyParser: false,
+    externalResolver: true,
   },
 };
 
@@ -22,8 +23,7 @@ export default async function handler(req, res) {
         console.log('Uploaded File:', req.file); // بررسی فایل آپلود شده
         console.log('Request Body:', req.body); // بررسی بدنه درخواست
     
-        // تنظیم فیلد featuredImage
-        req.body.featuredImage = req.body.filePath;
+  
     
         try {
             const result = await addBlog(req);
@@ -37,10 +37,27 @@ export default async function handler(req, res) {
         }
     });
       break;
-
-    // موارد دیگر برای روش‌های مختلف HTTP مانند GET, PUT, DELETE
-    default:
-      res.status(405).json({ message: "Method Not Allowed" });
-  }
+      case "GET":
+        try {
+          if (req.query.type === "dropdown") {
+            const result = await getBlofsForDropDownMenu();
+            return res.status(200).json(result);
+          }
+          const result = await getBlogs(req);
+          return res.status(200).json(result);
+        } catch (error) {
+          return res.status(500).json({
+            success: false,
+            error: error.message,
+          });
+        }
+        break;
+        
+      default:
+        return res.status(405).json({
+          success: false,
+          message: "Method not allowed",
+        });
+      }
 }
 

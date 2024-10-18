@@ -13,7 +13,9 @@ const PreviewSection = ({
   publishDate,
   editorData,
   selectedTags,
-  defaultValues
+  defaultValues,
+  author,
+  avatar
 }) => {
   const [isHidden, setIsHidden] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -65,7 +67,8 @@ const PreviewSection = ({
       watch={watch}
       editorData={editorData}
       selectedTags={selectedTags}
-      defaultValues={defaultValues}
+      author={author}
+      avatar={avatar}
     />
   </div>
   

@@ -1,5 +1,5 @@
 // BlogCard.js
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import { TfiHeart } from "react-icons/tfi";
@@ -7,7 +7,11 @@ import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 
 const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  useEffect(() => {
+    if (!galleryPreview || !galleryPreview[0]) {
+      setIsImageLoaded(false);
+    }
+  }, [galleryPreview]);
   return (
     <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800 bg-clip-border text-gray-700 shadow-lg h-[550px]">
       <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
@@ -17,7 +21,7 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
            />
         )}
         <img
-          src={galleryPreview[0]}
+          src={galleryPreview ? galleryPreview[0] :''}
           alt="Blog Image"
           className={`w-full h-64 object-cover object-center rounded-xl ${isImageLoaded ? 'block' : 'hidden'}`}
           onLoad={() => setIsImageLoaded(true)}

@@ -6,18 +6,11 @@ const blogApi = kuarmoniaApi.injectEndpoints({
       query: (body) => ({
         url: "/blog/",
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         body,
       }),
       invalidatesTags: [
-        "Rent",
-        "User",
-        "Cart",
-        "Favorite",
-        "Purchase",
-        "Review",
+        "Blog",
+      
       ],
     }),
 
@@ -34,7 +27,7 @@ const blogApi = kuarmoniaApi.injectEndpoints({
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["blog"],
+      invalidatesTags: ["Blog"],
     }),
   }),
 });

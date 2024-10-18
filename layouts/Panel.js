@@ -23,6 +23,8 @@ import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
 import {
   useGetUserQuery,
 } from "@/services/user/userApi";
+import { useSelector } from 'react-redux';
+
 const Panel = ({ children }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -115,8 +117,9 @@ const Panel = ({ children }) => {
     <section className="h-screen w-screen bg-gray-100 dark:bg-gray-600 dark:text-gray-100">
             <ProgressBar />
 
-      <div className="max-w-7xl mx-auto h-full flex flex-col gap-y-4 p-2 ">
-        <nav className="px-4 py-2.5 flex flex-row items-center justify-between gap-x-2 rounded">
+      <div className="max-w-8xl mx-auto h-full flex flex-col gap-y-4 p-2">
+        
+        <nav className="px-2 py-2.5 flex flex-row items-center justify-between gap-x-2 rounded">
           <p className="flex flex-row items-center gap-x-2 text-sm capitalize whitespace-nowrap overflow-x-auto scrollbar-hide text-ellipsis">
             <Link href="/">
               <IoHomeOutline className="h-5 w-5" />
@@ -153,13 +156,23 @@ const Panel = ({ children }) => {
           )}
         </nav>
 
-        <div className="h-full overflow-y-auto scrollbar-hide grid grid-cols-12 gap-x-4 relative">
+        <div className="h-full overflow-y-auto  grid grid-cols-12 gap-x-4 relative">
           <aside className="lg:col-span-3 md:col-span-4 col-span-12 md:block hidden overflow-y-auto bg-secondary dark:bg-gray-900 rounded p-2">
             <Sidebar routes={routes} />
           </aside>
-          <section className="lg:col-span-9 overflow-hidden md:col-span-8  col-span-12  rounded ">
-            {children}
-          </section>
+          <div className="flex flex-col lg:col-span-9  h-full md:col-span-8 col-span-12 rounded">
+
+          <section className="lg:col-span-9  h-full md:col-span-8 col-span-12 rounded">
+  {children}
+  
+</section>
+<footer className="px-4 py-2 flex justify-center items-center flex-row rounded">
+    <p className="text-xs">
+      © {new Date().getFullYear()} تمامی حقوق این اثر متعلق به شرکت کوآرمونیا می باشد.
+    </p>
+  </footer>
+          </div>
+
 
           {open && (
             <div className="lg:hidden md:hidden block absolute top-0 left-0 w-3/4 h-full bg-secondary overflow-y-auto scrollbar-hide z-50 rounded p-2">
@@ -168,11 +181,7 @@ const Panel = ({ children }) => {
           )}
         </div>
 
-        <footer className="px-4 py-2 flex justify-center items-center flex-row rounded">
-          <p className="text-xs">
-            © {new Date().getFullYear()} تمامی حقوق این اثر متعلق به شرکت کوآرمونیا می باشد.
-          </p>
-        </footer>
+       
       </div>
     </section>
   );

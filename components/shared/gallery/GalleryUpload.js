@@ -35,7 +35,7 @@ const GalleryUpload = ({
       <label htmlFor="featuredImage" className="relative">
         <button
           type="button"
-          className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit"
+          className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 dark:bg-blue-100 border border-green-900 dark:border-blue-900 text-green-900 dark:text-blue-900 rounded-secondary w-fit"
         >
           <IoCloudUploadOutline className="h-5 w-5" />
           مجاز به انتخاب {maxFiles} عکس می باشید*

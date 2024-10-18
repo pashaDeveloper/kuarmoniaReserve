@@ -113,6 +113,32 @@ export async function getBlogs(req) {
   }
 }
 
+export async function getBlogsForDropDownMenu() {
+  try {
+    const blogs = await Blogs.find({ isDeleted: false, status: 'active' }).select('id title description');
+    
+    if (blogs.length > 0) {
+      return {
+        success: true,
+        data: categories,
+        message: "بلاگ ها با موفقیت برای DropDownMenu دریافت شدند",
+      };
+    } else {
+      return {
+        success: false,
+        message: "هیچ بلاگی فعال برای DropDownMenu یافت نشد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
+
+
 export async function updateBlog(req) {
   const { id } = req.query;
   try {

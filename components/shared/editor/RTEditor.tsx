@@ -4,18 +4,24 @@ import './ckeditor-dark.css'; // اطمینان حاصل کنید که مسیر 
 const RTEditor = forwardRef(({ value, onChange, ...props }, ref) => {
     const [CKEditor, setCKEditor] = useState(null);
     const [Editor, setEditor] = useState(null);
+    const [loading, setLoading] = useState(true); // حالت بارگذاری
 
     useEffect(() => {
-        import("@ckeditor/ckeditor5-react").then(module => {
-            setCKEditor(() => module.CKEditor);
-        });
-        import("./ckeditor/build/ckeditor").then(module => {
-            setEditor(() => module.Editor);
-        });
+        const loadEditor = async () => {
+            const { CKEditor } = await import("@ckeditor/ckeditor5-react");
+            const { Editor } = await import("./ckeditor/build/ckeditor");
+            setCKEditor(() => CKEditor);
+            setEditor(() => Editor);
+            setLoading(false); // بارگذاری کامل شد
+        };
+
+        loadEditor();
     }, []);
 
-    if (!CKEditor || !Editor) {
-        return null; // Render nothing while loading
+    if (loading) {
+        return <div className="flex justify-center items-center h-[90%]">
+        <span className="text-blue-500">در حال بارگذاری...</span>
+    </div>; // پیام بارگذاری
     }
 
     return (

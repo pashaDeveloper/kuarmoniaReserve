@@ -72,17 +72,7 @@ const ListBlog = () => {
         </section>
       </Panel>
 
-      {/* <Modal
-        isOpen={isModalOpen || isEditModalOpen}
-        onClose={() => handleClose(setBlogToEdit, setIsEditModalOpen, setIsModalOpen)}
-        className="lg:w-1/3 md:w-1/2 w-full z-50"
-      >
-        <AddBlog
-          onClose={() => handleClose(setBlogToEdit, setIsEditModalOpen, setIsModalOpen)} 
-          onSuccess={refetch} 
-          blogToEdit={blogToEdit}
-        />
-      </Modal> */}
+ 
 
       <Popover
         isOpen={isMobilePopoverOpen}
