@@ -12,18 +12,18 @@ const Sidebar = ({ routes }) => {
   const user = useSelector((state) => state?.auth);
 
   const isActive = (href) => {
-    return router.pathname === href ? "bg-primary text-white" : "";
+    return router.pathname === href ? "bg-primary dark:bg-blue-500 text-white" : "";
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-y-2">
+    <div className="w-full h-full flex flex-col gap-y-2 ">
       <div className="flex flex-col gap-y-1 overflow-y-auto scrollbar-hide">
         {routes.map((route, index) => (
           <Link
             key={index}
             href={route.path}
             className={
-              "flex flex-row gap-x-2 items-center px-4 py-2 hover:bg-primary hover:text-white transition-colors rounded text-sm" +
+              "flex flex-row gap-x-2  items-center px-4 py-2 hover:bg-primary  hover:text-white  transition-colors rounded text-sm" +
               " " +
               isActive(route.path)
             }
