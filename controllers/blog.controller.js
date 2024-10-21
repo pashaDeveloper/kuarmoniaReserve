@@ -83,13 +83,9 @@ export async function getBlogs(req) {
     const { page = 1, limit = 7 } = req.query; 
     const skip = (page - 1) * limit;
 
-    const blogs = await Blog.find({ isDeleted: false })
-      .skip(skip)
-      .limit(Number(limit))
-      .populate('tags')  // Adjust if needed
-      .populate('category')  // Adjust if needed
-      .populate('authorId');  // Adjust if needed
-
+ 
+    const blogs = await Blog.find({ isDeleted: false });
+console.log('blogs',blogs)
     const total = await Blog.countDocuments({ isDeleted: false });
 
     if (blogs.length > 0) {

@@ -1,5 +1,3 @@
-
-
 import Button from "@/components/shared/button/Button";
 import Logo from "@/components/shared/logo/Logo";
 import { useSigninMutation } from "@/services/auth/authApi";
@@ -25,7 +23,7 @@ const Signin = () => {
       toast.error(error?.data?.message, { id: "signin" });
     }
     if (isLoading) {
-      toast.loading("Signing in...", { id: "signin" });
+      toast.loading("در حال ورود...", { id: "signin" });
     }
   }, [data, error, isLoading, reset]);
 
@@ -47,35 +45,35 @@ const Signin = () => {
           onSubmit={handleSubmit(handleSignin)}
         >
           <label htmlFor="email" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Email</span>
+            <span className="text-sm">ایمیل خود را وارد کنید</span>
             <input
               type="email"
               name="email"
               id="email"
               {...register("email", { required: true })}
-              placeholder="majid.pashayi443@gmail.com"
+              placeholder="example@gmail.com"
               className=""
             />
           </label>
           <label htmlFor="password" className="flex flex-col gap-y-1">
-            <span className="text-sm">Enter Your Password</span>
+            <span className="text-sm">رمز عبور خود را وارد کنید</span>
             <input
               type="password"
               name="password"
               id="password"
               {...register("password", { required: true })}
-              placeholder="i.e. Hasib@123"
+              placeholder="********"
               className=""
             />
           </label>
           <Button type="submit" disabled={isLoading} className="py-2">
-            Sign in
+            ورود
           </Button>
         </form>
         <div className="text-xs flex flex-row justify-center items-center gap-x-2">
-          <Link href="/auth/signup">Sign Up</Link>
+          <Link href="/auth/signup">ثبت‌نام</Link>
           <div className="h-4 border-l"></div>
-          <Link href="/auth/forgot-password">Forgot Password</Link>
+          <Link href="/auth/forgot-password">فراموشی رمز عبور</Link>
         </div>
       </div>
     </section>

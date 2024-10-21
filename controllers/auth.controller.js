@@ -4,8 +4,7 @@ import generateAccessToken from "@/utils/jwt.util";
 // signup
 export async function signUpUser(req) {
   try {
-    const { email, phone, originalName } = req.body;
-
+    const { email, phone, originalName ,filePath } = req.body;
   
     const existingUser = await User.findOne({
       $or: [{ email: email }, { phone: phone }],
@@ -29,7 +28,10 @@ export async function signUpUser(req) {
       ...req.body,
       role: role,  
       status: status,  
-     
+      avatar: {
+        originalName: originalName || "N/A", // در صورت نبود مقدار پیش‌فرض "N/A" می‌گیرد
+        url: filePath || "uploads/default-avatar.jpg", // اگر filePath وجود نداشته باشد، آواتار پیش‌فرض
+      },
      
     });
 

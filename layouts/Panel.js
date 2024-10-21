@@ -24,7 +24,8 @@ const Panel = ({ children }) => {
   const user = useSelector((state) => state?.auth);
   
   useEffect(() => {
-    if (!user || !user._id) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken ) {
       window.open("/auth/signin", "_self"); 
     }
   }, [user]);
@@ -112,6 +113,7 @@ const Panel = ({ children }) => {
           <aside className="lg:col-span-3 md:col-span-4 col-span-12 md:block hidden overflow-y-auto bg-secondary dark:
           dark:bg-gray-900 rounded p-4 ">
             <Sidebar routes={routes} />
+            
           </aside>
           <div className="flex flex-col lg:col-span-9 h-full md:col-span-8 col-span-12 rounded">
             <section className="lg:col-span-9 h-full md:col-span-8 col-span-12 rounded">

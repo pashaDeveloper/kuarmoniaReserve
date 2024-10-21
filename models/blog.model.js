@@ -184,6 +184,14 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
+blogSchema.virtual('likeCount').get(function() {
+  return this.likes.length;
+});
+
+blogSchema.virtual('dislikeCount').get(function() {
+  return this.dislikes.length;
+});
+
 blogSchema.virtual('rating').get(function() {
   const totalReactions = this.likes.length + this.dislikes.length;
   if (totalReactions === 0) return 0;

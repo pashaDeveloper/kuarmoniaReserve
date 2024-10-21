@@ -1,27 +1,35 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+// const ThemeContext = createContext();
 
-export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+// export const ThemeProvider = ({ children }) => {
+//   // بارگذاری وضعیت از localStorage
+//   const [isDarkMode, setIsDarkMode] = useState(() => {
+//     const savedTheme = localStorage.getItem('isDarkMode');
+//     return savedTheme === 'true'; // تبدیل به boolean
+//   });
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark'); // افزودن کلاس 'dark' به body
-    } else {
-      document.body.classList.remove('dark'); // حذف کلاس 'dark' از body
-    }
-  }, [isDarkMode]);
+//   useEffect(() => {
+//     // افزودن یا حذف کلاس 'dark' بر اساس وضعیت isDarkMode
+//     if (isDarkMode) {
+//       document.body.classList.add('dark');
+//     } else {
+//       document.body.classList.remove('dark');
+//     }
 
-  const toggleTheme = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
+//     // ذخیره‌سازی وضعیت theme در localStorage
+//     localStorage.setItem('isDarkMode', isDarkMode);
+//   }, [isDarkMode]);
 
-  return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
+//   const toggleTheme = () => {
+//     setIsDarkMode((prevMode) => !prevMode);
+//   };
 
-export const useTheme = () => useContext(ThemeContext);
+//   return (
+//     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+//       {children}
+//     </ThemeContext.Provider>
+//   );
+// };
+
+// export const useTheme = () => useContext(ThemeContext);

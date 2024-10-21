@@ -111,6 +111,7 @@ const StepSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log('data',data)
     const formData = new FormData();
     if (data.avatar) {
       formData.append("avatar", data.avatar); 

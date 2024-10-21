@@ -22,7 +22,7 @@ const Advantage = () => {
           <div className="flex flex-col gap-y-12">
             <article className="flex flex-col gap-y-4">
               <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-                <HighlightText>چرا</HighlightText> کوآرمونیا
+                <HighlightText>چرا</HighlightText> کارمونیا
                 <LoadImage
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"

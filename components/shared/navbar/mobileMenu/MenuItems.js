@@ -14,7 +14,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
   const menuItems = [
     {
       id: 1,
-      name: "Dashboard",
+      name: "داشبورد",
       href: "/dashboard",
     },
   ];
@@ -22,12 +22,12 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
   const userItems = [
     {
       id: 2,
-      name: "Sign Up",
+      name: "ثبت نام",
       href: "/auth/signup",
     },
     {
       id: 3,
-      name: "Sign In",
+      name: "ورود",
       href: "/auth/signin",
     },
   ];
@@ -68,7 +68,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
                       window.location.reload();
                     }}
                   >
-                    Logout{" "}
+                    خروج{" "}
                     <span className="group-hover:opacity-100 opacity-5 font-bold">
                       →
                     </span>

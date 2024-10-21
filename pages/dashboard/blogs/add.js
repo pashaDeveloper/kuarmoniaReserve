@@ -115,10 +115,7 @@ const Add = () => {
       setCurrentStep(1);
       setEditorData(""); 
       setGalleryPreview(null)
-    }else{
-      toast.error(data?.message, { id: "blog" });
     }
-
     if (error?.data) {
       toast.error(error?.data?.message, { id: "blog" });
     }

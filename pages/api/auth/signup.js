@@ -12,6 +12,7 @@ export default function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
+        console.log('requesttt',req)
         upload.single("avatar")(req, res, async (err) => {
           if (err) {
             console.error("Upload Error: ", err.message);
