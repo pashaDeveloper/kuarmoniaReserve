@@ -153,13 +153,13 @@ const blogSchema = new Schema(
     likes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "LikeDislike", // ارجاع به مدل لایک و دیسلایک
+        ref: "like", // ارجاع به مدل لایک و دیسلایک
       },
     ],
     dislikes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "LikeDislike", // ارجاع به مدل لایک و دیسلایک
+        ref: "like", // ارجاع به مدل لایک و دیسلایک
       },
     ],
 
@@ -185,11 +185,11 @@ const blogSchema = new Schema(
 );
 
 blogSchema.virtual('likeCount').get(function() {
-  return this.likes.length;
+  return this.likes ? this.likes.length : 0; // بررسی وجود likes
 });
 
 blogSchema.virtual('dislikeCount').get(function() {
-  return this.dislikes.length;
+  return this.dislikes ? this.dislikes.length : 0; // بررسی وجود dislikes
 });
 
 blogSchema.virtual('rating').get(function() {

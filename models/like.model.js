@@ -10,7 +10,8 @@ const likeSchema = new Schema(
       userId: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: [true, "شناسه کاربر الزامی است"],
+        required: false, // این قسمت تغییر کرده تا userId اختیاری باشد
+
       },
       entityId: {
         type: Schema.Types.ObjectId,

@@ -1,5 +1,6 @@
 // controllers/blog.controller.js
 import Blog from '@/models/blog.model';
+import Like from '@/models/like.model';
 
 export async function addBlog(req) {
   try {
@@ -8,7 +9,7 @@ export async function addBlog(req) {
       description,
       content,
       publishDate,
-      tags, // نیازی به JSON.parse نیست
+      tags,
       category,
       authorId,
       socialLinks,
@@ -18,10 +19,8 @@ export async function addBlog(req) {
       isFeatured,
       visibility,
       relatedPosts,
-      featuredImage, // تغییرات در این قسمت اعمال شده است
+      featuredImage,
     } = req.body;
-
-    console.log('req.body', req.body);
 
     // بررسی و تجزیه socialLinks
     let parsedSocialLinks = [];
@@ -39,7 +38,7 @@ export async function addBlog(req) {
       description,
       content,
       publishDate,
-      tags, // استفاده مستقیم از tags
+      tags,
       category,
       featuredImage: {
         url: req.body.filePath, // اطمینان حاصل کنید که filePath موجود باشد
@@ -53,10 +52,29 @@ export async function addBlog(req) {
       readTime,
       isFeatured,
       visibility,
-      relatedPosts
+      relatedPosts,
     });
 
     if (blog) {
+      // حالا که بلاگ ایجاد شده، می‌توانیم از blog._id برای ایجاد لایک و دیسلایک استفاده کنیم
+      const like = await Like.create({
+        entityId: blog._id, // شناسه بلاگ
+        entityType: "Blog", // نوع موجودیت
+        type: "like", // نوع لایک
+      });
+
+      // ساخت یک نمونه دیسلایک
+      const dislike = await Like.create({
+        entityId: blog._id, // شناسه بلاگ
+        entityType: "Blog",
+        type: "dislike",
+      });
+
+      // بروزرسانی بلاگ با شناسه‌های لایک و دیسلایک
+      blog.likes = [like._id];
+      blog.dislikes = [dislike._id];
+      await blog.save();
+
       return {
         success: true,
         message: "بلاگ با موفقیت ایجاد شد",
@@ -78,14 +96,20 @@ export async function addBlog(req) {
 }
 
 
+
 export async function getBlogs(req) {
   try {
     const { page = 1, limit = 7 } = req.query; 
     const skip = (page - 1) * limit;
 
- 
-    const blogs = await Blog.find({ isDeleted: false });
-console.log('blogs',blogs)
+    const blogs = await Blog.find({ isDeleted: false })
+    .skip(skip)
+    .limit(Number(limit))
+    .populate('authorId', 'name avatar.url') // فقط نام و آواتار نویسنده
+    .select('_id blogId title createdAt views likes dislikes status likeCount dislikeCount');
+
+
+
     const total = await Blog.countDocuments({ isDeleted: false });
 
     if (blogs.length > 0) {
@@ -108,6 +132,7 @@ console.log('blogs',blogs)
     };
   }
 }
+
 
 export async function getBlogsForDropDownMenu() {
   try {

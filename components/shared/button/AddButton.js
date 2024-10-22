@@ -4,7 +4,7 @@ import { AddIcon } from '@/utils/SaveIcon';
 const AddButton = ({ onClick }) => {
   return (
     <a
-      className="inline-flex items-center rounded-lg bg-sky-500 px-5 py-2 text-white shadow-sm cursor-pointer transition-all hover:bg-sky-400 gap-2"
+      className="inline-flex items-center rounded-lg bg-red-500 px-5 py-2 text-white shadow-sm cursor-pointer transition-all hover:bg-red-400 gap-2"
       onClick={onClick}
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">

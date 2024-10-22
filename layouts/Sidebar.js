@@ -12,7 +12,7 @@ const Sidebar = ({ routes }) => {
   const user = useSelector((state) => state?.auth);
 
   const isActive = (href) => {
-    return router.pathname === href ? "bg-primary dark:bg-blue-500 text-white" : "";
+    return router.pathname === href ? "bg-primary dark:bg-red-500 text-white" : "";
   };
 
   return (
@@ -23,7 +23,7 @@ const Sidebar = ({ routes }) => {
             key={index}
             href={route.path}
             className={
-              "flex flex-row gap-x-2  items-center px-4 py-2 hover:bg-primary  hover:text-white !dark:hover:bg-blue-500  transition-colors rounded text-sm" +
+              "flex flex-row gap-x-2  items-center px-4 py-2 hover:bg-primary  hover:text-white dark:hover:bg-red-500  transition-colors rounded text-sm" +
               " " +
               isActive(route.path)
             }
@@ -56,7 +56,7 @@ const Sidebar = ({ routes }) => {
         </div>
         <Link
           href="/"
-          className="flex flex-row gap-x-2 items-center px-4 py-2 hover:bg-primary hover:text-white transition-colors rounded text-sm !dark:hover:bg-blue-500"
+          className="flex flex-row gap-x-2 items-center px-4 py-2 hover:bg-primary hover:text-white transition-colors rounded text-sm !dark:hover:bg-red-500"
         >
           <IoHomeOutline className="w-4 h-4" />
           خانه

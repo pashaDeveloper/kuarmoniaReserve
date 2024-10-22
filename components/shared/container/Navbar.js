@@ -42,7 +42,7 @@ const Navbar = ({ router, open, setOpen }) => {
              
 
                     <button
-  className="p-2 text-blue-400 transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
+  className="p-2 text-green-500 dark:text-gray-500  transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
 >
 
 
@@ -52,7 +52,7 @@ const Navbar = ({ router, open, setOpen }) => {
 
       {/* Search button */}
       <button
-  className="p-2 text-blue-400 transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
+  className="p-2 text-green-500 dark:text-gray-500 transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
 >
       <span className="sr-only">Open search panel</span>
       <SearchPannelIcon />
@@ -61,7 +61,7 @@ const Navbar = ({ router, open, setOpen }) => {
 
       {/* Settings button */}
       <button
-  className="p-2 text-blue-400 transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
+  className="p-2 text-green-500 dark:text-gray-500  transition-all duration-300 ease-in-out rounded-full bg-blue-50 dark:bg-gray-900 hover:text-blue-600 dark:hover:text-light dark:hover:bg-gray-700 dark:bg-dark focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:ring-offset-4 dark:focus:ring-offset-gray-800"
 >
         <span className="sr-only">Open settings panel</span>
        <SettingPannelIcon />
