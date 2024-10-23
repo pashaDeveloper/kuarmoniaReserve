@@ -31,7 +31,6 @@ const ListBlog = () => {
   });
   const [updateBlog] = useUpdateBlogMutation();
   const [blogToView, setBlogToView] = useState(null);
-  const [isActive, setIsActive] = useState();
   const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false);
   const router = useRouter();
 
@@ -61,12 +60,7 @@ const ListBlog = () => {
   return (
     <>
       <Panel>
-        <div className="my-6 flex flex-col items-center rounded-xl bg-green-500 dark:bg-red-500 px-5 py-4 text-white md:flex-row">
-          <div className="mb-2 inline-block rounded-full bg-white/20 p-1 md:mb-0 md:ml-2"></div>
-          <div className="flex-1 text-justify text-sm md:text-base">
-            <a className="font-bold cursor-pointer	">اینجا</a> کلیک کنید.{" "}
-          </div>
-        </div>
+  
         {/* نمایش داده‌های بلاگ‌ها */}
         <AddButton onClick={handleAddItem} />
 
@@ -87,29 +81,38 @@ const ListBlog = () => {
                     width={60}
                     className="rounded-secondary object-cover "
                   />
-                  <article className="flex-col gap-y-0.5  ">
-                    <h2 className="line-clamp-1 text-base ">
+                  <article className="flex-col flex gap-y-2  ">
+                    <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex">{blog?.authorId?.name}</span>
-                      <span className="flex lg:hidden">{blog.title}</span>
+                      <span className="flex lg:hidden text-right text-sm">{blog.title}</span>
                       
-                    </h2>
+                    </span>
                     <span className="text-xs hidden lg:flex">
                       {new Date(blog.createdAt).toLocaleDateString("fa-IR")}
                     </span>
+                       <span className="text-xs flex lg:hidden">
+                       <Metrics
+                       gap={3}
+  likeCount={30} 
+  dislikeCount={20} 
+  views={50}
+  rating={4.5} 
+  iconSize={15}
+/>                    </span>
                   </article>
                 </div>
               </div>
 
-              <div className=" hidden lg:col-span-6 text-center lg:first-letter:flex items-center">
+              <div className=" hidden lg:col-span-6 lg:flex text-center lg:first-letter:flex items-center">
                 <p className="text-gray-500 dark:text-gray-300">{blog.title}</p>
               </div>
 
               <div className="hidden lg:col-span-2 gap-2 text-center lg:flex justify-center  items-center ">
               <Metrics 
-  likeCount={30} 
-  dislikeCount={20} 
-  views={50}
-  rating={4.5} 
+  likeCount={blog.likeCount} 
+  dislikeCount={blog.dislikeCount} 
+  views={blog.views}
+  rating={blog.rating} 
   iconSize={18}
 />
               </div>
@@ -117,8 +120,8 @@ const ListBlog = () => {
               <div className="col-span-1 text-gray-500 text-center flex justify-right flex-row-reverse items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
+                  width="26"
+                  height="26"
                   viewBox="0 0 20 20"
                 >
                   <path

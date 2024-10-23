@@ -1,5 +1,3 @@
-
-
 import Cart from "@/models/cart.model";
 import Favorite from "@/models/favorite.model";
 import Purchase from "@/models/purchase.model";
@@ -8,6 +6,7 @@ import Review from "@/models/review.model";
 import User from "@/models/user.model";
 import removePhoto from "@/utils/remove.util";
 
+// دریافت تمام کاربران
 export async function getUsers() {
   try {
     const users = await User.find().populate([
@@ -27,13 +26,13 @@ export async function getUsers() {
     if (users) {
       return {
         success: true,
-        message: "Successfully fetch all users",
+        message: "کاربران با موفقیت دریافت شدند",
         data: users,
       };
     } else {
       return {
         success: false,
-        message: "Failed to fetch all users",
+        message: "دریافت کاربران با شکست مواجه شد",
       };
     }
   } catch (error) {
@@ -44,7 +43,7 @@ export async function getUsers() {
   }
 }
 
-// get an user
+// دریافت اطلاعات یک کاربر
 export async function getUser(req) {
   try {
     const user = await User.findById(req.query.id);
@@ -52,13 +51,13 @@ export async function getUser(req) {
     if (user) {
       return {
         success: true,
-        message: "Successfully fetch user information",
+        message: "اطلاعات کاربر با موفقیت دریافت شد",
         data: user,
       };
     } else {
       return {
         success: false,
-        message: "Failed to fetch user information",
+        message: "دریافت اطلاعات کاربر با شکست مواجه شد",
       };
     }
   } catch (error) {
@@ -69,7 +68,7 @@ export async function getUser(req) {
   }
 }
 
-// update a user
+// بروزرسانی اطلاعات کاربر
 export async function updateUser(req) {
   try {
     const user = await User.findById(req.query.id);
@@ -77,7 +76,7 @@ export async function updateUser(req) {
     if (!user) {
       return {
         success: false,
-        message: "User not found",
+        message: "کاربر پیدا نشد",
       };
     } else {
       const updatedUser = req.body;
@@ -98,12 +97,12 @@ export async function updateUser(req) {
       if (result) {
         return {
           success: true,
-          message: "Successfully updated user information",
+          message: "اطلاعات کاربر با موفقیت بروزرسانی شد",
         };
       } else {
         return {
           success: false,
-          message: "Failed to update user information",
+          message: "بروزرسانی اطلاعات کاربر با شکست مواجه شد",
         };
       }
     }
@@ -115,7 +114,7 @@ export async function updateUser(req) {
   }
 }
 
-// delete a user
+// حذف یک کاربر
 export async function deleteUser(req) {
   try {
     const user = await User.findByIdAndDelete(req.query.id);
@@ -123,22 +122,22 @@ export async function deleteUser(req) {
     if (!user) {
       return {
         success: false,
-        message: "User not found",
+        message: "کاربر پیدا نشد",
       };
     } else {
       await removePhoto(user.avatar.public_id);
 
-      // remove user favorites
+      // حذف لیست علاقه‌مندی‌های کاربر
       if (user.favorite) {
         Favorite.findByIdAndDelete(user.favorite);
       }
 
-      // remove user cart
+      // حذف سبد خرید کاربر
       if (user.cart) {
         Cart.findByIdAndDelete(user.cart);
       }
 
-      // remove user from all rents
+      // حذف کاربر از تمام اجاره‌ها
       if (user.rents.length > 0) {
         for (let i = 0; i < user.rents.length; i++) {
           const rent = await Rent.findByIdAndDelete(user.rents[i]);
@@ -147,7 +146,7 @@ export async function deleteUser(req) {
             async (image) => await removePhoto(image.public_id)
           );
 
-          // remove from all users cart
+          // حذف از سبد خرید تمام کاربران
           await Cart.updateMany(
             {},
             {
@@ -157,7 +156,7 @@ export async function deleteUser(req) {
             }
           );
 
-          // remove from all users favorite list
+          // حذف از لیست علاقه‌مندی‌های تمام کاربران
           await Favorite.updateMany(
             {},
             {
@@ -167,7 +166,6 @@ export async function deleteUser(req) {
             }
           );
 
-          //
           rent.users.forEach(async (user) => {
             const review = await Review.findOne({ reviewer: user });
             const purchase = await Purchase.findOne({ user: user });
@@ -188,23 +186,23 @@ export async function deleteUser(req) {
               });
             }
 
-            // remove from purchase list
+            // حذف از لیست خریدها
             await Purchase.deleteMany({ rent: rent._id });
 
-            // remove from reviews list
+            // حذف از لیست نظرات
             await Review.deleteMany({ rent: rent._id });
           });
         }
       }
 
-      // remove user purchases
+      // حذف خریدهای کاربر
       if (user.purchases.length > 0) {
         for (let i = 0; i < user.purchases.length; i++) {
           await Purchase.findByIdAndDelete(user.purchases[i]);
         }
       }
 
-      // remove user reviews
+      // حذف نظرات کاربر
       if (user.reviews.length > 0) {
         for (let i = 0; i < user.reviews.length; i++) {
           await Review.findByIdAndDelete(user.reviews[i]);
@@ -213,7 +211,7 @@ export async function deleteUser(req) {
 
       return {
         success: true,
-        message: "Successfully deleted user",
+        message: "کاربر با موفقیت حذف شد",
       };
     }
   } catch (error) {

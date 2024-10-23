@@ -1,5 +1,3 @@
-
-
 import { getUsers } from "@/controllers/user.controller";
 import authorization from "@/middleware/authorization.middleware";
 import verify from "@/middleware/verify.middleware";
@@ -18,26 +16,41 @@ export default async function handler(req, res) {
       try {
         verify(req, res, async (err) => {
           if (err) {
-            return res.send({
+            return res.status(401).send({
               success: false,
               error: err.message,
             });
           }
 
-          authorization("admin", "user")(req, res, async (err) => {
+          authorization("superAdmin", "admin")(req, res, async (err) => {
             if (err) {
-              return res.send({
+              return res.status(403).send({
                 success: false,
                 error: err.message,
               });
             }
 
             const result = await getUsers();
-            res.send(result);
+
+            // فیلتر کاربران بر اساس نقش admin
+            if (req.user.role === "admin") {
+              const filteredUsers = result.data.filter(
+                (user) => user.role !== "superAdmin"
+              );
+              return res.status(200).send({
+                success: true,
+                data: filteredUsers,
+              });
+            } else {
+              return res.status(200).send({
+                success: true,
+                data: result.data,
+              });
+            }
           });
         });
       } catch (error) {
-        res.send({
+        return res.status(500).send({
           success: false,
           error: error.message,
         });
@@ -45,10 +58,9 @@ export default async function handler(req, res) {
       break;
 
     default:
-      res.send({
+      return res.status(405).send({
         success: false,
         error: "Method not allowed",
       });
-      break;
   }
 }

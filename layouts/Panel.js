@@ -95,7 +95,7 @@ const Panel = ({ children }) => {
           </span>
         </p>
       ),
-      path: "/dashboard/list-users",
+      path: "/dashboard/users",
       icon: <FiUsers className="w-5 h-5" />,
     },
     {

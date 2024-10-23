@@ -18,12 +18,12 @@ const Step1 = ({publishDate,register,errors}) => {
               message: "عنوان باید حداقل ۳ حرف داشته باشد",
             },
             maxLength: {
-              value: 100,
+              value: 50,
               message: "عنوان نباید بیشتر از ۱۰۰ حرف باشد",
             },
           })}
           placeholder="عنوان بلاگ" // تغییر placeholder برای هماهنگی بیشتر
-          maxLength="100"
+          maxLength="50"
           className="p-2 rounded border w-full"
         />
         {errors.title && ( // اصلاح نام فیلد

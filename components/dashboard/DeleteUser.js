@@ -1,12 +1,7 @@
-
-
 import React, { useEffect, useMemo, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
-import {
-  useDeleteUserMutation,
-  useGetUserQuery,
-} from "@/services/user/userApi";
+import { useDeleteUserMutation, useGetUserQuery } from "@/services/user/userApi";
 import { toast } from "react-hot-toast";
 import Modal from "../shared/modal/Modal";
 import LoadImage from "../shared/image/LoadImage";
@@ -34,7 +29,7 @@ const DeleteUser = ({ id }) => {
 
   useEffect(() => {
     if (fetching) {
-      toast.loading("Updating User Information...", {
+      toast.loading("در حال به‌روزرسانی اطلاعات کاربر...", {
         id: "fetchUser",
       });
     }
@@ -48,7 +43,7 @@ const DeleteUser = ({ id }) => {
     }
 
     if (deleting) {
-      toast.loading("Deleting User...", { id: "deleteUser" });
+      toast.loading("در حال حذف کاربر...", { id: "deleteUser" });
     }
 
     if (deleteData) {
@@ -89,7 +84,7 @@ const DeleteUser = ({ id }) => {
               <div className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-4">
                   <LoadImage
-                    src={user?.avatar?.url}
+                    src={`/${user?.avatar?.url}`}
                     alt={user?.avatar?.public_id}
                     height={100}
                     width={100}
@@ -109,7 +104,7 @@ const DeleteUser = ({ id }) => {
                     </span>
                     {user?.rents?.length > 0 && (
                       <span className="bg-cyan-100/50 text-cyan-900 border border-cyan-900 px-1.5 !text-xs rounded-primary uppercase">
-                        Seller
+                        فروشنده
                       </span>
                     )}
                   </p>
@@ -117,28 +112,25 @@ const DeleteUser = ({ id }) => {
               </div>
               <div className="text-sm flex flex-col gap-y-2.5">
                 <p className="flex flex-row gap-x-1 items-center">
-                  <MdWarningAmber className="w-5 h-5" /> This action can&lsquo;t be
-                  undone!
+                  <MdWarningAmber className="w-5 h-5" /> این عملیات غیر قابل بازگشت است!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <LuShoppingCart className="h-5 w-5" /> Your cart items will be
-                  removed!
+                  <LuShoppingCart className="h-5 w-5" /> آیتم‌های سبد خرید شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <MdFavoriteBorder className="h-5 w-5" /> Your favorite items
-                  will be removed!
+                  <MdFavoriteBorder className="h-5 w-5" /> آیتم‌های مورد علاقه شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <BiSolidPurchaseTag className="h-5 w-5" /> Your{" "}
-                  {user?.purchases?.length} purchases will be removed!
+                  <BiSolidPurchaseTag className="h-5 w-5" />{" "}
+                  {user?.purchases?.length} خرید شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <TbDoorEnter className="h-5 w-5" /> Your {user?.rents?.length}{" "}
-                  rents will be removed!
+                  <TbDoorEnter className="h-5 w-5" />{" "}
+                  {user?.rents?.length} اجاره شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <MdOutlineReviews className="h-5 w-5" /> Your{" "}
-                  {user?.reviews?.length} reviews will be removed!
+                  <MdOutlineReviews className="h-5 w-5" />{" "}
+                  {user?.reviews?.length} نظر شما حذف خواهند شد!
                 </p>
               </div>
             </article>
@@ -152,7 +144,7 @@ const DeleteUser = ({ id }) => {
                 }}
               >
                 <RxCross2 className="h-4 w-4" />
-                Cancel
+                لغو
               </button>
               <button
                 type="button"
@@ -160,7 +152,7 @@ const DeleteUser = ({ id }) => {
                 onClick={() => deleteUser(id)}
               >
                 <AiOutlineDelete className="h-4 w-4" />
-                Delete
+                حذف
               </button>
             </div>
           </section>
