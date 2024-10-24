@@ -109,7 +109,7 @@ const Panel = ({ children }) => {
     <section className=" h-screen w-screen bg-gray-100 dark:bg-gray-800 dark:text-gray-100">
       <div className="max-w-8xl mx-auto h-full flex flex-col gap-y-4">
         <Navbar router={router} open={open} setOpen={setOpen} />
-        <div className="h-full overflow-y-auto p-4 grid grid-cols-12 gap-x-4 relative">
+        <div className="h-full overflow-y-auto h-screen p-4 grid grid-cols-12 gap-x-4 relative">
           <aside className="lg:col-span-3 md:col-span-4 col-span-12 md:block hidden overflow-y-auto bg-secondary dark:
           dark:bg-gray-900 rounded p-4 ">
             <Sidebar routes={routes} />

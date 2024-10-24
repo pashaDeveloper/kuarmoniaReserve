@@ -183,30 +183,29 @@ blockquote {
   position: relative;
   width: 60px;
   height: 60px;
-  overflow: hidden;
+  overflow: hidden; 
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid rgba(220, 233, 245, 1)  ;
   background: rgba(220, 233, 245, 0.8);
 }
 .dark .user-container{
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.2);
 
 }
-.dark .user-container{
-  border: 2px solid rgba(255, 255, 255, 0.8);
+.dark .profile-container{
+  border: 1px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.2);
 
 }
 .profile-pic {
-  width: 90%;
-  height: 90%;
+  width: 85%;
+  height: 85%;
   object-fit: cover;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
 .shine-effect::before,

@@ -21,7 +21,7 @@ import  Metrics  from "@/components/shared/tools/Metrics";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import { useRouter } from "next/router";
 import LoadImage from "@/components/shared/image/LoadImage";
-import { SlLike, SlDislike } from "react-icons/sl";
+import SkeletonBlog from "@/components/shared/skeleton/SkeletonBlog";
 
 const ListBlog = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,9 +64,15 @@ const ListBlog = () => {
         {/* نمایش داده‌های بلاگ‌ها */}
         <AddButton onClick={handleAddItem} />
 
-        {data &&
-          data?.data?.length > 0 &&
-          data?.data?.map((blog) => (
+        {(!data?.data || data?.data.length === 0 || isLoading) ? (
+  <>
+    {[1].map((i) => (
+      <SkeletonBlog key={i} repeat={10} />
+    ))}
+  </>
+) : (
+  data?.data?.length > 0 &&
+  data?.data?.map((blog) => (
             <div
               key={blog.id}
               className="mt-4 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2  transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-slate-700"
@@ -132,7 +138,8 @@ const ListBlog = () => {
                 </svg>
               </div>
             </div>
-          ))}
+       ))
+      )}
       </Panel>
 
       <Popover

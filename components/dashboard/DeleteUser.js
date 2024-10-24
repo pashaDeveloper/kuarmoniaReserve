@@ -58,17 +58,17 @@ const DeleteUser = ({ id }) => {
 
   return (
     <>
-      <button
-        type="button"
-        disable={deleting}
-        className="p-1 rounded-secondary bg-red-500 !text-white"
-        onClick={() => {
-          dispatch(setUser(user));
-          setIsOpen(true);
-        }}
-      >
-        <FiTrash className="w-5 h-5" />
-      </button>
+      <span
+  type="button"
+  disabled={deleting ? true : undefined} // اصلاح شده
+  className="cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+  onClick={() => {
+    dispatch(setUser(user));
+    setIsOpen(true);
+  }}
+>
+  <FiTrash className="w-5 h-5" />
+</span>
 
       {isOpen && (
         <Modal

@@ -178,7 +178,7 @@ const UpdateUser = ({ setIsOpen }) => {
         maxLength={500}
         placeholder="آدرس خود را اینجا وارد کنید..."
         className="rounded"
-        {...register("address", { required: true })}
+        {...register("address")}
       ></textarea>
     </label>
   

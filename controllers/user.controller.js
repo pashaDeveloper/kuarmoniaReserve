@@ -79,8 +79,20 @@ export async function updateUser(req) {
         message: "کاربر پیدا نشد",
       };
     } else {
-      const updatedUser = req.body;
+      const updatedUser = { ...req.body };
 
+      // جلوگیری از تغییر نقش و وضعیت 
+      superAdmin
+      if (user.role === 'superAdmin') {
+        if (updatedUser.role || updatedUser.status === 'inActive') {
+          return {
+            success: false,
+            message: "نمی‌توانید نقش یا وضعیت کاربر با نقش مدیر کل را تغییر دهید",
+          };
+        }
+      }
+
+      // بروزرسانی تصویر کاربر در صورت آپلود فایل جدید
       if (req.file && req.file.path && req.file.filename) {
         await removePhoto(user.avatar.public_id);
 
@@ -114,106 +126,125 @@ export async function updateUser(req) {
   }
 }
 
+
 // حذف یک کاربر
 export async function deleteUser(req) {
   try {
-    const user = await User.findByIdAndDelete(req.query.id);
+    // ابتدا کاربر را پیدا می‌کنیم
+    const user = await User.findById(req.query.id);
 
     if (!user) {
       return {
         success: false,
         message: "کاربر پیدا نشد",
       };
-    } else {
-      await removePhoto(user.avatar.public_id);
+    }
 
-      // حذف لیست علاقه‌مندی‌های کاربر
-      if (user.favorite) {
-        Favorite.findByIdAndDelete(user.favorite);
-      }
-
-      // حذف سبد خرید کاربر
-      if (user.cart) {
-        Cart.findByIdAndDelete(user.cart);
-      }
-
-      // حذف کاربر از تمام اجاره‌ها
-      if (user.rents.length > 0) {
-        for (let i = 0; i < user.rents.length; i++) {
-          const rent = await Rent.findByIdAndDelete(user.rents[i]);
-
-          rent.gallery.forEach(
-            async (image) => await removePhoto(image.public_id)
-          );
-
-          // حذف از سبد خرید تمام کاربران
-          await Cart.updateMany(
-            {},
-            {
-              $pull: {
-                rents: rent._id,
-              },
-            }
-          );
-
-          // حذف از لیست علاقه‌مندی‌های تمام کاربران
-          await Favorite.updateMany(
-            {},
-            {
-              $pull: {
-                rents: rent._id,
-              },
-            }
-          );
-
-          rent.users.forEach(async (user) => {
-            const review = await Review.findOne({ reviewer: user });
-            const purchase = await Purchase.findOne({ user: user });
-
-            if (review) {
-              await User.findByIdAndUpdate(review.reviewer, {
-                $pull: {
-                  reviews: review?._id,
-                },
-              });
-            }
-
-            if (purchase) {
-              await User.findByIdAndUpdate(purchase.user, {
-                $pull: {
-                  purchases: purchase?._id,
-                },
-              });
-            }
-
-            // حذف از لیست خریدها
-            await Purchase.deleteMany({ rent: rent._id });
-
-            // حذف از لیست نظرات
-            await Review.deleteMany({ rent: rent._id });
-          });
-        }
-      }
-
-      // حذف خریدهای کاربر
-      if (user.purchases.length > 0) {
-        for (let i = 0; i < user.purchases.length; i++) {
-          await Purchase.findByIdAndDelete(user.purchases[i]);
-        }
-      }
-
-      // حذف نظرات کاربر
-      if (user.reviews.length > 0) {
-        for (let i = 0; i < user.reviews.length; i++) {
-          await Review.findByIdAndDelete(user.reviews[i]);
-        }
-      }
-
+    // بررسی نقش superAdmin
+    if (user.role === 'superAdmin') {
       return {
-        success: true,
-        message: "کاربر با موفقیت حذف شد",
+        success: false,
+        message: "حذف کاربر با نقش مدیر کل مجاز نیست",
       };
     }
+
+    // اگر کاربر superAdmin نبود، کاربر حذف می‌شود
+    await User.findByIdAndDelete(req.query.id);
+
+    await removePhoto(user.avatar.public_id);
+
+    // حذف لیست علاقه‌مندی‌های کاربر
+    if (user.favorite) {
+      await Favorite.findByIdAndDelete(user.favorite);
+    }
+
+    // حذف سبد خرید کاربر
+    if (user.cart) {
+      await Cart.findByIdAndDelete(user.cart);
+    }
+
+    // حذف کاربر از تمام اجاره‌ها
+    if (user.rents.length > 0) {
+      for (let i = 0; i < user.rents.length; i++) {
+        const rent = await Rent.findByIdAndDelete(user.rents[i]);
+
+        rent.gallery.forEach(async (image) => await removePhoto(image.public_id));
+
+        // حذف از سبد خرید تمام کاربران
+        await Cart.updateMany(
+          {},
+          {
+            $pull: {
+              rents: rent._id,
+            },
+          }
+        );
+
+        // حذف از لیست علاقه‌مندی‌های تمام کاربران
+        await Favorite.updateMany(
+          {},
+          {
+            $pull: {
+              rents: rent._id,
+            },
+          }
+        );
+
+        rent.users.forEach(async (user) => {
+          const review = await Review.findOne({ reviewer: user });
+          const purchase = await Purchase.findOne({ user: user });
+
+          if (review) {
+            await User.findByIdAndUpdate(review.reviewer, {
+              $pull: {
+                reviews: review?._id,
+              },
+            });
+          }
+
+          if (purchase) {
+            await User.findByIdAndUpdate(purchase.user, {
+              $pull: {
+                purchases: purchase?._id,
+              },
+            });
+          }
+
+          // حذف از لیست خریدها
+          await Purchase.deleteMany({ rent: rent._id });
+
+          // حذف از لیست نظرات
+          await Review.deleteMany({ rent: rent._id });
+        });
+      }
+    }
+
+    // حذف خریدهای کاربر
+    if (user.purchases.length > 0) {
+      for (let i = 0; i < user.purchases.length; i++) {
+        await Purchase.findByIdAndDelete(user.purchases[i]);
+      }
+    }
+
+     // حذف بلاگ های کاربر
+   
+     if (user.blogs.length > 0) {
+      for (let i = 0; i < user.blogs.length; i++) {
+        await Purchase.findByIdAndUpdate(user.blogs[i], { isDeleted: true });
+      }
+    }
+
+    // حذف نظرات کاربر
+    if (user.reviews.length > 0) {
+      for (let i = 0; i < user.reviews.length; i++) {
+        await Review.findByIdAndDelete(user.reviews[i]);
+      }
+    }
+
+    return {
+      success: true,
+      message: "کاربر با موفقیت حذف شد",
+    };
   } catch (error) {
     return {
       success: false,

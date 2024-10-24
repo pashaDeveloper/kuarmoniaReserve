@@ -72,7 +72,7 @@ const TableComponent = ({
             {data?.length === 0 || isLoading ? (
               <>
                 {[1, 2, 3,4,5,6,7].map((i) => (
-                  <LoadingTable key={i} repeat={14} />
+                  <LoadingTable key={i} repeat={10} />
                 ))}
               </>
             ) : (

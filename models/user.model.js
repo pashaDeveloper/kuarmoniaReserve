@@ -89,7 +89,12 @@ const userSchema = new Schema(
         ref: "Purchase",
       },
     ],
-
+    blogs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "blogs",
+      },
+    ],
     ...baseSchema.obj
 
   },

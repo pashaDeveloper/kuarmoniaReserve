@@ -45,8 +45,8 @@ const Sidebar = ({ routes }) => {
           <LoadImage
             src={`/${user?.avatar?.url}`}
             alt={user?.avatar?.public_id}
-            height={30}
-            width={30}
+            height={100}
+            width={100}
             className="rounded-secondary object-cover w-[30px] h-[30px]"
           />
           <article className="flex flex-col gap-y-0.5">

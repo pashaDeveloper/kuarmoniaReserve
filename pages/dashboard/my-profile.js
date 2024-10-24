@@ -1,5 +1,3 @@
-
-
 import Button from "@/components/shared/button/Button";
 import LoadImage from "@/components/shared/image/LoadImage";
 import Modal from "@/components/shared/modal/Modal";
@@ -17,7 +15,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { CiWarning } from "react-icons/ci";
 import {
   MdDeleteOutline,
   MdFavoriteBorder,
@@ -42,13 +39,14 @@ const MyProfile = () => {
       address: user?.address,
     };
   }, [user]);
+
   const { register, handleSubmit, reset } = useForm({ defaultValues });
 
   useEffect(() => {
     reset(defaultValues);
 
     if (isLoading) {
-      toast.loading("Updating User Information...", { id: "updateUser" });
+      toast.loading("در حال بروزرسانی اطلاعات کاربر...", { id: "updateUser" });
     }
 
     if (data) {
@@ -95,25 +93,25 @@ const MyProfile = () => {
       <Panel>
         <form
           action=""
-          className="text-sm lg:w-1/2 md:w-3/4 w-full flex flex-col gap-y-4"
+          className="text-sm lg:w-1/2 md:w-3/4 w-full flex flex-col items-center gap-y-4"
           onSubmit={handleSubmit(handleUpdateUser)}
         >
-          {/* avatar */}
-          <div className="flex flex-col gap-y-2 w-fit">
+          {/* تصویر پروفایل */}
+          <div className="flex flex-col justify-center items-center gap-y-2 w-fit rounded-full">
             <LoadImage
-  src={avatarPreview || `/${defaultValues?.avatar?.url}`}
-  alt={defaultValues?.avatar?.public_id || "avatar"}
-              height={100}
-              width={100}
-              className="h-[100px] w-[100px] rounded object-cover"
+              src={avatarPreview || `/${defaultValues?.avatar?.url}?q=100`}
+              alt={defaultValues?.avatar?.public_id || "آواتار"}
+              height={300}
+              width={300}
+              className="h-[100px] w-[100px] rounded-full object-cover"
             />
-            <label htmlFor="avatar" className="relative">
+            <label htmlFor="avatar" className="relative w-full">
               <button
                 type="button"
                 className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 border border-green-900 text-green-900 rounded-secondary w-fit"
               >
                 <IoCloudUploadOutline className="h-5 w-5" />
-                Edit Your Avatar
+                ویرایش تصویر پروفایل
               </button>
               <input
                 type="file"
@@ -128,20 +126,20 @@ const MyProfile = () => {
             </label>
           </div>
 
-          <label htmlFor="name" className="flex flex-col gap-y-1">
-            <span className="text-sm">Your Name</span>
+          <label htmlFor="name" className="flex flex-col gap-y-1 w-full">
+            <span className="text-sm">نام شما</span>
             <input
               type="text"
               name="name"
               id="name"
               {...register("name")}
-              placeholder="i.e. Hasibul Islam"
+              placeholder="مثال: حسیب الاسلام"
               className=""
             />
           </label>
 
-          <label htmlFor="email" className="flex flex-col gap-y-1">
-            <span className="text-sm">Your Email</span>
+          <label htmlFor="email" className="flex flex-col gap-y-1 w-full">
+            <span className="text-sm">ایمیل شما</span>
             <input
               type="email"
               name="email"
@@ -152,33 +150,33 @@ const MyProfile = () => {
             />
           </label>
 
-          <label htmlFor="phone" className="flex flex-col gap-y-1">
-            <span className="text-sm">Your Phone Number</span>
+          <label htmlFor="phone" className="flex flex-col gap-y-1 w-full">
+            <span className="text-sm">شماره تلفن شما</span>
             <input
               type="tel"
               name="phone"
               id="phone"
               {...register("phone")}
-              placeholder="i.e. +8801906315901"
+              placeholder="مثال: +989392640650"
               className=""
             />
           </label>
 
-          <label htmlFor="address" className="flex flex-col gap-y-2">
-            Your Address*
+          <label htmlFor="address" className="flex flex-col gap-y-2 w-full">
+            آدرس شما*
             <textarea
               name="address"
               id="address"
               rows="2"
               maxLength={500}
-              placeholder="Type your address here..."
+              placeholder="آدرس خود را دقیق وارد کنید..."
               className="rounded"
               {...register("address", { required: true })}
             ></textarea>
           </label>
 
-          <Button type="submit" className="py-2 mt-4">
-            Update Information
+          <Button type="submit" className="py-2 mt-4 w-full">
+            بروزرسانی اطلاعات
           </Button>
         </form>
         <RemoveInformation id={user?._id} />
@@ -203,7 +201,7 @@ function RemoveInformation({ id }) {
 
   useEffect(() => {
     if (fetching) {
-      toast.loading("Updating User Information...", {
+      toast.loading("در حال بروزرسانی اطلاعات کاربر...", {
         id: "fetchUser",
       });
     }
@@ -217,14 +215,19 @@ function RemoveInformation({ id }) {
     }
 
     if (deleting) {
-      toast.loading("Deleting User...", { id: "deleteUser" });
+      toast.loading("در حال حذف کاربر...", { id: "deleteUser" });
     }
 
-    if (deleteData) {
+    if (deleteData?.success) {
       toast.success(deleteData?.message, { id: "deleteUser" });
       setIsOpen(false);
       window.open("/", "_self");
     }
+    if (deleteData?.success==false) {
+      toast.error(deleteData?.message, { id: "deleteUser" });
+      setIsOpen(false);
+    }
+
 
     if (deleteError?.data) {
       toast.error(deleteError?.data?.message, { id: "deleteUser" });
@@ -241,7 +244,7 @@ function RemoveInformation({ id }) {
           setIsOpen(true);
         }}
       >
-        Delete Information
+        حذف اطلاعات
       </Button>
 
       {isOpen && (
@@ -251,88 +254,50 @@ function RemoveInformation({ id }) {
             dispatch(setUser({}));
             setIsOpen(false);
           }}
-          className="lg:w-3/12 md:w-1/2 w-full z-50"
+          className="lg:w-3/12 md:w-1/2 w-full z-50 flex justify-center items-center"
         >
-          <section className="h-full w-full flex flex-col gap-y-4">
+          <section className="h-full w-full flex flex-col gap-y-4  ">
             <article className="flex flex-col gap-y-8 h-full overflow-y-auto">
-              <div className="flex flex-col gap-y-1">
-                <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-1 items-center">
+                <div className="flex flex-col gap-y-4  items-center">
                   <LoadImage
-                    src={user?.avatar?.url}
+                    src={`/${user?.avatar?.url}`}
                     alt={user?.avatar?.public_id}
-                    height={100}
-                    width={100}
+                    height={300}
+                    width={300}
                     className="h-[100px] w-[100px] rounded object-cover"
                   />
                   <h1 className="text-2xl">{user.name}</h1>
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <p className="text-xs">{user.email}</p>
-                  <p className="text-xs">{user.phone}</p>
-                  <p className="flex flex-row gap-x-1">
-                    <span className="bg-purple-100/50 text-purple-900 border border-purple-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.role}
-                    </span>
-                    <span className="bg-indigo-100/50 text-indigo-900 border border-indigo-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.status}
-                    </span>
-                    {user?.rents?.length > 0 && (
-                      <span className="bg-cyan-100/50 text-cyan-900 border border-cyan-900 px-1.5 !text-xs rounded-primary uppercase">
-                        Seller
-                      </span>
-                    )}
-                  </p>
+                  <p className="text-xs text-center">{user.email}</p>
+                  <p className="text-xs text-center">{user.phone}</p>
+                  <p className="text-xs text-center">{user.address}</p>
                 </div>
               </div>
-              <div className="text-sm flex flex-col gap-y-2.5">
-                <p className="flex flex-row gap-x-1 items-center">
-                  <MdWarningAmber className="w-5 h-5" /> This action can&lsquo;t be
-                  undone!
-                </p>
-                <p className="flex flex-row gap-x-1 items-center">
-                  <LuShoppingCart className="h-5 w-5" /> Your cart items will be
-                  removed!
-                </p>
-                <p className="flex flex-row gap-x-1 items-center">
-                  <MdFavoriteBorder className="h-5 w-5" /> Your favorite items
-                  will be removed!
-                </p>
-                <p className="flex flex-row gap-x-1 items-center">
-                  <BiSolidPurchaseTag className="h-5 w-5" /> Your{" "}
-                  {user?.purchases?.length} purchases will be removed!
-                </p>
-                <p className="flex flex-row gap-x-1 items-center">
-                  <TbDoorEnter className="h-5 w-5" /> Your {user?.rents?.length}{" "}
-                  rents will be removed!
-                </p>
-                <p className="flex flex-row gap-x-1 items-center">
-                  <MdOutlineReviews className="h-5 w-5" /> Your{" "}
-                  {user?.reviews?.length} reviews will be removed!
-                </p>
+              <div className="flex flex-col gap-y-2">
+                <MdWarningAmber className="w-7 h-7 mx-auto text-red-600" />
+                <p className="text-center text-red-600">آیا مطمئن هستید؟</p>
               </div>
             </article>
-            <div className="flex flex-row gap-x-2 justify-end text-sm">
-              <button
-                type="button"
-                className="flex flex-row items-center gap-x-0.5 bg-red-100/50 border border-red-900 text-red-900 px-2 py-1 rounded uppercase"
-                onClick={() => {
-                  dispatch(setUser({}));
-                  setIsOpen(false);
-                }}
-              >
-                <RxCross2 className="h-4 w-4" />
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={user?.role === "admin"}
-                className="flex flex-row items-center gap-x-0.5 bg-green-100/50 border border-green-900 text-green-900 px-2 py-1 rounded uppercase"
+            <article className="w-full flex gap-x-4 justify-evenly">
+              <Button
+                type="submit"
+                className="py-2 !bg-red-500 !border-red-600 w-full !hover:bg-red-900/90"
                 onClick={() => deleteUser(id)}
               >
-                <AiOutlineDelete className="h-4 w-4" />
-                Delete
-              </button>
-            </div>
+                حذف کاربر
+              </Button>
+              <Button
+                className="py-2 w-full"
+                onClick={() => {
+                  setIsOpen(false);
+                  dispatch(setUser({}));
+                }}
+              >
+                انصراف
+              </Button>
+            </article>
           </section>
         </Modal>
       )}
