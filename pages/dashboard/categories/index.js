@@ -1,29 +1,30 @@
-// ListCategory.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
 import { FaPlus } from "react-icons/fa";
 import { useGetCategoriesQuery, useUpdateCategoryMutation } from "@/services/category/categoryApi";
-import AddCategory from "./add"; 
+import AddCategory from "./add";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
 import { toast } from "react-hot-toast";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import Tooltip from "../../../components/shared/tooltip/Tooltip";
 import Info from "./info";
+import LoadImage from "@/components/shared/image/LoadImage";
+import StatusIndicator from "@/components/shared/tools/StatusIndicator";
+import AddButton from "@/components/shared/button/AddButton";
+import SkeletonItem from "@/components/shared/skeleton/SkeletonItem"; // اضافه کردن SkeletonItem
+import { FiEdit3,FiTrash } from "react-icons/fi";
 
 const ListCategory = () => {
   const { data, isLoading, error, refetch } = useGetCategoriesQuery();
   const [updateCategory] = useUpdateCategoryMutation();
-  const categories = Array.isArray(data?.data) ? data.data : [];
-
-  // وضعیت‌های جداگانه برای هر نوع مودال
+  const categories = useMemo(() => Array.isArray(data?.data) ? data.data : [], [data]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // توابع باز کردن مودال‌ها
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
 
@@ -102,7 +103,6 @@ const ListCategory = () => {
 
     if (data && !isLoading) {
       toast.dismiss("category-loading");
-      // در صورت نیاز می‌توانید پیام موفقیت‌آمیز اضافه کنید
     }
 
     if (error?.data) {
@@ -112,160 +112,111 @@ const ListCategory = () => {
 
   return (
     <>
-      {/* دکمه افزودن دسته‌بندی */}
-      <button
-        className="fixed bottom-16 right-[400px] cursor-pointer bg-green-400 rounded-full flex items-center z-50 justify-center transition-all duration-300 hover:bg-green-700 active:scale-95"
-        style={{
-          width: "64px",
-          height: "64px",
-          transition:
-            "background-color 0.3s !important, transform 0.1s !important",
-        }}
-        onClick={openAddModal}
-      >
-        <FaPlus size={24} color="white" />
-      </button>
-
       <Panel>
-        <section className="h-full w-full ">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 z-10 ">
-              <thead className="text-xs text-gray-700 uppercase text-center bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3">ردیف</th>
-                  <th className="px-6 py-3">عملیات</th>
-                  <th className="px-6 py-3">شناسه</th>
-                  <th className="px-6 py-3">وضعیت</th>
-                  <th className="px-6 py-3">عنوان</th>
-                  <th className="px-6 py-3">توضیحات</th>
-                  <th className="px-6 py-3">تعداد</th>
-                  <th className="px-6 py-3">تاریخ ایجاد</th>
-                  <th className="px-6 py-3">اسلاگ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.map((category, index) => (
-                  <tr
-                    key={category._id}
-                    className="bg-white hover:bg-secondary/50 transition-colors"
-                  >
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      <div className="flex items-center justify-end gap-1">
-                        <Tooltip
-                          text="حذف"
-                          bgColor="bg-red-500"
-                          txtColor="text-white"
-                        >
-                          <AiTwotoneDelete
-                            className="w-6 h-6 hover:text-red-500 cursor-pointer"
-                            onClick={() => openDeleteModal(category)}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          text="ویرایش"
-                          bgColor="bg-blue-500"
-                          txtColor="text-white"
-                        >
-                          <AiTwotoneEdit
-                            className="w-6 h-6 hover:text-blue-500 cursor-pointer"
-                            onClick={() => openEditModal(category)}
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          text="جزئیات"
-                          bgColor="bg-green-500"
-                          txtColor="text-white"
-                        >
-                          <LiaInfoCircleSolid
-                            className="w-6 h-6 hover:text-green-500 cursor-pointer"
-                            onClick={() => openInfoModal(category)}
-                          />
-                        </Tooltip>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.categoryId}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      <label className="inline-flex items-center me-5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="sr-only peer"
-                          checked={category.status === "active"}
-                          onChange={() =>
-                            toggleStatus(category._id, category.status)
-                          }
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                      </label>
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.title}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.description}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      ---
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {new Date(category.createdAt).toLocaleDateString(
-                        "fa-IR"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900 whitespace-nowrap">
-                      {category.slug}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* دکمه افزودن دسته‌بندی */}
+        <AddButton onClick={openAddModal} />
 
-            {/* مودال حذف */}
-            {isDeleteModalOpen  && (
-              <DeleteConfirmationModal
-                isOpen={isDeleteModalOpen}
-                onClose={closeDeleteModal}
-                onConfirm={handleDelete}
-                message={`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selectedCategory.title}" را حذف کنید؟`}
-              />
-            )}
+        {/* نمایش داده‌های دسته‌بندی‌ها */}
+        {isLoading ||categories && categories.length == 0 ? (
+          <SkeletonItem repeat={10} /> // نمایش اسکلتون در حالت بارگذاری
+        ) : categories && categories.length > 0 ? (
+          categories.map((category) => (
+            <div
+              key={category._id}
+              className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
+            >
+              <div className="col-span-5 lg:col-span-3 text-center flex items-center">
+                <StatusIndicator isActive={category.status === "active"} />
+                <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
+           
+                  <article className="flex-col flex gap-y-2">
+                    <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">
+                      <span className="flex">{category.title}</span>
+                    </span>
+                  </article>
+                </div>
+              </div>
 
-            {/* مودال ویرایش */}
-       
-              <AddCategory
-                isOpen={isEditModalOpen}
-                onClose={closeEditModal}
-                onSuccess={refetch}
-                categoryToEdit={selectedCategory}
-              />
-       
+              <div className="lg:col-span-3 col-span-5 gap-2 text-center flex justify-left items-center">
+                <article className="flex-col flex gap-y-2">
+                  <span className="line-clamp-1 text-sm lg:text-base">
+                    <span className="flex">{category.description}</span>
+                  </span>
+                </article>
+              </div>
 
+              <div className="lg:col-span-2 lg:flex hidden gap-2 text-center flex justify-center items-center">
+              {new Date(category.createdAt).toLocaleDateString("fa-IR")}
+              </div>
 
-            {/* مودال جزئیات */}
-            {isInfoModalOpen  && (
-              <Modal
-                isOpen={isInfoModalOpen}
-                onClose={closeInfoModal}
-                className="lg:w-1/3 md:w-1/2 w-full z-50"
-              >
-                <Info category={selectedCategory} onClose={closeInfoModal} />
-              </Modal>
-            )}
+              <div className="hidden lg:col-span-3 col-span-5 gap-2 text-center lg:flex justify-center items-center">
+                <article className="flex-col flex gap-y-2">
+                  <span className="flex">
+                    {category.slug}
+                  </span>
+                </article>
+              </div>
+              <div className="lg:col-span-1 col-span-2 text-gray-500 text-right flex justify-right flex-row-reverse items-center">
+                  <article className="flex-col flex  gap-y-1 ">
+                    <span
+                      className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                      onClick={() => openEditModal(category)}
 
-            {/* مودال افزودن */}
-            {isAddModalOpen && (
-              <AddCategory
-                isOpen={isAddModalOpen}
-                onClose={closeAddModal}
-                onSuccess={refetch}
-              />
-            )}
-          </div>
-        </section>
+                    >
+                      <FiEdit3 className="w-5 h-5" />
+                    </span>
+                    <span className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70" onClick={() => openDeleteModal(category)}
+                    >
+                      <FiTrash className="w-5 h-5" />
+                    </span>
+                  </article>
+                </div>
+             
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500">دسته‌بندی‌ای وجود ندارد.</div>
+        )}
+
+        {/* مودال حذف */}
+        {isDeleteModalOpen && (
+          <DeleteConfirmationModal
+            isOpen={isDeleteModalOpen}
+            onClose={closeDeleteModal}
+            onConfirm={handleDelete}
+            message={`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selectedCategory.title}" را حذف کنید؟`}
+          />
+        )}
+
+        {/* مودال ویرایش */}
+        {isEditModalOpen && (
+          <AddCategory
+            isOpen={isEditModalOpen}
+            onClose={closeEditModal}
+            onSuccess={refetch}
+            categoryToEdit={selectedCategory}
+          />
+        )}
+
+        {/* مودال جزئیات */}
+        {isInfoModalOpen && (
+          <Modal
+            isOpen={isInfoModalOpen}
+            onClose={closeInfoModal}
+            className="lg:w-1/3 md:w-1/2 w-full z-50"
+          >
+            <Info category={selectedCategory} onClose={closeInfoModal} />
+          </Modal>
+        )}
+
+        {/* مودال افزودن */}
+        {isAddModalOpen && (
+          <AddCategory
+            isOpen={isAddModalOpen}
+            onClose={closeAddModal}
+            onSuccess={refetch}
+          />
+        )}
       </Panel>
     </>
   );

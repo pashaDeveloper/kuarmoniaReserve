@@ -177,12 +177,7 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
               ></path>
             </svg>
           </span>
-          <span
-            data-tooltip-target="more"
-            className="cursor-pointer rounded-full border border-pink-500/5 bg-pink-500/5 p-3 text-pink-500 transition-colors hover:border-pink-500/10 hover:bg-pink-500/10 hover:!opacity-100 group-hover:opacity-70"
-          >
-            +20
-          </span>
+         
         </div>
         <div className="flex items-center justify-between ">
           <div className="flex items-center -space-x-3">

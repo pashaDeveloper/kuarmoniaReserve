@@ -45,11 +45,11 @@ const PreviewSection = ({
   return (
     <div
     className={`flex-1 p-4 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
-      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto`}
+      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto relative`}
     ref={previewRef}
   >
     <button
-      className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-8 absolute top-2 right-2  dark:text-gray-100"
+      className="p-3 rounded-full shadow-lg  top-0 cursor-pointer bg-white dark:bg-gray-800 z-10 absolute -top-6 right-1/2  dark:text-gray-100"
       onClick={handleToggleFullscreen}
     >
       {isFullscreen ? (

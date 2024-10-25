@@ -1,6 +1,6 @@
 import React from "react";
 
-const SkeletonBlog = ({ repeat }) => {
+const SkeletonItem = ({ repeat }) => {
   return (
     <>
       {Array(repeat)
@@ -46,4 +46,4 @@ const SkeletonBlog = ({ repeat }) => {
   );
 };
 
-export default SkeletonBlog;
+export default SkeletonItem;

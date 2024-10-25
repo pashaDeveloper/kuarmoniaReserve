@@ -52,7 +52,7 @@ const steps = [
 
 const CustomProgressBar = ({ currentStep }) => {
   return (
-    <div className="w-full py-6 ">
+    <div className="w-full lg:py-6 py-1 ">
       <div className="flex flex-row justify-between items-center">
         {steps.map((step, index) => {
           const isCompleted = currentStep > step.number;

@@ -22,7 +22,7 @@ const tagApi = kuarmoniaApi.injectEndpoints({
     }),
 
     GetTags: builder.query({
-      query: ({ page = 1, limit = 7 }) => ({
+      query: ({ page = 1, limit = 7 } = {}) => ({
         url: `/tag/?page=${page}&limit=${limit}`,
         method: "GET",
       }),

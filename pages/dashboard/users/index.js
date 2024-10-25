@@ -35,7 +35,7 @@ const ListUsers = () => {
           users.map((user) => (
             <div
               key={user._id}
-              className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800"
+              className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
             >
               <div className="col-span-5 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={user.status === "active"} />
@@ -50,7 +50,7 @@ const ListUsers = () => {
                     />
                   </div>
                   <article className="flex-col flex gap-y-2">
-                    <span className="line-clamp-1 text-sm lg:text-base">
+                    <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">
                       <span className=" flex">{user?.name}</span>
                     </span>
                     <span className="text-xs lg:flex hidden">

@@ -1,48 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-const ProgressBar = () => {
+const LoadingIndicator = () => {
   const router = useRouter();
-  const [progress, setProgress] = useState(0); // وضعیت پیشرفت
+  const [loading, setLoading] = useState(false); // وضعیت لودینگ
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
-      setProgress(0);
-      let timer = setInterval(() => {
-        setProgress((oldProgress) => {
-          if (oldProgress < 90) {
-            return oldProgress + 10; // پیشرفت تدریجی
-          }
-          clearInterval(timer);
-          return oldProgress;
-        });
-      }, 100);
+      setLoading(true); // شروع لودینگ
     };
 
     const handleRouteChangeComplete = () => {
-      setProgress(100); // پیشرفت کامل
-      setTimeout(() => setProgress(0), 500); // پس از بارگذاری، مخفی کردن نوار بارگذاری
+      setLoading(false); // پایان لودینگ
+    };
+
+    const handleRouteChangeError = () => {
+      setLoading(false); // در صورت بروز خطا
     };
 
     router.events.on("routeChangeStart", handleRouteChangeStart);
     router.events.on("routeChangeComplete", handleRouteChangeComplete);
-    router.events.on("routeChangeError", handleRouteChangeComplete);
+    router.events.on("routeChangeError", handleRouteChangeError);
 
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart);
       router.events.off("routeChangeComplete", handleRouteChangeComplete);
-      router.events.off("routeChangeError", handleRouteChangeComplete);
+      router.events.off("routeChangeError", handleRouteChangeError);
     };
   }, [router]);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 z-50">
-      <div
-        className="h-full bg-green-500 transition-all duration-500"
-        style={{ width: `${progress}%` }}
-      ></div>
-    </div>
+    <>
+       {loading && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center  z-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 dark:border-green-500 border-solid"></div>
+        </div>
+      )}
+    </>
   );
 };
 
-export default ProgressBar;
+export default LoadingIndicator;
