@@ -15,7 +15,6 @@ const tagSchema = new Schema(
     },
     description: {
       type: String,
-      required: [true, "توضیحات تگ الزامی است"],
       trim: true,
       maxLength: [160, "توضیحات تگ نباید بیشتر از 160 کاراکتر باشد"],
     },

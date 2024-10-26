@@ -5,6 +5,7 @@ import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
 import React, { useEffect,useState } from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
+import { LiaRobotSolid } from "react-icons/lia";
 
 const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -158,6 +159,8 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
               handleChange={handleOptionsChange}
               className="w-full"
               name="tags"
+              icon={<LiaRobotSolid size={24} />
+              }
             />
   
           

@@ -79,13 +79,13 @@ const ListBlog = () => {
             >
               <div className=" col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={blog.status === "active"} />
-                <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded cursor-pointer  items-center">
+                <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
                   <LoadImage
                     src={`/${blog?.authorId?.avatar?.url}`}
                     alt={``}
-                    height={60}
-                    width={60}
-                    className="rounded-secondary object-cover "
+                    height={100}
+                    width={100}
+                    className="h-[60px] w-[60px] rounded-full object-cover"
                   />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">

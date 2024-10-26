@@ -1,7 +1,8 @@
 import React from 'react';
-import {NextIcon,PrevIcon} from "@/utils/SaveIcon"
+import { NextIcon, PrevIcon } from "@/utils/SaveIcon";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const pages = [...Array(totalPages).keys()].map((_, index) => index + 1);
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -13,27 +14,34 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       onPageChange(currentPage + 1);
     }
   };
-
   return (
-    <div className="flex justify-center mt-4 dark:text-white">
-         <span className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70" 
-                onClick={handlePrevious}
-                disabled={currentPage === 1}
-                    >
- 
- <NextIcon 
-              className="h-6 w-6 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1"
- />
-
+    <div className="flex justify-center mt-4 jusitfy-center gap-x-2">
+       <span
+        className="custom-button"
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+      >
+        <NextIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:translate-x-1 group-focus:translate-x-1" />
       </span>
-      <span className="px-4 py-2">{`صفحه ${currentPage} از ${totalPages?totalPages :1}`}</span>
-      <span className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70" 
+
+      {pages.map((page) => (
+        <span
+          key={page}
+          className={`custom-button ${currentPage === page ? 'bg-blue-600 dakk:text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => onPageChange(page)}
+        >
+          {page}
+        </span>
+      ))}
+      <span
+        className="custom-button"
         onClick={handleNext}
         disabled={currentPage === totalPages}
       >
- <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:-translate-x-1" />
- </span>
- </div>
+        <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:-translate-x-1" />
+      </span>
+
+    </div>
   );
 };
 

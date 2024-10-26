@@ -46,8 +46,8 @@ const ListUsers = () => {
                       alt="avatar"
                       height={600}
                       width={600}
-                      className="h-[60px] w-[60px]  profile-pic rounded-full"
-                    />
+                      className="h-[60px] w-[60px] rounded-full object-cover"
+                      />
                   </div>
                   <article className="flex-col flex gap-y-2">
                     <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">
@@ -77,7 +77,7 @@ const ListUsers = () => {
                   </span>
                 </article>
               </div>
-              <div className="lg:col-span-2 lg:flex hidden gap-2 text-center flex justify-center items-center">
+              <div className="lg:col-span-2 lg:flex hidden gap-2 text-center  justify-center items-center">
               <span className="">{user?.phone}</span>
 
               </div>

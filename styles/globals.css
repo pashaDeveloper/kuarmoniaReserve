@@ -127,7 +127,9 @@ blockquote {
   margin: 20px 0;
   color: rgb(79 70 229 / 10);
 }
-
+.custom-button {
+  @apply cursor-pointer rounded-full border border-green-500/5 dark:border-blue-500/5 bg-green-500/5 dark:bg-blue-500/5 p-2 text-green-500 dark:text-blue-500 transition-colors hover:border-green-500/10 dark:hover:border-blue-500/10 hover:bg-green-500/10 dark:hover:bg-blue-500/10 hover:!opacity-100 group-hover:opacity-70;
+}
 .fullscreen-editor {
   position: fixed;
   top: 0;
@@ -179,29 +181,16 @@ blockquote {
   border: 2px solid rgba(220, 233, 245, 1)  ;
   background: rgba(220, 233, 245, 0.8);
 }
-.user-container {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  overflow: hidden; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(220, 233, 245, 0.8);
-}
-.dark .user-container{
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.2);
 
-}
+
 .dark .profile-container{
   border: 1px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.2);
 
 }
 .profile-pic {
-  width: 85%;
-  height: 85%;
+  width: 92%;
+  height: 92%;
   object-fit: cover;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);

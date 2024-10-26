@@ -63,7 +63,7 @@ const CustomProgressBar = ({ currentStep }) => {
               {/* خط اتصال */}
               {index !== steps.length - 1 && (
                 <div className="absolute top-5 right-full translate-x-1/2 w-full flex justify-center">
-                  <div className="w-full bg-pink-500  rounded-full h-1">
+                  <div className="w-full bg-gray-500  rounded-full h-1">
                     <div
                       className="bg-green-500 dark:bg-blue-500 h-1 rounded-full"
                       style={{
@@ -82,7 +82,7 @@ const CustomProgressBar = ({ currentStep }) => {
                     ? 'bg-green-500 border-green-500 dark:bg-blue-500 dark:border-blue-500 '
                     : isActive
                     ? 'bg-green-500 border-green-500 dark:border-blue-500 dark:bg-blue-500'
-                    : 'bg-pink-400 border-pink-400'
+                    : 'bg-gray-400 border-gray-400'
                 }`}
               >
                 <span className={`text-lg text-white font-medium flex justify-center items-center `}>

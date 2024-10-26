@@ -9,7 +9,7 @@ export default function generateAccessToken({ _id, name, email, role ,avatar}) {
       name,
       email,
       role,
-      avatarId: avatar?.public_id
+      avatarUrl: avatar?.url
     },
     process.env.TOKEN_SECRET
   );

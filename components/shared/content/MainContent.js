@@ -64,7 +64,7 @@ const MainContent = ({
     <div className="max-w-screen-xl bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
       
       {/* بخش تصویر اصلی با Skeleton */}
-      <div className="relative">
+      <div className="relative flex justify-center">
         {isMainImageLoading && (
           <SkeletonImage
             width={1150}
@@ -119,8 +119,8 @@ const MainContent = ({
               <LoadImage
                 src={`/${avatar}`}
                 alt="avatar"
-                height={100}
-                width={100}
+                height={300}
+                width={300}
                 className={`h-[100px] w-[100px] profile-pic rounded-full `}
                 onLoad={handleAvatarLoad} 
                 onError={handleAvatarError} 

@@ -44,21 +44,24 @@ const PreviewSection = ({
 
   return (
     <div
-    className={`flex-1 p-4 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
-      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto relative`}
+    className={`flex-1 px-4 pt-10 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
+      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto scrollbar-hide relative`}
     ref={previewRef}
   >
     <button
-      className="p-3 rounded-full shadow-lg  top-0 cursor-pointer bg-white dark:bg-gray-800 z-10 absolute -top-6 right-1/2  dark:text-gray-100"
-      onClick={handleToggleFullscreen}
-    >
-      {isFullscreen ? (
-        <TfiFullscreen size={20} />
-      ) : (
-        <BsArrowsFullscreen size={20} />
-      )}
-    </button>
-  
+  className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-10 absolute left-1/2 top-4 transform -translate-x-1/2 dark:text-gray-100"
+  onClick={handleToggleFullscreen}
+>
+  {isFullscreen ? (
+    <TfiFullscreen size={20} />
+  ) : (
+    <BsArrowsFullscreen size={20} />
+  )}
+</button>
+    <div
+    className={`mt-8`}
+
+  >
     <MainContent
       galleryPreview={galleryPreview}
       isLoading={isLoading}
@@ -70,6 +73,7 @@ const PreviewSection = ({
       author={author}
       avatar={avatar}
     />
+  </div>
   </div>
   
   );

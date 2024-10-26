@@ -77,7 +77,6 @@ export async function signUpUser(req) {
 export async function signInUser(req) {
   try {
     const user = await User.findOne({ email: req.body.email });
-
     if (user) {
       if (await user.comparePassword(req.body.password, user.password)) {
         if (user.status === "active") {
