@@ -22,8 +22,8 @@ const tagApi = kuarmoniaApi.injectEndpoints({
     }),
 
     GetTags: builder.query({
-      query: ({ page = 1, limit = 7 } = {}) => ({
-        url: `/tag/?page=${page}&limit=${limit}`,
+      query: ({ page = 1, limit = 7, search = "" } = {}) => ({
+        url: `/tag/?page=${page}&limit=${limit}&search=${search}`,
         method: "GET",
       }),
     }),
@@ -36,7 +36,17 @@ const tagApi = kuarmoniaApi.injectEndpoints({
       }),
       providesTags: ["TagDropdown"], 
     }),
+    getTag: builder.query({
+      query: (id) => ({
+        url: `/tags/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
 
+      providesTags: ["User"],
+    }),
 
     updateTag: builder.mutation({
       query: ({ id, ...formData }) => ({
@@ -51,6 +61,7 @@ const tagApi = kuarmoniaApi.injectEndpoints({
 export const {
   useAddTagMutation,
   useGetTagsQuery,
+  useGetTagQuery, 
   useGetTagsForDropDownMenuQuery,
   useUpdateTagMutation,
 } = tagApi;

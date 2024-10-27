@@ -34,28 +34,25 @@ export async function addTag(req) {
 
 export async function getTags(req) {
   try {
-    const { page = 1, limit = 7 } = req.query; 
+    const { page = 1, limit = 7, search = "" } = req.query; 
     const skip = (page - 1) * limit;
 
-    const tags = await Tag.find({ isDeleted: false })
+    const searchQuery = search
+      ? { title: { $regex: search, $options: "i" }, isDeleted: false }
+      : { isDeleted: false };
+
+    const tags = await Tag.find(searchQuery)
       .skip(skip)
       .limit(Number(limit));
 
-    const total = await Tag.countDocuments({ isDeleted: false });
+    const total = await Tag.countDocuments(searchQuery);
 
-    if (tags.length > 0) {
-      return {
-        success: true,
-        data: tags,
-        total,
-        message: "تگ‌ها با موفقیت دریافت شد",
-      };
-    } else {
-      return {
-        success: false,
-        message: "هیچ تگی یافت نشد",
-      };
-    }
+    return {
+      success: true,
+      data: tags,
+      total,
+      message: tags.length > 0 ? "تگ‌ها با موفقیت دریافت شد" : "هیچ تگی یافت نشد",
+    };
   } catch (error) {
     return {
       success: false,

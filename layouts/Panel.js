@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import ProgressBar from '../components/shared/loading/progressBar';
+import LoadingIndicator from '../components/shared/loading/LoadingIndicator';
 import Navbar from '@/components/shared/container/Navbar';
 import { useSelector } from 'react-redux';
 import {
@@ -108,8 +108,8 @@ const Panel = ({ children }) => {
 
   return (
     <div className="flex flex-col h-screen bg-white dark:bg-slate-800  ">
-      <ProgressBar />
-    <header className="bg-gray-800 text-whitetext-center">
+      <LoadingIndicator />
+      <header className="bg-gray-800 text-whitetext-center">
         <Navbar router={router} open={open} setOpen={setOpen} />       
     </header>
     <div className="flex flex-1 w-full overflow-hidden p-2">
