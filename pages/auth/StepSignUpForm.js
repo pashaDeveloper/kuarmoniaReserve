@@ -43,10 +43,11 @@ const StepSignUpForm = () => {
     }
   }, [data, error, isLoading, reset, router]);
 
-  const handleImageSelect = (image) => {
-    const imageUrl = URL.createObjectURL(image);
+  const handleImageSelect = (imageOrUrl) => {
+    const imageUrl = typeof imageOrUrl === "string" ? imageOrUrl : URL.createObjectURL(imageOrUrl);
+    alert(imageUrl)
     setAvatarPreview(imageUrl);
-    setValue("avatar", image, { shouldValidate: true }); // ذخیره کردن فایل در فرم
+    setValue("avatar", imageOrUrl, { shouldValidate: true });
   };
   const nextStep = async () => {
     let valid = false;

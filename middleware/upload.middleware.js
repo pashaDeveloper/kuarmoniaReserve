@@ -13,15 +13,12 @@ const storage = multer.diskStorage({
     const originalName = file.originalname.replace(/[^\w\s.-]/g, "").replace(/\s+/g, "-").toLowerCase();
     const filename = `${hashedName}${path.extname(file.originalname)}`;
     const relativePath = path.join(req.body.folder || 'uploads', filename).replace(/\\/g, "/");
-
     cb(null, filename);
-
     req.body.originalName = originalName;
     req.body.filePath = relativePath;
   },
 });
 
-// ایجاد نمونه `multer` با تنظیمات بالا
 const upload = multer({
   storage,
   fileFilter: (_, file, cb) => {
