@@ -42,7 +42,7 @@ const ListUsers = () => {
                 <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
                   <div className="user-container  rounded-full flex justify-center">
                     <LoadImage
-                      src={`/${user?.avatar?.url}?q=100`}
+                      src={user?.avatar?.url}
                       alt="avatar"
                       height={600}
                       width={600}

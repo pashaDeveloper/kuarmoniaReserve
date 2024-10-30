@@ -20,7 +20,7 @@ const LoadImage = ({ src, alt, height, width, ...rest }) => {
 
   return (
     <Image
-       src={ src}
+       src={src}
       alt={alt}
       height={height}
       width={width}

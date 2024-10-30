@@ -81,7 +81,7 @@ const ListBlog = () => {
                 <StatusIndicator isActive={blog.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
                   <LoadImage
-                    src={`/${blog?.authorId?.avatar?.url}`}
+                    src={blog?.authorId?.avatar?.url}
                     alt={``}
                     height={100}
                     width={100}

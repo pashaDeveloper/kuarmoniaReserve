@@ -117,7 +117,7 @@ const MainContent = ({
                 />
               )}    
               <LoadImage
-                src={`/${avatar}`}
+                src={avatar}
                 alt="avatar"
                 height={300}
                 width={300}

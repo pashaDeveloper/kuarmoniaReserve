@@ -23,7 +23,6 @@ export default function handler(req, res) {
     }
 
     try {
-      // ارسال نام اصلی فایل از req.body به تابع signUpUser
       const result = await signUpUser(req);
       res.status(200).json(result);
     } catch (signUpError) {

@@ -261,7 +261,7 @@ function RemoveInformation({ id }) {
               <div className="flex flex-col gap-y-1 items-center">
                 <div className="flex flex-col gap-y-4  items-center">
                   <LoadImage
-                    src={`/${user?.avatar?.url}`}
+                    src={user?.avatar?.url}
                     alt={user?.avatar?.public_id}
                     height={300}
                     width={300}

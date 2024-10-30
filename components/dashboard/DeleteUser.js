@@ -84,7 +84,7 @@ const DeleteUser = ({ id }) => {
               <div className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-4">
                   <LoadImage
-                    src={`/${user?.avatar?.url}`}
+                    src={user?.avatar?.url}
                     alt={user?.avatar?.public_id}
                     height={100}
                     width={100}

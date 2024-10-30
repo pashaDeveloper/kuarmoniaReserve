@@ -43,7 +43,7 @@ const Sidebar = ({ routes }) => {
           }}
         >
           <LoadImage
-            src={`/${user?.avatar?.url}`}
+            src={user?.avatar?.url}
             alt={user?.avatar?.public_id}
             height={100}
             width={100}

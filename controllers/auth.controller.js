@@ -4,69 +4,63 @@ import generateAccessToken from "@/utils/jwt.util";
 // signup
 export async function signUpUser(req) {
   try {
-    const { email, phone, originalName ,filePath ,avatar} = req.body;
-  
-    const existingUser = await User.findOne({
-      $or: [{ email: email }, { phone: phone }],
-    });
-    if (existingUser) {
-      return {
-        success: false,
-        message: "کاربری با این ایمیل یا شماره تلفن قبلاً ثبت‌نام کرده است. لطفاً به صفحه ورود بروید.",
-        redirectToLogin: true,
-      };
-    }
+      const { email, phone, avatarUrl } = req.body;
+      const existingUser = await User.findOne({
+          $or: [{ email: email }, { phone: phone }],
+      });
 
-    const userCount = await User.countDocuments();
+      if (existingUser) {
+          return {
+              success: false,
+              message: "کاربری با این ایمیل یا شماره تلفن قبلاً ثبت‌نام کرده است. لطفاً به صفحه ورود بروید.",
+              redirectToLogin: true,
+          };
+      }
 
-    const role = userCount === 0 ? "superAdmin" : "user";  
-  
-    const status = userCount === 0 ? "active" : "inactive";  
+      const userCount = await User.countDocuments();
+      const role = userCount === 0 ? "superAdmin" : "user";
+      const status = userCount === 0 ? "active" : "inactive";
 
-    const user = await User.create({
-      ...req.body,
-      role: role,  
-      status: status,  
-      avatar: {
-        originalName: originalName || "N/A",
-        url: filePath || "uploads/default-avatar.jpg",
-      },
-     
-    });
+      const user = await User.create({
+          ...req.body,
+          role: role,
+          status: status,
+          avatar: {
+              originalName: req.body.originalName || "N/A",
+              url: avatarUrl || req.body.filePath || "uploads/default-avatar.jpg",
+          },
+      });
 
-    const result = await user.save({ validateBeforeSave: true });
-
-    if (result) {
-      return {
-        success: true,
-        message: "ثبت نام شما با موفقیت انجام شد",
-      };
-    } else {
-      return {
-        success: false,
-        message: "ثبت نام شما با شکست مواجه شد",
-      };
-    }
+      const result = await user.save({ validateBeforeSave: true });
+      if (result) {
+          return {
+              success: true,
+              message: "ثبت نام شما با موفقیت انجام شد",
+          };
+      } else {
+          return {
+              success: false,
+              message: "ثبت نام شما با شکست مواجه شد",
+          };
+      }
   } catch (error) {
-    if (error.code === 11000) {
-      const field = Object.keys(error.keyPattern)[0];
-      let message = "مشکلی در ثبت نام وجود دارد.";
-      if (field === "email") {
-        message = "ایمیل وارد شده قبلاً ثبت شده است. لطفاً از ایمیل دیگری استفاده کنید یا به صفحه ورود بروید.";
-      } else if (field === "phone") {
-        message = "شماره تلفن وارد شده قبلاً ثبت شده است. لطفاً از شماره دیگری استفاده کنید یا به صفحه ورود بروید.";
+      if (error.code === 11000) {
+          const field = Object.keys(error.keyPattern)[0];
+          let message = "مشکلی در ثبت نام وجود دارد.";
+          if (field === "email") {
+              message = "ایمیل وارد شده قبلاً ثبت شده است. لطفاً از ایمیل دیگری استفاده کنید یا به صفحه ورود بروید.";
+          } else if (field === "phone") {
+              message = "شماره تلفن وارد شده قبلاً ثبت شده است. لطفاً از شماره دیگری استفاده کنید یا به صفحه ورود بروید.";
+          }
+          return {
+              success: false,
+              message: message,
+          };
       }
       return {
-        success: false,
-        message: message,
+          success: false,
+          message: `خطا: ${error.message}`,
       };
-    }
-
-    // خطای عمومی
-    return {
-      success: false,
-      message: `خطا: ${error.message}`,
-    };
   }
 }
 

@@ -45,7 +45,6 @@ const StepSignUpForm = () => {
 
   const handleImageSelect = (imageOrUrl) => {
     const imageUrl = typeof imageOrUrl === "string" ? imageOrUrl : URL.createObjectURL(imageOrUrl);
-    alert(imageUrl)
     setAvatarPreview(imageUrl);
     setValue("avatar", imageOrUrl, { shouldValidate: true });
   };
@@ -112,19 +111,24 @@ const StepSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log('data',data)
+    console.log('data', data);
     const formData = new FormData();
-    if (data.avatar) {
-      formData.append("avatar", data.avatar); 
+
+    if (data.avatar instanceof File) { 
+        formData.append("avatar", data.avatar); // آپلود فایل
+    } else {
+        formData.append("avatarUrl", data.avatar); // استفاده از URL
     }
+    
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("phone", data.phone);
-    console.log('formData isngup',formData.avatar)
 
+    console.log('formData signup', formData);
     handleSignup(formData);
-  };
+};
+
 
   const getStepFromField = (field) => {
     const fieldToStep = {

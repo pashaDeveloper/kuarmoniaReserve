@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
     const hashedName = crypto.randomBytes(16).toString('hex'); 
     const originalName = file.originalname.replace(/[^\w\s.-]/g, "").replace(/\s+/g, "-").toLowerCase();
     const filename = `${hashedName}${path.extname(file.originalname)}`;
-    const relativePath = path.join(req.body.folder || 'uploads', filename).replace(/\\/g, "/");
+    const relativePath = path.join(req.body.folder || '/uploads', filename).replace(/\\/g, "/");
     cb(null, filename);
     req.body.originalName = originalName;
     req.body.filePath = relativePath;
