@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 import React from "react";
 
@@ -7,78 +5,79 @@ const FooterItems = () => {
   const items = [
     {
       id: 1,
-      name: "Quick Links",
+      name: "لینک‌های سریع",
       href: [
         {
           id: 11,
-          name: "How to Book",
+          name: "چگونه رزرو کنیم",
           href: "/how-to-book",
         },
         {
           id: 12,
-          name: "Site Map",
+          name: "نقشه سایت",
           href: "/site-map",
         },
         {
           id: 13,
-          name: "Careers",
+          name: "فرصت‌های شغلی",
           href: "/careers",
         },
         {
           id: 14,
-          name: "About Us",
+          name: "درباره ما",
           href: "/about-us",
         },
         {
           id: 15,
-          name: "Blogs",
+          name: "بلاگ‌ها",
           href: "/blogs",
         },
       ],
     },
     {
       id: 2,
-      name: "Services",
+      name: "خدمات",
       href: [
         {
           id: 21,
-          name: "Flight Finder",
-          href: "/flight-finder",
+          name: "مهاجرت و ازدواج",
+          href: "/marriage-immigration",
         },
         {
           id: 22,
-          name: "Hotels List",
-          href: "/hotels-list",
+          name: "مهاجرت و تحصیل",
+          href: "/study-immigration",
         },
         {
           id: 23,
-          name: "Train or Car Rental",
-          href: "/train-or-car-rental",
+          name: "مهاجرت و مهارت",
+          href: "/work-immigration",
         },
         {
           id: 24,
-          name: "Tour Guide",
-          href: "/tour-guide",
+          name: "پناهندگی",
+          href: "/asylum",
         },
+        
       ],
     },
     {
       id: 3,
-      name: "Support",
+      name: "پشتیبانی",
       href: [
         {
           id: 31,
-          name: "Contact Us",
+          name: "تماس با ما",
           href: "/contact-us",
         },
         {
           id: 32,
-          name: "Legal Notice",
+          name: "اعلان قانونی",
           href: "/legal-notice",
         },
         {
           id: 33,
-          name: "FAQs",
+          name: "سوالات متداول",
           href: "/faqs",
         },
       ],
@@ -93,7 +92,7 @@ const FooterItems = () => {
             <h2 className="text-lg">{name}</h2>
             <ul className="text-sm flex flex-col gap-y-1">
               {href.map(({ id, name, href }) => (
-                <li key={id} className=" font-light">
+                <li key={id} className="font-light">
                   <Link href={href}>{name}</Link>
                 </li>
               ))}

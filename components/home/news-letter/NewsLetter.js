@@ -80,20 +80,21 @@ const NewsLetter = () => {
               className="h-[50px] w-[50px] object-contain absolute lg:top-4 md:top-1 lg:left-[9.4rem] md:-left-[0.6rem] -left-[0.4rem]"
             />
             <article className="flex flex-col gap-y-4 h-full">
-              <h2 className="lg:text-4xl md:text-2xl text-xl z-50">
-                Prepare Yourself & Explore The Beauty Of The World
-              </h2>
-              <p className="text-sm">
-                We&apos;ll send you exclusive offer and sneak peeks of our best
-                deals. Plus travel tips and the latest advice on where you can
-                go{" "}
-              </p>
+            <h2 className="lg:text-4xl md:text-2xl text-xl z-50">
+  خود را آماده کنید و زیبایی‌های جهان را کشف کنید
+</h2>
+<p className="text-sm">
+  ما در کنار شما هستیم تا بهترین پیشنهادات و پیش‌نمایش‌های انحصاری را در زمینه مهاجرت و پناهندگی ارائه دهیم. با ما سفر کنید و نکات مهم درباره مراحل مهاجرت و پناهندگی را دریافت کنید. همچنین، آخرین مشاوره‌ها در مورد مقاصد امن و راه‌های قانونی برای شروع یک زندگی جدید را برای شما فراهم خواهیم کرد.
+</p>
+
               <label
                 htmlFor="newsletter"
                 className="mt-auto flex flex-row gap-x-2 z-50"
               >
                 {visible ? (
-                  <span className="text-primary drop-shadow">You are Successfully Subscribed!</span>
+            <span className="text-primary drop-shadow">شما با موفقیت 
+            به مجموعه ما پیوستید!</span>
+
                 ) : (
                   <>
                     <input

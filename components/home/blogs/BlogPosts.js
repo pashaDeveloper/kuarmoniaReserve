@@ -9,69 +9,70 @@ const BlogPosts = () => {
   const posts = [
     {
       thumbnail: "/assets/static/Blogs & Guides/1.png",
-      title: "Life's beauty lies in the journey, not the end",
+      title: "چشم‌اندازهای جدید برای زندگی در کشور دیگر",
       summary:
-        "Life's symphony of wonders unfolds as we traverse its path, yet we tend to fixate.",
-      createdAt: "20 July 2023",
+        "مهاجرت فرصتی است برای کشف دیدگاه‌های نو و تجربه‌ی زندگی در محیطی متفاوت.",
+      createdAt: "۲۰ ژوئیه ۲۰۲۳",
       featured: true,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/2.png",
-      title: "Top 3 Must Do Tours In Bali 2023",
+      title: "۵ مقصد برتر برای شروع زندگی جدید",
       summary:
-        "Explore the mystical beauty of Buds' ancient temples and lush rice terraces on a captivating cultural tour.",
-      createdAt: "22 July 2023",
+        "نگاهی به کشورهایی که امکانات ویژه‌ای برای مهاجران دارند و زندگی باکیفیتی را ارائه می‌دهند.",
+      createdAt: "۲۲ ژوئیه ۲۰۲۳",
       featured: false,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/3.png",
-      title: "Best Restaurant in Maldives",
+      title: "چالش‌ها و فرصت‌های مهاجرت",
       summary:
-        "Test the mystical beauty of foods and lush rice terraces on a captivating cultural tour.",
-      createdAt: "24 July 2023",
+        "مهاجرت ممکن است با چالش‌های جدیدی همراه باشد؛ این مقاله به بررسی آنها و راه‌های سازگاری می‌پردازد.",
+      createdAt: "۲۴ ژوئیه ۲۰۲۳",
       featured: false,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/4.png",
-      title: "Life is a Darling Adventure Here",
+      title: "زندگی به عنوان یک ماجراجویی در سرزمین‌های ناشناخته",
       summary:
-        "The picturesque village nestled among lush green hills offered a serene escape from the bustling city life.",
-      createdAt: "26 July 2023",
+        "مهاجرت، دریچه‌ای است به تجربه‌ی فرهنگ‌ها و مکان‌های جدید و فرصتی برای رشد فردی.",
+      createdAt: "۲۶ ژوئیه ۲۰۲۳",
       featured: false,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/5.png",
-      title: "Life's beauty lies in the journey, not the end",
+      title: "راهنمای زندگی در کشورهای اروپایی",
       summary:
-        "Life's symphony of wonders unfolds as we traverse its path, yet we tend to fixate.",
-      createdAt: "20 July 2023",
+        "آشنایی با نحوه زندگی، فرهنگ و شرایط اقامت در کشورهای محبوب اروپایی برای مهاجران.",
+      createdAt: "۲۸ ژوئیه ۲۰۲۳",
       featured: true,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/6.png",
-      title: "Top 3 Must Do Tours In Bali 2023",
+      title: "۸ نکته ضروری برای موفقیت در مهاجرت",
       summary:
-        "Explore the mystical beauty of Buds' ancient temples and lush rice terraces on a captivating cultural tour.",
-      createdAt: "22 July 2023",
+        "از مهارت‌های ارتباطی تا مدیریت منابع مالی، مواردی که برای یک تجربه موفق ضروری هستند.",
+      createdAt: "۳۰ ژوئیه ۲۰۲۳",
       featured: false,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/7.png",
-      title: "Best Restaurant in Maldives",
+      title: "راهنمای انتخاب شغل برای مهاجران",
       summary:
-        "Test the mystical beauty of foods and lush rice terraces on a captivating cultural tour.",
-      createdAt: "24 July 2023",
+        "چگونه شغل مناسبی پیدا کنیم که با مهارت‌هایمان تطابق داشته باشد و در کشور جدید موفق باشیم.",
+      createdAt: "۱ اوت ۲۰۲۳",
       featured: false,
     },
     {
       thumbnail: "/assets/static/Blogs & Guides/8.png",
-      title: "Life is a Darling Adventure Here",
+      title: "تفاوت‌های فرهنگی و سازگاری با آنها",
       summary:
-        "The picturesque village nestled among lush green hills offered a serene escape from the bustling city life.",
-      createdAt: "26 July 2023",
+        "آشنایی با تفاوت‌های فرهنگی و راهکارهایی برای تطبیق و همزیستی در کشور جدید.",
+      createdAt: "۳ اوت ۲۰۲۳",
       featured: false,
     },
   ];
+  
 
   return (
     <section className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">

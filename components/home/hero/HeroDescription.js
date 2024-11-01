@@ -11,7 +11,7 @@ const HeroDescription = () => {
       <article className="flex flex-col gap-y-12">
       <div className="flex flex-col gap-y-8 text-center md:text-right">
   <h1 className="lg:text-7xl md:text-5xl text-3xl">
-    <HighlightText>کوارمونیا </HighlightText>
+    <HighlightText>کارمونیا </HighlightText>
     مهاجرتی امن و مطمئن به ترکیه و کانادا
   </h1>
 

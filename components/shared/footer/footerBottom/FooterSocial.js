@@ -67,7 +67,7 @@ const FooterSocial = () => {
             key={item.id}
             className="border border-primary/20 hover:border-primary rounded p-1 h-fit w-fit"
           >
-            <Tooltip text={item.name}>
+            <Tooltip text={item.name} txtColor="text-white">
               <Link href={item.href} title={item.name}>
                 {item.icon}
               </Link>

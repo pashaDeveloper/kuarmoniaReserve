@@ -1,27 +1,31 @@
-
-
 import React from "react";
 import { BiCar } from "react-icons/bi";
 import { MdLocationCity, MdPayment } from "react-icons/md";
+import { FaRegAddressCard } from "react-icons/fa"; // آیکون جدید برای مشاوره
 
 const BreakdownArticle = () => {
   const items = [
     {
-      title: "Choose Location",
-      icon: <MdLocationCity className="w-8 h-8 text-primary" />,
-      description: "Start your journey by selecting your ideal destination.",
+      title: "مشاوره",
+      icon: <FaRegAddressCard className="w-8 h-8 text-primary" />, // آیکون مشاوره
+      description: "مشاوره‌ای برای برنامه‌ریزی بهتر سفر و مهاجرت.",
     },
     {
-      title: "Secure and Easy Payment",
+      title: "انتخاب مکان",
+      icon: <MdLocationCity className="w-8 h-8 text-primary" />,
+      description: "انتخاب مکان ایده‌آل برای زندگی یا سفر.",
+    },
+    {
+      title: "پرداخت امن و آسان",
       icon: <MdPayment className="w-8 h-8 text-primary" />,
       description:
-        "Effortless transactions for a worry-free travel experience.",
+        "تراکنش‌های امن و سریع برای تجربه‌ای راحت و بی‌نگرانی.",
     },
     {
-      title: "Reach Agency on Selected Date",
+      title: "تماس با آژانس در تاریخ انتخابی",
       icon: <BiCar className="w-8 h-8 text-primary" />,
       description:
-        "Contact us to finalize your travel plans on the chosen date.",
+        "با ما تماس بگیرید تا برنامه‌های مهاجرتی و سفر خود را نهایی کنید.",
     },
   ];
 

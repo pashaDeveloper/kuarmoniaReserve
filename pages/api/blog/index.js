@@ -1,4 +1,4 @@
-import { addBlog, getBlogs, updateBlog, getBlofsForDropDownMenu} from "@/controllers/blog.controller";
+import { addBlog, getBlogs} from "@/controllers/blog.controller";
 import upload from "@/middleware/upload.middleware"; // مسیر صحیح به middleware
 
 export const config = {
@@ -39,10 +39,7 @@ export default async function handler(req, res) {
       break;
       case "GET":
         try {
-          if (req.query.type === "dropdown") {
-            const result = await getBlofsForDropDownMenu();
-            return res.status(200).json(result);
-          }
+          
           const result = await getBlogs(req);
           return res.status(200).json(result);
         } catch (error) {

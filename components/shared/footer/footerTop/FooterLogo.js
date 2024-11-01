@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import Logo from "../../logo/Logo";
 import FooterPayment from "./FooterPayment";
@@ -10,10 +8,10 @@ const FooterLogo = () => {
       <article className="flex md:flex-col md:justify-normal md:items-start flex-row justify-between items-center gap-y-4">
         <Logo />
         <p className="text-xs md:block hidden">
-          Perfect for all kinds of travel agency. Including tours, hotel
-          booking, activity/event, travel experiences, online booking, room bnb,
-          villa rental, holiday rental, resort rental, cruises, car rentals,
-          real estate, flight ticket, and more.
+          ما در **شرکت مهاجرتی کارمونیا، به شما در تمامی مراحل مهاجرت کمک می‌کنیم. 
+          خدمات ما شامل مشاوره تخصصی، ثبت درخواست و پیگیری وضعیت درخواست‌هاست. 
+          هدف ما ارائه بهترین خدمات به شما و کمک به تحقق اهداف مهاجرتی‌تان است. 
+          با ما همراه باشید تا یک آینده بهتر را بسازید.
         </p>
         <div className="lg:hidden block">
           <FooterPayment />

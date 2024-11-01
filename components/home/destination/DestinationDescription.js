@@ -1,23 +1,8 @@
-
-
-// import Image from "next/image";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
-// import flight from "/assets/home-page/destination/flight.svg";
-// import path from "/assets/home-page/destination/path.svg";
-// import lucid from "/assets/home-page/destination/lucid.svg";
-// import map from "/assets/home-page/destination/map.svg";
 
 const DestinationDescription = () => {
-  // function toBase64(str) {
-  //   return btoa(unescape(encodeURIComponent(str)));
-  // }
-
-  // function shimmer(width, height) {
-  //   return `https://placehold.co/${width}x${height}.svg`;
-  // }
-
   return (
     <section
       className="lg:col-span-7 md:col-span-6 bg-no-repeat bg-contain bg-center h-full"
@@ -31,22 +16,20 @@ const DestinationDescription = () => {
       <div className="w-full h-full flex flex-col justify-center">
         <article className="flex flex-col gap-y-4">
           <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-            <HighlightText>Popular</HighlightText> Destinations
+            <HighlightText>محبوب ترین</HighlightText> فرصت ها
             <LoadImage
               src="/assets/home-page/destination/underline.svg"
               alt="arrow"
               height={7}
               width={275}
               className="mt-1.5"
-              // placeholder="blur"
-              // blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              //   shimmer(175, 7)
-              // )}`}
             />
           </h1>
           <p className="text-base">
-            Here are some of our most popular destinations where you can <br />{" "}
-            find our tours and experiences.
+            در اینجا برخی از محبوب‌ترین مقاصد ما را مشاهده می‌کنید که می‌توانید
+            در آن‌ها <br />{" "}
+            فرصت‌های مهاجرت و پناهندگی را پیدا کنید. شامل تورها و تجارب
+            منحصر به فرد ما.
           </p>
         </article>
       </div>

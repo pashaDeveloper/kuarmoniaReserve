@@ -9,8 +9,8 @@ const ProfileImageSelector = ({ onImageSelect }) => {
   const [avatarUrls, setAvatarUrls] = useState([]); 
   const [avatarPreview, setAvatarPreview] = useState(null);
 
-  const maleAvatars = Array.from({ length: 50 }, (_, index) => `/uploads/avatar/male/${index + 1}.png`);
-  const femaleAvatars = Array.from({ length: 50 }, (_, index) => `/uploads/avatar/female/${index + 51}.png`);
+  const maleAvatars = Array.from({ length: 50 }, (_, index) => `/avatar/male/${index + 1}.png`);
+  const femaleAvatars = Array.from({ length: 50 }, (_, index) => `/avatar/female/${index + 51}.png`);
 
   const handleDeviceSelection = (e) => {
     const file = e.target.files[0];

@@ -6,7 +6,7 @@ import React from "react";
 const FooterCredit = () => {
   return (
     <section>
-      <p className="text-sm lg:text-right md:text-left text-center">
+      {/* <p className="text-sm lg:text-right md:text-left text-center">
         Team Members{" "}
         <Link
           href="https://www.linkedin.com/in/saifulislam"
@@ -21,7 +21,7 @@ const FooterCredit = () => {
         >
           
         </Link>
-      </p>
+      </p> */}
     </section>
   );
 };

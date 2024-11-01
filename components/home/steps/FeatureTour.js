@@ -1,5 +1,3 @@
-
-
 import Button from "@/components/shared/button/Button";
 import LoadImage from "@/components/shared/image/LoadImage";
 import OutsideClick from "@/components/shared/outsideClick/OutsideClick";
@@ -23,7 +21,7 @@ const FeatureTour = () => {
       <section className="group flex lg:flex-row flex-col gap-4 border border-secondary p-4 rounded relative hover:border-primary transition-colors delay-100">
         <div className="flex flex-col gap-y-2">
           <LoadImage
-            src="/assets/static/Premire and Simple 01.png"
+            src="/assets/static/migration-to-canada.png" // آدرس تصویر جدید
             alt="feature tour"
             width={256}
             height={144}
@@ -44,19 +42,18 @@ const FeatureTour = () => {
 
         <article className="flex flex-col gap-y-2.5">
           <h1 className="text-base line-clamp-2">
-            The most confidential Rooftop in Paris - View 360
+            مهاجرت به کانادا - فرصتی برای شروعی جدید
           </h1>
           <div className="flex flex-col gap-y-1">
             <p className="text-sm pb-0">
-              20-30 September | By Dhaka, Bangladesh
+              برنامه‌ریزی برای زندگی و کار در کانادا | فرصت‌های شغلی و تحصیلی
             </p>
             <p className="text-sm pb-0 flex gap-x-0.5 items-baseline">
-              $<span className="text-primary text-lg">150.00</span> as{" "}
-              <span className="text-sm">Starter Pricing</span>
+             
             </p>
           </div>
           <span className="border group-hover:border-primary transition-colors delay-100 px-4 py-0.5 rounded-primary flex items-center text-xs w-fit">
-            Trip to France, Rome
+            مهاجرت به کانادا
           </span>
           <div className="flex flex-row flex-wrap justify-between">
             <Button
@@ -64,11 +61,11 @@ const FeatureTour = () => {
               disabled
               onClick={() =>
                 router.push(
-                  `/tours/5f3e1e7e3f3d5b1b7e7b5d6e?tour_title=Twin room in Historic Georgian Home`
+                  `/tours/5f3e1e7e3f3d5b1b7e7b5d6e?tour_title=Migration_to_Canada`
                 )
               }
             >
-              <del>Book Now</del>
+              <del>رزرو کن</del>
             </Button>
             <Button
               className="px-4 py-2 rounded text-base mt-2"
@@ -85,7 +82,7 @@ const FeatureTour = () => {
               <OutsideClick onOutsideClick={handleOutsideClick}>
                 <div className="flex flex-row gap-x-4 border border-primary p-4 rounded bg-white">
                   <LoadImage
-                    src="/assets/static/Premire and Simple 02.png"
+                    src="/assets/static/migration-update.png" // تصویر آپدیت مهاجرت
                     alt="avatar"
                     width={85.3}
                     height={48}
@@ -94,20 +91,20 @@ const FeatureTour = () => {
                   <div className="flex flex-col gap-y-4">
                     <article className="flex flex-col gap-y-1.5">
                       <div className="flex flex-col gap-y-2">
-                        <p className="text-sm">Ongoing!</p>
+                        <p className="text-sm">در حال حاضر!</p>
                         <h1 className="text-base line-clamp-2 font-semibold">
-                          Villa Borghese Luxury One BR apartment
+                          آپدیت مهاجرت به کانادا
                         </h1>
                       </div>
                       <div className="flex flex-col gap-y-2">
-                        <p className="text-sm">40% complete</p>
+                        <p className="text-sm">60% تکمیل شده</p>
                         <p className="border h-1.5 w-full bg-gray-200 rounded">
-                          <span className="h-full bg-primary block w-[40%] rounded"></span>
+                          <span className="h-full bg-primary block w-[60%] rounded"></span>
                         </p>
                       </div>
                     </article>
                     <span className="border group-hover:border-primary transition-colors delay-100 px-4 py-0.5 rounded flex items-center text-xs w-fit">
-                      Trip to France, Rome
+                      مهاجرت به کانادا
                     </span>
                   </div>
                 </div>

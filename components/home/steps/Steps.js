@@ -1,4 +1,3 @@
-
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
@@ -14,7 +13,7 @@ const Steps = () => {
           <div className="flex flex-row justify-between items-center">
             <article className="flex flex-col gap-y-4">
               <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-                <HighlightText>Premier</HighlightText> & Simple
+                <HighlightText>مراحل</HighlightText> ساده و برتر
                 <LoadImage
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
@@ -24,12 +23,11 @@ const Steps = () => {
                 />
               </h1>
               <p className="text-base">
-                Your Dream Getaway is Just 3 Steps Away - Book Now With Ease!
+                رویای مهاجرت شما تنها در ۳ مرحله است - همین حالا با سهولت اقدام کنید!
               </p>
             </article>
           </div>
 
-          {/* <div className="grid md:items-center gap-12 md:grid-cols-2 grid-cols-1"> */}
           <div className="grid md:items-center gap-8 grid-cols-12">
             <div className="lg:col-span-7 md:col-span-6 col-span-12">
               <BreakdownArticle />

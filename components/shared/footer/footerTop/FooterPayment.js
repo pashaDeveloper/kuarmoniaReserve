@@ -8,22 +8,22 @@ const FooterPayment = () => {
   const methods = [
     {
       id: 1,
-      name: "visa",
+      name: "ویزا",
       logo: "/assets/payment-methods/visa.svg",
     },
     {
       id: 2,
-      name: "mastercard",
+      name: "مسترکارت",
       logo: "/assets/payment-methods/mastercard.svg",
     },
     {
       id: 3,
-      name: "paypal",
+      name: "پیپال",
       logo: "/assets/payment-methods/paypal.svg",
     },
     {
       id: 4,
-      name: "gapy",
+      name: "جیپی",
       logo: "/assets/payment-methods/gpay.svg",
     },
   ];
@@ -39,11 +39,11 @@ const FooterPayment = () => {
   return (
     <section>
       <div className="flex flex-col gap-y-2">
-        <h2 className="text-lg">Payment Methods</h2>
+        <h2 className="text-lg"> روش های پرداخت</h2>
         <div className="flex flex-row flex-wrap gap-1.5">
           {methods.map(({ id, name, logo }) => (
             <span key={id}>
-              <Tooltip text={name}>
+              <Tooltip text={name} txtColor={'text-white'}>
                 <LoadImage
                   src={logo}
                   alt={name}
