@@ -27,7 +27,10 @@ const Signup = () => {
           <div className="h-4 border-l"></div>
           <Link href="/auth/signin">ورود</Link>
         </div>
+        <div className="flex justify-center">
+
         <ToggleThemeButton />
+        </div>
       </div>
     </section>
   );
