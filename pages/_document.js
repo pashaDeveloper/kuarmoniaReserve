@@ -19,9 +19,9 @@ export default function Document() {
         />
         <meta name="robots" content="index, follow" />
         <meta content="text/html; charset=utf-8" />
-        <meta name="language" content="English" />
+        <meta name="language" content="perisan" />
         <meta name="revisit-after" content="7 days" />
-        <meta name="author" content="Hasibul Islam" />
+        <meta name="author" content="marjan" />
 
         <meta
           name="google-site-verification"

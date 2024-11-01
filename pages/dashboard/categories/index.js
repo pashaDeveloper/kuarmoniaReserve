@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
-import { FaPlus } from "react-icons/fa";
 import { useGetCategoriesQuery, useUpdateCategoryMutation } from "@/services/category/categoryApi";
 import AddCategory from "./add";
-import { LiaInfoCircleSolid } from "react-icons/lia";
 import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
 import { toast } from "react-hot-toast";
-import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
-import Tooltip from "../../../components/shared/tooltip/Tooltip";
-import Info from "./info";
-import LoadImage from "@/components/shared/image/LoadImage";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import AddButton from "@/components/shared/button/AddButton";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem"; // اضافه کردن SkeletonItem
@@ -118,7 +112,7 @@ const ListCategory = () => {
 
         {/* نمایش داده‌های دسته‌بندی‌ها */}
         {isLoading ||categories && categories.length == 0 ? (
-          <SkeletonItem repeat={10} /> // نمایش اسکلتون در حالت بارگذاری
+          <SkeletonItem repeat={5} /> // نمایش اسکلتون در حالت بارگذاری
         ) : categories && categories.length > 0 ? (
           categories.map((category) => (
             <div

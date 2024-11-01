@@ -183,9 +183,9 @@ const ListTag = () => {
           </div>
           <div className="col-span-1 md:block">عملیات</div>
         </div>
-        {isLoading ? (
-          <SkeletonItem repeat={10} />
-        ) : data?.data.length > 0 ? (
+        {isLoading ||data?.data.length ==0 ? (
+          <SkeletonItem repeat={5} />
+        ) : (
           data.data.map((tag) => (
             <div
               key={tag._id}
@@ -267,8 +267,6 @@ const ListTag = () => {
               </div>
             </div>
           ))
-        ) : (
-          <div className="text-center text-gray-500">تگی وجود ندارد.</div>
         )}
 
         {/* Pagination */}

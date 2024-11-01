@@ -67,7 +67,7 @@ const ListBlog = () => {
         {(!data?.data || data?.data.length === 0 || isLoading) ? (
   <>
     {[1].map((i) => (
-      <SkeletonItem key={i} repeat={10} />
+      <SkeletonItem key={i} repeat={5} />
     ))}
   </>
 ) : (

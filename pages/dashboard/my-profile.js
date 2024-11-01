@@ -99,7 +99,7 @@ const MyProfile = () => {
           {/* تصویر پروفایل */}
           <div className="flex flex-col justify-center items-center gap-y-2 w-fit rounded-full">
             <LoadImage
-              src={avatarPreview || `/${defaultValues?.avatar?.url}?q=100`}
+              src={avatarPreview || defaultValues?.avatar?.url}
               alt={defaultValues?.avatar?.public_id || "آواتار"}
               height={300}
               width={300}
