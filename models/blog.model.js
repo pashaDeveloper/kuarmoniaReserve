@@ -149,25 +149,22 @@ const blogSchema = new Schema(
         ref: "User",
       },
     ],
-    // اضافه کردن لایک و دیسلایک
     likes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "like", // ارجاع به مدل لایک و دیسلایک
+        ref: "like", 
       },
     ],
     dislikes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "like", // ارجاع به مدل لایک و دیسلایک
+        ref: "like",
       },
     ],
-
-    // اضافه کردن کامنت‌ها
     comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment", // ارجاع به مدل کامنت
+        ref: "Comment", 
       },
     ],
     views: {

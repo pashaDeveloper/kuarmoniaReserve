@@ -105,8 +105,8 @@ export async function getBlogs(req) {
     const blogs = await Blog.find({ isDeleted: false })
     .skip(skip)
     .limit(Number(limit))
-    .populate('authorId', 'name avatar.url') // فقط نام و آواتار نویسنده
-    .select('_id blogId title createdAt views likes dislikes status likeCount dislikeCount');
+    .populate('authorId', 'name avatar.url') 
+    .select('_id blogId title createdAt views likes dislikes status likeCount dislikeCount featuredImage.url');
 
 
 

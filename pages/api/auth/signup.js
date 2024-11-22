@@ -1,5 +1,5 @@
 import { signUpUser } from "@/controllers/auth.controller";
-import upload from "@/middleware/upload.middleware";
+import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -12,7 +12,7 @@ export default function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-       
+  const upload = getUploadMiddleware("user");    
   upload.single("avatar")(req, res, async (err) => {
     if (err) {
       console.error("Upload Error: ", err.message);

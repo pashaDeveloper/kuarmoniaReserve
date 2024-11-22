@@ -2,14 +2,16 @@
 import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import { useAddCategoryMutation, useUpdateCategoryMutation } from "@/services/category/categoryApi";
-import React, { useEffect } from "react";
+import React, { useEffect,useMemo } from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
+import { useSelector } from "react-redux";
 
 const AddCategory = ({ isOpen, onClose, onSuccess, categoryToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [addCategory, { isLoading: isAdding, data: addData, error: addError }] = useAddCategoryMutation();
   const [updateCategory, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateCategoryMutation();
+  const user = useSelector((state) => state?.auth);
 
   useEffect(() => {
     if (categoryToEdit) {
@@ -46,6 +48,7 @@ const AddCategory = ({ isOpen, onClose, onSuccess, categoryToEdit = null }) => {
 
   const handleAddOrUpdateCategory = async (formData) => {
     try {
+      formData.authorId=user?._id;
       if (categoryToEdit) {
         await updateCategory({ id: categoryToEdit._id, ...formData }).unwrap();
       } else {

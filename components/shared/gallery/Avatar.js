@@ -11,7 +11,7 @@ const Avatar = ({ avatarUrl, onAvatarClick, loading }) => {
         <div className="bg-sub-black rounded-md shadow-xl duration-300 hover:scale-105 dark:hover:bg-gray-700 hover:bg-gray-200 sm:p-3 p-2">
           <div className="w-full sm:mb-3 mb-2">
             {loading || imageError ? (
-              <div className="bg-gray-200 rounded-full shadow-xl h-24 w-24 animate-pulse"></div>
+              <div className="bg-gray-200 rounded-full shadow-xl h-28 w-28 animate-pulse"></div>
             ) : (
               <img
                 className="w-full shadow-md rounded-full"

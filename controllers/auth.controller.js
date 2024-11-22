@@ -1,5 +1,6 @@
 import User from "@/models/user.model";
 import generateAccessToken from "@/utils/jwt.util";
+import createSeedBlogForFirstUser from "@/libs/seed/seedBlog";
 
 // signup
 export async function signUpUser(req) {
@@ -32,6 +33,9 @@ export async function signUpUser(req) {
       });
 
       const result = await user.save({ validateBeforeSave: true });
+      if (userCount === 1) { 
+        await createSeedBlogForFirstUser(user._id);
+      }
       if (result) {
           return {
               success: true,

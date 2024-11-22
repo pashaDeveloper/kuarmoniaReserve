@@ -2,14 +2,16 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState ,useMemo} from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
 import { LiaRobotSolid } from "react-icons/lia";
+import { useSelector } from "react-redux";
 
 const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const user = useSelector((state) => state?.auth);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
     useAddTagMutation();
@@ -17,6 +19,13 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     updateTag,
     { isLoading: isUpdating, data: updateData, error: updateError },
   ] = useUpdateTagMutation();
+
+  const defaultValues = useMemo(() => {
+    return {
+      id: user?._id,
+    };
+  }, [user]);
+
 
   useEffect(() => {
     if (tagToEdit) {
@@ -80,7 +89,8 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
         .split(",")
         .map((keyword) => keyword.trim());
       formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
-      
+      formData.authorId=user?._id;
+
       if (tagToEdit) {
         updateTag({ id: tagToEdit._id, ...formData }).unwrap();
       } else {

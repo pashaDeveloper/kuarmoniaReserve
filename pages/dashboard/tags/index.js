@@ -7,10 +7,11 @@ import { toast } from "react-hot-toast";
 import { FiEdit3, FiTrash } from "react-icons/fi";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
-import Pagination from "@/components/shared/pagination/Pagination"; 
+import Pagination from "@/components/shared/pagination/Pagination";
 import AddButton from "@/components/shared/button/AddButton";
 import { LiaRobotSolid } from "react-icons/lia";
 import { MdOutlineTag } from "react-icons/md";
+import LoadImage from "@/components/shared/image/LoadImage";
 
 const ListTag = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +23,6 @@ const ListTag = () => {
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
     search: searchTerm,
-
   });
   const [updateTag] = useUpdateTagMutation();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -92,8 +92,6 @@ const ListTag = () => {
     }
   };
 
-
-  
   useEffect(() => {
     if (isLoading) {
       toast.loading("در حال دریافت تگ‌ها...", { id: "tag-loading" });
@@ -123,26 +121,27 @@ const ListTag = () => {
         </div>
 
         <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex  overflow-hidden bg-white border divide-x rounded-lg dark:bg-blue-500 rtl:flex-row dark:border-whitedark:divide-white">
+          <div className="inline-flex overflow-hidden bg-white border rounded-lg dark:bg-gray-500 dark:border-white rtl:flex-row">
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-blue-600 dark:text-gray-300 "
+              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm   dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-300 border-l focus:bg-gray-300 dark:bg-gray-500"
               onClick={() => onStatusFilterChange("all")}
             >
               همه
             </button>
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-blue-600 dark:text-gray-300 hover:bg-gray-100"
+              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-blue-600 dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("active")}
             >
               فعال
             </button>
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-blue-600  dark:text-gray-300 hover:bg-gray-100"
+              className="px-5 py-2 text-xs font-medium text-gray-600 bg-gray-100 dark:bg-gray-500 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white last:border-none dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("inactive")}
             >
               غیر فعال
             </button>
           </div>
+
           <div className="relative flex items-center mt-4 md:mt-0">
             <span className="absolute">
               <svg
@@ -171,19 +170,25 @@ const ListTag = () => {
         </div>
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
-          <div className="col-span-11 lg:col-span-2  text-sm">عنوان</div>
-          <div className="lg:col-span-4 lg:flex hidden text-sm md:block">
+        <div className="col-span-8 lg:col-span-3  text-sm">
+          <span class="hidden lg:flex">نویسنده</span>
+          <span class="flex lg:hidden">نویسنده و عنوان</span>
+
+
+        </div>
+          <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">عنوان</div>
+          <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
             توضیحات
           </div>
-          <div className="lg:col-span-2 hidden lg:flex col-span-2 text-sm text-right">
+          <div className="lg:col-span-2 hidden lg:flex col-span-3 text-sm text-right">
             ربات
           </div>
-          <div className="lg:col-span-3 lg:flex hidden justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap  text-sm">
+          <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap  text-sm">
             کلمات کلیدی
           </div>
-          <div className="col-span-1 md:block">عملیات</div>
+          <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
-        {isLoading ||data?.data.length ==0 ? (
+        {isLoading || data?.data.length == 0 ? (
           <SkeletonItem repeat={5} />
         ) : (
           data.data.map((tag) => (
@@ -191,41 +196,45 @@ const ListTag = () => {
               key={tag._id}
               className="mt-4 p-1 grid grid-cols-12 rounded-xl  border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100 px-4"
             >
-              <div className="col-span-11 lg:col-span-2 text-center flex items-center">
+              <div className="col-span-8 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={tag.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2">
+                <LoadImage
+                    src={tag?.authorId?.avatar.url}
+                    alt={``}
+                    height={100}
+                    width={100}
+                    className="h-[60px] w-[60px] rounded-full object-cover"
+                  />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
-                      <a
-                        // آدرس صفحه‌ای که می‌خواهید باز شود
-                        className="overflow-hidden dark:text-blue-500 text-ellipsis whitespace-nowrap text-lg transition-all dark:hover:text-slate-100 cursor-pointer"
-                      >
-                        {tag.title}
-                      </a>
+                      <span className="hidden lg:flex">{tag?.authorId?.name}</span>  
+                      <span className=" lg:hidden">{tag?.title}</span>                     
+                    </span>
+                    <span className="text-xs hidden lg:flex">
+                      {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
+                    </span>
+                    <span className=" lg:hidden text-xs text-right">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
 
-                    </span>
-                    <span className="line-clamp-1 text-base ">
-                      <span className="hidden lg:flex text-right text-sm">
-                        {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
-                      </span>
-                      <span className="lg:hidden text-ellipsis overflow-hidden whitespace-nowrap flex text-right text-sm w-[350px]">
-                        {tag.description ? tag.description : "ندارد"}
-                      </span>
-                    </span>
                   </article>
                 </div>
               </div>
-              <div className="lg:col-span-4 lg:flex hidden col-span-3 text-center  items-center">
+              <div className="lg:col-span-2 lg:flex  hidden col-span-3 text-center  items-center">
+                <span className="break-words text-sm lg:text-sm text-right">
+                  {tag.title}
+                </span>
+              </div>
+              <div className="lg:col-span-2 lg:flex flex col-span-3 text-right  items-center">
                 <span className="break-words text-sm lg:text-sm text-right">
                   {tag.description ? tag.description : "ندارد"}
                 </span>
               </div>
-              <div className="lg:col-span-2 hidden lg:flex col-span-2 justify-right text-center items-center gap-x-2">
+              <div className="lg:col-span-2 hidden lg:flex col-span-2 justify-right text-center items-center gap-x-2 text-sm">
                 {tag.robots && tag.robots.length > 0
                   ? tag.robots.map((robot, index) => (
                       <span
                         key={index}
-                        className="line-clamp-1 flex gap-x-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-1 text-green-500 dark:text-blue-500  transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 hover:!opacity-100  group-hover:opacity-70 text-sm"
+                        className="line-clamp-1 flex gap-x-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-1 text-green-500 dark:text-blue-500  transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 hover:!opacity-100  group-hover:opacity-70   "
                       >
                         <LiaRobotSolid size={22} />
                         {robot.value}
@@ -235,7 +244,7 @@ const ListTag = () => {
                   : "ندارد"}
               </div>
 
-              <div className="lg:col-span-3 lg:flex hidden justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap">
+              <div className="lg:col-span-2 lg:flex hidden justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
                 {tag.keywords?.some((keyword) => keyword.trim())
                   ? tag.keywords.map((keyword, index) => (
                       <span

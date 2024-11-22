@@ -47,6 +47,11 @@ const categorySchema = new Schema(
       type: Number,
       unique: true,
     },
+    authorId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "شناسه نویسنده الزامی است"],
+    },
     ...baseSchema.obj
   },
   { timestamps: true } // فیلدهای createdAt و updatedAt توسط baseSchema اضافه شده‌اند
