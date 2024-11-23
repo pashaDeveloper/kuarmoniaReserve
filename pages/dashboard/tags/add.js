@@ -7,11 +7,12 @@ import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
 import { LiaRobotSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
-
+import {Plus , Minus} from "@/utils/SaveIcon"
 const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const user = useSelector((state) => state?.auth);
+  const [keynotes, setKeynotes] = useState([""]);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
     useAddTagMutation();
@@ -84,12 +85,15 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
 
   const handleAddOrUpdateTag = (formData) => {
     try {
-      formData.keywords = formData.keywords
-        .split(",")
-        .map((keyword) => keyword.trim());
-      formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
-      formData.authorId=user?._id;
-
+    
+        formData = {
+          ...formData,
+          robots: selectedOptions.map(option => ({ id: option.id, value: option.value })),
+          keynotes: JSON.stringify(keynotes),
+          authorId:user?._id
+        };
+        console.lo
+      
       if (tagToEdit) {
         updateTag({ id: tagToEdit._id, ...formData }).unwrap();
       } else {
@@ -98,8 +102,7 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     } catch (err) {
       console.error("خطا در هنگام پردازش تگ: ", err);
     }
-  };
-  
+  };  
   
   const robotOptions = [
     { id: 1, value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },

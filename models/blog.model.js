@@ -1,9 +1,9 @@
-// MainContent.js
 import { Schema, models, model } from "mongoose";
 import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";
 import Counter from "./counter.model";
-import Category from "./category.model"; // مدل Category را وارد کنید
+import Category from "./category.model";
+import Tag from "./tag.model";
 
 connectDB();
 const socialLinkSchema = new Schema({
@@ -12,7 +12,7 @@ const socialLinkSchema = new Schema({
     required: [true, "نام شبکه اجتماعی الزامی است"],
     trim: true,
     enum: {
-      values: ["Facebook", "Twitter", "LinkedIn", "Instagram", "Other"], // می‌توانید نام‌های بیشتری اضافه کنید
+      values: ["Facebook", "Twitter", "LinkedIn", "Instagram", "Other"],
       message: "نام شبکه اجتماعی معتبر نیست",
     },
   },
@@ -95,7 +95,7 @@ const blogSchema = new Schema(
       default: [],
     },
     readTime: {
-      type: String, // زمان بر حسب دقیقه
+      type: String,
       default: 0,
     },
     isFeatured: {
@@ -182,11 +182,11 @@ const blogSchema = new Schema(
 );
 
 blogSchema.virtual('likeCount').get(function() {
-  return this.likes ? this.likes.length : 0; // بررسی وجود likes
+  return this.likes ? this.likes.length : 0;
 });
 
 blogSchema.virtual('dislikeCount').get(function() {
-  return this.dislikes ? this.dislikes.length : 0; // بررسی وجود dislikes
+  return this.dislikes ? this.dislikes.length : 0;
 });
 
 blogSchema.virtual('rating').get(function() {
@@ -200,11 +200,18 @@ blogSchema.virtual('rating').get(function() {
 blogSchema.set('toJSON', { virtuals: true });
 blogSchema.set('toObject', { virtuals: true });
 
-// Middleware قبل از ذخیره
 blogSchema.pre("save", async function (next) {
   if (this.isNew) {
     this.blogId = await getNextSequenceValue("blogId");
   }
+  if (this.isNew || this.isModified('publishStatus')) {
+    if (this.publishStatus === "private") {
+      this.metaRobots = "noindex, nofollow"; 
+    } else {
+      this.metaRobots = "index, follow";
+    }
+  }
+  next();
 
   if (
     this.isModified('title') ||
@@ -214,28 +221,27 @@ blogSchema.pre("save", async function (next) {
     this.metaKeywords.length === 0
   ) {
     try {
+      console.log('this.category',this.category);
       const category = await Category.findById(this.category);
+      console.log('category',category);
       if (category) {
-        let combinedMetaTitle = `${this.title} | ${category.name}`;
+        let combinedMetaTitle = `${this.title} | ${category.title}`;
         if (combinedMetaTitle.length > 60) {
           const excessLength = combinedMetaTitle.length - 60;
-          combinedMetaTitle = `${this.title.substring(0, this.title.length - excessLength)} | ${category.name}`;
+          combinedMetaTitle = `${this.title.substring(0, this.title.length - excessLength)} | ${category.title}`;
         }
         this.metaTitle = combinedMetaTitle;
-
-        let combinedMetaDescription = `${this.description} | ${category.name}`;
+      
+        let combinedMetaDescription = `${this.description} | ${category.title}`;
         if (combinedMetaDescription.length > 160) {
           const excessLength = combinedMetaDescription.length - 160;
-          combinedMetaDescription = `${this.description.substring(0, this.description.length - excessLength)} | ${category.name}`;
+          combinedMetaDescription = `${this.description.substring(0, this.description.length - excessLength)} | ${category.title}`;
         }
         this.metaDescription = combinedMetaDescription;
-
-     
-        const tags = await Tag.find({ _id: { $in: this.tags } });
-        const tagKeywords = tags.map(tag => tag.name);
-        const categoryKeywords = category.keywords || []; 
-        const combinedKeywords = [...new Set([...tagKeywords, ...categoryKeywords])];
-        this.metaKeywords = combinedKeywords.slice(0, 10); 
+      
+        const tags = await Tag.find({ _id: { $in: this.tags } }); 
+        const tagKeywords = tags.map(tag => tag.title);
+        this.metaKeywords = tagKeywords.slice(0, 10);
       } else {
         this.metaTitle = this.title.length > 60 ? this.title.substring(0, 57) + "..." : this.title;
         this.metaDescription = this.description.length > 160 ? this.description.substring(0, 157) + "..." : this.description;

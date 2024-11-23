@@ -35,10 +35,7 @@ export async function signUpUser(req) {
       });
 
       const result = await user.save({ validateBeforeSave: true });
-        console.log('userid',user._id)
-        await createSeedTags(user._id);
-        await createSeedCategories(user._id);
-        await createSeedBlogForFirstUser(user._id);
+       
       if (result) {
           return {
               success: true,

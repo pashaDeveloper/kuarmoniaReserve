@@ -22,7 +22,6 @@ export async function addBlog(req) {
       featuredImage,
     } = req.body;
 
-    // بررسی و تجزیه socialLinks
     let parsedSocialLinks = [];
     if (socialLinks) {
       try {
@@ -32,7 +31,6 @@ export async function addBlog(req) {
       }
     }
 
-    // ایجاد بلاگ
     const blog = await Blog.create({
       title,
       description,
@@ -41,8 +39,8 @@ export async function addBlog(req) {
       tags,
       category,
       featuredImage: {
-        url: req.body.filePath, // اطمینان حاصل کنید که filePath موجود باشد
-        public_id: req.file?.filename || "N/A", // اگر req.file وجود دارد
+        url: req.body.filePath,
+        public_id: req.file?.filename || "N/A",
         originalName: req.body.originalName || "ناشناخته",
       },
       authorId,
@@ -56,21 +54,19 @@ export async function addBlog(req) {
     });
 
     if (blog) {
-      // حالا که بلاگ ایجاد شده، می‌توانیم از blog._id برای ایجاد لایک و دیسلایک استفاده کنیم
       const like = await Like.create({
-        entityId: blog._id, // شناسه بلاگ
-        entityType: "Blog", // نوع موجودیت
-        type: "like", // نوع لایک
+        entityId: blog._id,
+        entityType: "Blog", 
+        type: "like", 
       });
 
-      // ساخت یک نمونه دیسلایک
       const dislike = await Like.create({
-        entityId: blog._id, // شناسه بلاگ
+        entityId: blog._id, 
         entityType: "Blog",
         type: "dislike",
       });
 
-      // بروزرسانی بلاگ با شناسه‌های لایک و دیسلایک
+    
       blog.likes = [like._id];
       blog.dislikes = [dislike._id];
       await blog.save();
@@ -158,12 +154,38 @@ export async function getBlogsForDropDownMenu() {
   }
 }
 
+export async function getBlog(req) {
+  try {
+    const blog = await Blog.findById(req.query.id);
+    if (blog) {
+      return {
+        success: true,
+        message: "اطلاعات بلاگ با موفقیت دریافت شد",
+        data: blog,
+      };
+    } else {
+      return {
+        success: false,
+        message: "دریافت اطلاعات بلاگ با شکست مواجه شد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
+
 
 
 export async function updateBlog(req) {
   const { id } = req.query;
+  console.log("req.query", req.query);
   try {
-    const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted } = req.body || {};
+    const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
+    console.log('publishStatus',publishStatus)
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;
@@ -174,6 +196,7 @@ export async function updateBlog(req) {
     if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
     if (authorId !== undefined) updateFields.authorId = authorId;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
+    if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
     const blog = await Blog.findByIdAndUpdate(id, updateFields, { new: true })
       .populate('tags')  

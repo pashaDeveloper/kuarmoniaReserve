@@ -6,11 +6,24 @@ import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConf
 import { toast } from "react-hot-toast";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import AddButton from "@/components/shared/button/AddButton";
-import SkeletonItem from "@/components/shared/skeleton/SkeletonItem"; // اضافه کردن SkeletonItem
+import SkeletonItem from "@/components/shared/skeleton/SkeletonItem"; 
 import { FiEdit3,FiTrash } from "react-icons/fi";
+import LoadImage from "@/components/shared/image/LoadImage";
+import Pagination from "@/components/shared/pagination/Pagination";
 
 const ListCategory = () => {
-  const { data, isLoading, error, refetch } = useGetCategoriesQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const { data, isLoading, error, refetch } = useGetCategoriesQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    status: statusFilter === "all" ? undefined : statusFilter,
+    search: searchTerm,
+  });
+  const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
+  console.log("totalPages",totalPages)
   const [updateCategory] = useUpdateCategoryMutation();
   const categories = useMemo(() => Array.isArray(data?.data) ? data.data : [], [data]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -103,35 +116,130 @@ const ListCategory = () => {
       toast.error(error?.data?.message, { id: "category-loading" });
     }
   }, [data, error, isLoading]);
-
+  const onStatusFilterChange = (status) => {
+    setStatusFilter(status);
+    setCurrentPage(1); // بازنشانی صفحه به صفحه اول بعد از تغییر فیلتر
+    refetch();
+  };
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
   return (
     <>
       <Panel>
         {/* دکمه افزودن دسته‌بندی */}
         <AddButton onClick={openAddModal} />
+        <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
+          <div className="inline-flex overflow-hidden bg-white border rounded-lg dark:bg-gray-500 dark:border-white rtl:flex-row">
+            <button
+              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm   dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-300 border-l focus:bg-gray-300 dark:bg-gray-500"
+              onClick={() => onStatusFilterChange("all")}
+            >
+              همه
+            </button>
+            <button
+              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              onClick={() => onStatusFilterChange("active")}
+            >
+              فعال
+            </button>
+            <button
+              className="px-5 py-2 text-xs font-medium text-gray-600 bg-gray-100 dark:bg-gray-500 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white last:border-none dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              onClick={() => onStatusFilterChange("inactive")}
+            >
+              غیر فعال
+            </button>
+          </div>
+
+          <div className="relative flex items-center mt-4 md:mt-0">
+            <span className="absolute">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+            </span>
+            <input
+              type="text"
+              placeholder="Search"
+              className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+        </div>
+        {/* نمایش داده‌های تگ‌ها */}
+        <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
+        <div className="col-span-11 lg:col-span-3  text-sm">
+          <span class="hidden lg:flex">نویسنده</span>
+          <span class="flex lg:hidden">نویسنده و عنوان</span>
+
+
+        </div>
+          <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">عنوان</div>
+          <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
+            توضیحات
+          </div>
+          <div className="lg:col-span-2 hidden lg:flex col-span-3 text-sm text-right">
+            ربات
+          </div>
+          <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap hidden text-sm">
+          <span class="hidden lg:flex">کلمات کلیدی</span>
+          </div>
+          <div className="col-span-1 md:block text-sm">عملیات</div>
+        </div>
 
         {/* نمایش داده‌های دسته‌بندی‌ها */}
         {isLoading ||categories && categories.length == 0 ? (
-          <SkeletonItem repeat={5} /> // نمایش اسکلتون در حالت بارگذاری
-        ) : categories && categories.length > 0 ? (
-          categories.map((category) => (
+          <SkeletonItem repeat={5} /> 
+        ) 
+        :(categories.map((category) => (
             <div
               key={category._id}
               className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
             >
-              <div className="col-span-5 lg:col-span-3 text-center flex items-center">
+              <div className="col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={category.status === "active"} />
-                <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
-           
-                  <article className="flex-col flex gap-y-2">
-                    <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">
-                      <span className="flex">{category.title}</span>
+                <div className="py-2 flex justify-center items-center gap-x-2 text-right">
+                <LoadImage
+                    src={category?.authorId?.avatar.url}
+                    alt={``}
+                    height={100}
+                    width={100}
+                    className="h-[60px] w-[60px] rounded-full object-cover"
+                  />
+                  <article className="flex-col flex gap-y-2  ">
+                    <span className="line-clamp-1 text-base ">
+                      <span className="hidden lg:flex ">{category?.authorId?.name}</span>  
+                      <span className=" lg:hidden ">{category?.title}</span>                     
                     </span>
+                    <span className="text-xs hidden lg:flex">
+                      {new Date(category.createdAt).toLocaleDateString("fa-IR")}
+                    </span>
+                    <span className=" lg:hidden text-xs ">{category?.description ? category?.description : new Date(category.createdAt).toLocaleDateString("fa-IR")}</span>                     
+
                   </article>
                 </div>
               </div>
+              <div className="lg:col-span-2 hidden gap-2  lg:flex justify-left items-center text-right">
+                <article className="flex-col flex gap-y-2">
+                  <span className="line-clamp-1 text-sm lg:text-base">
+                    <span className="flex">{category.title}</span>
+                  </span>
+                </article>
+              </div>
 
-              <div className="lg:col-span-3 col-span-5 gap-2 text-center flex justify-left items-center">
+              <div className="lg:col-span-4 hidden gap-2  lg:flex justify-left items-center text-right">
                 <article className="flex-col flex gap-y-2">
                   <span className="line-clamp-1 text-sm lg:text-base">
                     <span className="flex">{category.description}</span>
@@ -139,38 +247,43 @@ const ListCategory = () => {
                 </article>
               </div>
 
-              <div className="lg:col-span-2 lg:flex hidden gap-2 text-center flex justify-center items-center">
-              {new Date(category.createdAt).toLocaleDateString("fa-IR")}
-              </div>
+              
 
-              <div className="hidden lg:col-span-3 col-span-5 gap-2 text-center lg:flex justify-center items-center">
+              <div className="hidden lg:col-span-2 col-span-5 gap-2 text-center lg:flex justify-center items-center">
                 <article className="flex-col flex gap-y-2">
                   <span className="flex">
                     {category.slug}
                   </span>
                 </article>
               </div>
-              <div className="lg:col-span-1 col-span-2 text-gray-500 text-right flex justify-right flex-row-reverse items-center">
-                  <article className="flex-col flex  gap-y-1 ">
-                    <span
-                      className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
-                      onClick={() => openEditModal(category)}
-
-                    >
-                      <FiEdit3 className="w-5 h-5" />
-                    </span>
-                    <span className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70" onClick={() => openDeleteModal(category)}
-                    >
-                      <FiTrash className="w-5 h-5" />
-                    </span>
-                  </article>
-                </div>
+              
+              <div className="col-span-1 gap-2 text-center flex justify-left items-center">
+                <article className="lg:flex-row flex flex-col gap-x-2  gap-y-2">
+                  <span
+                    className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    onClick={() => openEditModal(category)}
+                  >
+                    <FiEdit3 className="w-5 h-5" />
+                  </span>
+                  <span
+                    className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    onClick={() => openDeleteModal(category)}
+                  >
+                    <FiTrash className="w-5 h-5" />
+                  </span>
+                </article>
+              </div>
              
             </div>
-          ))
-        ) : (
-          <div className="text-center text-gray-500">دسته‌بندی‌ای وجود ندارد.</div>
-        )}
+               ))
+              )}
+         
+        {/* Pagination */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        /> 
 
         {/* مودال حذف */}
         {isDeleteModalOpen && (

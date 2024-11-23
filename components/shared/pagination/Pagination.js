@@ -2,7 +2,10 @@ import React from 'react';
 import { NextIcon, PrevIcon } from "@/utils/SaveIcon";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  totalPages = totalPages && totalPages > 0 ? totalPages : 1;
+
   const pages = [...Array(totalPages).keys()].map((_, index) => index + 1);
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -14,9 +17,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       onPageChange(currentPage + 1);
     }
   };
+
   return (
-    <div className="flex justify-center mt-4 jusitfy-center gap-x-2">
-       <span
+    <div className="flex justify-center mt-4 gap-x-2">
+      <span
         className="custom-button"
         onClick={handlePrevious}
         disabled={currentPage === 1}
@@ -27,7 +31,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       {pages.map((page) => (
         <span
           key={page}
-          className={`custom-button ${currentPage === page ? 'bg-blue-600 dakk:text-white' : 'bg-gray-300 text-black'}`}
+          className={`custom-button ${currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
           onClick={() => onPageChange(page)}
         >
           {page}
@@ -40,7 +44,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:-translate-x-1" />
       </span>
-
     </div>
   );
 };

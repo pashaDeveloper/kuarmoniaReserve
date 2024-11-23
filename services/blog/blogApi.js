@@ -20,20 +20,54 @@ const blogApi = kuarmoniaApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getBlog: builder.query({
+      query: (id) => ({
+        url: `/blog/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+
+      providesTags: ["User"],
+    }),
+
+    deleteBlog: builder.mutation({
+      query: (id) => ({
+        url: `/blogs/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+  
+      invalidatesTags: [
+        "User",
+        "Cart",
+        "Rent",
+        "Favorite",
+        "Purchase",
+        "Review",
+      ],
+    }),
  
     updateBlog: builder.mutation({
-      query: ({ id, ...formData }) => ({
+      query: ({ id, data }) => ({
         url: `/blog/${id}`,
         method: "PATCH",
-        body: formData,
+        body: data,
       }),
-      invalidatesTags: ["Blog"],
     }),
   }),
+
+ 
 });
 
 export const {
   useAddBlogMutation,
   useGetBlogsQuery,
+  useDeleteBlogMutation,
+  useGetBlogQuery,
   useUpdateBlogMutation,
 } = blogApi;

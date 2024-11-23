@@ -22,6 +22,7 @@ const tagSchema = new Schema(
       type: [String],
       required: false,
       default: [],
+      trim:true
     },  
     authorId: {
       type: Schema.Types.ObjectId,

@@ -3,7 +3,8 @@ import Tag from "@/models/tag.model";
 import connectDB from "@/libs/db";
 
 const seedTags = [
-    { title: "کانادا", description: "روش‌های مهاجرت به کانادا شامل ویزای کاری، تحصیلی و سرمایه‌گذاری", keywords: ["کانادا", "مهاجرت"], authorId: "" },
+    { title: "کانادا", description: 
+      "روش‌های مهاجرت به کانادا شامل ویزای کاری، تحصیلی و سرمایه‌گذاری", keywords: ["کانادا", "مهاجرت"], authorId: "" },
     { title: "ترکیه", description: "مراحل دریافت اقامت و زندگی در ترکیه برای مهاجران", keywords: ["ترکیه", "مهاجرت"], authorId: "" },
     { title: "آلمان", description: "بررسی ویزای کار، تحصیل و اقامت دائم در آلمان", keywords: ["آلمان", "مهاجرت"], authorId: "" },
     { title: "ویزای تحصیلی", description: "راهنمای دریافت ویزای تحصیلی برای کشورهای پیشرفته", keywords: ["تحصیل", "ویزا"], authorId: "" },

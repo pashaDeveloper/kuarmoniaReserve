@@ -1,28 +1,16 @@
 import Panel from "@/layouts/Panel";
 import React, { useState, useEffect } from "react";
-import Popover from "@/components/shared/modal/Popover";
-import InfoTable from "@/components/shared/table/InfoTable";
 import AddButton from "@/components/shared/button/AddButton";
 import {
   useGetBlogsQuery,
   useUpdateBlogMutation,
 } from "@/services/blog/blogApi";
-import {
-  handleView,
-  toggleTooltipPopover,
-  handleClose,
-  handleEdit,
-  handleDelete,
-  handleStatus,
-} from "@/utils/functionHelpers";
 import { toast } from "react-hot-toast";
-import { blogColumns } from "@/utils/columnsConfig";
 import Metrics from "@/components/shared/tools/Metrics";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import { useRouter } from "next/router";
 import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
-
 const ListBlog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error, refetch } = useGetBlogsQuery({
@@ -30,9 +18,6 @@ const ListBlog = () => {
     limit: 7,
   });
   console.log(data);
-  const [updateBlog] = useUpdateBlogMutation();
-  const [blogToView, setBlogToView] = useState(null);
-  const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false);
   const router = useRouter();
 
   console.log(data);
@@ -76,7 +61,9 @@ const ListBlog = () => {
             <div
               key={blog.id}
               className="mt-4 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2  transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-slate-700 dark:text-white"
-            >
+              onClick={() => router.push(`/dashboard/blogs/info/${blog.id}`)}
+
+           >
               <div className=" col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={blog.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
@@ -127,34 +114,15 @@ const ListBlog = () => {
                 />
               </div>
 
-              <div className="col-span-1 text-gray-500 text-center flex justify-right flex-row-reverse items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="26"
-                  height="26"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M2.5 7.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m15 0a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m-7.274 0a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5"
-                  />
-                </svg>
-              </div>
+
+              
             </div>
+      
           ))
         )}
       </Panel>
 
-      <Popover
-        isOpen={isMobilePopoverOpen}
-        onClose={() => setIsMobilePopoverOpen(false)}
-        content={<InfoTable data={blogToView} fields={blogColumns} />}
-        details
-        in
-        the
-        popover
-      />
+      
     </>
   );
 };

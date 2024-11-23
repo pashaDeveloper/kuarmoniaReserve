@@ -29,13 +29,30 @@ export async function addCategory(req) {
   }
 }
 
-export async function getCategories() {
+export async function getCategories(req) {
   try {
-    const categories = await Category.find({ isDeleted: false }); // Retrieve all categories from the database
+
+    const { page = 1, limit = 7, search = "" } = req.query; 
+    const skip = (page - 1) * limit;
+console.log(search)
+    const searchQuery = search
+      ? { title: { $regex: search, $options: "i" }, isDeleted: false }
+      : { isDeleted: false };
+
+      const categories = await Category.find(searchQuery)
+      .skip(skip)
+      .limit(Number(limit))
+      .populate('authorId', 'name avatar.url') 
+      .select('_id categoryId title description createdAt status ');
+  
+console.log(categories);
+  
+    const total = await Category.countDocuments(searchQuery);
     if (categories.length > 0) {
       return {
         success: true,
         data: categories,
+        total: total,
         message: "دسته بندی با موفقیت دریافت شد",
       };
     } else {

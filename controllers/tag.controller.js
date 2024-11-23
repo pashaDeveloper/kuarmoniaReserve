@@ -2,13 +2,14 @@ import Tag from '@/models/tag.model';
 
 export async function addTag(req) {
   try {
-    const { title, description, keywords, robots ,authorId} = req.body; 
+    const { title, description, robots,keynotes,authorId
+ } = req.body; 
 
     const tag = await Tag.create({
       title,
       description,
-      keywords,
       robots,
+      keywords: JSON.parse(keynotes),
       authorId
     });
 
@@ -33,6 +34,7 @@ export async function addTag(req) {
 }
 
 
+
 export async function getTags(req) {
   try {
     const { page = 1, limit = 7, search = "" } = req.query; 
@@ -46,7 +48,7 @@ export async function getTags(req) {
       .skip(skip)
       .limit(Number(limit))
       .populate('authorId', 'name avatar.url') 
-      .select('_id tagId title description createdAt status ');
+      .select('_id tagId title description createdAt status robots keywords ');
   
 
   
@@ -69,7 +71,6 @@ export async function getTags(req) {
 export async function getTagsForDropDownMenu() {
   try {
     const tags = await Tag.find({ isDeleted: false, status: 'active' }).select('_id title description');
-    console.log("tags",tags); // اصلاح تایپی
 
     if (tags.length > 0) {
       return {

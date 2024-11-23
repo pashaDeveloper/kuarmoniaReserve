@@ -29,9 +29,9 @@ const ListTag = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState(null);
-  console.log(data);
-  // State های مرتبط با Pagination
+
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
+  console.log("totalPages",totalPages)
 
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
@@ -129,7 +129,7 @@ const ListTag = () => {
               همه
             </button>
             <button
-              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-blue-600 dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("active")}
             >
               فعال
@@ -170,7 +170,7 @@ const ListTag = () => {
         </div>
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
-        <div className="col-span-8 lg:col-span-3  text-sm">
+        <div className="col-span-11 lg:col-span-3  text-sm">
           <span class="hidden lg:flex">نویسنده</span>
           <span class="flex lg:hidden">نویسنده و عنوان</span>
 
@@ -183,8 +183,8 @@ const ListTag = () => {
           <div className="lg:col-span-2 hidden lg:flex col-span-3 text-sm text-right">
             ربات
           </div>
-          <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap  text-sm">
-            کلمات کلیدی
+          <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap hidden text-sm">
+          <span class="hidden lg:flex">کلمات کلیدی</span>
           </div>
           <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
@@ -194,11 +194,11 @@ const ListTag = () => {
           data.data.map((tag) => (
             <div
               key={tag._id}
-              className="mt-4 p-1 grid grid-cols-12 rounded-xl  border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100 px-4"
+              className="mt-4 p-1 grid grid-cols-12 rounded-xl max-h-20 border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100 px-4"
             >
-              <div className="col-span-8 lg:col-span-3 text-center flex items-center">
+              <div className="col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={tag.status === "active"} />
-                <div className="py-2 flex justify-center items-center gap-x-2">
+                <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                 <LoadImage
                     src={tag?.authorId?.avatar.url}
                     alt={``}
@@ -208,26 +208,27 @@ const ListTag = () => {
                   />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
-                      <span className="hidden lg:flex">{tag?.authorId?.name}</span>  
-                      <span className=" lg:hidden">{tag?.title}</span>                     
+                      <span className="hidden lg:flex ">{tag?.authorId?.name}</span>  
+                      <span className=" lg:hidden ">{tag?.title}</span>                     
                     </span>
                     <span className="text-xs hidden lg:flex">
                       {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                    <span className=" lg:hidden text-xs text-right">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
+                    <span className=" lg:hidden text-xs ">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
 
                   </article>
                 </div>
               </div>
-              <div className="lg:col-span-2 lg:flex  hidden col-span-3 text-center  items-center">
+              <div className="lg:col-span-1 lg:flex  hidden  text-center  items-center">
                 <span className="break-words text-sm lg:text-sm text-right">
                   {tag.title}
                 </span>
               </div>
-              <div className="lg:col-span-2 lg:flex flex col-span-3 text-right  items-center">
-                <span className="break-words text-sm lg:text-sm text-right">
+              <div className="lg:col-span-3 lg:flex hidden col-span-3 text-right  items-center">
+                <span className="break-words text-sm lg:text-sm  lg:flex text-right">
                   {tag.description ? tag.description : "ندارد"}
                 </span>
+                
               </div>
               <div className="lg:col-span-2 hidden lg:flex col-span-2 justify-right text-center items-center gap-x-2 text-sm">
                 {tag.robots && tag.robots.length > 0
@@ -243,8 +244,8 @@ const ListTag = () => {
                     ))
                   : "ندارد"}
               </div>
-
-              <div className="lg:col-span-2 lg:flex hidden justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
+<div 
+              className="lg:col-span-2 lg:flex hidden justify-right max-h-16  overflow-y-auto overflow-y-hidden text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
                 {tag.keywords?.some((keyword) => keyword.trim())
                   ? tag.keywords.map((keyword, index) => (
                       <span
@@ -258,22 +259,22 @@ const ListTag = () => {
                   : "ندارد"}
               </div>
 
-              <div className="col-span-1 gap-2 text-center flex justify-left items-center">
-                <article className="lg:flex-row flex flex-col gap-x-2  gap-y-2">
-                  <span
-                    className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
-                    onClick={() => openEditModal(tag)}
-                  >
-                    <FiEdit3 className="w-5 h-5" />
-                  </span>
-                  <span
-                    className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
-                    onClick={() => openDeleteModal(tag)}
-                  >
-                    <FiTrash className="w-5 h-5" />
-                  </span>
-                </article>
-              </div>
+                <div className="col-span-1 gap-2 text-center flex justify-left items-center">
+                  <article className="lg:flex-row flex flex-col gap-x-2  gap-y-2">
+                    <span
+                      className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                      onClick={() => openEditModal(tag)}
+                    >
+                      <FiEdit3 className="w-5 h-5" />
+                    </span>
+                    <span
+                      className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+                      onClick={() => openDeleteModal(tag)}
+                    >
+                      <FiTrash className="w-5 h-5" />
+                    </span>
+                  </article>
+                </div>
             </div>
           ))
         )}
@@ -285,7 +286,6 @@ const ListTag = () => {
           onPageChange={(page) => setCurrentPage(page)}
         />
 
-        {/* مودال حذف */}
         {isDeleteModalOpen && (
           <DeleteConfirmationModal
             isOpen={isDeleteModalOpen}

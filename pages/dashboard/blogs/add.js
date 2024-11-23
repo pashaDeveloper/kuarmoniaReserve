@@ -18,8 +18,15 @@ import AddTag from "../tags/add";
 import SendButton from "@/components/shared/button/SendButton"
 import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const Add = () => {
+  const router = useRouter();
+
+  const handleBackList = () => {
+
+    router.push("/dashboard/blogs");
+  };
   const methods = useForm({
     mode: "all",
     defaultValues: {
@@ -221,16 +228,27 @@ const Add = () => {
       <div className="wave wave3"></div>
 
       <div className="w-full h-full flex flex-col justify-center items-center">
+     
         <FormProvider {...methods}>
    
     <form onSubmit={handleSubmit(onSubmit)}
             className="w-full h-full flex flex-col"
           >
+            <div className="flex  items-center">
+            <div>
+          <a onClick={handleBackList} className="flex cursor-pointer items-center text-slate-300 transition-all hover:text-slate-100">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+              <path fillRule="evenodd" d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z" clipRule="evenodd"></path>
+            </svg>
+            <span className="mr-2">بازگشت</span>
+          </a>
+        </div>
             <CustomProgressBar
               currentStep={currentStep}
               totalSteps={totalSteps}
-            />
-
+              />
+              </div>
+ 
             <div className="flex flex-col lg:flex-row-reverse flex-1">
               {/* بخش فرم */}
               <div className="flex-1  flex flex-col items-center p-4">

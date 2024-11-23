@@ -1,7 +1,10 @@
+import Modal from "./Modal";
+import Button from '@/components/shared/button/Button';
+
 const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   return (
     isOpen && (
-      <Modal></Modal>
+      <Modal>
         <div className="bg-white p-4 rounded-md">
           <h2 className="text-lg font-bold">آیا مطمئن هستید؟</h2>
           <p className="my-2">این عملیات غیرقابل بازگشت است.</p>
@@ -24,7 +27,8 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
             </article>
           </div>
         </div>
-      </div>
+        </Modal>
+
     )
   );
 };
