@@ -1,23 +1,27 @@
 const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   return (
     isOpen && (
-      <div  className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <Modal></Modal>
         <div className="bg-white p-4 rounded-md">
           <h2 className="text-lg font-bold">آیا مطمئن هستید؟</h2>
           <p className="my-2">این عملیات غیرقابل بازگشت است.</p>
           <div className="flex justify-end gap-2">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-200 rounded-md"
-            >
-              خیر
-            </button>
-            <button
-              onClick={onConfirm}
-              className="px-4 py-2 bg-red-500 text-white rounded-md"
-            >
-              بله
-            </button>
+           
+            <article className="w-full flex gap-x-4 justify-evenly">
+              <Button
+                type="submit"
+                className="py-2 !bg-red-500 !border-red-600 w-full !hover:bg-red-900/90"
+                onClick={onConfirm}
+              >
+                حذف 
+              </Button>
+              <Button
+                className="py-2 w-full"
+                onClick={onClose}
+              >
+                انصراف
+              </Button>
+            </article>
           </div>
         </div>
       </div>

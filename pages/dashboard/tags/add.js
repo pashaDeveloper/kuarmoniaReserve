@@ -6,10 +6,12 @@ import React, { useEffect,useState } from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
 import { LiaRobotSolid } from "react-icons/lia";
+import {Plus,Minus} from "@/utils/SaveIcon";
 
 const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [keynotes, setKeynotes] = useState([""]);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
     useAddTagMutation();
@@ -17,14 +19,13 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     updateTag,
     { isLoading: isUpdating, data: updateData, error: updateError },
   ] = useUpdateTagMutation();
-
+console.log(tagToEdit)
   useEffect(() => {
     if (tagToEdit) {
       setValue("title", tagToEdit.title);
       setValue("description", tagToEdit.description);
-      setValue("keywords", tagToEdit.keywords.join(", "));
       setValue("robots", tagToEdit.robots);
-  
+      setKeynotes(tagToEdit.keywords)
       const initialSelectedOptions = tagToEdit.robots.map(robot => {
         const foundOption = robotOptions.find(option => option.value === robot.value);
         return foundOption ? { id: foundOption.id, value: foundOption.value, label: foundOption.label } : null;
@@ -76,10 +77,12 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
 
   const handleAddOrUpdateTag = (formData) => {
     try {
-      formData.keywords = formData.keywords
-        .split(",")
-        .map((keyword) => keyword.trim());
-      formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
+    
+        formData = {
+          ...formData,
+          robots: selectedOptions.map(option => ({ id: option.id, value: option.value })),
+          keynotes: JSON.stringify(keynotes)
+        };
       
       if (tagToEdit) {
         updateTag({ id: tagToEdit._id, ...formData }).unwrap();
@@ -90,6 +93,7 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
       console.error("خطا در هنگام پردازش تگ: ", err);
     }
   };
+  
   
   const robotOptions = [
     { id: 1, value: 'index', label: 'Index', tooltip: 'اجازه می‌دهد موتورهای جستجو صفحه را ایندکس کنند' },
@@ -102,6 +106,20 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     setSelectedOptions(newSelectedOptions);
   };
 
+  const handleAddKeynote = () => {
+    setKeynotes([...keynotes, ""]);
+  };
+  const handleKeynoteChange = (index, value) => {
+    const updatedKeynotes = [...keynotes];
+    updatedKeynotes[index] = value;
+    setKeynotes(updatedKeynotes);
+  };
+ 
+  const handleRemoveKeynote = (index) => {
+    const updatedKeynotes = [...keynotes];
+    updatedKeynotes.splice(index, 1);
+    setKeynotes(updatedKeynotes);
+  };
   return (
     <Modal
     isOpen={isOpen}
@@ -114,7 +132,7 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     >
       <div className="flex gap-4 flex-col">
         <label htmlFor="title" className="flex flex-col gap-y-2">
-          عنوان
+          عنوان*
           <input
             type="text"
             name="title"
@@ -128,7 +146,7 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
         </label>
 
         <label htmlFor="description" className="flex flex-col gap-y-2">
-          توضیحات
+          توضیحات*
           <textarea
             name="description"
             id="description"
@@ -139,20 +157,49 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
           />
         </label>
 
-        <label htmlFor="keywords" className="flex flex-col gap-y-2">
-          کلمات کلیدی
-          <input
-            type="text"
-            name="keywords"
-            id="keywords"
-            placeholder="کلمات کلیدی را با , جدا کنید"
-            className="rounded"
-            {...register("keywords")}
-          />
-        </label>
+ {/* keynotes */}
+ <div className="w-full flex flex-col gap-y-4 p-4 border rounded">
+          <label htmlFor="keynotes" className="w-full flex flex-col gap-y-4">
+            <p className="text-sm flex flex-row justify-between items-center">
+              کلمات کلیدی*
+              <button
+                type="button"
+                className="p-0.5 border rounded-secondary bg-green-500 text-white"
+                onClick={handleAddKeynote}
+              >
+                <Plus />
+              </button>
+            </p>
+
+            {keynotes.map((keynote, index) => (
+              <p key={index} className="flex flex-row gap-x-2 items-center">
+                <input
+                  type="text"
+                  name="keynotes"
+                  placeholder="Enter brand keynote"
+                  className="flex-1"
+                  value={keynote}
+                  onChange={(event) =>
+                    handleKeynoteChange(index, event.target.value)
+                  }
+                  required
+                />
+                {index !== 0 && (
+                  <button
+                    type="button"
+                    className="p-0.5 border rounded-secondary bg-red-500 text-white"
+                    onClick={() => handleRemoveKeynote(index)}
+                  >
+                    <Minus />
+                  </button>
+                )}
+              </p>
+            ))}
+          </label>
+        </div>
 
         {/* robots */}
-        ربات‌ها
+        ربات‌ها*
         <MultiSelectDropdown
               options={robotOptions}
               selectedOptions={selectedOptions}

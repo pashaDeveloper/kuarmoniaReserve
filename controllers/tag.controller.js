@@ -2,13 +2,13 @@ import Tag from '@/models/tag.model';
 
 export async function addTag(req) {
   try {
-    const { title, description, keywords, robots } = req.body; 
+    const { title, description, robots,keynotes } = req.body; 
 
     const tag = await Tag.create({
       title,
       description,
-      keywords,
-      robots
+      robots,
+      keywords: JSON.parse(keynotes),
     });
 
     if (tag) {
@@ -90,14 +90,14 @@ export async function updateTag(req) {
   const { id } = req.query;
   console.log(req.body)
   try {
-    const { title, description, status, isDeleted ,robots,keywords} = req.body || {};
+    const { title, description, status, isDeleted ,robots,keynotes} = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
     if (robots !== undefined) updateFields.robots = robots;
-    if (keywords !== undefined) updateFields.keywords = keywords;
+    if (keynotes !== undefined) updateFields.keywords =JSON.parse(keynotes);
     const tag = await Tag.findByIdAndUpdate(id, updateFields, { new: true });
 
     if (tag) {

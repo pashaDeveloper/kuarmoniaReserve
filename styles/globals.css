@@ -5,11 +5,11 @@
 @tailwind utilities;
 @font-face {
   font-family: "Vazir";
-  src: url("../public/fonts/vazir/Vazir.eot");
-  src: url("../public/fonts/vazir/Vazir.eot?#iefix") format("embedded-opentype"),
-    url("../public/fonts/vazir/Vazir.woff2") format("woff2"),
-    url("../public/fonts/vazir/Vazir.woff") format("woff"),
-    url("../public/fonts/vazir/Vazir.ttf") format("truetype");
+  src: url("/fonts/vazir/Vazir.eot");
+  src: url("/fonts/vazir/Vazir.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/vazir/Vazir.woff2") format("woff2"),
+    url("/fonts/vazir/Vazir.woff") format("woff"),
+    url("/fonts/vazir/Vazir.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
