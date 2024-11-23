@@ -19,43 +19,43 @@ const FooterSocial = () => {
       id: 1,
       name: "Linkedin",
       icon: <BiLogoLinkedin className="text-lg" />,
-      href: "https://www.linkedin./in/"
+      href: "https://www.linkedin./in/kuarmonia"
     },
     {
       id: 2,
       name: "Github",
       icon: <BiLogoGithub className="text-lg" />,
-      href: "https://www.github.com/",
+      href: "https://www.github.com/kuarmonia",
     },
     {
       id: 3,
       name: "Facebook",
       icon: <BiLogoFacebook className="text-lg" />,
-      href: "https://www.facebook.com/",
+      href: "https://www.facebook.com/kuarmonia",
     },
     {
       id: 4,
       name: "Instagram",
       icon: <BiLogoInstagram className="text-lg" />,
-      href: "https://www.instagram.com/",
+      href: "https://www.instagram.com/kuarmonia",
     },
     {
       id: 5,
       name: "Twitter",
       icon: <BiLogoTwitter className="text-lg" />,
-      href: "https://www.twitter.com/",
+      href: "https://www.twitter.com/kuarmonia",
     },
     {
       id: 6,
       name: "Pinterest",
       icon: <BiLogoPinterest className="text-lg" />,
-      href: "https://www.pinterest.com/",
+      href: "https://www.pinterest.com/kuarmonia",
     },
     {
       id: 7,
       name: "Tiktok",
       icon: <BiLogoTiktok className="text-lg" />,
-      href: "https://www.tiktok.com/",
+      href: "https://www.tiktok.com/kuarmonia",
     },
   ];
 

@@ -1,6 +1,6 @@
 
 
-import hotelTypes from "@/data/hotelTypes";
+import hotelTypes from "@/data/migrationMethods";
 import useGetCountries from "@/hooks/useGetCountries";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";

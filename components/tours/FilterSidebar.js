@@ -1,6 +1,6 @@
 
 
-import hotelTypes from "@/data/hotelTypes";
+import migrationMethods from "@/data/migrationMethods";
 import useGetCountries from "@/hooks/useGetCountries";
 import React, { useState } from "react";
 // import { AiOutlineReload } from "react-icons/ai";
@@ -76,10 +76,10 @@ const FilterSidebar = () => {
       <section className="flex flex-col gap-y-4 md:sticky md:top-4">
         {/* Choose Category */}
         <div className="flex flex-col gap-y-4 border py-2 px-4 rounded">
-          <h2 className="text-lg">Choose Category</h2>
+          <h2 className="text-lg">انتخاب دسته بندی</h2>
           <div className="flex flex-col gap-y-2.5 h-40 overflow-y-auto">
-            {hotelTypes?.length === 0 && <>Loading...</>}
-            {hotelTypes?.map(({ name, icon }, index) => (
+            {migrationMethods?.length === 0 && <>Loading...</>}
+            {migrationMethods?.map(({ name, icon }, index) => (
               <label
                 key={index}
                 htmlFor={name}
@@ -111,7 +111,7 @@ const FilterSidebar = () => {
 
         {/* Choose Country */}
         <div className="flex flex-col gap-y-4 border py-2 px-4 rounded">
-          <h2 className="text-lg">Choose Country</h2>
+          <h2 className="text-lg">انتخاب کشور مقصد</h2>
           <div className="flex flex-col gap-y-2.5 h-40 overflow-y-auto">
             {countries?.length === 0 && <>Loading...</>}
             {countries?.map((country, index) => (
@@ -149,7 +149,7 @@ const FilterSidebar = () => {
 
         {/* Price Range */}
         <div className="flex flex-col gap-y-4 border py-2 px-4 rounded">
-          <h2 className="text-lg">Price Range</h2>
+          <h2 className="text-lg">رنج قیمت </h2>
           <label htmlFor="price" className="flex flex-col gap-y-2">
             <input
               type="range"
@@ -172,7 +172,7 @@ const FilterSidebar = () => {
 
         {/* Date Range */}
         <div className="flex flex-col gap-y-4 border py-2 px-4 rounded">
-          <h2 className="text-lg">Date Range</h2>
+          <h2 className="text-lg">رنج تاریخ</h2>
           <label
             htmlFor="startDate"
             className="flex flex-row gap-x-2 items-center"

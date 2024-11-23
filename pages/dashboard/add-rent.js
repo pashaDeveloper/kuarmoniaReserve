@@ -1,7 +1,7 @@
 
 
 import LoadImage from "@/components/shared/image/LoadImage";
-import hotelTypes from "@/data/hotelTypes";
+import migrationMethods from "@/data/migrationMethods";
 import useGetCountries from "@/hooks/useGetCountries";
 import Panel from "@/layouts/Panel";
 import dynamic from "next/dynamic";

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTravelAvailability } from "@/features/travelAvailability/travelAvailabilitySlice";
 import { BiChevronDown } from "react-icons/bi";
 import { TbBuildingChurch } from "react-icons/tb";
-import hotelTypes from "@/data/hotelTypes";
+import migrationMethods from "@/data/migrationMethods";
 
 const TravelTypes = () => {
   const travelAvailability = useSelector((state) => state?.travelAvailability);
@@ -25,7 +25,7 @@ const TravelTypes = () => {
     setIsOpen(!isOpen);
   };
 
-  const types = hotelTypes;
+  const types = migrationMethods;
 
   return (
     <section>
@@ -40,7 +40,7 @@ const TravelTypes = () => {
               <>{travelAvailability?.hotelType}</>
             ) : (
               <>
-                Hotel Types
+                نحوه مهاجرت
                 <BiChevronDown />
               </>
             )}
