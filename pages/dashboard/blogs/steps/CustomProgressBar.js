@@ -1,8 +1,6 @@
 // CustomProgressBar.js
 import React from 'react';
-import { FaHome } from "react-icons/fa";
 import { FaAddressCard } from "react-icons/fa";
-import { BiSolidCategoryAlt } from "react-icons/bi";
 import {BranchIcon,ContentIcon,RankIcon} from '@/utils/SaveIcon';
 const steps = [
   {

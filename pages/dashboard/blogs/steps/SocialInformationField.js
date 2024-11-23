@@ -11,7 +11,6 @@ const SocialInformationField = ({ control, index, remove, errors, getValues }) =
     { id: 3, value: "FaTelegramPlane", label: "", description: "لینک به تلگرام", icon: <FaTelegramPlane className="text-blue-600 w-5 h-5" /> },
   ];
 
-  // تعریف الگوهای ولیدیشن برای هر شبکه اجتماعی
   const urlPatterns = {
     FaInstagram: /^https?:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_.]+(?:\/p\/[A-Za-z0-9_-]+)?\/?$/,
     FaTwitter: /^https?:\/\/(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/,

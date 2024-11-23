@@ -1,5 +1,8 @@
 import User from "@/models/user.model";
 import generateAccessToken from "@/utils/jwt.util";
+import createSeedBlogForFirstUser from "@/libs/seed/seedBlog";
+import createSeedCategories from "@/libs/seed/seedCategories";
+import createSeedTags from "@/libs/seed/seedTags";
 
 // signup
 export async function signUpUser(req) {
@@ -32,6 +35,10 @@ export async function signUpUser(req) {
       });
 
       const result = await user.save({ validateBeforeSave: true });
+        console.log('userid',user._id)
+        await createSeedTags(user._id);
+        await createSeedCategories(user._id);
+        await createSeedBlogForFirstUser(user._id);
       if (result) {
           return {
               success: true,

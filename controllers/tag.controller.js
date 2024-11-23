@@ -2,13 +2,14 @@ import Tag from '@/models/tag.model';
 
 export async function addTag(req) {
   try {
-    const { title, description, robots,keynotes } = req.body; 
+    const { title, description, keywords, robots ,authorId} = req.body; 
 
     const tag = await Tag.create({
       title,
       description,
+      keywords,
       robots,
-      keywords: JSON.parse(keynotes),
+      authorId
     });
 
     if (tag) {
@@ -41,10 +42,14 @@ export async function getTags(req) {
       ? { title: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
 
-    const tags = await Tag.find(searchQuery)
+      const tags = await Tag.find({ isDeleted: false })
       .skip(skip)
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .populate('authorId', 'name avatar.url') 
+      .select('_id tagId title description createdAt status ');
+  
 
+  
     const total = await Tag.countDocuments(searchQuery);
 
     return {

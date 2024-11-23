@@ -17,7 +17,7 @@ import {
 } from "@/utils/functionHelpers";
 import { toast } from "react-hot-toast";
 import { blogColumns } from "@/utils/columnsConfig";
-import  Metrics  from "@/components/shared/tools/Metrics";
+import Metrics from "@/components/shared/tools/Metrics";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import { useRouter } from "next/router";
 import LoadImage from "@/components/shared/image/LoadImage";
@@ -29,6 +29,7 @@ const ListBlog = () => {
     page: currentPage,
     limit: 7,
   });
+  console.log(data);
   const [updateBlog] = useUpdateBlogMutation();
   const [blogToView, setBlogToView] = useState(null);
   const [isMobilePopoverOpen, setIsMobilePopoverOpen] = useState(false);
@@ -60,19 +61,18 @@ const ListBlog = () => {
   return (
     <>
       <Panel>
-  
         {/* نمایش داده‌های بلاگ‌ها */}
         <AddButton onClick={handleAddItem} />
 
-        {(!data?.data || data?.data.length === 0 || isLoading) ? (
-  <>
-    {[1].map((i) => (
-      <SkeletonItem key={i} repeat={5} />
-    ))}
-  </>
-) : (
-  data?.data?.length > 0 &&
-  data?.data?.map((blog) => (
+        {!data?.data || data?.data.length === 0 || isLoading ? (
+          <>
+            {[1].map((i) => (
+              <SkeletonItem key={i} repeat={5} />
+            ))}
+          </>
+        ) : (
+          data?.data?.length > 0 &&
+          data?.data?.map((blog) => (
             <div
               key={blog.id}
               className="mt-4 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2  transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-slate-700 dark:text-white"
@@ -81,7 +81,7 @@ const ListBlog = () => {
                 <StatusIndicator isActive={blog.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
                   <LoadImage
-                    src={blog?.authorId?.avatar?.url}
+                    src={blog?.featuredImage?.url}
                     alt={``}
                     height={100}
                     width={100}
@@ -89,22 +89,26 @@ const ListBlog = () => {
                   />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
-                      <span className="hidden lg:flex">{blog?.authorId?.name}</span>
-                      <span className="flex lg:hidden text-right text-sm">{blog.title}</span>
-                      
+                      <span className="hidden lg:flex">
+                        {blog?.authorId?.name}
+                      </span>
+                      <span className="flex lg:hidden text-right text-sm">
+                        {blog.title}
+                      </span>
                     </span>
                     <span className="text-xs hidden lg:flex">
                       {new Date(blog.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                       <span className="text-xs flex lg:hidden">
-                       <Metrics
-                       gap={3}
-  likeCount={30} 
-  dislikeCount={20} 
-  views={50}
-  rating={4.5} 
-  iconSize={15}
-/>                    </span>
+                    <span className="text-xs flex lg:hidden">
+                      <Metrics
+                        gap={3}
+                        likeCount={30}
+                        dislikeCount={20}
+                        views={50}
+                        rating={4.5}
+                        iconSize={15}
+                      />{" "}
+                    </span>
                   </article>
                 </div>
               </div>
@@ -114,13 +118,13 @@ const ListBlog = () => {
               </div>
 
               <div className="hidden lg:col-span-2 gap-2 text-center lg:flex justify-center  items-center ">
-              <Metrics 
-  likeCount={blog.likeCount} 
-  dislikeCount={blog.dislikeCount} 
-  views={blog.views}
-  rating={blog.rating} 
-  iconSize={18}
-/>
+                <Metrics
+                  likeCount={blog.likeCount}
+                  dislikeCount={blog.dislikeCount}
+                  views={blog.views}
+                  rating={blog.rating}
+                  iconSize={18}
+                />
               </div>
 
               <div className="col-span-1 text-gray-500 text-center flex justify-right flex-row-reverse items-center">
@@ -138,8 +142,8 @@ const ListBlog = () => {
                 </svg>
               </div>
             </div>
-       ))
-      )}
+          ))
+        )}
       </Panel>
 
       <Popover

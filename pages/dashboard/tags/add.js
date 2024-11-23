@@ -2,16 +2,16 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import { useAddTagMutation, useUpdateTagMutation } from "@/services/tag/tagApi";
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState ,useMemo} from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
 import { LiaRobotSolid } from "react-icons/lia";
-import {Plus,Minus} from "@/utils/SaveIcon";
+import { useSelector } from "react-redux";
 
 const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [keynotes, setKeynotes] = useState([""]);
+  const user = useSelector((state) => state?.auth);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
     useAddTagMutation();
@@ -19,7 +19,14 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     updateTag,
     { isLoading: isUpdating, data: updateData, error: updateError },
   ] = useUpdateTagMutation();
-console.log(tagToEdit)
+
+  const defaultValues = useMemo(() => {
+    return {
+      id: user?._id,
+    };
+  }, [user]);
+
+
   useEffect(() => {
     if (tagToEdit) {
       setValue("title", tagToEdit.title);
@@ -77,13 +84,12 @@ console.log(tagToEdit)
 
   const handleAddOrUpdateTag = (formData) => {
     try {
-    
-        formData = {
-          ...formData,
-          robots: selectedOptions.map(option => ({ id: option.id, value: option.value })),
-          keynotes: JSON.stringify(keynotes)
-        };
-      
+      formData.keywords = formData.keywords
+        .split(",")
+        .map((keyword) => keyword.trim());
+      formData.robots = selectedOptions.map(option => ({ id: option.id, value: option.value }));
+      formData.authorId=user?._id;
+
       if (tagToEdit) {
         updateTag({ id: tagToEdit._id, ...formData }).unwrap();
       } else {

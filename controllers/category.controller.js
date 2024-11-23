@@ -3,11 +3,12 @@ import Category from '@/models/category.model';
 // Add a new category
 export async function addCategory(req) {
   try {
-    const { title, description } = req.body;
+    const { title, description ,authorId} = req.body;
 
     const category = await Category.create({
       title,
       description,
+      authorId
     });
     if (category) {
       return {
