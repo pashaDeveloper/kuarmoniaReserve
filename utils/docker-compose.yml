@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "3000"  # این پورت داخلی برای دسترسی به اپلیکیشن شما است
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`kuarmoniagroup.com`)"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.routers.app.tls.certresolver=myresolver"  # استفاده از Let's Encrypt
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: kuarmonia
+
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true"  # برای فعال کردن API دسترسی به Traefik (اختیاری)
+      - "--providers.docker=true"  # پشتیبانی از Docker برای شناسایی سرویس‌ها
+      - "--entrypoints.web.address=:80"  # برای پشتیبانی از HTTP
+      - "--entrypoints.websecure.address=:443"  # برای پشتیبانی از HTTPS
+      - "--certificatesresolvers.myresolver.acme.httpChallenge.entryPoint=web"  # ACME HTTP Challenge
+      - "--certificatesresolvers.myresolver.acme.email=orebu@tmvaswgcsdlcscaacsafdvgfdbybudc.com"  # ایمیل برای Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"  # ذخیره‌سازی گواهی‌ها
+    ports:
+      - "80:80"  # HTTP
+      - "443:443"  # HTTPS
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"  # برای اتصال به Docker API
+      - "./letsencrypt:/letsencrypt"  # برای ذخیره‌سازی گواهی‌ها
+    restart: always
