@@ -89,7 +89,7 @@ const UpdateUser = ({ setIsOpen }) => {
       {(avatarPreview || user?.avatar?.url) && (
         <div className="relative h-[100px] w-[100px]">
           <LoadImage
-            src={avatarPreview || `/${user?.avatar?.url}`}
+            src={avatarPreview || `${user?.avatar?.url}`}
             alt={user?.avatar?.public_id || "avatar"}
             height={100}
             width={100}
@@ -146,6 +146,7 @@ const UpdateUser = ({ setIsOpen }) => {
       <select name="role" id="role" {...register("role")} className="">
         <option value="user">کاربر</option>
         <option value="admin">مدیر</option>
+        <option value="operator">اپراتور</option>
       </select>
     </label>
   

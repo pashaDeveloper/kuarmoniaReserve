@@ -1,7 +1,7 @@
 
 import { deleteUser, getUser, updateUser } from "@/controllers/user.controller";
 import authorization from "@/middleware/authorization.middleware";
-import upload from "@/middleware/upload.middleware";
+import getUploadMiddleware from "@/middleware/upload.middleware";
 import verify from "@/middleware/verify.middleware";
 
 export const config = {
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
                 error: err.message,
               });
             }
-
+            const upload = getUploadMiddleware("user");    
             upload.single("avatar")(req, res, async (err) => {
               if (err) {
                 return res.send({

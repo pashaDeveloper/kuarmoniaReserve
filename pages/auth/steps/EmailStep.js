@@ -22,8 +22,8 @@ const EmailStep = ({ register, errors, prevStep, nextStep }) => {
               message: "ایمیل باید حداقل 6 کاراکتر باشد",
             },
             maxLength: {
-              value: 30,
-              message: "رمز عبور نباید بیشتر از ۳۰ کاراکتر باشد",
+              value: 50,
+              message: "ایمیل  نباید بیشتر از 50 کاراکتر باشد",
             },
           })}
           placeholder="john@example.com"

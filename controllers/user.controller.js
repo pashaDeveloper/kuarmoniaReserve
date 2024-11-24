@@ -43,7 +43,6 @@ export async function getUsers() {
   }
 }
 
-// دریافت اطلاعات یک کاربر
 export async function getUser(req) {
   try {
     const user = await User.findById(req.query.id);
@@ -81,8 +80,6 @@ export async function updateUser(req) {
     } else {
       const updatedUser = { ...req.body };
 
-      // جلوگیری از تغییر نقش و وضعیت 
-      superAdmin
       if (user.role === 'superAdmin') {
         if (updatedUser.role || updatedUser.status === 'inActive') {
           return {
