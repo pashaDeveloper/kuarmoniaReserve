@@ -76,8 +76,8 @@ const Reviews = ({ className }) => {
         <div className="w-full h-full flex flex-col gap-y-12">
           <article className="flex flex-col gap-y-4">
             <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-              <HighlightText>Traveller&apos;s</HighlightText> Review
-              <LoadImage
+            <HighlightText>مهاجرت و پناهندگی</HighlightText>
+            <LoadImage
                 src="/assets/home-page/destination/underline.svg"
                 alt="arrow"
                 height={7}
@@ -86,13 +86,12 @@ const Reviews = ({ className }) => {
               />
             </h1>
             <p className="text-base">
-              Discover the Impact of Our Products and Services Through Their
-              Testimonials
-            </p>
+  تجربیات و نظرات مشتریان ما در رابطه با خدمات مهاجرت و پناهندگی
+</p>
           </article>
 
           {!isLoading && reviews?.length === 0 && (
-            <p className="text-sm text-red-500">No reviews found!</p>
+            <p className="text-sm text-red-500">موردی یافت نشد!</p>
           )}
 
           {isLoading && reviews?.length === 0 ? (
