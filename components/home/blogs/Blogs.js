@@ -10,7 +10,7 @@ const Blogs = () => {
   return (
     <section
       id="blogs"
-      className="bg-contain h-full py-12"
+      className=" bg-clip-border h-full py-12"
       style={{
         backgroundImage: "url(/assets/home-page/blogs-and-travel-guide/bg.svg)",
         backgroundPosition: "125% 80%",

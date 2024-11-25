@@ -7,50 +7,25 @@ import {TagIcon} from "@/utils/SaveIcon"
 import { FaInstagram, FaTwitter, FaTelegramPlane } from 'react-icons/fa';
 
 const MainContent = ({
+  title="",
+  content="",
   galleryPreview,
-  publishDate,
-  watch,
-  editorData,
-  selectedTags,
-  author,
-  avatar
+  publishDate = null,
+  watch = () => {},
+  editorData = "",
+  selectedTags = [],
+  author = "",
+  avatar 
 }) => {
   
-  // وضعیت‌های بارگذاری و خطا برای تصویر اصلی
-  const [isMainImageLoading, setIsMainImageLoading] = useState(true);
-  const [hasMainImageError, setHasMainImageError] = useState(false);
-
-  // وضعیت‌های بارگذاری و خطا برای آواتار
-  const [isAvatarLoading, setIsAvatarLoading] = useState(true);
-  const [hasAvatarError, setHasAvatarError] = useState(false); 
+ 
 
 
   // هندلرهای تصویر اصلی
-  const handleMainImageLoad = () => {
-    setIsMainImageLoading(false);
-  };
-
-  const handleMainImageError = () => {
-    setIsMainImageLoading(false);
-    setHasMainImageError(true);
-  };
-
-  // هندلرهای آواتار
-  const handleAvatarLoad = () => {
-    setIsAvatarLoading(false);
-  };
-
-  const handleAvatarError = () => {
-    setIsAvatarLoading(false);
-    setHasAvatarError(true);
-  };
 
 
-  useEffect(() => {
-    if (!galleryPreview || !galleryPreview[0]) {
-      setIsMainImageLoading(true);
-    }
-  }, [galleryPreview]);
+
+
     const colors = [
       { bg: 'bg-orange-200', text: 'text-orange-700' },
       { bg: 'bg-green-200', text: 'text-green-700' },
@@ -61,11 +36,11 @@ const MainContent = ({
       { bg: 'bg-pink-200', text: 'text-pink-700' },
     ];
   return (
-    <div className="max-w-screen-xl bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
+    <div className="w-full mb-10 bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
       
-      {/* بخش تصویر اصلی با Skeleton */}
+
       <div className="relative flex justify-center">
-        {isMainImageLoading && (
+        {/* {isMainImageLoading && (
           <SkeletonImage
             width={1150}
             height={500}
@@ -74,22 +49,25 @@ const MainContent = ({
             borderRadius="rounded-xl"
             className="z-10"
           />
-        )}
-        {!hasMainImageError &&  galleryPreview?.length > 0  && (
-          <img
-            src={galleryPreview ? galleryPreview[0] :''}
-            alt="title"
-            className={`object-cover text-center overflow-hidden rounded-lg ${isMainImageLoading ? 'hidden' : 'block z-0'}`}
-            style={{
-              minHeight: "500px",
-              width: '100%',
-              height: '500px',
-            }}
-            onLoad={handleMainImageLoad}
-            onError={handleMainImageError}
-          />
-        )}
-        {hasMainImageError && (
+        )} */}
+
+<section
+      className=" h-[70vh] w-full px-4"
+      style={{
+        backgroundImage: `url(${galleryPreview})`,
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+      }}
+    >
+
+
+
+
+      {/* <Search /> */}
+    </section>
+          
+  
+        {/* {hasMainImageError && (
           <img
             src="https://via.placeholder.com/1150x500" // تصویر جایگزین در صورت خطا
             alt="fallback"
@@ -100,35 +78,34 @@ const MainContent = ({
               height: '500px',
             }}
           />
-        )}
+        )} */}
       </div>
 
       {/* محتوای اصلی */}
       <div className="max-w-3xl mx-auto">
         <div className="relative rounded-full">
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
-            <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
-               {isAvatarLoading && (
+            <div className="profile-container text-center shine-effect rounded-full flex justify-center mb-4">
+               {/* {isAvatarLoading && (
                 <SkeletonImage
                   height={100}
                   width={100}
                   showSize={false}
                   borderRadius="rounded-full"
                 />
-              )}    
+              )}     */}
               <LoadImage
                 src={avatar}
                 alt="avatar"
                 height={300}
                 width={300}
-                className={`h-[100px] w-[100px] profile-pic rounded-full `}
-                onLoad={handleAvatarLoad} 
-                onError={handleAvatarError} 
+                className={`h-[100px] w-[100px] profile-pic rounded-full text-center `}
+           
               />
             </div>
           </div>
 
-          <div className="relative bg-gray-50 z-10 dark:bg-gray-800 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 rounded-b-lg">
+          <div className="relative bg-gray-50 z-10 dark:bg-gray-800 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 ">
             <div className="flex items-center mt-14 justify-center">
               <div className="text-gray-700">
                 <p>
@@ -150,17 +127,17 @@ const MainContent = ({
               </div>
             </div>
             <h1 className="font-bold text-3xl mb-2 mt-12 text-center">
-              {watch("title") ? (
-                `${watch("title")}`
+              {title ? (
+                `${title}`
               ) : (
                 <SkeletonText lines={1} />
               )}
             </h1>
             <div className="text-base leading-8 my-5 text-justify">
-              {editorData ? (
+              {content ? (
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: editorData,
+                    __html: content,
                   }}
                 ></div>
               ) : (
@@ -172,13 +149,14 @@ const MainContent = ({
             {selectedTags.length ? (
   selectedTags.map((tag, index) => {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    console.log("tag",tag)
     return (
       <div
         key={index}
         className={`ml-2 text-xs inline-flex items-center  leading-sm uppercase px-3 py-1 rounded-full ${randomColor.bg}  ${randomColor.text} mb-2`}
       >
 <TagIcon className="ml-1" />
-  {tag.value}
+  {tag.title}
       </div>
     );
   })

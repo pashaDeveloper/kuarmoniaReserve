@@ -78,7 +78,7 @@ const FilterSidebar = () => {
         <div className="flex flex-col gap-y-4 border py-2 px-4 rounded">
           <h2 className="text-lg">انتخاب دسته بندی</h2>
           <div className="flex flex-col gap-y-2.5 h-40 overflow-y-auto">
-            {migrationMethods?.length === 0 && <>Loading...</>}
+            {migrationMethods?.length === 0 && <>در حال بارگذاری ...</>}
             {migrationMethods?.map(({ name, icon }, index) => (
               <label
                 key={index}

@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
+
         verify(req, res, async (err) => {
           if (err) {
             return res.status(401).json({
@@ -44,14 +45,9 @@ export default async function handler(req, res) {
 
     case "PATCH":
       try {
-        verify(req, res, async (err) => {
-          if (err) {
-            return res.status(401).json({
-              success: false,
-              error: err.message,
-            });
-          }
+        console.log("req",req.body)
 
+        verify(req, res, async (err) => {
           authorization("superAdmin")(req, res, async (err) => {
             if (err) {
               return res.status(403).json({
@@ -59,7 +55,6 @@ export default async function handler(req, res) {
                 error: err.message,
               });
             }
-
             const result = await updateBlog(req);
             return res.status(200).json(result);
           });

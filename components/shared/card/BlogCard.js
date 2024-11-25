@@ -48,14 +48,14 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
       </div>
       <div className="px-6 py-3">
         <div className="mb-3 flex items-center justify-between">
-          <h5 className="block font-sans text-xl font-medium tracking-normal dark:text-blue-100 min-w-[80%] ">
+          <h5 className="block  text-xl  tracking-normal dark:text-blue-100 min-w-[80%] ">
             {title ? (
               `${title}`
             ) : (
               <SkeletonText lines={1} />
             )}
           </h5>
-          <p className="flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+          <p className="flex items-center gap-1.5 text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -72,7 +72,7 @@ const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
             5.0
           </p>
         </div>
-        <div className="block font-sans text-base text-justify font-light leading-relaxed text-gray-700 dark:text-blue-100 antialiased">
+        <div className="block font-sans text-base text-justify  leading-relaxed text-gray-700 dark:text-blue-100 antialiased">
           {description ? (
             description
           ) : (

@@ -39,7 +39,7 @@ const FilteredTours = () => {
             ))
           : tours.map((tour) => <Card key={tour._id} tour={tour} />)}
         {!isLoading && tours?.length === 0 && (
-          <span>No tours found for this filter !</span>
+          <span>هیچ فرصت مناسب برای شما یافت نشد</span>
         )}
       </div>
     </section>

@@ -1,9 +1,9 @@
-import { addBlog, getBlogs } from "@/controllers/blog.controller";
+import { addBlog, getBlogs,getClientBlogs } from "@/controllers/blog.controller";
 import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
-    bodyParser: false, // غیر فعال کردن body parser داخلی
+    bodyParser: false,
     externalResolver: true,
   },
 };
@@ -35,6 +35,14 @@ export default async function handler(req, res) {
       break;
     case "GET":
       try {
+
+
+        if (req.query.type === "client") {
+
+          const result = await getClientBlogs(req);
+          return res.status(200).json(result);
+        }
+
         const result = await getBlogs(req);
         return res.status(200).json(result);
       } catch (error) {

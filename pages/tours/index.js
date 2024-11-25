@@ -9,10 +9,10 @@ const Tours = () => {
   return (
     <main>
       <Head>
-        <title>
-          Travel Landing Page by Travello - Filter Your Required Travels
-        </title>
-      </Head>
+  <title>
+    مهاجرت با کارمونیا - مسیر آسان به دنیای جدید با مشاوره و خدمات تخصصی
+  </title>
+</Head>
       <Main>
         <Banner />
         <Destinations />

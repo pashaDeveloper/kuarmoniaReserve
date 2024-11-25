@@ -1,6 +1,7 @@
 // controllers/blog.controller.js
 import Blog from '@/models/blog.model';
 import Like from '@/models/like.model';
+import User from '@/models/user.model';
 
 export async function addBlog(req) {
   try {
@@ -130,6 +131,52 @@ export async function getBlogs(req) {
 }
 
 
+export async function getClientBlogs(req) {
+  try {
+    const { page = 1, limit = 8 } = req.query; 
+    const skip = (page - 1) * limit;
+
+    const filter = {
+      isDeleted: false,
+      publishStatus: "approved", 
+      status: "active", 
+    };
+    const superAdmin = await User.findOne({ role: 'superAdmin' });
+    console.log(superAdmin)
+    const blogs = await Blog.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .populate('authorId', 'name avatar.url') 
+    .select('_id blogId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
+
+    const total = await Blog.countDocuments({ isDeleted: false });
+
+    if (blogs.length > 0) {
+      return {
+        success: true,
+        data: blogs,
+        superAdmin:{
+          avatar:superAdmin?.avatar?.url,
+          name:superAdmin?.name
+        },
+        total,
+        message: "بلاگ‌ها با موفقیت دریافت شد",
+      };
+    } else {
+      return {
+        success: false,
+        message: "هیچ بلاگی یافت نشد",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
+
 export async function getBlogsForDropDownMenu() {
   try {
     const blogs = await Blogs.find({ isDeleted: false, status: 'active' }).select('id title description');
@@ -156,7 +203,12 @@ export async function getBlogsForDropDownMenu() {
 
 export async function getBlog(req) {
   try {
-    const blog = await Blog.findById(req.query.id);
+    console.log("blog",req.query.id)
+
+    const blog = await Blog.findById(req.query.id)
+    .populate('authorId', 'name avatar.url') 
+    .populate('tags', 'title') 
+    .select('_id blogId authorId title description content createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
     if (blog) {
       return {
         success: true,
@@ -182,10 +234,9 @@ export async function getBlog(req) {
 
 export async function updateBlog(req) {
   const { id } = req.query;
-  console.log("req.query", req.query);
+
   try {
     const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
-    console.log('publishStatus',publishStatus)
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;

@@ -23,7 +23,6 @@ const ListCategory = () => {
     search: searchTerm,
   });
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
-  console.log("totalPages",totalPages)
   const [updateCategory] = useUpdateCategoryMutation();
   const categories = useMemo(() => Array.isArray(data?.data) ? data.data : [], [data]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

@@ -47,7 +47,7 @@ const ListBlog = () => {
     <>
       <Panel>
         {/* نمایش داده‌های بلاگ‌ها */}
-        <AddButton onClick={handleAddItem} />
+        <AddButton onClick={() => router.push(`/dashboard/blogs/add`)} />
 
         {!data?.data || data?.data.length === 0 || isLoading ? (
           <>

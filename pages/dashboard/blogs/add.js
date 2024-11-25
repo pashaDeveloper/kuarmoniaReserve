@@ -19,6 +19,7 @@ import SendButton from "@/components/shared/button/SendButton"
 import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+import {  PrevIcon } from "@/utils/SaveIcon";
 
 const Add = () => {
   const router = useRouter();
@@ -223,10 +224,15 @@ const Add = () => {
     <section
       className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
     >
+    <a onClick={handleBackList} className="fixed bottom-4 right-4 group items-center reject-button rounded-full  !bg-red-800/20 shadow-lg !p-4 text-slate-300 transition-all hover:text-slate-100 z-50" title="بازگشت">
+    
+    <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:translate-x-1" />
+
+    </a>
       <div className="wave"></div>
       <div className="wave wave2"></div>
       <div className="wave wave3"></div>
-
+      
       <div className="w-full h-full flex flex-col justify-center items-center">
      
         <FormProvider {...methods}>
@@ -236,12 +242,7 @@ const Add = () => {
           >
             <div className="flex  items-center">
             <div>
-          <a onClick={handleBackList} className="flex cursor-pointer items-center text-slate-300 transition-all hover:text-slate-100">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
-              <path fillRule="evenodd" d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z" clipRule="evenodd"></path>
-            </svg>
-            <span className="mr-2">بازگشت</span>
-          </a>
+         
         </div>
             <CustomProgressBar
               currentStep={currentStep}

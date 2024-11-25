@@ -18,8 +18,7 @@ export default function Home() {
     <main>
       <Head>
         <title>
-          {/* Travel Landing Page by Travello - Comprehensive travel platform for
-          diverse booking needs */}
+        مهاجرت و سرمایه گذاری با کارمونیا - پلتفرم جامع برای تجربه‌های  آسان در مهاجرت و پناهندگی و سرمایه گذاری
         </title>
       </Head>
       <Main>

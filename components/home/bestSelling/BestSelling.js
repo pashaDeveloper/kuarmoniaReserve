@@ -44,8 +44,8 @@ const BestSelling = ({ className }) => {
                 href="/tours"
                 className="flex flex-row gap-x-1 items-center whitespace-nowrap"
               >
-                See More <BiRightArrowAlt />
-              </Link>
+    بیشتر ببینید <BiRightArrowAlt />
+    </Link>
             </div>
           </div>
 
