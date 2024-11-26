@@ -207,8 +207,9 @@ export async function getBlog(req) {
 
     const blog = await Blog.findById(req.query.id)
     .populate('authorId', 'name avatar.url') 
+    .populate('category', 'title')
     .populate('tags', 'title') 
-    .select('_id blogId authorId title description content createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
+    .select('_id blogId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured featuredImage.url metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
     if (blog) {
       return {
         success: true,

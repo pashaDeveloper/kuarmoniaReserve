@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class', // اضافه کردن حالت 'class'
+  darkMode: 'class', 
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,8 +8,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      spacing: {
+        '116': '28rem', 
+        '128': '32rem', 
+      },
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))',
+        '20': 'repeat(20, minmax(0, 1fr))',
+        '24': 'repeat(24, minmax(0, 1fr))', 
+      },
       colors: {
-        // اضافه کردن رنگ‌های جدید
         light: '#edf2f9',
         dark: '#152e4d',
         darker: '#12263f',

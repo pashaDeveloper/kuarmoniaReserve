@@ -94,6 +94,17 @@ const blogSchema = new Schema(
       type: [String],
       default: [],
     },
+    canonicalUrl: {
+      type: String,
+      required: false,
+      trim: true,
+      validate: {
+        validator: function(v) {
+          return /^(https?:\/\/[^\s$.?#].[^\s]*)$/.test(v);
+        },
+        message: "URL معتبر نیست",
+      },
+    },
     readTime: {
       type: String,
       default: 0,
@@ -195,6 +206,18 @@ blogSchema.virtual('rating').get(function() {
 
   const likeRatio = this.likes.length / totalReactions;
   return Math.round((likeRatio * 5 + Number.EPSILON) * 100) / 100; 
+});
+
+const defaultDomain = process.env.NEXT_PUBLIC_BASE_URL;
+
+blogSchema.pre('save', async function(next) {
+  if (this.isNew) {
+    this.blogId = await getNextSequenceValue('blogId');
+  }
+  if (!this.canonicalUrl) {
+    this.canonicalUrl = `${defaultDomain}/blog/${this.slug}/${this._id}`;
+  }
+  next();
 });
 
 blogSchema.set('toJSON', { virtuals: true });

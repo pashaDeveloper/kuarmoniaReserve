@@ -1,70 +1,38 @@
-// MainContent.js
+  
 import React, { useState, useEffect } from "react";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
 import LoadImage from "@/components/shared/image/LoadImage";
 import { TagIcon } from "@/utils/SaveIcon";
 import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
 
-const MainContent = ({
-  title = "",
-  content = "",
-  galleryPreview,
-  publishDate = null,
-  selectedTags = [],
-  author = "",
-  avatar,
-}) => {
-  const colors = [
-    { bg: "bg-orange-200", text: "text-orange-700" },
-    { bg: "bg-green-200", text: "text-green-700" },
-    { bg: "bg-blue-200", text: "text-blue-700" },
-    { bg: "bg-red-200", text: "text-red-700" },
-    { bg: "bg-purple-200", text: "text-purple-700" },
-    { bg: "bg-yellow-200", text: "text-yellow-700" },
-    { bg: "bg-pink-200", text: "text-pink-700" },
-  ];
-  return (
-    <div className="w-full mb-10 bg-gray-50 dark:bg-gray-800 dark:text-gray-100 mx-auto relative">
-      <div className="relative flex justify-center">
-        {/* {isMainImageLoading && (
-          <SkeletonImage
-            width={1150}
-            height={500}
-            heightClass={500}
-            showSize={true}
-            borderRadius="rounded-xl"
-            className="z-10"
-          />
-        )} */}
-
-        <section
-          className=" h-[70vh] w-full px-4"
-          style={{
-            backgroundImage: `url(${galleryPreview})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* <Search /> */}
-        </section>
-
-        {/* {hasMainImageError && (
-          <img
-            src="https://via.placeholder.com/1150x500" // تصویر جایگزین در صورت خطا
-            alt="fallback"
-            className="object-cover text-center overflow-hidden rounded-lg z-0"
-            style={{
-              minHeight: "500px",
-              width: '100%',
-              height: '500px',
-            }}
-          />
-        )} */}
-      </div>
-
-      {/* محتوای اصلی */}
-      <div className="max-w-3xl mx-auto">
+  const Content =  ({
+    title = "",
+    content = "",
+    galleryPreview,
+    publishDate = null,
+    selectedTags = [],
+    author = "",
+    avatar,
+  }) => {
+    const colors = [
+        { bg: "bg-orange-200", text: "text-orange-700" },
+        { bg: "bg-green-200", text: "text-green-700" },
+        { bg: "bg-blue-200", text: "text-blue-700" },
+        { bg: "bg-red-200", text: "text-red-700" },
+        { bg: "bg-purple-200", text: "text-purple-700" },
+        { bg: "bg-yellow-200", text: "text-yellow-700" },
+        { bg: "bg-pink-200", text: "text-pink-700" },
+      ];
+      return (
+        <div className="col-span-1 md:col-span-10 shadow  mt-116 order-1 md:order-2">
+        <div className="absolute inset-0 -z-10">
+       <img
+         src={galleryPreview}
+         alt="تصویر ستون بزرگ"
+         className="w-full object-cover h-[500px]"
+       />
+     </div>
+     <div className="max-w-3xl mx-auto">
         <div className="relative rounded-full">
           <div className="absolute top-[-150px] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
             <div className="profile-container text-center shine-effect rounded-full flex justify-center mb-4">
@@ -301,8 +269,9 @@ const MainContent = ({
           </div>
         </div>
       </div>
-    </div>
+       </div>
   );
 };
+  export default Content;
 
-export default MainContent;
+  

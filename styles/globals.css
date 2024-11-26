@@ -104,11 +104,10 @@ select {
   @apply 
   focus:!ring-0 focus:!outline-0 
   focus:!outline-offset-0 
-  focus:!border-primary
-  dark:!bg-gray-700 
+  dark:!border-blue-500
+  dark:!bg-[#0a2d4d] 
   dark:focus:!border-blue-500
   dark:focus:!bg-[#0a2d4d]
-  h-12;
 }
 textarea {
   @apply form-textarea rounded text-sm resize-none;

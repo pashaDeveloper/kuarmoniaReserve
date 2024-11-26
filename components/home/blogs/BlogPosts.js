@@ -23,7 +23,7 @@ const BlogPosts = () => {
         : blogs.map((blog, index) => (
             <div
               key={index}
-              className="group flex flex-col gap-y-4 border rounded h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative"
+              className="group flex flex-col gap-y-4 border rounded cursor-pointer h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative"
               onClick={() => router.push(`/blog/${blog.id}`)}
             >
               <img
@@ -57,7 +57,7 @@ const BlogPosts = () => {
                 <h2 className="text-lg line-clamp-1">{blog.title}</h2>
                 <div className="mt-auto flex flex-col gap-y-2.5">
                   <p className="text-sm line-clamp-4 text-justify">
-                    {blog.description || "No summary available"}
+                    {blog.description || "توضیح یافت نشد"}
                   </p>
                   <p className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary px-2 py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
                     <span>
