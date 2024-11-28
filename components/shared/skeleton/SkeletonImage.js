@@ -12,7 +12,7 @@ const SkeletonImage = ({
 }) => {
   return (
     <div
-      className={`relative h-64 ${borderRadius} ${widthClass} h-[${heightClass}px] ${className}`}
+      className={`relative h-64 ${borderRadius} ${widthClass} h-[${heightClass}px] ${className} `}
     >
       <div className="absolute flex justify-center items-center top-0 left-0 w-full h-full bg-gray-300 dark:bg-gray-600 animate-pulse"></div>
       {showSize && (

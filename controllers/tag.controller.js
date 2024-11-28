@@ -39,12 +39,12 @@ export async function getTags(req) {
   try {
     const { page = 1, limit = 7, search = "" } = req.query; 
     const skip = (page - 1) * limit;
-
+console.log("search",search)
     const searchQuery = search
       ? { title: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
 
-      const tags = await Tag.find({ isDeleted: false })
+      const tags = await Tag.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
       .populate('authorId', 'name avatar.url') 

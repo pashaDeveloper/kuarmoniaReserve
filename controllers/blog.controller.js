@@ -96,10 +96,32 @@ export async function addBlog(req) {
 
 export async function getBlogs(req) {
   try {
-    const { page = 1, limit = 7 } = req.query; 
+    const { page = 1, limit = 7, search = "",userId } = req.query; 
     const skip = (page - 1) * limit;
+    const user = await User.findById(userId);
+    if (!user) {
+      return {
+        success: false,
+        message: "کاربر پیدا نشد",
+      };
+    }
+    const isSuperAdmin = user.role === 'superAdmin';
 
-    const blogs = await Blog.find({ isDeleted: false })
+    if (!isSuperAdmin) {
+      searchQuery.authorId = userId;
+    }
+
+    const searchQuery = search
+    ? { 
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+          { content: { $regex: search, $options: "i" } }
+        ],
+        isDeleted: false 
+      }
+    : { isDeleted: false };
+    const blogs = await Blog.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
@@ -107,7 +129,7 @@ export async function getBlogs(req) {
 
 
 
-    const total = await Blog.countDocuments({ isDeleted: false });
+    const total = await Blog.countDocuments(searchQuery);
 
     if (blogs.length > 0) {
       return {
@@ -142,7 +164,6 @@ export async function getClientBlogs(req) {
       status: "active", 
     };
     const superAdmin = await User.findOne({ role: 'superAdmin' });
-    console.log(superAdmin)
     const blogs = await Blog.find(filter)
     .skip(skip)
     .limit(Number(limit))
@@ -203,7 +224,6 @@ export async function getBlogsForDropDownMenu() {
 
 export async function getBlog(req) {
   try {
-    console.log("blog",req.query.id)
 
     const blog = await Blog.findById(req.query.id)
     .populate('authorId', 'name avatar.url') 
@@ -235,9 +255,10 @@ export async function getBlog(req) {
 
 export async function updateBlog(req) {
   const { id } = req.query;
-
   try {
     const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
+    console.log("featuredImage",featuredImage)
+
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;

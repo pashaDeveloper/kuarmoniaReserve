@@ -5,8 +5,7 @@ import Head from "next/head";
 import React from "react";
 import { useRouter } from "next/router";
 import { useGetBlogQuery } from "@/services/blog/blogApi";
-import MainContent from "@/components/shared/content/MainContent";
-import Content from "./Content";
+import Content from "@/components/shared/content/Content";
 import LeftSidebar from "./leftSidebar";  
 import RightSidebar from "./rightSidebar";
 
@@ -32,7 +31,7 @@ const BlogContent = () => {
           <Content 
             title={fetchData?.data?.title}
             content={fetchData?.data?.content}
-            galleryPreview={fetchData?.data?.featuredImage?.url}
+            featureImage={fetchData?.data?.featuredImage?.url}
             isLoading={fetching}
             publishDate={fetchData?.data?.publishDate}
             author={fetchData?.data?.authorId?.name}

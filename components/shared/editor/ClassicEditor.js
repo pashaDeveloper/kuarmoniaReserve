@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import './ckeditor-dark.css'; // اطمینان حاصل کنید که مسیر صحیح است
+import './ckeditor-dark.css';
 
 const RTEditor = forwardRef(({ value, onChange, ...props }, ref) => {
     return (

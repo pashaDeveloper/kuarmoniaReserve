@@ -72,12 +72,12 @@ const Step3 = ({
                   rules={{ required: 'انتخاب دسته‌بندی الزامی است' }}
                   render={({ field: { onChange, value } }) => (
                     <SearchableDropdown
-                      options={categoryOptions}
+                    items={categoryOptions}
                       handleSelect={onChange}
                       value={value}
                       sendId={true}
                       errors={errors.category}
-                      placeholder="یک دسته‌بندی انتخاب کنید"
+                      className={"w-full h-12"}
                     />
                   )}
                 />

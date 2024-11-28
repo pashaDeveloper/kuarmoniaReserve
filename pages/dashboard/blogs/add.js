@@ -86,7 +86,7 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-  
+    
     formData.append("title", data.title);
     formData.append("metaTitle", data.metaTitle || "");
     formData.append("metaDescription", data.metaDescription || "");
@@ -99,12 +99,12 @@ const Add = () => {
     formData.append("publishDate", new Date().toISOString().split("T")[0]);
     formData.append("authorId",user?._id)
     data.tags.forEach((tag) => {
-      formData.append("tags[]", tag.id); // برای هر تگ
+      formData.append("tags[]", tag.id); 
     });
     if (data.gallery && data.gallery.length > 0) {
-      formData.append("featuredImage", data.gallery[0]); // فقط یک فایل در این مثال
+      formData.append("featuredImage", data.gallery[0]); 
     }
-  console.log('data',data);
+    console.log("data.gallery",data.gallery[0])
     await addBlog(formData);
   };
   
@@ -168,7 +168,7 @@ const Add = () => {
     setIsTagModalOpen(false);
   }, []);
 
-
+console.log("galleryPreview",galleryPreview[0])
 
   const handleNext = async () => {
     let stepValid = false;
@@ -220,6 +220,7 @@ const Add = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
+  const featureImage = galleryPreview ? galleryPreview[0] :"";
   return (
     <section
       className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
@@ -330,7 +331,7 @@ const Add = () => {
                 <BlogCard
                   title={watch("title")}
                   description={watch("description")}
-                  galleryPreview={galleryPreview}
+                  featureImage={featureImage}
                   publishDate={publishDate}
                 />
               </div>
@@ -339,12 +340,12 @@ const Add = () => {
               <div className="flex-1 p-4 overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
               <PreviewSection
   watch={watch}
-  galleryPreview={galleryPreview}
+  featureImage={featureImage}
   isLoading={false}
   handleImageLoad={() => {}}
   publishDate={publishDate}
   editorData={editorData}
-  selectedTags={watch("tags")} // استفاده از watch برای دریافت تگ‌ها
+  selectedTags={watch("tags")}
   currentStep={currentStep}
   author={defaultValues?.name}
   avatar={defaultValues?.avatar?.url}

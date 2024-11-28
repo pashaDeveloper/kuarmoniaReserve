@@ -15,9 +15,12 @@ const blogApi = kuarmoniaApi.injectEndpoints({
     }),
 
     getBlogs: builder.query({
-      query: ({ page = 1, limit = 7 }) => ({
-        url: `/blog/?page=${page}&limit=${limit}`,
+      query: ({ page = 1, limit = 7, search = "", userId }) => ({
+        url: `/blog/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     }),
 
@@ -39,7 +42,6 @@ const blogApi = kuarmoniaApi.injectEndpoints({
         method: "GET",
         params: { type: "client" }, 
       }),
-
       providesTags: ["Blog", "Tag", "User","Category"],
     }),
 

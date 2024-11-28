@@ -2,12 +2,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { TfiFullscreen } from "react-icons/tfi";
-import MainContent from "@/components/shared/content/MainContent";
+import Content from "@/components/shared/content/Content";
 import { toggleFullscreen } from '@/utils/functionHelpers';
 
 const PreviewSection = ({
   watch,
-  galleryPreview,
+  featureImage,
   isLoading,
   handleImageLoad,
   publishDate,
@@ -49,7 +49,7 @@ const PreviewSection = ({
     ref={previewRef}
   >
     <button
-  className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-10 absolute left-1/2 top-4 transform -translate-x-1/2 dark:text-gray-100"
+  className="p-3 rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-20 absolute left-1/2 top-4 transform -translate-x-1/2 dark:text-gray-100"
   onClick={handleToggleFullscreen}
 >
   {isFullscreen ? (
@@ -62,16 +62,16 @@ const PreviewSection = ({
     className={`mt-8`}
 
   >
-    <MainContent
-      galleryPreview={galleryPreview}
-      isLoading={isLoading}
-      handleImageLoad={handleImageLoad}
-      publishDate={publishDate}
-      watch={watch}
-      editorData={editorData}
-      selectedTags={selectedTags}
-      author={author}
-      avatar={avatar}
+    <Content
+        title={watch("title")}
+        content={watch("content")}
+        featureImage={featureImage}
+        isLoading={isLoading}
+        publishDate={watch("publishDate")}
+        author={author}
+        avatar={avatar}
+        selectedTags={selectedTags}
+
     />
   </div>
   </div>

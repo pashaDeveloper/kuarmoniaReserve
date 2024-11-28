@@ -45,7 +45,6 @@ export default async function handler(req, res) {
 
     case "PATCH":
       try {
-        console.log("req",req.body)
 
         verify(req, res, async (err) => {
           authorization("superAdmin")(req, res, async (err) => {

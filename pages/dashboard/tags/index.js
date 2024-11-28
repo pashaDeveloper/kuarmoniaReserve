@@ -31,7 +31,6 @@ const ListTag = () => {
   const [selectedTag, setSelectedTag] = useState(null);
 
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
-  console.log("totalPages",totalPages)
 
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
@@ -161,7 +160,7 @@ const ListTag = () => {
             </span>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="جستجو"
               className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               value={searchTerm}
               onChange={handleSearchChange}
@@ -194,9 +193,9 @@ const ListTag = () => {
           data.data.map((tag) => (
             <div
               key={tag._id}
-              className="mt-4 p-1 grid grid-cols-12 rounded-xl max-h-20 border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100 px-4"
+              className="mt-4 p-2 grid grid-cols-12 rounded-xl min-h-25 border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100 "
             >
-              <div className="col-span-11 lg:col-span-3 text-center flex items-center">
+              <div className="col-span-10 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={tag.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                 <LoadImage
@@ -214,7 +213,7 @@ const ListTag = () => {
                     <span className="text-xs hidden lg:flex">
                       {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                    <span className=" lg:hidden text-xs ">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
+                    <span className=" lg:hidden text-xs line-clamp-1 ">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
 
                   </article>
                 </div>
@@ -245,7 +244,7 @@ const ListTag = () => {
                   : "ندارد"}
               </div>
 <div 
-              className="lg:col-span-2 lg:flex hidden justify-right max-h-16  overflow-y-auto overflow-y-hidden text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
+              className="lg:col-span-2 lg:flex hidden justify-right max-h-16   overflow-y-hidden text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
                 {tag.keywords?.some((keyword) => keyword.trim())
                   ? tag.keywords.map((keyword, index) => (
                       <span
@@ -259,8 +258,8 @@ const ListTag = () => {
                   : "ندارد"}
               </div>
 
-                <div className="col-span-1 gap-2 text-center flex justify-left items-center">
-                  <article className="lg:flex-row flex flex-col gap-x-2  gap-y-2">
+                <div className="col-span-2 md:col-span-1 gap-2  text-center flex justify-center md:items-center items-left">
+                  <article className="lg:flex-row flex flex-col gap-x-2 justify-left gap-y-2">
                     <span
                       className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
                       onClick={() => openEditModal(tag)}

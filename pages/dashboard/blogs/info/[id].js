@@ -6,27 +6,55 @@ import {
   useGetBlogQuery,
   useUpdateBlogMutation,
 } from "@/services/blog/blogApi";
+import {
+  useGetTagsForDropDownMenuQuery,
+} from "@/services/tag/tagApi";
+import {
+  useGetCategoriesForDropDownMenuQuery,
+} from "@/services/category/categoryApi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
-import { Edit,Back,Apply,Reject } from "@/utils/SaveIcon";
+import { Edit, Back, Apply, Reject ,Accept } from "@/utils/SaveIcon";
 import { MdOutlineTag } from "react-icons/md";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
+import { Controller } from "react-hook-form";
+import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
+import { useForm, FormProvider } from "react-hook-form";
+import RTEditor from "@/components/shared/editor/RTEditor";
+import Modal from '@/components/shared/modal/Modal'; 
+import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 
 const Info = () => {
   const router = useRouter();
   const user = useSelector((state) => state?.auth);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
+  const [slug, setSlug] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [metakeywords, setMetaKeywords] = useState("");
+  const [canonicalUrl, setCanonicalUrl] = useState("");
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
+  const [isCategoryEditing, setIsCategoryEditing] = useState(true);
+  const [isContentEditing, setIsContentEditing] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryPreview, setGalleryPreview] = useState([]);
+
   const { id } = router.query;
 
-  const {
-    isLoading: fetching,
-    data: fetchData,
-    error: fetchError,
-  } = useGetBlogQuery(id);
+  const { formState: { errors }, register, control, clearErrors, setValue, getValues, reset, onSuccess } = useForm(); 
+  const { isLoading: fetching, data: fetchData, error: fetchError } = useGetBlogQuery(id);
+  const { isLoading: tagFetching, data: fetchTagData, error: fetchTagError } = useGetTagsForDropDownMenuQuery();
+  const { isLoading: categoryFetching, data: fetchCategoryData, error: fetchCategoryError } = useGetCategoriesForDropDownMenuQuery();
+  const categories = Array.isArray(fetchCategoryData?.data) ? fetchCategoryData.data : [];
+  const categoryOptions = categories?.map(category => ({
+    id: category._id,
+    value: category.title,
+    description: category.description,
+  }));
   const [
     deleteBlog,
     { isLoading: deleting, data: deleteData, error: deleteError },
@@ -35,72 +63,71 @@ const Info = () => {
   const [updateBlog, { isLoading: updating, data: updateData, error: updateError }] = useUpdateBlogMutation();
   const dispatch = useDispatch();
 
-
   const handleTitleEditClick = () => {
     setIsTitleEditing(true);
+    setIsDescriptionEditing(false);
   };
   const handleDescriptionEditClick = () => {
     setIsDescriptionEditing(true);
+    setIsTitleEditing(false);
   };
+  const handleCategoryEditClick = () => {
+    setIsCategoryEditing(false);
+    setIsDescriptionEditing(false);
+    setIsTitleEditing(false);
+  };
+  const handleContentEditClick = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
-    if (fetchData?.data?.title ) {
-      setTitle(fetchData.data.title);
-    }
-    if (fetchData?.data?.description ) {
-      setDescription(fetchData.data.description);
+    if (fetchData?.data) {
+      setTitle(fetchData?.data?.title);
+      setDescription(fetchData?.data?.description);
+      setCategory(fetchData?.data?.category);
+      setContent(fetchData?.data?.content);
+      setSlug(fetchData?.data?.slug);
+      setMetaKeywords(fetchData?.data?.content);
+      setMetaTitle(fetchData?.data?.metaTitle);
+      setMetaDescription(fetchData?.data?.metaDescription);
+      setCanonicalUrl(fetchData?.data?.canonicalUrl);
+      setGalleryPreview(fetchData?.data?.featureImage);
     }
   }, [fetchData]);
 
- 
+  
+  const handleSaveContent = () => {
+    setIsModalOpen(false);
+    handleSave();
+};
 
-  useEffect(() => {
-    if (fetchData?.data?.title) {
-      setTitle(fetchData.data.title);
-    }
-  }, [fetchData]);
-
-
-  const handleBlur = (e) => {
-    e.preventDefault();
-    if (title !== fetchData?.data?.title) {
-      handleSave();
-    }
-    if (description !== fetchData?.data?.description) {
-      handleSave();
-    }
-  };
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
-
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleBlur(e);
-    }
-  };
   const handleSave = () => {
+    console.log("featuredImage",featuredImage)
     updateBlog({
       id: id, 
-      data: { title ,description},
+      data: { title, description, category, content, featuredImage},
     })
-      .unwrap() 
+      .unwrap()
       .then((response) => {
+    
+        toast.success("بروزرسانی با موفقیت انجام شد");
         setTitle(title);
+        setDescription(description);
+        setContent(content);
+        setContent(content);
+        setGalleryPreview(featuredImage)
         setIsTitleEditing(false);
         setIsDescriptionEditing(false);
-        toast.success("بروزرسانی با موفقیت انجام شد");
       })
       .catch((error) => {
         toast.error("خطا در به‌روزرسانی .");
       });
   };
-useEffect(() => {
+
+  useEffect(() => {
     if (fetching) {
       toast.loading("در حال بروزرسانی اطلاعات...", {
         id: "fetchBlog",
@@ -134,9 +161,7 @@ useEffect(() => {
       toast.error(deleteError?.data?.message, { id: "deleteUser" });
     }
   }, [fetching, fetchData, fetchError, deleting, deleteData, deleteError, user?.role]);
-
-
-
+  
   const handleApprove = () => {
     updateBlog({
       id,
@@ -167,11 +192,15 @@ useEffect(() => {
       .catch((error) => {
         toast.error("خطا در به‌روزرسانی وضعیت.");
       });
-  };
+  }; 
 
-  const handleBackList = () => {
-    router.push("/dashboard/blogs");
-  };
+  const featuredImage = galleryPreview;
+  console.log("galleryPreview",galleryPreview)
+useEffect(() => {
+  if (featuredImage) {
+    handleSave();
+  }
+}, [featuredImage]);
     return (
         <>
               <Panel>
@@ -180,7 +209,7 @@ useEffect(() => {
    <div >
       <div className="flex items-center justify-between ">
         <div>
-          <a onClick={handleBackList} className="flex cursor-pointer items-center dark:text-slate-300 text-slate-700 transition-all hover:text-slate-700 dark:hover:text-slate-800">
+        <a onClick={() => router.push("/dashboard/blogs")} className="flex cursor-pointer items-center dark:text-slate-300 text-slate-700 transition-all hover:text-slate-700 dark:hover:text-slate-800">
            <Back />
             <span className="mr-2">بازگشت</span>
           </a>
@@ -214,24 +243,34 @@ useEffect(() => {
             <span className="animate-ping bg-teal-400 absolute inline-flex h-full w-full rounded-full opacity-75"></span>
             <span className="bg-teal-400 relative inline-flex h-3 w-3 rounded-full"></span>
           </span>
-          <div className="overflow-hidden text-ellipsis whitespace-nowrap mb-2  text">
-          {isTitleEditing ? (
-          <input
-            type="text"
-            name="title"
-            onChange={handleTitleChange} 
-            value={title || ''}
-            onBlur={handleBlur} 
-            onKeyDown={handleKeyPress}
-          />
-        ) : (
-          <p>{title}</p>
-        )}
+          <div className="overflow-hidden h-full text-ellipsis whitespace-nowrap mb-2  text">
+          {fetching ? (
+                      <SkeletonText width="200px" height="30px" />
+                    ) : (
+                      <span>{isTitleEditing ? (
+                        <input
+                          type="text"
+                          name="title"
+                          onChange={e => setTitle(e.target.value)}
+                          value={title || ''}
+                          onBlur={() => setIsTitleEditing(false)}
+                          className="w-[300px]"
+                        />
+                      ) : (
+                        <p>{title}</p>
+                      )}</span>
+                    )}
 
           </div>
-          <button className="appearance-none" onClick={handleTitleEditClick}>
-           
-           <Edit />
+          <button className="appearance-none h-12 w-12" >
+            <span className={`${isTitleEditing? "block  cursor-pointer text-teal-500 transition-all hover:text-teal-600":"hidden"}`} onClick={handleSave} >
+            <Accept />
+
+            </span>
+            <span className={`${isTitleEditing? "hidden":"block"}`} onClick={handleTitleEditClick} >
+            <Edit />
+
+            </span>
           </button>
         </div>
       </div>
@@ -240,24 +279,39 @@ useEffect(() => {
       
       <div className=" px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
         <div className="flex items-center text-2xl ">
-        <div className="overflow-hidden text-ellipsis text-justify whitespace-wrap text-sm text-wrap w-full">
-  {isDescriptionEditing ? (
-    <textarea
-      name="description"
-      onChange={handleDescriptionChange}
-      value={description || ''}
-      onBlur={handleBlur}
-      onKeyDown={handleKeyPress}
-      className="w-full h-[120px]   md:h-20  resize-none border text-justify rounded p-2"
-    />
-  ) : (
-    <p className="w-full">{description}</p>
-  )}
-</div>
+       
+        <div className="px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
+                  {fetching ? (
+                    <SkeletonText width="100%" height="120px" />
+                  ) : (
+                    <div className="flex items-center text-2xl">
+                      <div className="overflow-hidden text-ellipsis text-justify whitespace-wrap text-sm text-wrap w-full">
+                        {isDescriptionEditing ? (
+                          <textarea
+                            name="description"
+                            onChange={(e) => setDescription(e.target.value)}
+                            value={description || ''}
+                            onBlur={() => setIsDescriptionEditing(false)}
+                            className="w-full h-[120px] resize-none border text-justify rounded p-2"
+                          />
+                        ) : (
+                          <p className="w-full">{description}</p>
+                        )}
+                      </div>
+                      <button className="appearance-none text-green-500" >
+                      <span className={`${isDescriptionEditing? "block h-10 w-10 cursor-pointer text-teal-500 transition-all hover:text-teal-600":"hidden"}`} onClick={handleSave} >
+            <Accept />
 
-          <button className="appearance-none" onClick={handleDescriptionEditClick}>
-          <Edit />
-          </button>
+            </span>
+            <span className={`${isDescriptionEditing? "hidden":"block"}`} onClick={handleDescriptionEditClick}>
+            <Edit />
+
+            </span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+          
         </div>
       </div>
     </div>
@@ -265,84 +319,115 @@ useEffect(() => {
 </div>
 
     </div>
-    <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
-      <div className="p-5 md:p-8">
-        <div>
-
-
-
-          
-          <div className="grid grid-cols-1 gap-5 items-center  md:grid-cols-5" >
-            <div className="flex flex-row md:flex-col border-b md:border-b-0 md:border-l border-slate-700 justify-center items-center gap-2 text-slate-400">
-            <div className=" text-left">
-              </div>
-              <div className="flex justify-center items-center mb-2 text-sky-500">{fetchData?.data?.category?.title}
-              <button className="appearance-none" >
-           
-           <Edit />
-          </button>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-slate-400">
-              <div className=" text-left">
-              </div>
-              {fetchData?.data?.tags?.length > 0 
-  ? fetchData.data.tags.map((tag, index) => (
-      <span
-        key={index}
-        className="line-clamp-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm"
-      >
-        <MdOutlineTag />
-        {tag.title}  {/* Access the title of the tag */}
-      </span>
-    )) 
-  : "ندارد"}
-
-
-            </div>
+    <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0 ">
+  <div className="p-5 md:p-8">
+    <div className="grid grid-cols-1 gap-5 items-center md:grid-cols-5 relative">
+      <div className="md:col-span-2">
+        <div className="flex flex-row md:flex-col border-b col-span-2 md:border-b-0 md:border-l border-slate-700 justify-center items-center gap-2 w-full text-slate-400 ">
+          <div className="flex justify-center  items-end mb-2 text-sky-500">
+            <label htmlFor="category" className="flex flex-col gap-y-2 ">
+              دسته‌بندی
+              <Controller
+                control={control}
+                name="category"
+                rules={{ required: 'انتخاب دسته‌بندی الزامی است' }}
+                render={({ field: { onChange, value } }) => (
+                  <SearchableDropdown
+                  items={categoryOptions}
+                    handleSelect={onChange}
+                    value={fetchData?.data?.category?._id}
+                    sendId={true}
+                    isReadOnly={isCategoryEditing}
+                    errors={errors.category}
+                    placeholder="یک دسته‌بندی انتخاب کنید"
+                    className={"w-[300px]"}
+                  />
+                )}
+              />
+            </label>
+            <button className="appearance-none w-9 h-9" onClick={handleCategoryEditClick}>
+              <Edit />
+            </button>
           </div>
         </div>
       </div>
+
+      {/* تگ‌ها که 3 ستون از 5 ستون را اشغال می‌کنند */}
+      <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-slate-400 md:col-span-3">
+        <div className="text-left">
+          {/* نمایش تگ‌ها */}
+          {fetchData?.data?.tags?.length > 0 
+            ? fetchData.data.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="line-clamp-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm"
+                >
+                  <MdOutlineTag />
+                  {tag.title} {/* Access the title of the tag */}
+                </span>
+              )) 
+            : "ندارد"
+          }
+        </div>
+      </div>
     </div>
-    <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
-      <div className=" flex flex-col   justify-center bg-white dark:text-blue-100 dark:bg-slate-800">
-      <div data-theme="teal" className="mx-auto max-w-6xl">
-        <section className="font-sans text-black">
-          <div className="[ lg:flex lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
-            <div className="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
-              <div className="h-full">
-                <article className="h-full">
-                  <div className="h-full">
+  </div>
+</div>
+
+<div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
+  <div className="flex flex-col justify-center bg-white dark:text-blue-100 dark:bg-slate-800">
+    <div data-theme="teal" className="mx-auto">
+      <section className="font-sans text-black">
+        <div className="[ lg:flex justify-between lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
+          <div className="flex-shrink-0 self-stretch justify-between sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
+            <div className="h-full relative">
+              {/* Container برای تصویر و SVG */}
+              <article className="h-full">
+                <div className="h-full relative">
                   <img
-  className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
-  src={fetchData?.data?.featuredImage?.url}
-  alt=""
-width={500}
-/>
-                  </div>
-                </article>
-              </div>
+                    className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
+                    src={fetchData?.data?.featuredImage?.url}
+                    alt=""
+                    width={600}
+                  />
+                        <span className=" absolute flex justify-center items-center m-auto inset-0  rounded-lg ">
+
+                   <GalleryUpload
+                   border={false}
+                   setGalleryPreview={setGalleryPreview}
+                   register={register('gallery', { required: 'آپلود تصویر عنوان الزامی است' })}
+
+                   iconSize={10}
+          maxFiles={1}
+          title={false}
+        />
+                                </span>
+
+                </div>
+              </article>
             </div>
-            <div className="p-6 bg-grey">
+          </div>
+          <div className="p-6 bg-grey" onClick={handleContentEditClick}>
             <Edit />
-              <div className="leading-relaxed inline-flex overflow-y-auto max-h-60 overflow-hidden">
-         
-              {fetchData?.data?.content ? (
+            <div className="leading-relaxed inline-flex overflow-y-auto max-h-60 overflow-hidden">
+              {content ? (
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: fetchData?.data?.content,
+                    __html: content,
                   }}
                 ></div>
               ) : (
                 <SkeletonText lines={22} />
               )}
-              </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
-    </div>
+  </div>
+</div>
+
+    
     <div className="border-y border-slate-700 bg-white dark:bg-slate-800 shadow-sm md:rounded-xl md:border-x">
   <div className="p-5 md:p-8">
     <div className="overflow-x-auto">
@@ -442,6 +527,23 @@ width={500}
               </div>
             </div>
           )}
+          <Modal isOpen={isModalOpen} onClose={closeModal} className="h-[90vh]">
+                        <RTEditor
+                            value={content} 
+                            onChange={(value) => {
+                                setContent(value); 
+                            }}
+                        />
+                        <div className="text-right mt-4">
+                            <button
+                            type="button"
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={handleSaveContent}
+                            >
+                                ذخیره و بستن
+                            </button>
+                        </div>
+                    </Modal>
         </>
     );
 };

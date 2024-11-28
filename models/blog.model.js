@@ -75,6 +75,7 @@ const blogSchema = new Schema(
         default: "N/A",
       },
 
+
     },
     content: {
       type: String,
@@ -121,7 +122,31 @@ const blogSchema = new Schema(
     relatedPosts: [
       {
         type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    relatedBlogs: [
+      {
+        type: Schema.Types.ObjectId,
         ref: "Blog",
+      },
+    ],
+    relatedNewsArticles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "NewsArticle",
+      },
+    ],
+    relatedEvents: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
+    relatedSpecialMigrationOpportunities: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "SpecialMigrationOpportunity",
       },
     ],
     lastUpdated: {

@@ -44,10 +44,10 @@ const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control
                 <>
                     <textarea
                         {...field}
-                        value={stripHtmlTags(editorData)} // حذف تگ‌های HTML
+                        value={stripHtmlTags(editorData)} 
                         placeholder="برای ویرایش کلیک کنید..."
                         readOnly
-                        onClick={openModal} // باز کردن مدال هنگام کلیک روی textarea
+                        onClick={openModal}
                         className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 text-justify dark:text-white min-h-[280px]"
                     />
                     

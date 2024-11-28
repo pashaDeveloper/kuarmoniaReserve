@@ -72,7 +72,7 @@ console.log(categories);
 export async function getCategoriesForDropDownMenu() {
   try {
     const categories = await Category.find({ isDeleted: false, status: 'active' }).select('id title description');
-    
+
     if (categories.length > 0) {
       return {
         success: true,

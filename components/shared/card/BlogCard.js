@@ -1,30 +1,23 @@
-// BlogCard.js
 import React, { useState ,useEffect} from 'react';
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; // اطمینان حاصل کنید که مسیر درست است
+import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; 
 import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 
-const BlogCard = ({ title, description, galleryPreview, publishDate }) => {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-  useEffect(() => {
-    if (!galleryPreview || !galleryPreview[0]) {
-      setIsImageLoaded(false);
-    }
-  }, [galleryPreview]);
+const BlogCard = ({ title, description, featureImage, publishDate }) => {
+
   return (
     <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800 bg-clip-border text-gray-700 shadow-lg h-[550px]">
       <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
-        {!isImageLoaded && (
+        { !featureImage && (
           <SkeletonImage width={1150}  height={500} showSize={true} borderRadius="rounded-xl" className="z-0" 
 
            />
-        )}
+        )} 
         <img
-          src={galleryPreview ? galleryPreview[0] :''}
+          src={featureImage}
           alt="Blog Image"
-          className={`w-full h-64 object-cover object-center rounded-xl ${isImageLoaded ? 'block' : 'hidden'}`}
-          onLoad={() => setIsImageLoaded(true)}
+          className={`w-full h-64 object-cover object-center rounded-xl `}
         />
         <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
         <button

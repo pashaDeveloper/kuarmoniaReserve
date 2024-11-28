@@ -1,4 +1,3 @@
-// GalleryUpload.jsx
 import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
@@ -6,6 +5,9 @@ const GalleryUpload = ({
   setGalleryPreview,
   maxFiles = 5,
   register,
+  title=true,
+  iconSize=5,
+  border=true
 }) => {
   const handleSetGalleryPreview = (event) => {
     const files = event.target.files;
@@ -35,10 +37,12 @@ const GalleryUpload = ({
       <label htmlFor="featuredImage" className="relative">
         <button
           type="button"
-          className="py-1 px-4 flex flex-row gap-x-2 bg-green-100 dark:bg-blue-100 border border-green-900 dark:border-blue-900 text-green-900 dark:text-blue-900 rounded-secondary w-fit"
+          className={`py-1 px-4 flex flex-row gap-x-2 bg-green-100 dark:bg-blue-100 
+            ${border ? "border border-green-900  rounded-secondary":"rounded-md"} dark:border-blue-900 text-green-900 dark:text-blue-900 w-fit`}
         >
-          <IoCloudUploadOutline className="h-5 w-5" />
-          مجاز به انتخاب {maxFiles} عکس می باشید*
+          <IoCloudUploadOutline className={`h-${iconSize} w-${iconSize}`} />
+          {title &&`مجاز به انتخاب ${maxFiles} عکس می باشید*
+`}
         </button>
         <input
           type="file"
