@@ -38,7 +38,7 @@ const GalleryUpload = ({
         <button
           type="button"
           className={`py-1 px-4 flex flex-row gap-x-2 bg-green-100 dark:bg-blue-100 
-            ${border ? "border border-green-900  rounded-secondary":"rounded-md"} dark:border-blue-900 text-green-900 dark:text-blue-900 w-fit`}
+            ${border ? "border border-green-900 cursor-pointer rounded-secondary":"rounded-md"} dark:border-blue-900 text-green-900 dark:text-blue-900 w-fit`}
         >
           <IoCloudUploadOutline className={`h-${iconSize} w-${iconSize}`} />
           {title &&`مجاز به انتخاب ${maxFiles} عکس می باشید*

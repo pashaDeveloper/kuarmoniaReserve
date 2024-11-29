@@ -104,7 +104,6 @@ const Add = () => {
     if (data.gallery && data.gallery.length > 0) {
       formData.append("featuredImage", data.gallery[0]); 
     }
-    console.log("data.gallery",data.gallery[0])
     await addBlog(formData);
   };
   

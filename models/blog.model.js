@@ -240,7 +240,7 @@ blogSchema.pre('save', async function(next) {
     this.blogId = await getNextSequenceValue('blogId');
   }
   if (!this.canonicalUrl) {
-    this.canonicalUrl = `${defaultDomain}/blog/${this.slug}/${this._id}`;
+    this.canonicalUrl = `${defaultDomain}/blog/${encodeURIComponent(this.slug)}/${this._id}`;
   }
   next();
 });

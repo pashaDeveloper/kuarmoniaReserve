@@ -6,29 +6,25 @@ import {
   useGetBlogQuery,
   useUpdateBlogMutation,
 } from "@/services/blog/blogApi";
-import {
-  useGetTagsForDropDownMenuQuery,
-} from "@/services/tag/tagApi";
-import {
-  useGetCategoriesForDropDownMenuQuery,
-} from "@/services/category/categoryApi";
+import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
+import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
-import { Edit, Back, Apply, Reject ,Accept } from "@/utils/SaveIcon";
+import { Edit, Back, Apply, Reject, Accept } from "@/utils/SaveIcon";
 import { MdOutlineTag } from "react-icons/md";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import { Controller } from "react-hook-form";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 import { useForm, FormProvider } from "react-hook-form";
 import RTEditor from "@/components/shared/editor/RTEditor";
-import Modal from '@/components/shared/modal/Modal'; 
+import Modal from "@/components/shared/modal/Modal";
 import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
 
 const Info = () => {
   const router = useRouter();
   const user = useSelector((state) => state?.auth);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const [slug, setSlug] = useState("");
@@ -41,16 +37,41 @@ const Info = () => {
   const [isCategoryEditing, setIsCategoryEditing] = useState(true);
   const [isContentEditing, setIsContentEditing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [galleryPreview, setGalleryPreview] = useState([]);
-
+ 
+  
   const { id } = router.query;
 
-  const { formState: { errors }, register, control, clearErrors, setValue, getValues, reset, onSuccess } = useForm(); 
-  const { isLoading: fetching, data: fetchData, error: fetchError } = useGetBlogQuery(id);
-  const { isLoading: tagFetching, data: fetchTagData, error: fetchTagError } = useGetTagsForDropDownMenuQuery();
-  const { isLoading: categoryFetching, data: fetchCategoryData, error: fetchCategoryError } = useGetCategoriesForDropDownMenuQuery();
-  const categories = Array.isArray(fetchCategoryData?.data) ? fetchCategoryData.data : [];
-  const categoryOptions = categories?.map(category => ({
+  const {
+    formState: { errors },
+    register,
+    control,
+    clearErrors,
+    setValue,
+    getValues,
+    reset,
+    onSuccess,
+  } = useForm();
+  const {
+    isLoading: fetching,
+    data: fetchData,
+    error: fetchError,
+  } = useGetBlogQuery(id);
+  const {
+    isLoading: tagFetching,
+    data: fetchTagData,
+    error: fetchTagError,
+  } = useGetTagsForDropDownMenuQuery();
+  const {
+    isLoading: categoryFetching,
+    data: fetchCategoryData,
+    error: fetchCategoryError,
+  } = useGetCategoriesForDropDownMenuQuery();
+  const categories = Array.isArray(fetchCategoryData?.data)
+    ? fetchCategoryData.data
+    : [];
+  const categoryOptions = categories?.map((category) => ({
     id: category._id,
     value: category.title,
     description: category.description,
@@ -60,7 +81,11 @@ const Info = () => {
     { isLoading: deleting, data: deleteData, error: deleteError },
   ] = useDeleteBlogMutation();
 
-  const [updateBlog, { isLoading: updating, data: updateData, error: updateError }] = useUpdateBlogMutation();
+  const [
+    updateBlog,
+    { isLoading: updating, data: updateData, error: updateError },
+  ] = useUpdateBlogMutation();
+
   const dispatch = useDispatch();
 
   const handleTitleEditClick = () => {
@@ -77,10 +102,10 @@ const Info = () => {
     setIsTitleEditing(false);
   };
   const handleContentEditClick = () => {
-    setIsModalOpen(true);
+    setIsEditorOpen(true);
   };
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsEditorOpen(false);
   };
 
   useEffect(() => {
@@ -98,28 +123,37 @@ const Info = () => {
     }
   }, [fetchData]);
 
-  
   const handleSaveContent = () => {
-    setIsModalOpen(false);
     handleSave();
-};
+  };
 
   const handleSave = () => {
-    console.log("featuredImage",featuredImage)
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("content", content);
+    
+    // ارسال تصویر به صورت فایل
+    if (featuredImage) {
+      formData.append("featuredImage", featuredImage); // اضافه کردن تصویر به FormData
+    }
+  console.log("formData",formData)
     updateBlog({
-      id: id, 
-      data: { title, description, category, content, featuredImage},
+      id: id,
+      data: formData,
     })
       .unwrap()
       .then((response) => {
-    
         toast.success("بروزرسانی با موفقیت انجام شد");
         setTitle(title);
         setDescription(description);
         setContent(content);
         setContent(content);
-        setGalleryPreview(featuredImage)
+        setGalleryPreview(featuredImage);
         setIsTitleEditing(false);
+        setIsEditorOpen(false);
         setIsDescriptionEditing(false);
       })
       .catch((error) => {
@@ -136,7 +170,10 @@ const Info = () => {
 
     if (fetchData) {
       toast.success(fetchData?.message, { id: "fetchBlog" });
-      if (user?.role === "superAdmin" && fetchData?.data?.publishStatus === "pending") {
+      if (
+        (user?.role === "superAdmin" && fetchData?.data?.publishStatus === "pending") ||
+        (user?.role === "admin" && fetchData?.data?.publishStatus === "rejected")
+      ) {
         setTimeout(() => {
           setIsModalOpen(true);
         }, 1000);
@@ -160,21 +197,27 @@ const Info = () => {
     if (deleteError?.data) {
       toast.error(deleteError?.data?.message, { id: "deleteUser" });
     }
-  }, [fetching, fetchData, fetchError, deleting, deleteData, deleteError, user?.role]);
-  
+  }, [
+    fetching,
+    fetchData,
+    fetchError,
+    deleting,
+    deleteData,
+    deleteError,
+    user?.role,
+  ]);
+
   const handleApprove = () => {
     updateBlog({
       id,
       data: { publishStatus: "approved" },
     })
-      .unwrap()  
+      .unwrap()
       .then((response) => {
-    
         setIsModalOpen(false);
         toast.success("وضعیت به  تایید تغییر کرد.");
       })
       .catch((error) => {
-
         toast.error("خطا در به‌روزرسانی وضعیت.");
       });
   };
@@ -184,7 +227,7 @@ const Info = () => {
       id,
       data: { publishStatus: "rejected" },
     })
-      .unwrap()  
+      .unwrap()
       .then((response) => {
         setIsModalOpen(false);
         toast.success("وضعیت به رد تغییر کرد.");
@@ -192,365 +235,423 @@ const Info = () => {
       .catch((error) => {
         toast.error("خطا در به‌روزرسانی وضعیت.");
       });
-  }; 
+  };
 
-  const featuredImage = galleryPreview;
-  console.log("galleryPreview",galleryPreview)
-useEffect(() => {
-  if (featuredImage) {
-    handleSave();
-  }
-}, [featuredImage]);
-    return (
-        <>
-              <Panel>
 
-<div className="flex flex-col gap-y-4">
-   <div >
-      <div className="flex items-center justify-between ">
-        <div>
-        <a onClick={() => router.push("/dashboard/blogs")} className="flex cursor-pointer items-center dark:text-slate-300 text-slate-700 transition-all hover:text-slate-700 dark:hover:text-slate-800">
-           <Back />
-            <span className="mr-2">بازگشت</span>
-          </a>
-        </div>
-       
+  const handleReview = () => {
+    updateBlog({
+      id,
+      data: { publishStatus: "pending" },
+    })
+      .unwrap()
+      .then((response) => {
+        setIsModalOpen(false);
+        toast.success("برای بررسی دوباره به مدیر ارسال شد");
+      })
+      .catch((error) => {
+        toast.error("خطا در به‌روزرسانی وضعیت.");
+      });
+  };
 
-        <div className=" flex items-center space-x-3 flex-row-reverse md:space-x-5">
-          <div >
-            <button className="bg-teal-500 relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" id="headlessui-switch-15" role="switch" type="button" tabIndex="0" aria-checked="true">
-              <span className="sr-only">Power</span>
-              <span aria-hidden="true" className="translate-x-0 pointer-events-none inline-block  transform rounded-full h-7 w-7 bg-white shadow-lg ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-          </div>
-          {/*
+
+  const featuredImage = galleryPreview?.[0];
+  useEffect(() => {
+    if (featuredImage) {
+      console.log("featuredImage",featuredImage)
+      handleSave();
+    }
+  }, [featuredImage]);
+  return (
+    <>
+      <Panel>
+        <div className="flex flex-col gap-y-4">
+          <div>
+            <div className="flex items-center justify-between ">
+              <div>
+                <a
+                  onClick={() => router.push("/dashboard/blogs")}
+                  className="flex cursor-pointer items-center dark:text-slate-300 text-slate-700 transition-all hover:text-slate-700 dark:hover:text-slate-800"
+                >
+                  <Back />
+                  <span className="mr-2">بازگشت</span>
+                </a>
+              </div>
+
+              <div className=" flex items-center space-x-3 flex-row-reverse md:space-x-5">
+                <div>
+                  <button
+                    className="bg-teal-500 relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                    id="headlessui-switch-15"
+                    role="switch"
+                    type="button"
+                    tabIndex="0"
+                    aria-checked="true"
+                  >
+                    <span className="sr-only">Power</span>
+                    <span
+                      aria-hidden="true"
+                      className="translate-x-0 pointer-events-none inline-block  transform rounded-full h-7 w-7 bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+                    ></span>
+                  </button>
+                </div>
+                {/*
           <div >
             <button className="rounded-lg border border-white/10 bg-slate-800 p-1.5 transition-all hover:bg-slate-900 v-popper--has-tooltip">
              
             </button>
           </div> */}
-          
-          
-        </div>
-      </div>
+              </div>
+            </div>
 
-      <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
-  <div className="flex max-w-full flex-wrap items-center justify-between p-5 md:p-8">
-    <div className="flex flex-1 flex-col md:flex-row items-center">
-    <div className="border-b md:border-b-0 md:border-l border-slate-700 pl-4 text-3xl  dark:text-slate-300 text-slate-700">
-    <div className="flex items-center text-2xl">
-          <span className="relative ml-3 mr-0.5 flex h-3 w-3">
-            <span className="animate-ping bg-teal-400 absolute inline-flex h-full w-full rounded-full opacity-75"></span>
-            <span className="bg-teal-400 relative inline-flex h-3 w-3 rounded-full"></span>
-          </span>
-          <div className="overflow-hidden h-full text-ellipsis whitespace-nowrap mb-2  text">
-          {fetching ? (
-                      <SkeletonText width="200px" height="30px" />
-                    ) : (
-                      <span>{isTitleEditing ? (
-                        <input
-                          type="text"
-                          name="title"
-                          onChange={e => setTitle(e.target.value)}
-                          value={title || ''}
-                          onBlur={() => setIsTitleEditing(false)}
-                          className="w-[300px]"
-                        />
-                      ) : (
-                        <p>{title}</p>
-                      )}</span>
-                    )}
-
-          </div>
-          <button className="appearance-none h-12 w-12" >
-            <span className={`${isTitleEditing? "block  cursor-pointer text-teal-500 transition-all hover:text-teal-600":"hidden"}`} onClick={handleSave} >
-            <Accept />
-
-            </span>
-            <span className={`${isTitleEditing? "hidden":"block"}`} onClick={handleTitleEditClick} >
-            <Edit />
-
-            </span>
-          </button>
-        </div>
-      </div>
-
-
-      
-      <div className=" px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
-        <div className="flex items-center text-2xl ">
-       
-        <div className="px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
-                  {fetching ? (
-                    <SkeletonText width="100%" height="120px" />
-                  ) : (
+            <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
+              <div className="flex max-w-full flex-wrap items-center justify-between p-5 md:p-8">
+                <div className="flex flex-1 flex-col md:flex-row items-center">
+                  <div className="border-b md:border-b-0 md:border-l border-slate-700 pl-4 text-3xl  dark:text-slate-300 text-slate-700">
                     <div className="flex items-center text-2xl">
-                      <div className="overflow-hidden text-ellipsis text-justify whitespace-wrap text-sm text-wrap w-full">
-                        {isDescriptionEditing ? (
-                          <textarea
-                            name="description"
-                            onChange={(e) => setDescription(e.target.value)}
-                            value={description || ''}
-                            onBlur={() => setIsDescriptionEditing(false)}
-                            className="w-full h-[120px] resize-none border text-justify rounded p-2"
-                          />
+                      <span className="relative ml-3 mr-0.5 flex h-3 w-3">
+                        <span className="animate-ping bg-teal-400 absolute inline-flex h-full w-full rounded-full opacity-75"></span>
+                        <span className="bg-teal-400 relative inline-flex h-3 w-3 rounded-full"></span>
+                      </span>
+                      <div className="overflow-hidden h-full text-ellipsis whitespace-nowrap mb-2  text">
+                        {fetching ? (
+                          <SkeletonText width="200px" height="30px" />
                         ) : (
-                          <p className="w-full">{description}</p>
+                          <span>
+                            {isTitleEditing ? (
+                              <input
+                                type="text"
+                                name="title"
+                                onChange={(e) => setTitle(e.target.value)}
+                                value={title || ""}
+                                onBlur={() => setIsTitleEditing(false)}
+                                className="w-[300px]"
+                              />
+                            ) : (
+                              <p>{title}</p>
+                            )}
+                          </span>
                         )}
                       </div>
-                      <button className="appearance-none text-green-500" >
-                      <span className={`${isDescriptionEditing? "block h-10 w-10 cursor-pointer text-teal-500 transition-all hover:text-teal-600":"hidden"}`} onClick={handleSave} >
-            <Accept />
-
-            </span>
-            <span className={`${isDescriptionEditing? "hidden":"block"}`} onClick={handleDescriptionEditClick}>
-            <Edit />
-
-            </span>
+                      <button className="appearance-none h-12 w-12">
+                        <span
+                          className={`${
+                            isTitleEditing
+                              ? "block  cursor-pointer text-teal-500 transition-all hover:text-teal-600"
+                              : "hidden"
+                          }`}
+                          onClick={handleSave}
+                        >
+                          <Accept />
+                        </span>
+                        <span
+                          className={`${isTitleEditing ? "hidden" : "block"}`}
+                          onClick={handleTitleEditClick}
+                        >
+                          <Edit />
+                        </span>
                       </button>
                     </div>
-                  )}
-                </div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    </div>
-    <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0 ">
-  <div className="p-5 md:p-8">
-    <div className="grid grid-cols-1 gap-5 items-center md:grid-cols-5 relative">
-      <div className="md:col-span-2">
-        <div className="flex flex-row md:flex-col border-b col-span-2 md:border-b-0 md:border-l border-slate-700 justify-center items-center gap-2 w-full text-slate-400 ">
-          <div className="flex justify-center  items-end mb-2 text-sky-500">
-            <label htmlFor="category" className="flex flex-col gap-y-2 ">
-              دسته‌بندی
-              <Controller
-                control={control}
-                name="category"
-                rules={{ required: 'انتخاب دسته‌بندی الزامی است' }}
-                render={({ field: { onChange, value } }) => (
-                  <SearchableDropdown
-                  items={categoryOptions}
-                    handleSelect={onChange}
-                    value={fetchData?.data?.category?._id}
-                    sendId={true}
-                    isReadOnly={isCategoryEditing}
-                    errors={errors.category}
-                    placeholder="یک دسته‌بندی انتخاب کنید"
-                    className={"w-[300px]"}
-                  />
-                )}
-              />
-            </label>
-            <button className="appearance-none w-9 h-9" onClick={handleCategoryEditClick}>
-              <Edit />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* تگ‌ها که 3 ستون از 5 ستون را اشغال می‌کنند */}
-      <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-slate-400 md:col-span-3">
-        <div className="text-left">
-          {/* نمایش تگ‌ها */}
-          {fetchData?.data?.tags?.length > 0 
-            ? fetchData.data.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="line-clamp-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm"
-                >
-                  <MdOutlineTag />
-                  {tag.title} {/* Access the title of the tag */}
-                </span>
-              )) 
-            : "ندارد"
-          }
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
-  <div className="flex flex-col justify-center bg-white dark:text-blue-100 dark:bg-slate-800">
-    <div data-theme="teal" className="mx-auto">
-      <section className="font-sans text-black">
-        <div className="[ lg:flex justify-between lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
-          <div className="flex-shrink-0 self-stretch justify-between sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
-            <div className="h-full relative">
-              {/* Container برای تصویر و SVG */}
-              <article className="h-full">
-                <div className="h-full relative">
-                  <img
-                    className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
-                    src={fetchData?.data?.featuredImage?.url}
-                    alt=""
-                    width={600}
-                  />
-                        <span className=" absolute flex justify-center items-center m-auto inset-0  rounded-lg ">
-
-                   <GalleryUpload
-                   border={false}
-                   setGalleryPreview={setGalleryPreview}
-                   register={register('gallery', { required: 'آپلود تصویر عنوان الزامی است' })}
-
-                   iconSize={10}
-          maxFiles={1}
-          title={false}
-        />
-                                </span>
-
-                </div>
-              </article>
-            </div>
-          </div>
-          <div className="p-6 bg-grey" onClick={handleContentEditClick}>
-            <Edit />
-            <div className="leading-relaxed inline-flex overflow-y-auto max-h-60 overflow-hidden">
-              {content ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: content,
-                  }}
-                ></div>
-              ) : (
-                <SkeletonText lines={22} />
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </div>
-</div>
-
-    
-    <div className="border-y border-slate-700 bg-white dark:bg-slate-800 shadow-sm md:rounded-xl md:border-x">
-  <div className="p-5 md:p-8">
-    <div className="overflow-x-auto">
-      <table className="min-w-full text-right text-sm  text-slate-500 dark:text-slate-400">
-        <thead className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 ">
-          <tr>
-            <th scope="col" className="px-6 py-3 w-40 font-medium">عنوان</th>
-            <th scope="col" className="px-6 py-3 font-medium">مقدار</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr className="border-b border-slate-200 dark:border-slate-600">
-  <td className="py-3 text-sky-500">اسلاگ</td>
-  <td className="px-6 py-3 flex items-center gap-1">
-    <span>{fetchData?.data?.slug}</span>
-    <span><Edit /></span>
-  </td>
-</tr>
-<tr className="border-b border-slate-200 dark:border-slate-600">
-  <td className="py-3 text-sky-500">آدرس اصلی</td>
-  <td className="px-6 py-3 flex items-center gap-1">
-    <span>{fetchData?.data?.canonicalUrl}</span>
-    <span><Edit /></span>
-  </td>
-</tr>
-<tr className="border-b border-slate-200 dark:border-slate-600">
-  <td className="py-3 text-sky-500">عنوان متا</td>
-  <td className="px-6 py-3 flex items-center gap-1">
-    <span>{fetchData?.data?.metaTitle}</span>
-    <span><Edit /></span>
-  </td>
-</tr>
-<tr className="border-b border-slate-200 dark:border-slate-600">
-  <td className="py-3 text-sky-500">توضیحات متا</td>
-  <td className="px-6 py-3 text-justify flex items-center gap-1">
-    <span>{fetchData?.data?.metaDescription}</span>
-    <span><Edit /></span>
-  </td>
-</tr>
-<tr className="border-b border-slate-200 dark:border-slate-600">
-  <td className="py-3 text-sky-500">کلمات کلیدی متا</td>
-  <td className="px-6 py-3 flex items-center gap-1">
-    <span>{fetchData?.data?.metaKeywords}</span>
-    <span><Edit /></span>
-  </td>
-</tr>
-
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-
-
-    </div>
-    </Panel>
-    {isModalOpen && (
-            <div
-              className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-opacity-70  transition-all ease-in-out duration-500"
-              style={{
-                transform: "translateY(0)",
-                opacity: 1, 
-              }}
-            >
-<div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
-<div className="  flex justify-around items-center">
-                <div className=" ">
-
-                  <button onClick={handleApprove} className="group 
-                  w-[150px] py-2 rounded-md 
-                  apply-button
-                  ">
-                <Apply />
-
-                  
-             <span className="mr-2 ">تایید</span>
-
-
-                    
-                  </button>
-                  </div>
-                  <div className="  ">
-
-                  <button onClick={handleReject} className="group  border reject-button w-[150px]  ">
-
-    <Reject />
-
-                  <span className="mr-2 ">رد</span>
-
-
-                    
-                    </button>
                   </div>
 
+                  <div className=" px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
+                    <div className="flex items-center text-2xl ">
+                      <div className="px-4 dark:text-slate-300 text-slate-700 mt-2 md:mt-0 w-full">
+                        {fetching ? (
+                          <SkeletonText width="100%" height="120px" />
+                        ) : (
+                          <div className="flex items-center text-2xl">
+                            <div className="overflow-hidden text-ellipsis text-justify whitespace-wrap text-sm text-wrap w-full">
+                              {isDescriptionEditing ? (
+                                <textarea
+                                  name="description"
+                                  onChange={(e) =>
+                                    setDescription(e.target.value)
+                                  }
+                                  value={description || ""}
+                                  onBlur={() => setIsDescriptionEditing(false)}
+                                  className="w-full h-[120px] resize-none border text-justify rounded p-2"
+                                />
+                              ) : (
+                                <p className="w-full">{description}</p>
+                              )}
+                            </div>
+                            <button className="appearance-none text-green-500">
+                              <span
+                                className={`${
+                                  isDescriptionEditing
+                                    ? "block h-10 w-10 cursor-pointer text-teal-500 transition-all hover:text-teal-600"
+                                    : "hidden"
+                                }`}
+                                onClick={handleSave}
+                              >
+                                <Accept />
+                              </span>
+                              <span
+                                className={`${
+                                  isDescriptionEditing ? "hidden" : "block"
+                                }`}
+                                onClick={handleDescriptionEditClick}
+                              >
+                                <Edit />
+                              </span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          )}
-          <Modal isOpen={isModalOpen} onClose={closeModal} className="h-[90vh]">
-                        <RTEditor
-                            value={content} 
-                            onChange={(value) => {
-                                setContent(value); 
-                            }}
+          </div>
+          <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0 ">
+            <div className="p-5 md:p-8">
+              <div className="grid grid-cols-1 gap-5 items-center md:grid-cols-5 relative">
+                <div className="md:col-span-2">
+                  <div className="flex flex-row md:flex-col border-b col-span-2 md:border-b-0 md:border-l border-slate-700 justify-center items-center gap-2 w-full text-slate-400 ">
+                    <div className="flex justify-center  items-end mb-2 text-sky-500">
+                      <label
+                        htmlFor="category"
+                        className="flex flex-col gap-y-2 "
+                      >
+                        دسته‌بندی
+                        <Controller
+                          control={control}
+                          name="category"
+                          rules={{ required: "انتخاب دسته‌بندی الزامی است" }}
+                          render={({ field: { onChange, value } }) => (
+                            <SearchableDropdown
+                              items={categoryOptions}
+                              handleSelect={onChange}
+                              value={fetchData?.data?.category?._id}
+                              sendId={true}
+                              isReadOnly={isCategoryEditing}
+                              errors={errors.category}
+                              placeholder="یک دسته‌بندی انتخاب کنید"
+                              className={"w-[300px]"}
+                            />
+                          )}
                         />
-                        <div className="text-right mt-4">
-                            <button
-                            type="button"
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                onClick={handleSaveContent}
-                            >
-                                ذخیره و بستن
-                            </button>
-                        </div>
-                    </Modal>
-        </>
-    );
+                      </label>
+                      <button
+                        className="appearance-none w-9 h-9"
+                        onClick={handleCategoryEditClick}
+                      >
+                        <Edit />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* تگ‌ها که 3 ستون از 5 ستون را اشغال می‌کنند */}
+                <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-slate-400 md:col-span-3">
+                  <div className="text-left">
+                    {/* نمایش تگ‌ها */}
+                    {fetchData?.data?.tags?.length > 0
+                      ? fetchData.data.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="line-clamp-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm"
+                          >
+                            <MdOutlineTag />
+                            {tag.title} {/* Access the title of the tag */}
+                          </span>
+                        ))
+                      : "ندارد"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
+            <div className="flex flex-col justify-center bg-white dark:text-blue-100 dark:bg-slate-800">
+              <div data-theme="teal" className="mx-auto">
+                <section className="font-sans text-black">
+                  <div className="[ lg:flex justify-between lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
+                    <div className="flex-shrink-0 self-stretch justify-between sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
+                      <div className="h-full relative">
+                        {/* Container برای تصویر و SVG */}
+                        <article className="h-full">
+                          <div className="h-full relative">
+                            <img
+                              className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
+                              src={fetchData?.data?.featuredImage?.url}
+                              alt=""
+                              width={600}
+                            />
+                            <span className=" absolute flex justify-center items-center m-auto inset-0  rounded-lg ">
+                              <GalleryUpload
+                                border={false}
+                                setGalleryPreview={setGalleryPreview}
+                                register={register("gallery", {
+                                  required: "آپلود تصویر عنوان الزامی است",
+                                })}
+                                iconSize={10}
+                                maxFiles={1}
+                                title={false}
+                              />
+                            </span>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                    <div
+                      className="p-6 bg-grey"
+                      onClick={handleContentEditClick}
+                    >
+                      <Edit />
+                      <div className="leading-relaxed inline-flex overflow-y-auto max-h-60 overflow-hidden">
+                        {content ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: content,
+                            }}
+                          ></div>
+                        ) : (
+                          <SkeletonText lines={22} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-y border-slate-700 bg-white dark:bg-slate-800 shadow-sm md:rounded-xl md:border-x">
+            <div className="p-5 md:p-8">
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-right text-sm  text-slate-500 dark:text-slate-400">
+                  <thead className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 ">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 w-40 font-medium">
+                        عنوان
+                      </th>
+                      <th scope="col" className="px-6 py-3 font-medium">
+                        مقدار
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200 dark:border-slate-600">
+                      <td className="py-3 text-sky-500">اسلاگ</td>
+                      <td className="px-6 py-3 flex items-center gap-1">
+                        <span>{fetchData?.data?.slug}</span>
+                        <span>
+                          <Edit />
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-600">
+                      <td className="py-3 text-sky-500">آدرس اصلی</td>
+                      <td className="px-6  py-3 flex items-center gap-1 ">
+                      <span dir="ltr" className="text-left">{fetchData?.data?.canonicalUrl}</span>
+                      <span>
+                          <Edit />
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-600">
+                      <td className="py-3 text-sky-500">عنوان متا</td>
+                      <td className="px-6 py-3 flex items-center gap-1">
+                        <span>{fetchData?.data?.metaTitle}</span>
+                        <span>
+                          <Edit />
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-600">
+                      <td className="py-3 text-sky-500">توضیحات متا</td>
+                      <td className="px-6 py-3 text-justify flex items-center gap-1">
+                        <span>{fetchData?.data?.metaDescription}</span>
+                        <span>
+                          <Edit />
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-600">
+                      <td className="py-3 text-sky-500">کلمات کلیدی متا</td>
+                      <td className="px-6 py-3 flex items-center gap-1">
+                        <span>{fetchData?.data?.metaKeywords}</span>
+                        <span>
+                          <Edit />
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Panel>
+      {isModalOpen && (
+  <div
+    className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-opacity-70 transition-all ease-in-out duration-500"
+    style={{
+      transform: "translateY(0)",
+      opacity: 1,
+    }}
+  >
+    <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
+      <div className="flex justify-around items-center">
+        {user?.role === "superAdmin" ? (
+          <>
+            <div>
+              <button
+                onClick={handleApprove}
+                className="group w-[150px] py-2 rounded-md apply-button"
+              >
+                <Apply />
+                <span className="mr-2">تایید</span>
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleReject}
+                className="group border reject-button w-[150px]"
+              >
+                <Reject />
+                <span className="mr-2">رد</span>
+              </button>
+            </div>
+          </>
+        ) : user?.role === "admin" ? (
+          <div>
+            <button
+              onClick={handleReview}
+              className="group w-[150px] py-2 rounded-md review-button"
+            >
+              <Review />
+              <span className="mr-2">بازبینی</span>
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  </div>
+)}
+
+      <Modal isOpen={isEditorOpen} onClose={closeModal} className="h-[90vh]">
+        <RTEditor
+          value={content}
+          onChange={(value) => {
+            setContent(value);
+          }}
+        />
+        <div className="text-right mt-4">
+          <button
+            type="button"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={handleSaveContent}
+          >
+            ذخیره و بستن
+          </button>
+        </div>
+      </Modal>
+    </>
+  );
 };
-
-
-
-
-
 
 export default Info;

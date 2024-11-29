@@ -55,7 +55,6 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
     if (isLoading) {
       toast.loading("در حال پردازش...", { id: "tag" });
     }
-    console.log("formData")
 
     if (data) {
       toast.success(data?.message, { id: "tag" });
@@ -92,7 +91,6 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
           keynotes: JSON.stringify(keynotes),
           authorId:user?._id
         };
-        console.lo
       
       if (tagToEdit) {
         updateTag({ id: tagToEdit._id, ...formData }).unwrap();
@@ -170,10 +168,10 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
  <div className="w-full flex flex-col gap-y-4 p-4 border rounded">
           <label htmlFor="keynotes" className="w-full flex flex-col gap-y-4">
             <p className="text-sm flex flex-row justify-between items-center">
-              کلمات کلیدی*
+              کلمات کلیدی
               <button
                 type="button"
-                className="p-0.5 border rounded-secondary bg-green-500 text-white"
+                className="p-0.5 border-2 dark:border-gray-500 rounded-secondary bg-green-500 text-white"
                 onClick={handleAddKeynote}
               >
                 <Plus />
@@ -184,14 +182,13 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
               <p key={index} className="flex flex-row gap-x-2 items-center">
                 <input
                   type="text"
-                  name="keynotes"
-                  placeholder="Enter brand keynote"
+                  name="کلید واژه"
+                  placeholder="کلید واژه تگ خود را وارد کنید"
                   className="flex-1"
                   value={keynote}
                   onChange={(event) =>
                     handleKeynoteChange(index, event.target.value)
                   }
-                  required
                 />
                 {index !== 0 && (
                   <button

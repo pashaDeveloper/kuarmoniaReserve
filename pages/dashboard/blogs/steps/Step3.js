@@ -34,11 +34,12 @@ const Step3 = ({
                   rules={{ required: 'انتخاب تگ الزامی است' }}
                   render={({ field: { onChange, value } }) => (
                     <MultiSelectDropdown
-                      options={tagsOptions}
-                      selectedOptions={value || []}
-                      handleChange={handleTagChange}
+                      items={tagsOptions}
+                      selectedItems={value || []}
+                      handleSelect={handleTagChange}
                       icon={<TagIcon />}
                       placeholder="چند مورد انتخاب کنید"
+                      className={"w-full h-12"}
                     />
                   )}
                 />

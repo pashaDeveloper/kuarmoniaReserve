@@ -62,9 +62,9 @@ const Step4 = ({ register, errors, control,getValues }) => {
             name="readTime"
             render={({ field: { onChange, value } }) => (
               <SearchableDropdown
-                options={timeOptions}
-                handleSelect={onChange} // ارسال onChange به handleSelect
-                value={value} // ارسال مقدار فعلی به SearchableDropdown
+                items={timeOptions}
+                handleSelect={onChange} 
+                value={value} 
                 errors={errors.readTime}
                 placeholder="یک زمان تخمینی برای مطالعه انتخاب کن"
               />
