@@ -5,6 +5,7 @@ import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
+import PostCard from "@/components/shared/card/PostCard"; 
 
 const Offer = () => {
   return (
@@ -33,23 +34,15 @@ const Offer = () => {
             <p className="text-base">
             پست های ما شامل جدیدترین اطلاعات و تغییرات در قوانین مهاجرت و پناهندگی هستند که می‌توانند به شما در تصمیم‌گیری‌های مهم کمک کنند.            </p>
           </article>
+
+
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-            <LoadImage
-              src="/assets/static/Offers Explorer Banner/1.png"
-              alt="offer-1"
-              width={650}
-              height={290}
-              className="rounded object-cover border border-primary cursor-pointer"
-              onClick={() => window.open("/tours", "_self")}
-            />
-            <LoadImage
-              src="/assets/static/Offers Explorer Banner/2.png"
-              alt="offer-2"
-              width={650}
-              height={290}
-              className="rounded object-cover border border-primary cursor-pointer"
-              onClick={() => window.open("/tours", "_self")}
-            />
+          
+          <PostCard/>
+          <PostCard/>
+          <PostCard/>
+          <PostCard/>
+  
           </div>
         </div>
       </Container>

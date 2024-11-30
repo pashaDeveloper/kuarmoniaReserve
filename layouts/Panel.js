@@ -12,7 +12,7 @@ import {
 } from "react-icons/md";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { TbUserEdit, TbUserShare } from "react-icons/tb";
-import { BsCartCheck } from "react-icons/bs";
+import { BsCartCheck ,BsPostcardHeart } from "react-icons/bs";
 import { FaBlog, FaListUl } from "react-icons/fa";
 import { BsTags } from "react-icons/bs";
 import { PiCreditCardLight, PiCubeTransparent } from "react-icons/pi";
@@ -46,6 +46,11 @@ const Panel = ({ children }) => {
       name: "تگ ها",
       path: "/dashboard/tags",
       icon: <BsTags className="w-5 h-5" />,
+    },
+    {
+      name: "پست",
+      path: "/dashboard/posts",
+      icon: <BsPostcardHeart className="w-5 h-5" />,
     },
     {
       name: "بلاگ",

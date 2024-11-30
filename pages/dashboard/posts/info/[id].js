@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Panel from "@/layouts/Panel";
 import { useRouter } from "next/router";
 import {
-  useDeleteBlogMutation,
-  useGetBlogQuery,
-  useUpdateBlogMutation,
-} from "@/services/blog/blogApi";
+  useDeletepostMutation,
+  useGetpostQuery,
+  useUpdatepostMutation,
+} from "@/services/post/postApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +57,7 @@ const Info = () => {
     isLoading: fetching,
     data: fetchData,
     error: fetchError,
-  } = useGetBlogQuery(id);
+  } = useGetpostQuery(id);
   const {
     isLoading: tagFetching,
     data: fetchTagData,
@@ -77,14 +77,14 @@ const Info = () => {
     description: category.description,
   }));
   const [
-    deleteBlog,
+    deletepost,
     { isLoading: deleting, data: deleteData, error: deleteError },
-  ] = useDeleteBlogMutation();
+  ] = useDeletepostMutation();
 
   const [
-    updateBlog,
+    updatepost,
     { isLoading: updating, data: updateData, error: updateError },
-  ] = useUpdateBlogMutation();
+  ] = useUpdatepostMutation();
 
   const dispatch = useDispatch();
 
@@ -140,7 +140,7 @@ const Info = () => {
       console.log("galleryPreview",galleryPreview)
     }
   console.log("formData",formData)
-    updateBlog({
+    updatepost({
       id: id,
       data: formData,
     })
@@ -164,12 +164,12 @@ const Info = () => {
   useEffect(() => {
     if (fetching) {
       toast.loading("در حال بروزرسانی اطلاعات...", {
-        id: "fetchBlog",
+        id: "fetchpost",
       });
     }
 
     if (fetchData) {
-      toast.success(fetchData?.message, { id: "fetchBlog" });
+      toast.success(fetchData?.message, { id: "fetchpost" });
       if (
         (user?.role === "superAdmin" && fetchData?.data?.publishStatus === "pending") ||
         (user?.role === "admin" && fetchData?.data?.publishStatus === "rejected")
@@ -181,15 +181,15 @@ const Info = () => {
     }
 
     if (fetchError?.data) {
-      toast.error(fetchError?.data?.message, { id: "fetchBlog" });
+      toast.error(fetchError?.data?.message, { id: "fetchpost" });
     }
 
     if (deleting) {
-      toast.loading("در حال حذف کاربر...", { id: "deleteBlog" });
+      toast.loading("در حال حذف کاربر...", { id: "deletepost" });
     }
 
     if (deleteData) {
-      toast.success(deleteData?.message, { id: "deleteBlog" });
+      toast.success(deleteData?.message, { id: "deletepost" });
       setIsModalOpen(false);
       window.open("/", "_self");
     }
@@ -211,7 +211,7 @@ const Info = () => {
     const formData = new FormData();
 
     formData.append("publishStatus", "approved");
-    updateBlog({
+    updatepost({
       id,
       data:formData ,
     })
@@ -229,7 +229,7 @@ const Info = () => {
     const formData = new FormData();
 
     formData.append("publishStatus", "rejected");
-    updateBlog({
+    updatepost({
       id,
       data: formData,
     })
@@ -248,7 +248,7 @@ const Info = () => {
     const formData = new FormData();
 
     formData.append("publishStatus", "pending");
-    updateBlog({
+    updatepost({
       id,
       data:formData,
     })
@@ -272,7 +272,7 @@ const Info = () => {
             <div className="flex items-center justify-between ">
               <div>
                 <a
-                  onClick={() => router.push("/dashboard/blogs")}
+                  onClick={() => router.push("/dashboard/posts")}
                   className="flex cursor-pointer items-center dark:text-slate-300 text-slate-700 transition-all hover:text-slate-700 dark:hover:text-slate-800"
                 >
                   <Back />

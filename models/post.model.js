@@ -27,9 +27,9 @@ const socialLinkSchema = new Schema({
   },
 });
 
-const blogSchema = new Schema(
+const postSchema = new Schema(
   {
-    blogId: {
+    postId: {
       type: Number,
       unique: true,
     },
@@ -125,10 +125,10 @@ const blogSchema = new Schema(
         ref: "Post",
       },
     ],
-    relatedBlogs: [
+    relatedposts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Blog",
+        ref: "post",
       },
     ],
     relatedNewsArticles: [
@@ -217,15 +217,15 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-blogSchema.virtual('likeCount').get(function() {
+postSchema.virtual('likeCount').get(function() {
   return this.likes ? this.likes.length : 0;
 });
 
-blogSchema.virtual('dislikeCount').get(function() {
+postSchema.virtual('dislikeCount').get(function() {
   return this.dislikes ? this.dislikes.length : 0;
 });
 
-blogSchema.virtual('rating').get(function() {
+postSchema.virtual('rating').get(function() {
   const totalReactions = this.likes.length + this.dislikes.length;
   if (totalReactions === 0) return 0;
 
@@ -235,22 +235,22 @@ blogSchema.virtual('rating').get(function() {
 
 const defaultDomain = process.env.NEXT_PUBLIC_BASE_URL;
 
-blogSchema.pre('save', async function(next) {
+postSchema.pre('save', async function(next) {
   if (this.isNew) {
-    this.blogId = await getNextSequenceValue('blogId');
+    this.postId = await getNextSequenceValue('postId');
   }
   if (!this.canonicalUrl) {
-    this.canonicalUrl = `${defaultDomain}/blog/${encodeURIComponent(this.slug)}/${this._id}`;
+    this.canonicalUrl = `${defaultDomain}/post/${encodeURIComponent(this.slug)}/${this._id}`;
   }
   next();
 });
 
-blogSchema.set('toJSON', { virtuals: true });
-blogSchema.set('toObject', { virtuals: true });
+postSchema.set('toJSON', { virtuals: true });
+postSchema.set('toObject', { virtuals: true });
 
-blogSchema.pre("save", async function (next) {
+postSchema.pre("save", async function (next) {
   if (this.isNew) {
-    this.blogId = await getNextSequenceValue("blogId");
+    this.postId = await getNextSequenceValue("postId");
   }
   if (this.isNew || this.isModified('publishStatus')) {
     if (this.publishStatus === "private") {
@@ -300,9 +300,9 @@ blogSchema.pre("save", async function (next) {
   next();
 });
 
-const Blog = models.Blog || model("Blog", blogSchema);
+const post = models.post || model("post", postSchema);
 
-export default Blog;
+export default post;
 
 async function getNextSequenceValue(sequenceName) {
   const sequenceDocument = await Counter.findOneAndUpdate(

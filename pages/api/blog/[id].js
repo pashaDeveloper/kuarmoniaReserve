@@ -56,14 +56,13 @@ export default async function handler(req, res) {
 
         try {
           verify(req, res, async (err) => {
-            authorization("superAdmin,admin")(req, res, async (err) => {
+            authorization("superAdmin")(req, res, async (err) => {
               if (err) {
                 return res.status(403).json({
                   success: false,
                   error: err.message,
                 });
               }
-
               const result = await updateBlog(req);
               return res.status(200).json(result);
             });

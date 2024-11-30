@@ -1,9 +1,9 @@
-// controllers/blog.controller.js
-import Blog from '@/models/blog.model';
+// controllers/post.controller.js
+import post from '@/models/post.model';
 import Like from '@/models/like.model';
 import User from '@/models/user.model';
 
-export async function addBlog(req) {
+export async function addpost(req) {
   try {
     const {
       title,
@@ -32,7 +32,7 @@ export async function addBlog(req) {
       }
     }
 
-    const blog = await Blog.create({
+    const post = await post.create({
       title,
       description,
       content,
@@ -54,28 +54,28 @@ export async function addBlog(req) {
       relatedPosts,
     });
 
-    if (blog) {
+    if (post) {
       const like = await Like.create({
-        entityId: blog._id,
-        entityType: "Blog", 
+        entityId: post._id,
+        entityType: "post", 
         type: "like", 
       });
 
       const dislike = await Like.create({
-        entityId: blog._id, 
-        entityType: "Blog",
+        entityId: post._id, 
+        entityType: "post",
         type: "dislike",
       });
 
     
-      blog.likes = [like._id];
-      blog.dislikes = [dislike._id];
-      await blog.save();
+      post.likes = [like._id];
+      post.dislikes = [dislike._id];
+      await post.save();
 
       return {
         success: true,
         message: "بلاگ با موفقیت ایجاد شد",
-        data: blog,
+        data: post,
       };
     } else {
       return {
@@ -94,7 +94,7 @@ export async function addBlog(req) {
 
 
 
-export async function getBlogs(req) {
+export async function getposts(req) {
   try {
     const { page = 1, limit = 7, search = "",userId } = req.query; 
     const skip = (page - 1) * limit;
@@ -121,20 +121,20 @@ export async function getBlogs(req) {
         isDeleted: false 
       }
     : { isDeleted: false };
-    const blogs = await Blog.find(searchQuery)
+    const posts = await post.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id blogId title createdAt views likes dislikes status likeCount dislikeCount featuredImage.url');
+    .select('_id postId title createdAt views likes dislikes status likeCount dislikeCount featuredImage.url');
 
 
 
-    const total = await Blog.countDocuments(searchQuery);
+    const total = await post.countDocuments(searchQuery);
 
-    if (blogs.length > 0) {
+    if (posts.length > 0) {
       return {
         success: true,
-        data: blogs,
+        data: posts,
         total,
         message: "بلاگ‌ها با موفقیت دریافت شد",
       };
@@ -153,7 +153,7 @@ export async function getBlogs(req) {
 }
 
 
-export async function getClientBlogs(req) {
+export async function getClientposts(req) {
   try {
     const { page = 1, limit = 8 } = req.query; 
     const skip = (page - 1) * limit;
@@ -164,18 +164,18 @@ export async function getClientBlogs(req) {
       status: "active", 
     };
     const superAdmin = await User.findOne({ role: 'superAdmin' });
-    const blogs = await Blog.find(filter)
+    const posts = await post.find(filter)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id blogId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
+    .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
 
-    const total = await Blog.countDocuments({ isDeleted: false });
+    const total = await post.countDocuments({ isDeleted: false });
 
-    if (blogs.length > 0) {
+    if (posts.length > 0) {
       return {
         success: true,
-        data: blogs,
+        data: posts,
         superAdmin:{
           avatar:superAdmin?.avatar?.url,
           name:superAdmin?.name
@@ -198,11 +198,11 @@ export async function getClientBlogs(req) {
 }
 
 
-export async function getBlogsForDropDownMenu() {
+export async function getpostsForDropDownMenu() {
   try {
-    const blogs = await Blogs.find({ isDeleted: false, status: 'active' }).select('id title description');
+    const posts = await posts.find({ isDeleted: false, status: 'active' }).select('id title description');
     
-    if (blogs.length > 0) {
+    if (posts.length > 0) {
       return {
         success: true,
         data: categories,
@@ -222,19 +222,19 @@ export async function getBlogsForDropDownMenu() {
   }
 }
 
-export async function getBlog(req) {
+export async function getpost(req) {
   try {
 
-    const blog = await Blog.findById(req.query.id)
+    const post = await post.findById(req.query.id)
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
-    .select('_id blogId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured featuredImage.url metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
-    if (blog) {
+    .select('_id postId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured featuredImage.url metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
+    if (post) {
       return {
         success: true,
         message: "اطلاعات بلاگ با موفقیت دریافت شد",
-        data: blog,
+        data: post,
       };
     } else {
       return {
@@ -253,7 +253,7 @@ export async function getBlog(req) {
 
 
 
-export async function updateBlog(req) {
+export async function updatepost(req) {
   const { id } = req.query;
   console.log("id",id)
   try {
@@ -272,15 +272,15 @@ export async function updateBlog(req) {
     // if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
-    const blog = await Blog.findByIdAndUpdate(id, updateFields, { new: true })
+    const post = await post.findByIdAndUpdate(id, updateFields, { new: true })
       .populate('tags')  
       .populate('category')  
       .populate('authorId');  
-    if (blog) {
+    if (post) {
       return {
         success: true,
         message: "بلاگ با موفقیت به‌روزرسانی شد",
-        data: blog,
+        data: post,
       };
     } else {
       return {
