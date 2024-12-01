@@ -1,17 +1,17 @@
 import React, { useState ,useEffect} from 'react';
  
 import {Star} from "@/utils/SaveIcon"; 
-import { TfiHeart } from "react-icons/tfi";
-import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useRouter } from "next/router";
 
 const PostCard = ({ title, description, isFeature, featureImage, publishDate,category }) => {
+  const router = useRouter();
 
   return (
-    <div className="flex flex-col justify-center  rtl dark:text-white ">
-    <div className="relative flex flex-row space-x-3 space-x-reverse rounded-xl shadow-lg p-3 w-full md:min-w-[600px]  max-w-[650px] mx-auto border border-white dark:border-gray-700 dark:bg-gray-800 bg-white">
-      <div className="w-1/3 bg-white dark:bg-gray-800 grid place-items-center">
+    <div    onClick={() => router.push(`/post/post`)} className="flex flex-col justify-center  rtl dark:text-white ">
+    <div className="relative flex flex-row space-x-3 space-x-reverse rounded-primary shadow-lg p-3 w-full md:min-w-[600px]  max-w-[650px] mx-auto border border-white dark:border-gray-700 dark:bg-gray-800/70 bg-white/70">
+      <div className="w-1/3  grid place-items-center">
       {!featureImage ?(
               <Skeleton  height={170} width={170} />
 
@@ -24,7 +24,7 @@ const PostCard = ({ title, description, isFeature, featureImage, publishDate,cat
       )}
        
       </div>
-      <div className="w-2/3 bg-white dark:bg-gray-800 flex flex-col space-y-2 p-3">
+      <div className="w-2/3  flex flex-col space-y-2 p-3">
         <div className="flex justify-between items-center">
           {!category ? (
               <Skeleton  height={20} width={200} />
@@ -59,7 +59,7 @@ const PostCard = ({ title, description, isFeature, featureImage, publishDate,cat
 )}
 
         </div>
-        <h3 className=" text-gray-800 dark:text-gray-100 md:text-xl text-lg">
+        <h3 className=" text-gray-800 dark:text-gray-100   md:text-lg">
         {!title ?
             (          <>
               <Skeleton width={'100%'} height={40} />
@@ -71,7 +71,7 @@ const PostCard = ({ title, description, isFeature, featureImage, publishDate,cat
             )
           }
                   </h3>
-        <p className="text-lg text-gray-500">
+        <p className="text-sm text-justify text-gray-500">
           {!description ?
             (          <>
               <Skeleton width={'100%'} height={20} count={4} />

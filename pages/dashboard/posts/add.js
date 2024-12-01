@@ -327,7 +327,7 @@ console.log("galleryPreview",galleryPreview[0])
   </div>
 
   {/* بخش postCard */}
-  <div className="lg:col-span-2  p-4 items-center gap-y-8 flex flex-col">
+  <div className="lg:col-span-2  py-4 items-center gap-y-2 flex flex-col">
     <PostCard
       title={watch("title")}
       description={watch("description")}
@@ -346,6 +346,7 @@ console.log("galleryPreview",galleryPreview[0])
         disLike={0}
         comment={[]}
         isLoading={false}
+        scale={0.8}
       />
     
   </div>
