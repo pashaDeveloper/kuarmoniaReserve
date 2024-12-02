@@ -16,7 +16,7 @@ import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import AddCategory from "../categories/add"; 
 import AddTag from "../tags/add"; 
 import SendButton from "@/components/shared/button/SendButton"
-import { useAddpostMutation, useUpdatepostMutation } from "@/services/post/postApi";
+import { useAddPostMutation, useUpdatePostMutation } from "@/services/post/postApi";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import {  PrevIcon } from "@/utils/SaveIcon";
@@ -61,11 +61,11 @@ const Add = () => {
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
   const [addpost, { isLoading: isAdding, data: addData, error: addError }] =
-    useAddpostMutation();
+    useAddPostMutation();
   const [
     updatepost,
     { isLoading: isUpdating, data: updateData, error: updateError },
-  ] = useUpdatepostMutation();
+  ] = useUpdatePostMutation();
   const categoryOptions = categories?.map(category => ({
     id: category._id,
     value: category.title,
@@ -86,7 +86,6 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-    
     formData.append("title", data.title);
     formData.append("metaTitle", data.metaTitle || "");
     formData.append("metaDescription", data.metaDescription || "");
@@ -346,7 +345,7 @@ console.log("galleryPreview",galleryPreview[0])
         disLike={0}
         comment={[]}
         isLoading={false}
-        scale={0.8}
+        scale={0.6}
       />
     
   </div>

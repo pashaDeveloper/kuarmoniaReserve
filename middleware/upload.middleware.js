@@ -32,13 +32,13 @@ const getUploadMiddleware = (folderName) => {
   return multer({
     storage,
     fileFilter: (_, file, cb) => {
-      const supportedImage = /jpg|jpeg|png/i;
+      const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
       const extension = path.extname(file.originalname).toLowerCase();
 
-      if (supportedImage.test(extension)) {
+      if (supportedFormats.test(extension)) {
         cb(null, true);
       } else {
-        cb(new Error("Must be a png/jpg/jpeg format"));
+        cb(new Error("Must be a png/jpg/jpeg or mp4/avi/mkv format"));
       }
     },
   });

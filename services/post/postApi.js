@@ -2,7 +2,7 @@ const { kuarmoniaApi } = require("../kuarmonia");
 
 const postApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
-    addpost: builder.mutation({
+    addPost: builder.mutation({
       query: (body) => ({
         url: "/post/",
         method: "POST",
@@ -14,7 +14,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
       ],
     }),
 
-    getposts: builder.query({
+    getPosts: builder.query({
       query: ({ page = 1, limit = 7, search = "", userId }) => ({
         url: `/post/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
         method: "GET",
@@ -24,7 +24,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
       }),
     }),
 
-    getpost: builder.query({
+    getPost: builder.query({
       query: (id) => ({
         url: `/post/${id}`,
         method: "GET",
@@ -36,7 +36,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    getAllposts: builder.query({
+    getAllPosts: builder.query({
       query: ({ page = 1, limit = 8 }) => ({
         url: `/post/?page=${page}&limit=${limit}`,
         method: "GET",
@@ -46,7 +46,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
     }),
 
 
-    deletepost: builder.mutation({
+    deletePost: builder.mutation({
       query: (id) => ({
         url: `/posts/${id}`,
         method: "DELETE",
@@ -65,7 +65,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
       ],
     }),
  
-    updatepost: builder.mutation({
+    updatePost: builder.mutation({
       query: ({ id, data }) => {
         return {
           url: `/post/${id}`,
@@ -84,10 +84,10 @@ const postApi = kuarmoniaApi.injectEndpoints({
 });
 
 export const {
-  useAddpostMutation,
-  useGetpostsQuery,
+  useAddPostMutation,
+  useGetPostsQuery,
   useGetAllpostsQuery,
-  useDeletepostMutation,
-  useGetpostQuery,
-  useUpdatepostMutation,
+  useDeletePostMutation,
+  useGetPostQuery,
+  useUpdatePostMutation,
 } = postApi;

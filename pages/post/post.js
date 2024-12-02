@@ -11,6 +11,8 @@ const images = [
   "https://pagedone.io/asset/uploads/1711622408.png",
   "https://pagedone.io/asset/uploads/1711622419.png",
   "https://pagedone.io/asset/uploads/1711622437.png",
+  "https://pagedone.io/asset/uploads/1711622437.png",
+  "https://pagedone.io/asset/uploads/1711622437.png",
 ];
 
 const ProductSlider = () => {
@@ -19,7 +21,7 @@ const ProductSlider = () => {
   return (
     <section className="py-10 lg:py-24 relative " dir='ltr'>
     <div className="mx-auto  px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2  gap-8 lg:gap-2">
             <div className="pro-detail w-full flex flex-col justify-center order-last lg:order-none max-lg:max-w-[608px] max-lg:mx-auto">
                 <p className="font-medium text-lg text-indigo-600 mb-4">Travel &nbsp; / &nbsp; Menswear</p>
                 <h2 className="mb-2 font-manrope font-bold text-3xl leading-10 text-gray-900">Yellow Summer Travel Bag
@@ -199,7 +201,7 @@ const ProductSlider = () => {
                 </div>
 
             </div>
-            <div className="max-w-[608px] mx-auto">
+            <div className="relative max-w-[608px] mx-auto w-screen">
       <Swiper
         spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
@@ -212,31 +214,35 @@ const ProductSlider = () => {
             <img
               src={image}
               alt={`Travel Bag image ${index + 1}`}
-              className="mx-auto object-cover"
+              className="object-cover w-[500px] !rounded-none lg:w-full m-0"
             />
           </SwiperSlide>
         ))}
       </Swiper>
 
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        className="product-thumb mt-4"
-      >
-        {images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <img
-              src={image}
-              alt={`Thumbnail ${index + 1}`}
-              className="cursor-pointer border-2 border-gray-50 transition-all duration-500 hover:border-indigo-600 slide:border-indigo-600 object-cover"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+      <div className="absolute bottom-8 left-1/2 flex !gap-x-1 -translate-x-1/2 z-10 w-full max-w-[500px]">
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          spaceBetween={4}
+          slidesPerView={5}
+          freeMode={true}
+          watchSlidesProgress={true}
+          className="product-thumb"
+        >
+         {images.map((image, index) => (
+  <SwiperSlide key={index}>
+    <img
+      src={image}
+      alt={`Thumbnail ${index + 1}`}
+      className="cursor-pointer border-2 border-gray-50 rounded-md transition-all duration-500 hover:border-gray-300 slide:border-indigo-600 object-cover w-22 h-22"
+    />
+  </SwiperSlide>
+))}
+
+        </Swiper>
+      </div>
+</div>
+
 
 
         </div>

@@ -1,7 +1,6 @@
 // PreviewSection.js
 import React, { useState, useRef, useEffect } from "react";
 import { BsArrowsFullscreen } from "react-icons/bs";
-import { TfiFullscreen } from "react-icons/tfi";
 import Content from "@/components/shared/content/Content";
 import { toggleFullscreen } from '@/utils/functionHelpers';
 
@@ -53,7 +52,7 @@ const PreviewSection = ({
   onClick={handleToggleFullscreen}
 >
   {isFullscreen ? (
-    <TfiFullscreen size={20} />
+    <></>
   ) : (
     <BsArrowsFullscreen size={20} />
   )}

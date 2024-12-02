@@ -3,6 +3,7 @@ import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage"; 
 import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
+import {Star} from "@/utils/SaveIcon"; 
 
 const BlogCard = ({ title, description, featureImage, publishDate }) => {
 
