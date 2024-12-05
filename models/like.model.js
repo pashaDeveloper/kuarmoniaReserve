@@ -10,7 +10,7 @@ const likeSchema = new Schema(
       userId: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: false, // این قسمت تغییر کرده تا userId اختیاری باشد
+        required: false,
 
       },
       entityId: {
@@ -19,12 +19,12 @@ const likeSchema = new Schema(
       },
       entityType: {
         type: String,
-        enum: ["Blog","News", "Product", "Comment"], // نوع موجودیت: بلاگ، محصول، کامنت و ...
+        enum: ["Blog","News", "Product", "Comment","Post"], 
         required: [true, "نوع موجودیت الزامی است"],
       },
       type: {
         type: String,
-        enum: ["like", "dislike"], // لایک یا دیسلایک
+        enum: ["like", "dislike"], 
         required: true,
       },
       ...baseSchema.obj

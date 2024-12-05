@@ -2,8 +2,8 @@ import Panel from "@/layouts/Panel";
 import React, { useState,useEffect , useMemo } from "react";
 import AddButton from "@/components/shared/button/AddButton";
 import {
-  useGetpostsQuery,
-  useUpdatepostMutation,
+  useGetPostsQuery,
+  useUpdatePostMutation,
 } from "@/services/post/postApi";
 import { toast } from "react-hot-toast";
 import Metrics from "@/components/shared/tools/Metrics";
@@ -20,7 +20,7 @@ const Listpost = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const user = useSelector((state) => state?.auth);
-  const { data, isLoading, error, refetch } = useGetpostsQuery({
+  const { data, isLoading, error, refetch } = useGetPostsQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,

@@ -7,7 +7,7 @@ import {SettingPannelIcon,SearchPannelIcon,NotificationPannelIcon} from "@/utils
 const Navbar = ({ router, open, setOpen }) => {
     return (
         <div className="2xl:mx-auto">
-            <div className=" bg-white dark:bg-slate-800   p-2 border-b dark:border-blue-800">
+            <div className=" bg-gray-100 dark:bg-slate-800   p-2 border-b dark:border-blue-800">
                 <nav className="flex justify-between items-center">
                     <div className="flex items-center space-x-3 lg:pr-16 pr-6">
                         <div className="lg:hidden md:hidden block">

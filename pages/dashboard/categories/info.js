@@ -14,7 +14,7 @@ const Info = ({ isOpen, onClose, category }) => {
           <p>
             <strong>توضیحات</strong> {" "}
             <br/>
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+            <span className="inline-flex items-center line-clamp-2 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
             {category.description}
             </span>
           </p>

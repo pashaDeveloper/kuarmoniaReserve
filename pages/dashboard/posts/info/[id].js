@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Panel from "@/layouts/Panel";
 import { useRouter } from "next/router";
 import {
-  useDeletepostMutation,
-  useGetpostQuery,
-  useUpdatepostMutation,
+  useDeletePostMutation,
+  useGetPostQuery,
+  useUpdatePostMutation,
 } from "@/services/post/postApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
@@ -18,7 +18,7 @@ import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropd
 import { useForm, FormProvider } from "react-hook-form";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from "@/components/shared/modal/Modal";
-import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
+import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
 
 const Info = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ const Info = () => {
     isLoading: fetching,
     data: fetchData,
     error: fetchError,
-  } = useGetpostQuery(id);
+  } = useGetPostQuery(id);
   const {
     isLoading: tagFetching,
     data: fetchTagData,
@@ -79,12 +79,12 @@ const Info = () => {
   const [
     deletepost,
     { isLoading: deleting, data: deleteData, error: deleteError },
-  ] = useDeletepostMutation();
+  ] = useDeletePostMutation();
 
   const [
     updatepost,
     { isLoading: updating, data: updateData, error: updateError },
-  ] = useUpdatepostMutation();
+  ] = useUpdatePostMutation();
 
   const dispatch = useDispatch();
 
@@ -139,7 +139,6 @@ const Info = () => {
       formData.append("featuredImage", galleryPreview[0]);
       console.log("galleryPreview",galleryPreview)
     }
-  console.log("formData",formData)
     updatepost({
       id: id,
       data: formData,
@@ -549,7 +548,9 @@ const Info = () => {
                     <tr className="border-b border-slate-200 dark:border-slate-600">
                       <td className="py-3 text-sky-500">آدرس اصلی</td>
                       <td className="px-6  py-3 flex items-center gap-1 ">
-                      <span dir="ltr" className="text-left">{fetchData?.data?.canonicalUrl}</span>
+                      <span dir="ltr" className="text-left">
+                      {fetchData?.data?.canonicalUrl ? decodeURIComponent(fetchData.data.canonicalUrl) : ''}
+                      </span>
                       <span>
                           <Edit />
                         </span>

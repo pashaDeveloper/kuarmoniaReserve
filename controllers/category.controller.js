@@ -43,7 +43,7 @@ console.log(search)
       .skip(skip)
       .limit(Number(limit))
       .populate('authorId', 'name avatar.url') 
-      .select('_id categoryId title description createdAt status ');
+      .select('_id categoryId title description slug createdAt status ');
   
 console.log(categories);
   

@@ -6,7 +6,7 @@ const PostContent = ({
   title, 
   highlight, 
   content, 
-  featureImage,
+  thumbnailPreview,
   like,
   disLike,
   view,
@@ -24,23 +24,23 @@ const PostContent = ({
   >
     {/* تصویر */}
     <div className="lg:w-1/2 flex justify-center">
-      {isLoading || !featureImage ? (
+      {isLoading || !thumbnailPreview ? (
         <Skeleton height={505} width={497} className="lg:scale-110" />
       ) : (
-        featureImage.type === "image" ? (
+        thumbnailPreview.type === "image" ? (
         <div
           className="lg:scale-110 h-80 bg-cover lg:h-full rounded-b-none border dark:border-gray-700 lg:rounded-lg"
           style={{
             width: "500px",
             height: "500px",
-            backgroundImage: `url('${featureImage.src}')`,
+            backgroundImage: `url('${thumbnailPreview.src}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />):(
 
           <video
-          src={featureImage.src}
+          src={thumbnailPreview.src}
           controls
           className="w-full h-full lg:scale-110 object-cover lg:rounded-lg"
         />

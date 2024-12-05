@@ -115,7 +115,7 @@ const Panel = ({ children }) => {
   ];
 
   return (
-    <div className="flex flex-col h-screen  bg-white dark:bg-slate-900 ">
+    <div className="flex flex-col h-screen  bg-gray-100 dark:bg-slate-900 ">
       <LoadingIndicator />
       <header className="bg-gray-800 text-whitetext-center">
         <Navbar router={router} open={open} setOpen={setOpen} />

@@ -70,12 +70,26 @@ const postSchema = new Schema(
         type: String,
         default: "N/A",
       },
-      originalName: {
-        type: String,
-        default: "N/A",
-      },
-
-
+    },
+    gallery: {
+      type: [
+        {
+          url: {
+            type: String,
+            default: "https://placehold.co/296x200.png",
+        
+          },
+          Type: {
+            type: String,
+            enum: ["image", "video"],
+            required: true,
+          },
+          public_id: {
+            type: String,
+            default: "N/A",
+          },
+        },
+      ],
     },
     content: {
       type: String,
@@ -125,10 +139,10 @@ const postSchema = new Schema(
         ref: "Post",
       },
     ],
-    relatedposts: [
+    relatedBlogs: [
       {
         type: Schema.Types.ObjectId,
-        ref: "post",
+        ref: "Blog",
       },
     ],
     relatedNewsArticles: [
@@ -252,18 +266,14 @@ postSchema.pre("save", async function (next) {
   if (this.isNew) {
     this.postId = await getNextSequenceValue("postId");
   }
-  if (this.isNew || this.isModified('publishStatus')) {
-    if (this.publishStatus === "private") {
-      this.metaRobots = "noindex, nofollow"; 
-    } else {
-      this.metaRobots = "index, follow";
-    }
+
+  if (this.isNew || this.isModified("publishStatus")) {
+    this.metaRobots = this.publishStatus === "private" ? "noindex, nofollow" : "index, follow";
   }
-  next();
 
   if (
-    this.isModified('title') ||
-    this.isModified('category') ||
+    this.isModified("title") ||
+    this.isModified("category") ||
     this.metaTitle === "" ||
     this.metaDescription === "" ||
     this.metaKeywords.length === 0
@@ -277,15 +287,15 @@ postSchema.pre("save", async function (next) {
           combinedMetaTitle = `${this.title.substring(0, this.title.length - excessLength)} | ${category.title}`;
         }
         this.metaTitle = combinedMetaTitle;
-      
+
         let combinedMetaDescription = `${this.description} | ${category.title}`;
         if (combinedMetaDescription.length > 160) {
           const excessLength = combinedMetaDescription.length - 160;
           combinedMetaDescription = `${this.description.substring(0, this.description.length - excessLength)} | ${category.title}`;
         }
         this.metaDescription = combinedMetaDescription;
-      
-        const tags = await Tag.find({ _id: { $in: this.tags } }); 
+
+        const tags = await Tag.find({ _id: { $in: this.tags } });
         const tagKeywords = tags.map(tag => tag.title);
         this.metaKeywords = tagKeywords.slice(0, 10);
       } else {
@@ -297,12 +307,13 @@ postSchema.pre("save", async function (next) {
       console.error("خطا در تنظیم metaTitle، metaDescription و metaKeywords:", error);
     }
   }
+
   next();
 });
 
-const post = models.post || model("post", postSchema);
+const Post = models.Post || model("Post", postSchema);
 
-export default post;
+export default Post;
 
 async function getNextSequenceValue(sequenceName) {
   const sequenceDocument = await Counter.findOneAndUpdate(

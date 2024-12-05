@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
+import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from '@/components/shared/modal/Modal'; 
 
@@ -25,7 +25,7 @@ const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control
       <label htmlFor="gallery" className="flex flex-col text-center gap-y-2">
         تصویر عنوان وبلاگ
         <GalleryUpload
-          setGalleryPreview={setGalleryPreview}
+          Gallery={setGalleryPreview}
           register={register('gallery', { required: 'آپلود تصویر عنوان الزامی است' })}
           maxFiles={1}
         />

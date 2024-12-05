@@ -18,7 +18,7 @@ import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropd
 import { useForm, FormProvider } from "react-hook-form";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from "@/components/shared/modal/Modal";
-import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
+import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
 
 const Info = () => {
   const router = useRouter();

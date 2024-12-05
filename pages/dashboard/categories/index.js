@@ -186,15 +186,13 @@ const ListCategory = () => {
 
         </div>
           <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">عنوان</div>
-          <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
+          <div className="lg:col-span-4 lg:flex hidden text-sm md:block">
             توضیحات
           </div>
-          <div className="lg:col-span-2 hidden lg:flex col-span-3 text-sm text-right">
-            ربات
+          <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
+           اسلاگ
           </div>
-          <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap hidden text-sm">
-          <span class="hidden lg:flex">کلمات کلیدی</span>
-          </div>
+          
           <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
 
@@ -225,32 +223,32 @@ const ListCategory = () => {
                     <span className="text-xs hidden lg:flex">
                       {new Date(category.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                    <span className=" lg:hidden text-xs ">{category?.description ? category?.description : new Date(category.createdAt).toLocaleDateString("fa-IR")}</span>                     
+                    <span className=" lg:hidden text-xs  line-clamp-1">{category?.description ? category?.description : new Date(category.createdAt).toLocaleDateString("fa-IR")}</span>                     
 
                   </article>
                 </div>
               </div>
-              <div className="lg:col-span-2 hidden gap-2  lg:flex justify-left items-center text-right">
-                <article className="flex-col flex gap-y-2">
-                  <span className="line-clamp-1 text-sm lg:text-base">
-                    <span className="flex">{category.title}</span>
-                  </span>
-                </article>
-              </div>
+              <div className="lg:col-span-2 hidden gap-2 lg:flex justify-left items-center text-right">
+  <article className="flex-col flex gap-y-2">
+    <span className="text-sm lg:text-base overflow-hidden text-ellipsis line-clamp-1">
+      <span className="flex">{category.title}</span>
+    </span>
+  </article>
+</div>
 
-              <div className="lg:col-span-4 hidden gap-2  lg:flex justify-left items-center text-right">
-                <article className="flex-col flex gap-y-2">
-                  <span className="line-clamp-1 text-sm lg:text-base">
-                    <span className="flex">{category.description}</span>
-                  </span>
-                </article>
-              </div>
+<div className="lg:col-span-4 hidden gap-2 lg:flex justify-left items-center text-right">
+  <article className="flex-col flex gap-y-2">
+    <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
+      {category.description}
+    </span>
+  </article>
+</div>
 
               
 
-              <div className="hidden lg:col-span-2 col-span-5 gap-2 text-center lg:flex justify-center items-center">
+              <div className="hidden lg:col-span-2 col-span-5 gap-2 text-right lg:flex justify-left items-center">
                 <article className="flex-col flex gap-y-2">
-                  <span className="flex">
+                  <span className="flex text-right">
                     {category.slug}
                   </span>
                 </article>

@@ -116,7 +116,6 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
               selectedTags.map((tag, index) => {
                 const randomColor =
                   colors[Math.floor(Math.random() * colors.length)];
-                console.log("tag", tag);
                 return (
                   <div
                     key={index}

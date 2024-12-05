@@ -23,8 +23,10 @@ const getUploadMiddleware = (folderName) => {
       const hashedName = crypto.randomBytes(16).toString("hex");
       const extension = path.extname(file.originalname);
       const filename = `${hashedName}${extension}`;
+      const filePath = `/uploads/${folderName}/${req.monthFolder}/${filename}`.replace(/\\/g, '/');
 
-      req.body.filePath = `/uploads/${folderName}/${req.monthFolder}/${filename}`.replace(/\\/g, "/");
+      if (!req.body[file.fieldname]) req.body[file.fieldname] = [];
+      req.body[file.fieldname].push(filePath);
       cb(null, filename);
     },
   });

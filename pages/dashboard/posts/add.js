@@ -11,6 +11,7 @@ import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4"; 
 import Step5 from "./steps/Step5"; 
+import Step6 from "./steps/Step6"; 
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import AddCategory from "../categories/add"; 
@@ -51,6 +52,11 @@ const Add = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+  const [galleryPreviews, setGalleryPreviews] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [thumbnail, setThumbnail] = useState(null);
+
   const [editorData, setEditorData] = useState("");
   const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue,getValues,reset ,onSuccess  } = methods; 
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
@@ -83,7 +89,6 @@ const Add = () => {
       id: user?._id,
     };
   }, [user]);
-
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -100,13 +105,13 @@ const Add = () => {
     data.tags.forEach((tag) => {
       formData.append("tags[]", tag.id); 
     });
-    if (data.gallery && data.gallery.length > 0) {
-      formData.append("featuredImage", data.gallery[0]); 
-      console.log("gallery",data.gallery[0])
+    formData.append("featuredImage", thumbnail);
+    for (let i = 0; i < gallery.length; i++) {
+      formData.append("gallery", gallery[i]);
     }
+
     await addpost(formData);
   };
-  console.log()
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
     const data = addData || updateData;
@@ -167,7 +172,6 @@ const Add = () => {
     setIsTagModalOpen(false);
   }, []);
 
-console.log("galleryPreview",galleryPreview[0])
 
   const handleNext = async () => {
     let stepValid = false;
@@ -181,23 +185,28 @@ console.log("galleryPreview",galleryPreview[0])
         break;
       case 2:
         stepValid = await trigger([
-          "gallery",
+          "Thumbnail",
           "content"
         ]);
         break;
-      case 3:
+        case 3:
+          stepValid = await trigger([
+  
+          ]);
+          break;
+      case 4:
         stepValid = await trigger([
           "tags",
           "category"
         ]);
         break;
-      case 4:
+      case 5:
         stepValid = await trigger([
           "metaTitle",
           "metaDescription"
         ]);
         break;
-      case 5:
+      case 6:
         stepValid = await trigger([]);
         break;
       default:
@@ -263,8 +272,8 @@ console.log("galleryPreview",galleryPreview[0])
       )}
       {currentStep === 2 && (
         <Step2
-          galleryPreview={galleryPreview}
-          setGalleryPreview={setGalleryPreview}
+        setThumbnailPreview={setThumbnailPreview}
+        setThumbnail={setThumbnail}
           editorData={editorData}
           setEditorData={setEditorData}
           register={register}
@@ -273,8 +282,16 @@ console.log("galleryPreview",galleryPreview[0])
           useState={useState}
         />
       )}
-      {currentStep === 3 && (
+       {currentStep === 3 && (
         <Step3
+        setGallery={setGallery}
+        galleryPreview={galleryPreview}
+          setGalleryPreview={setGalleryPreview}
+          register={register}
+        />
+      )}
+      {currentStep === 4 && (
+        <Step4
           selectedTags={selectedTags}
           handleTagsChange={handleTagsChange}
           tagsOptions={tagsOptions}
@@ -288,16 +305,16 @@ console.log("galleryPreview",galleryPreview[0])
           setValue={setValue}
         />
       )}
-      {currentStep === 4 && (
-        <Step4
+      {currentStep === 5 && (
+        <Step5
           register={register}
           errors={errors}
           control={control}
           getValues={getValues}
         />
       )}
-      {currentStep === 5 && (
-        <Step5 />
+      {currentStep === 6 && (
+        <Step6 />
       )}
 
       <div className="flex p-6 justify-between mt-4 w-full absolute bottom-0 md:order-2">
@@ -330,7 +347,7 @@ console.log("galleryPreview",galleryPreview[0])
     <PostCard
       title={watch("title")}
       description={watch("description")}
-      featureImage={featureImage}
+      thumbnailPreview={thumbnailPreview}
       publishDate={publishDate}
       isLoading={false}
     />
@@ -338,7 +355,7 @@ console.log("galleryPreview",galleryPreview[0])
    <PostContent
       title={watch("title")}
         content={watch("content")}
-        featureImage={featureImage}
+        thumbnailPreview={thumbnailPreview}
         publishDate={publishDate}
         like={0}
         view={0}
@@ -346,6 +363,8 @@ console.log("galleryPreview",galleryPreview[0])
         comment={[]}
         isLoading={false}
         scale={0.6}
+        selectedTags={watch("tags")}
+
       />
     
   </div>

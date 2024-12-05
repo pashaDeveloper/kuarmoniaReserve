@@ -1,7 +1,6 @@
-// CustomProgressBar.js
 import React from 'react';
 import { FaAddressCard } from "react-icons/fa";
-import {BranchIcon,ContentIcon,RankIcon} from '@/utils/SaveIcon';
+import {BranchIcon,ContentIcon,RankIcon,Gallery} from '@/utils/SaveIcon';
 const steps = [
   {
     number: 1,
@@ -23,6 +22,15 @@ const steps = [
   },
   {
     number: 3,
+    label: 'گالری',
+    required: false,
+    icon: (
+      <Gallery />
+
+    ),
+  },
+  {
+    number: 4,
     label: 'شاخه بندی',
     required: true,
     icon: (
@@ -31,7 +39,7 @@ const steps = [
     ),
   },
   {
-    number: 4,
+    number: 5,
     label: 'تنظیمات انتشار',
     required: true,
     icon: (
@@ -39,7 +47,7 @@ const steps = [
     ),
   },
   {
-    number: 5,
+    number: 6,
     label: 'SEO',
     required: false,
     icon: (

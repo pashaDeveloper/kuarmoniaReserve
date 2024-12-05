@@ -1,10 +1,10 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
+import ThumbnailUpload from "@/components/shared/gallery/ThumbnailUpload";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from '@/components/shared/modal/Modal'; 
 
-const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control, errors,useState }) => { 
+const Step2 = ({ setThumbnailPreview,setThumbnail, editorData, setEditorData, register, control, errors,useState }) => { 
  
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,9 +24,10 @@ const Step2 = ({ setGalleryPreview, editorData, setEditorData, register, control
     <>
       <label htmlFor="gallery" className="flex flex-col text-center gap-y-2">
         تصویر عنوان وبلاگ
-        <GalleryUpload
-          setGalleryPreview={setGalleryPreview}
-          register={register('gallery', { required: 'آپلود تصویر عنوان الزامی است' })}
+        <ThumbnailUpload
+          setThumbnailPreview={setThumbnailPreview}
+          setThumbnail={setThumbnail}
+          register={register('Thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
           maxFiles={1}
         />
       </label>

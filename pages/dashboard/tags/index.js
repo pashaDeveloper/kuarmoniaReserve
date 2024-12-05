@@ -224,7 +224,7 @@ const ListTag = () => {
                 </span>
               </div>
               <div className="lg:col-span-3 lg:flex hidden col-span-3 text-right  items-center">
-                <span className="break-words text-sm lg:text-sm  lg:flex text-right">
+              <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
                   {tag.description ? tag.description : "ندارد"}
                 </span>
                 
@@ -249,7 +249,7 @@ const ListTag = () => {
                   ? tag.keywords.map((keyword, index) => (
                       <span
                         key={index}
-                        className="line-clamp-1 cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm"
+                        className="cursor-pointer rounded-lg border border-green-700/5 dark:border-blue-500/5 bg-green-800/5 dark:bg-blue-500/5 px-2 py-0 text-green-500 dark:text-blue-500 transition-colors hover:border-green-700/10 dark:hover:border-blue-500/10 hover:bg-green-700/10 dark:hover:bg-blue-500/10 flex items-center gap-x-1 hover:!opacity-100 group-hover:opacity-70 text-sm line-clamp-1 max-h-[1.2em]"
                       >
                         <MdOutlineTag />
                         {keyword}

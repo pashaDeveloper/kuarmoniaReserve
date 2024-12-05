@@ -1,9 +1,9 @@
 // controllers/post.controller.js
-import post from '@/models/post.model';
+import Post from '@/models/post.model';
 import Like from '@/models/like.model';
 import User from '@/models/user.model';
-
-export async function addpost(req) {
+import path from "path";
+export async function addPost(req) {
   try {
     const {
       title,
@@ -20,10 +20,11 @@ export async function addpost(req) {
       isFeatured,
       visibility,
       relatedPosts,
-      featuredImage,
+ 
     } = req.body;
-
     let parsedSocialLinks = [];
+    let featuredImage = null;
+    let gallery = [];
     if (socialLinks) {
       try {
         parsedSocialLinks = JSON.parse(socialLinks);
@@ -31,19 +32,34 @@ export async function addpost(req) {
         console.error("Error parsing socialLinks:", e.message);
       }
     }
-
-    const post = await post.create({
+    if (req.body.featuredImage && req.body.featuredImage.length) {
+      featuredImage = {
+        url: req.body.featuredImage[0] || "N/A", 
+        public_id: path.basename(req.body.featuredImage[0]) || "ناشناخته", 
+      };
+    }
+    
+    if (req.body.gallery && req.body.gallery.length) {
+      gallery = req.body.gallery.map((filePath) => {
+        const fileExtension = path.extname(filePath).substring(1); 
+        return {
+          url: filePath, 
+          public_id: path.basename(filePath) || "ناشناخته",
+          Type: fileExtension === "jpg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
+        };
+      });
+    }
+    
+  
+    const post = await Post.create({
       title,
       description,
       content,
       publishDate,
       tags,
       category,
-      featuredImage: {
-        url: req.body.filePath,
-        public_id: req.file?.filename || "N/A",
-        originalName: req.body.originalName || "ناشناخته",
-      },
+      featuredImage,
+      gallery,
       authorId,
       socialLinks: parsedSocialLinks,
       metaTitle,
@@ -57,30 +73,30 @@ export async function addpost(req) {
     if (post) {
       const like = await Like.create({
         entityId: post._id,
-        entityType: "post", 
+        entityType: "Post", 
         type: "like", 
       });
 
       const dislike = await Like.create({
         entityId: post._id, 
-        entityType: "post",
+        entityType: "Post",
         type: "dislike",
       });
 
     
       post.likes = [like._id];
       post.dislikes = [dislike._id];
-      await post.save();
+      await post.save(); 
 
       return {
         success: true,
-        message: "بلاگ با موفقیت ایجاد شد",
+        message: "پست با موفقیت ایجاد شد",
         data: post,
       };
     } else {
       return {
         success: false,
-        message: "خطا در ساخت بلاگ",
+        message: "خطا در ساخت پست",
       };
     }
   } catch (error) {
@@ -94,7 +110,7 @@ export async function addpost(req) {
 
 
 
-export async function getposts(req) {
+export async function getPosts(req) {
   try {
     const { page = 1, limit = 7, search = "",userId } = req.query; 
     const skip = (page - 1) * limit;
@@ -105,6 +121,7 @@ export async function getposts(req) {
         message: "کاربر پیدا نشد",
       };
     }
+
     const isSuperAdmin = user.role === 'superAdmin';
 
     if (!isSuperAdmin) {
@@ -121,7 +138,7 @@ export async function getposts(req) {
         isDeleted: false 
       }
     : { isDeleted: false };
-    const posts = await post.find(searchQuery)
+    const posts = await Post.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
@@ -129,19 +146,19 @@ export async function getposts(req) {
 
 
 
-    const total = await post.countDocuments(searchQuery);
+    const total = await Post.countDocuments(searchQuery);
 
     if (posts.length > 0) {
       return {
         success: true,
         data: posts,
         total,
-        message: "بلاگ‌ها با موفقیت دریافت شد",
+        message: "پست‌ها با موفقیت دریافت شد",
       };
     } else {
       return {
         success: false,
-        message: "هیچ بلاگی یافت نشد",
+        message: "هیچ پستی یافت نشد",
       };
     }
   } catch (error) {
@@ -153,7 +170,7 @@ export async function getposts(req) {
 }
 
 
-export async function getClientposts(req) {
+export async function getClientPosts(req) {
   try {
     const { page = 1, limit = 8 } = req.query; 
     const skip = (page - 1) * limit;
@@ -164,13 +181,13 @@ export async function getClientposts(req) {
       status: "active", 
     };
     const superAdmin = await User.findOne({ role: 'superAdmin' });
-    const posts = await post.find(filter)
+    const posts = await Post.find(filter)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
     .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
 
-    const total = await post.countDocuments({ isDeleted: false });
+    const total = await Post.countDocuments({ isDeleted: false });
 
     if (posts.length > 0) {
       return {
@@ -181,12 +198,12 @@ export async function getClientposts(req) {
           name:superAdmin?.name
         },
         total,
-        message: "بلاگ‌ها با موفقیت دریافت شد",
+        message: "پست‌ها با موفقیت دریافت شد",
       };
     } else {
       return {
         success: false,
-        message: "هیچ بلاگی یافت نشد",
+        message: "هیچ پستی یافت نشد",
       };
     }
   } catch (error) {
@@ -198,20 +215,20 @@ export async function getClientposts(req) {
 }
 
 
-export async function getpostsForDropDownMenu() {
+export async function getPostsForDropDownMenu() {
   try {
-    const posts = await posts.find({ isDeleted: false, status: 'active' }).select('id title description');
+    const posts = await Posts.find({ isDeleted: false, status: 'active' }).select('id title description');
     
     if (posts.length > 0) {
       return {
         success: true,
         data: categories,
-        message: "بلاگ ها با موفقیت برای DropDownMenu دریافت شدند",
+        message: "پست ها با موفقیت برای DropDownMenu دریافت شدند",
       };
     } else {
       return {
         success: false,
-        message: "هیچ بلاگی فعال برای DropDownMenu یافت نشد",
+        message: "هیچ پستی فعال برای DropDownMenu یافت نشد",
       };
     }
   } catch (error) {
@@ -222,10 +239,10 @@ export async function getpostsForDropDownMenu() {
   }
 }
 
-export async function getpost(req) {
+export async function getPost(req) {
   try {
 
-    const post = await post.findById(req.query.id)
+    const post = await Post.findById(req.query.id)
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
@@ -233,13 +250,13 @@ export async function getpost(req) {
     if (post) {
       return {
         success: true,
-        message: "اطلاعات بلاگ با موفقیت دریافت شد",
+        message: "اطلاعات پست با موفقیت دریافت شد",
         data: post,
       };
     } else {
       return {
         success: false,
-        message: "دریافت اطلاعات بلاگ با شکست مواجه شد",
+        message: "دریافت اطلاعات پست با شکست مواجه شد",
       };
     }
   } catch (error) {
@@ -253,9 +270,8 @@ export async function getpost(req) {
 
 
 
-export async function updatepost(req) {
+export async function updatePost(req) {
   const { id } = req.query;
-  console.log("id",id)
   try {
     const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
     console.log("publishStatus",publishStatus)
@@ -272,20 +288,20 @@ export async function updatepost(req) {
     // if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
-    const post = await post.findByIdAndUpdate(id, updateFields, { new: true })
+    const post = await Post.findByIdAndUpdate(id, updateFields, { new: true })
       .populate('tags')  
       .populate('category')  
       .populate('authorId');  
     if (post) {
       return {
         success: true,
-        message: "بلاگ با موفقیت به‌روزرسانی شد",
+        message: "پست با موفقیت به‌روزرسانی شد",
         data: post,
       };
     } else {
       return {
         success: false,
-        message: "بلاگی پیدا نشد",
+        message: "پستی پیدا نشد",
       };
     }
   } catch (error) {

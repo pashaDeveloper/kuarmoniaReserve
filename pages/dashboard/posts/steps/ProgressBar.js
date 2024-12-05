@@ -1,4 +1,3 @@
-// ProgressBar.js
 import React from 'react';
 
 const ProgressBar = ({ currentStep, totalSteps }) => {

@@ -5,25 +5,25 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from "next/router";
 
-const PostCard = ({ title, description, isFeature, featureImage, publishDate,category }) => {
+const PostCard = ({ title, description, isFeature, thumbnailPreview, publishDate,category }) => {
   const router = useRouter();
   return (
     <div    onClick={() => router.push(`/post/post`)} className="flex flex-col justify-center  rtl dark:text-white ">
     <div className="relative flex flex-row space-x-3  space-x-reverse rounded-primary shadow-lg p-3 w-full md:min-w-[600px]  max-w-[650px] mx-auto border border-white dark:border-gray-700 dark:bg-gray-800/70 bg-white/70">
       <div className="w-1/3  grid place-items-center  min-h-[170px]">
-      {!featureImage ?(
+      {!thumbnailPreview ?(
               <Skeleton  height={170} width={170} />
 
       ):(
-        featureImage.type === "image" ? (
+        thumbnailPreview.type === "image" ? (
           <img
-            src={featureImage.src}
+            src={thumbnailPreview.src}
             alt="Feature Preview"
             className="w-full h-full object-cover rounded-xl"
           />
         ) : (
           <video
-            src={featureImage.src}
+            src={thumbnailPreview.src}
             controls
             className="w-full h-full object-cover rounded-xl"
           />

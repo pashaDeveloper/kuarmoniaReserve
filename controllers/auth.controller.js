@@ -1,16 +1,14 @@
 import User from "@/models/user.model";
 import generateAccessToken from "@/utils/jwt.util";
-import createSeedBlogForFirstUser from "@/libs/seed/seedBlog";
-import createSeedCategories from "@/libs/seed/seedCategories";
-import createSeedTags from "@/libs/seed/seedTags";
+import path from "path";
 
-// signup
 export async function signUpUser(req) {
   try {
       const { email, phone, avatarUrl } = req.body;
       const existingUser = await User.findOne({
           $or: [{ email: email }, { phone: phone }],
       });
+      let avatar = null;
 
       if (existingUser) {
           return {
@@ -18,6 +16,12 @@ export async function signUpUser(req) {
               message: "کاربری با این ایمیل یا شماره تلفن قبلاً ثبت‌نام کرده است. لطفاً به صفحه ورود بروید.",
               redirectToLogin: true,
           };
+      }
+      if (req.body.avatar && req.body.avatar.length) {
+        avatar = {
+          url: req.body.avatar[0] || "N/A", 
+          public_id: path.basename(req.body.avatar[0]) || "ناشناخته", 
+        };
       }
 
       const userCount = await User.countDocuments();
@@ -28,10 +32,7 @@ export async function signUpUser(req) {
           ...req.body,
           role: role,
           status: status,
-          avatar: {
-              originalName: req.body.originalName || "N/A",
-              url: avatarUrl || req.body.filePath || "uploads/default-avatar.jpg",
-          },
+          avatar,
       });
 
       const result = await user.save({ validateBeforeSave: true });
