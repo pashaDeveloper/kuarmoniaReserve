@@ -22,7 +22,6 @@ export async function addPost(req) {
       relatedPosts,
  
     } = req.body;
-    console.log("adawdawdaw",req.body.gallery )
     let parsedSocialLinks = [];
     let featuredImage = null;
     let gallery = [];
@@ -33,8 +32,6 @@ export async function addPost(req) {
         console.error("Error parsing socialLinks:", e.message);
       }
     }
-    console.log("featuredImage",req.body.featuredImage)
-    console.log("gallery",req.body.gallery)
 
     if (req.body.featuredImage && req.body.featuredImage.length) {
       const filePath = req.body.featuredImage[0];
