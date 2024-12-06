@@ -6,7 +6,7 @@ import { toggleFullscreen } from '@/utils/functionHelpers';
 
 const PreviewSection = ({
   watch,
-  featureImage,
+  thumbnailPreview,
   isLoading,
   handleImageLoad,
   publishDate,
@@ -64,7 +64,7 @@ const PreviewSection = ({
     <Content
         title={watch("title")}
         content={watch("content")}
-        featureImage={featureImage}
+        featureImage={thumbnailPreview}
         isLoading={isLoading}
         publishDate={watch("publishDate")}
         author={author}

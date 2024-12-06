@@ -5,9 +5,9 @@ import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
-import PostCard from "@/components/shared/card/PostCard"; 
+import PostCard from "./PostCard";
 
-const Offer = () => {
+const posts = () => {
   return (
     <section
       className="bg-no-repeat bg-contain bg-center h-full py-12"
@@ -35,19 +35,13 @@ const Offer = () => {
             پست های ما شامل جدیدترین اطلاعات و تغییرات در قوانین مهاجرت و پناهندگی هستند که می‌توانند به شما در تصمیم‌گیری‌های مهم کمک کنند.            </p>
           </article>
 
-
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-          
           <PostCard />
-          <PostCard/>
-          <PostCard/>
-          <PostCard/>
+
   
-          </div>
         </div>
       </Container>
     </section>
   );
 };
 
-export default Offer;
+export default posts;

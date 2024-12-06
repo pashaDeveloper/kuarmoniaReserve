@@ -4,7 +4,7 @@ import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
-import BlogPosts from "./BlogPosts";
+import BlogCard from "./BlogCard";
 
 const Blogs = () => {
   return (
@@ -38,7 +38,7 @@ const Blogs = () => {
             </article>
           </div>
 
-          <BlogPosts />
+          <BlogCard />
         </section>
       </Container>
     </section>

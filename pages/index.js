@@ -1,6 +1,6 @@
 import Hero from "@/components/home/hero/Hero";
 import Destination from "@/components/home/destination/Destination";
-import Offer from "@/components/home/offer/Offer";
+import Post from "@/components/home/posts/posts";
 import Main from "@/layouts/Main";
 import BestSelling from "@/components/home/bestSelling/BestSelling";
 import Advantage from "@/components/home/advantage/Advantage";
@@ -23,7 +23,7 @@ export default function Home() {
       </Head>
       <Main>
         <Hero />
-        <Offer />
+        <Post />
         <BestSelling />
         <Advantage />
         <Reviews />

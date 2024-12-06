@@ -1,31 +1,33 @@
-import React, { useState, useCallback,useEffect , useMemo } from "react";
-import { useForm, FormProvider, } from "react-hook-form";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import { useSelector } from "react-redux";
 import PreviewSection from "./steps/PreviewSection";
 import CustomProgressBar from "./steps/CustomProgressBar";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
-import BlogCard from "@/components/shared/card/BlogCard"; 
+import BlogCard from "@/components/shared/card/BlogCard";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
-import Step4 from "./steps/Step4"; 
-import Step5 from "./steps/Step5"; 
+import Step4 from "./steps/Step4";
+import Step5 from "./steps/Step5";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
-import AddCategory from "../categories/add"; 
-import AddTag from "../tags/add"; 
-import SendButton from "@/components/shared/button/SendButton"
-import { useAddBlogMutation, useUpdateBlogMutation } from "@/services/blog/blogApi";
+import AddCategory from "../categories/add";
+import AddTag from "../tags/add";
+import SendButton from "@/components/shared/button/SendButton";
+import {
+  useAddBlogMutation,
+  useUpdateBlogMutation,
+} from "@/services/blog/blogApi";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
-import {  PrevIcon } from "@/utils/SaveIcon";
+import { PrevIcon } from "@/utils/SaveIcon";
 
 const Add = () => {
   const router = useRouter();
 
   const handleBackList = () => {
-
     router.push("/dashboard/blogs");
   };
   const methods = useForm({
@@ -39,8 +41,8 @@ const Add = () => {
       tags: [],
       category: "",
       content: "",
-      gallery:"",
-      readTime:"",
+      gallery: "",
+      readTime: "",
       visibility: "public",
       isFeatured: false,
       socialLinks: [], // فیلد جدید
@@ -51,14 +53,34 @@ const Add = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+  const [gallery, setGallery] = useState([]);
+  const [thumbnail, setThumbnail] = useState(null);
   const [editorData, setEditorData] = useState("");
-  const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue,getValues,reset ,onSuccess  } = methods; 
-  const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
+  const {
+    watch,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+    register,
+    control,
+    clearErrors,
+    setValue,
+    getValues,
+    reset,
+    onSuccess,
+  } = methods;
+  const publishDate =
+    watch("publishDate") || new Date().toISOString().split("T")[0];
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
-  const { data: tagsData, refetch: refetchTags } = useGetTagsForDropDownMenuQuery();
-  const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
+  const { data: categoriesData, refetch: refetchCategories } =
+    useGetCategoriesForDropDownMenuQuery();
+  const { data: tagsData, refetch: refetchTags } =
+    useGetTagsForDropDownMenuQuery();
+  const categories = Array.isArray(categoriesData?.data)
+    ? categoriesData.data
+    : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
   const [addBlog, { isLoading: isAdding, data: addData, error: addError }] =
     useAddBlogMutation();
@@ -66,15 +88,15 @@ const Add = () => {
     updateBlog,
     { isLoading: isUpdating, data: updateData, error: updateError },
   ] = useUpdateBlogMutation();
-  const categoryOptions = categories?.map(category => ({
+  const categoryOptions = categories?.map((category) => ({
     id: category._id,
     value: category.title,
-    description: category.description, 
+    description: category.description,
   }));
-  const tagsOptions = tags?.map(tag => ({
+  const tagsOptions = tags?.map((tag) => ({
     id: tag._id,
     value: tag.title,
-    description: tag.description, 
+    description: tag.description,
   }));
   const defaultValues = useMemo(() => {
     return {
@@ -86,7 +108,7 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-    
+
     formData.append("title", data.title);
     formData.append("metaTitle", data.metaTitle || "");
     formData.append("metaDescription", data.metaDescription || "");
@@ -97,16 +119,14 @@ const Add = () => {
     formData.append("isFeatured", data.isFeatured);
     formData.append("readTime", data.readTime);
     formData.append("publishDate", new Date().toISOString().split("T")[0]);
-    formData.append("authorId",user?._id)
+    formData.append("authorId", user?._id);
     data.tags.forEach((tag) => {
-      formData.append("tags[]", tag.id); 
+      formData.append("tags[]", tag.id);
     });
-    if (data.gallery && data.gallery.length > 0) {
-      formData.append("featuredImage", data.gallery[0]); 
-    }
+    formData.append("featuredImage", thumbnail);
     await addBlog(formData);
   };
-  
+
   useEffect(() => {
     const isLoading = isAdding || isUpdating;
     const data = addData || updateData;
@@ -118,10 +138,10 @@ const Add = () => {
 
     if (data?.success) {
       toast.success(data?.message, { id: "blog" });
-      reset();    
+      reset();
       setCurrentStep(1);
-      setEditorData(""); 
-      setGalleryPreview(null)
+      setEditorData("");
+      setGalleryPreview(null);
     }
     if (error?.data) {
       toast.error(error?.data?.message, { id: "blog" });
@@ -167,35 +187,21 @@ const Add = () => {
     setIsTagModalOpen(false);
   }, []);
 
-console.log("galleryPreview",galleryPreview[0])
 
   const handleNext = async () => {
     let stepValid = false;
     switch (currentStep) {
       case 1:
-        stepValid = await trigger([
-          "title",
-          "description",
-          "publishDate"
-        ]);
+        stepValid = await trigger(["title", "description", "publishDate"]);
         break;
       case 2:
-        stepValid = await trigger([
-          "gallery",
-          "content"
-        ]);
+        stepValid = await trigger(["Thumbnail", "content"]);
         break;
       case 3:
-        stepValid = await trigger([
-          "tags",
-          "category"
-        ]);
+        stepValid = await trigger(["tags", "category"]);
         break;
       case 4:
-        stepValid = await trigger([
-          "metaTitle",
-          "metaDescription"
-        ]);
+        stepValid = await trigger(["metaTitle", "metaDescription"]);
         break;
       case 5:
         stepValid = await trigger([]);
@@ -203,13 +209,12 @@ console.log("galleryPreview",galleryPreview[0])
       default:
         stepValid = false;
     }
-  
+
     if (!stepValid) {
       toast.dismiss();
-      toast('لطفا ابتدا مرحله مورد نظر را تکمیل کنید.!', {
-        icon: '⚠️',
+      toast("لطفا ابتدا مرحله مورد نظر را تکمیل کنید.!", {
+        icon: "⚠️",
       });
-      
     } else {
       setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
     }
@@ -219,37 +224,36 @@ console.log("galleryPreview",galleryPreview[0])
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const featureImage = galleryPreview ? galleryPreview[0] :"";
+  const featureImage = galleryPreview ? galleryPreview[0] : "";
   return (
     <section
       className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
     >
-    <a onClick={handleBackList} className="fixed bottom-4 right-4 group items-center reject-button rounded-full  !bg-red-800/20 shadow-lg !p-4 text-slate-300 transition-all hover:text-slate-100 z-50" title="بازگشت">
-    
-    <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:translate-x-1" />
-
-    </a>
+      <a
+        onClick={handleBackList}
+        className="fixed bottom-4 right-4 group items-center reject-button rounded-full  !bg-red-800/20 shadow-lg !p-4 text-slate-300 transition-all hover:text-slate-100 z-50"
+        title="بازگشت"
+      >
+        <PrevIcon className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:translate-x-1" />
+      </a>
       <div className="wave"></div>
       <div className="wave wave2"></div>
       <div className="wave wave3"></div>
-      
+
       <div className="w-full h-full flex flex-col justify-center items-center">
-     
         <FormProvider {...methods}>
-   
-    <form onSubmit={handleSubmit(onSubmit)}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
             className="w-full h-full flex flex-col"
           >
             <div className="flex  items-center">
-            <div>
-         
-        </div>
-            <CustomProgressBar
-              currentStep={currentStep}
-              totalSteps={totalSteps}
+              <div></div>
+              <CustomProgressBar
+                currentStep={currentStep}
+                totalSteps={totalSteps}
               />
-              </div>
- 
+            </div>
+
             <div className="flex flex-col lg:flex-row-reverse flex-1">
               {/* بخش فرم */}
               <div className="flex-1  flex flex-col items-center p-4">
@@ -263,8 +267,8 @@ console.log("galleryPreview",galleryPreview[0])
                   )}
                   {currentStep === 2 && (
                     <Step2
-                      galleryPreview={galleryPreview}
-                      setGalleryPreview={setGalleryPreview}
+                      setThumbnail={setThumbnail}
+                      setThumbnailPreview={setThumbnailPreview}
                       editorData={editorData}
                       setEditorData={setEditorData}
                       register={register}
@@ -296,20 +300,13 @@ console.log("galleryPreview",galleryPreview[0])
                       getValues={getValues}
                     />
                   )}
-                  {currentStep === 5 && (
-                    <Step5 />
-                  )}
+                  {currentStep === 5 && <Step5 />}
 
                   <div className="flex p-6 justify-between mt-4 w-full absolute bottom-0">
                     {currentStep < totalSteps && (
-                      <NavigationButton
-                        direction="next"
-                        onClick={handleNext}
-                      />
+                      <NavigationButton direction="next" onClick={handleNext} />
                     )}
-                    {currentStep === totalSteps && (
-                      <SendButton  />
-                    )}
+                    {currentStep === totalSteps && <SendButton />}
                     <div className="flex-1 flex justify-end">
                       {currentStep > 1 && (
                         <NavigationButton
@@ -330,25 +327,25 @@ console.log("galleryPreview",galleryPreview[0])
                 <BlogCard
                   title={watch("title")}
                   description={watch("description")}
-                  featureImage={featureImage}
+                  thumbnailPreview={thumbnailPreview?.src}
                   publishDate={publishDate}
                 />
               </div>
 
               {/* بخش PreviewSection با overflow-y responsive */}
               <div className="flex-1 p-4 overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
-              <PreviewSection
-  watch={watch}
-  featureImage={featureImage}
-  isLoading={false}
-  handleImageLoad={() => {}}
-  publishDate={publishDate}
-  editorData={editorData}
-  selectedTags={watch("tags")}
-  currentStep={currentStep}
-  author={defaultValues?.name}
-  avatar={defaultValues?.avatar?.url}
-/>
+                <PreviewSection
+                  watch={watch}
+                  thumbnailPreview={thumbnailPreview?.src}
+                  isLoading={false}
+                  handleImageLoad={() => {}}
+                  publishDate={publishDate}
+                  editorData={editorData}
+                  selectedTags={watch("tags")}
+                  currentStep={currentStep}
+                  author={defaultValues?.name}
+                  avatar={defaultValues?.avatar?.url}
+                />
               </div>
             </div>
           </form>

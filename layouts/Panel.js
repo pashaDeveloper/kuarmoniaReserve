@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import LoadingIndicator from "../components/shared/loading/LoadingIndicator";
+import LoadingIndicator from "@/components/shared/loading/LoadingIndicator";
 import Navbar from "@/components/shared/container/Navbar";
 import { useSelector } from "react-redux";
 import {

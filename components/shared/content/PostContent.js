@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const PostContent = ({ 
   title, 
-  highlight, 
+  gallery,
   content, 
   thumbnailPreview,
   like,
@@ -29,18 +29,18 @@ const PostContent = ({
       ) : (
         thumbnailPreview.type === "image" ? (
         <div
-          className="lg:scale-110 h-80 bg-cover lg:h-full rounded-b-none border dark:border-gray-700 lg:rounded-lg"
+          className=" h-80 bg-cover lg:scale-110 lg:h-full rounded-b-none border dark:border-gray-700 lg:rounded-lg"
           style={{
             width: "500px",
             height: "500px",
-            backgroundImage: `url('${thumbnailPreview.src}')`,
+            backgroundImage: `url('${thumbnailPreview.url}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />):(
 
           <video
-          src={thumbnailPreview.src}
+          src={thumbnailPreview.url}
           controls
           className="w-full h-full lg:scale-110 object-cover lg:rounded-lg"
         />

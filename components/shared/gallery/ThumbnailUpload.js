@@ -19,7 +19,7 @@ const ThumbnailUpload = ({
         const isVideo = file.type.startsWith("video/");
         setThumbnailPreview({
           type: isVideo ? "video" : "image",
-          src: e.target.result,
+          url: e.target.result,
         });
       };
       reader.readAsDataURL(file);

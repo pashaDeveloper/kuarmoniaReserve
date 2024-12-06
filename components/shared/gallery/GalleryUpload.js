@@ -32,7 +32,7 @@ const GalleryUpload = ({
         const isVideo = file.type.startsWith("video/");
         previewItems.push({
           type: isVideo ? "video" : "image",
-          src: e.target.result,
+          url: e.target.result,
         });
 
         if (previewItems.length === files.length) {

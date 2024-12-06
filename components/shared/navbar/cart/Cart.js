@@ -57,7 +57,7 @@ const Cart = () => {
 
   return (
     <>
-      <Tooltip text="Cart">
+      <Tooltip text="سبد خرید" txtColor="text-white">
         <button
           className="p-1.5 border border-primary/20 hover:border-primary rounded relative"
           onClick={openModal}
@@ -79,7 +79,7 @@ const Cart = () => {
       >
         <div className="flex flex-col gap-y-4">
           <h1 className="text-2xl drop-shadow">
-            Check Your <HighlightText>Cart</HighlightText>
+            بررسی <HighlightText>سبد خرید</HighlightText>
           </h1>
           <section className="h-full w-full">
             {user?.cart?.rents?.length === 0 ? (

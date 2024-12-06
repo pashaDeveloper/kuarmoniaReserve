@@ -22,6 +22,7 @@ export async function addPost(req) {
       relatedPosts,
  
     } = req.body;
+    console.log("adawdawdaw",req.body.gallery )
     let parsedSocialLinks = [];
     let featuredImage = null;
     let gallery = [];
@@ -32,20 +33,27 @@ export async function addPost(req) {
         console.error("Error parsing socialLinks:", e.message);
       }
     }
+    console.log("featuredImage",req.body.featuredImage)
+    console.log("gallery",req.body.gallery)
+
     if (req.body.featuredImage && req.body.featuredImage.length) {
+      const filePath = req.body.featuredImage[0];
+      const fileExtension = path.extname(filePath).substring(1).toLowerCase();  // بررسی نوع فایل به حروف کوچک
       featuredImage = {
-        url: req.body.featuredImage[0] || "N/A", 
-        public_id: path.basename(req.body.featuredImage[0]) || "ناشناخته", 
+        url: filePath || "N/A", 
+        public_id: path.basename(filePath) || "ناشناخته",
+        Type: fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" ? "image" : 
+              fileExtension === "mp4" ? "video" : "unknown",
       };
     }
     
     if (req.body.gallery && req.body.gallery.length) {
       gallery = req.body.gallery.map((filePath) => {
-        const fileExtension = path.extname(filePath).substring(1); 
+        const fileExtension = path.extname(filePath).substring(1).toLowerCase();  // بررسی نوع فایل به حروف کوچک
         return {
           url: filePath, 
           public_id: path.basename(filePath) || "ناشناخته",
-          Type: fileExtension === "jpg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
+          Type: fileExtension === "jpg" ||fileExtension === "jpeg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
         };
       });
     }
@@ -124,9 +132,7 @@ export async function getPosts(req) {
 
     const isSuperAdmin = user.role === 'superAdmin';
 
-    if (!isSuperAdmin) {
-      searchQuery.authorId = userId;
-    }
+
 
     const searchQuery = search
     ? { 
@@ -138,11 +144,14 @@ export async function getPosts(req) {
         isDeleted: false 
       }
     : { isDeleted: false };
+    if (!isSuperAdmin) {
+      searchQuery.authorId = userId;
+    }
     const posts = await Post.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id postId title createdAt views likes dislikes status likeCount dislikeCount featuredImage.url');
+    .select('_id postId title createdAt views likes dislikes status likeCount dislikeCount featuredImage');
 
 
 
@@ -185,8 +194,8 @@ export async function getClientPosts(req) {
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
-
+    .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage visibility publishStatus publishDate');
+console.log("posts",posts)
     const total = await Post.countDocuments({ isDeleted: false });
 
     if (posts.length > 0) {
@@ -246,7 +255,7 @@ export async function getPost(req) {
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
-    .select('_id postId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured featuredImage.url metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
+    .select('_id postId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured gallery featuredImage metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
     if (post) {
       return {
         success: true,

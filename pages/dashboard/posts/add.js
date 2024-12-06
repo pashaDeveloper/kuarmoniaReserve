@@ -53,7 +53,6 @@ const Add = () => {
   const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
-  const [galleryPreviews, setGalleryPreviews] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
 

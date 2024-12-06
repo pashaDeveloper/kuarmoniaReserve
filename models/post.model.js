@@ -66,6 +66,11 @@ const postSchema = new Schema(
         type: String,
         required: [true, "عکس شاخص الزامی است"],
       },
+      Type: {
+        type: String,
+        enum: ["image", "video","unknown"],
+        required: true,
+      },
       public_id: {
         type: String,
         default: "N/A",
@@ -81,7 +86,7 @@ const postSchema = new Schema(
           },
           Type: {
             type: String,
-            enum: ["image", "video"],
+            enum: ["image", "video","unknown"],
             required: true,
           },
           public_id: {

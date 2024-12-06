@@ -1,5 +1,5 @@
 import Panel from "@/layouts/Panel";
-import React, { useState,useEffect , useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import AddButton from "@/components/shared/button/AddButton";
 import {
   useGetPostsQuery,
@@ -31,8 +31,6 @@ const Listpost = () => {
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
 
   const router = useRouter();
-
-
 
   const handlePageChange = (newPage) => {
     console.log("Current Page:", newPage);
@@ -76,7 +74,7 @@ const Listpost = () => {
             <button
               className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
               onClick={() => onStatusFilterChange("all")}
-            > 
+            >
               همه
             </button>
             <button
@@ -133,18 +131,23 @@ const Listpost = () => {
               key={post.id}
               className="mt-4 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2  transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-slate-700 dark:text-white"
               onClick={() => router.push(`/dashboard/posts/info/${post.id}`)}
-
-           >
+            >
               <div className=" col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={post.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
-                  <LoadImage
-                    src={post?.featuredImage?.url}
-                    alt={``}
-                    height={100}
-                    width={100}
-                    className="h-[60px] w-[60px] rounded-full object-cover"
-                  />
+                  {post?.featuredImage.type === "image" ? (
+                    <LoadImage
+                      src={post?.featuredImage?.url}
+                      alt={``}
+                      height={100}
+                      width={100}
+                      className="h-[60px] w-[60px] rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-[60px] w-[60px] rounded-full bg-gray-300 animate-pulse"></div> // Skeleton Loader
+
+                  )}
+
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex">
@@ -184,21 +187,15 @@ const Listpost = () => {
                   iconSize={18}
                 />
               </div>
-
-
-              
             </div>
-      
           ))
         )}
-            <Pagination
+        <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
         />
       </Panel>
-
-      
     </>
   );
 };

@@ -39,8 +39,7 @@ const Info = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [galleryPreview, setGalleryPreview] = useState([]);
- 
-  
+
   const { id } = router.query;
 
   const {
@@ -133,11 +132,11 @@ const Info = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("content", content);
-    
+
     // ارسال تصویر به صورت فایل
     if (galleryPreview) {
       formData.append("featuredImage", galleryPreview[0]);
-      console.log("galleryPreview",galleryPreview)
+      console.log("galleryPreview", galleryPreview);
     }
     updatepost({
       id: id,
@@ -170,8 +169,10 @@ const Info = () => {
     if (fetchData) {
       toast.success(fetchData?.message, { id: "fetchpost" });
       if (
-        (user?.role === "superAdmin" && fetchData?.data?.publishStatus === "pending") ||
-        (user?.role === "admin" && fetchData?.data?.publishStatus === "rejected")
+        (user?.role === "superAdmin" &&
+          fetchData?.data?.publishStatus === "pending") ||
+        (user?.role === "admin" &&
+          fetchData?.data?.publishStatus === "rejected")
       ) {
         setTimeout(() => {
           setIsModalOpen(true);
@@ -212,7 +213,7 @@ const Info = () => {
     formData.append("publishStatus", "approved");
     updatepost({
       id,
-      data:formData ,
+      data: formData,
     })
       .unwrap()
       .then((response) => {
@@ -242,14 +243,13 @@ const Info = () => {
       });
   };
 
-
   const handleReview = () => {
     const formData = new FormData();
 
     formData.append("publishStatus", "pending");
     updatepost({
       id,
-      data:formData,
+      data: formData,
     })
       .unwrap()
       .then((response) => {
@@ -260,8 +260,6 @@ const Info = () => {
         toast.error("خطا در به‌روزرسانی وضعیت.");
       });
   };
-
-
 
   return (
     <>
@@ -468,37 +466,40 @@ const Info = () => {
 
           <div className="border border-gray-200 dark:border-slate-700 dark:bg-slate-800 bg-white shadow-sm rounded-xl md:border-x mt-4 md:mx-0">
             <div className="flex flex-col justify-center bg-white dark:text-blue-100 dark:bg-slate-800">
-              <div data-theme="teal" className="mx-auto">
+              <div data-theme="teal">
                 <section className="font-sans text-black">
                   <div className="[ lg:flex justify-between lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
-                    <div className="flex-shrink-0 self-stretch justify-between sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
+                    <div className="flex-shrink-0 lg:w-1/2 self-stretch justify-between sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
                       <div className="h-full relative">
                         <article className="h-full">
                           <div className="h-full relative">
-                            <img
-                              className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
-                              src={fetchData?.data?.featuredImage?.url}
-                              alt=""
-                              width={600}
-                            />
-                            <span className=" absolute flex justify-center items-center m-auto inset-0  rounded-lg ">
-                              <GalleryUpload
-                                border={false}
-                                setGalleryPreview={setGalleryPreview}
-                                register={register("gallery", {
-                                  required: "آپلود تصویر عنوان الزامی است",
-                                })}
-                                iconSize={10}
-                                maxFiles={1}
-                                title={false}
-                              />
-                            </span>
+                            {fetchData?.data?.featuredImage ? (
+                              fetchData?.data?.featuredImage.type ===
+                              "image" ? (
+                                <img
+                                  className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
+                                  src={fetchData?.data?.featuredImage?.url}
+                                  alt=""
+                                  width={600}
+                                />
+                              ) : (
+                                <div className="flex justify-start">
+                                  <video
+                                    src={fetchData?.data?.featuredImage.url}
+                                    controls
+                                    className="w-full h-full object-cover lg:rounded-lg"
+                                  />
+                                </div>
+                              )
+                            ) : (
+                              <div className="h-[300px] w-full bg-gray-300 animate-pulse rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg" />
+                            )}
                           </div>
                         </article>
                       </div>
                     </div>
                     <div
-                      className="p-6 bg-grey"
+                      className="p-6 bg-grey lg:w-1/2"
                       onClick={handleContentEditClick}
                     >
                       <Edit />
@@ -538,7 +539,6 @@ const Info = () => {
                     <tr className="border-b border-slate-200 dark:border-slate-600">
                       <td className="py-3 text-sky-500">اسلاگ</td>
                       <td className="px-6 py-3 flex items-center gap-1">
-
                         <span>{fetchData?.data?.slug}</span>
                         <span>
                           <Edit />
@@ -548,10 +548,12 @@ const Info = () => {
                     <tr className="border-b border-slate-200 dark:border-slate-600">
                       <td className="py-3 text-sky-500">آدرس اصلی</td>
                       <td className="px-6  py-3 flex items-center gap-1 ">
-                      <span dir="ltr" className="text-left">
-                      {fetchData?.data?.canonicalUrl ? decodeURIComponent(fetchData.data.canonicalUrl) : ''}
-                      </span>
-                      <span>
+                        <span dir="ltr" className="text-left">
+                          {fetchData?.data?.canonicalUrl
+                            ? decodeURIComponent(fetchData.data.canonicalUrl)
+                            : ""}
+                        </span>
+                        <span>
                           <Edit />
                         </span>
                       </td>
@@ -591,51 +593,51 @@ const Info = () => {
         </div>
       </Panel>
       {isModalOpen && (
-  <div
-    className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-opacity-70 transition-all ease-in-out duration-500"
-    style={{
-      transform: "translateY(0)",
-      opacity: 1,
-    }}
-  >
-    <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
-      <div className="flex justify-around items-center">
-        {user?.role === "superAdmin" ? (
-          <>
-            <div>
-              <button
-                onClick={handleApprove}
-                className="group w-[150px] py-2 rounded-md apply-button"
-              >
-                <Apply />
-                <span className="mr-2">تایید</span>
-              </button>
+        <div
+          className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-opacity-70 transition-all ease-in-out duration-500"
+          style={{
+            transform: "translateY(0)",
+            opacity: 1,
+          }}
+        >
+          <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
+            <div className="flex justify-around items-center">
+              {user?.role === "superAdmin" ? (
+                <>
+                  <div>
+                    <button
+                      onClick={handleApprove}
+                      className="group w-[150px] py-2 rounded-md apply-button"
+                    >
+                      <Apply />
+                      <span className="mr-2">تایید</span>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={handleReject}
+                      className="group border reject-button w-[150px]"
+                    >
+                      <Reject />
+                      <span className="mr-2">رد</span>
+                    </button>
+                  </div>
+                </>
+              ) : user?.role === "admin" ? (
+                <div>
+                  <button
+                    onClick={handleReview}
+                    className="group w-[150px] py-2 rounded-md review-button"
+                  >
+                    <Review />
+                    <span className="mr-2">بازبینی</span>
+                  </button>
+                </div>
+              ) : null}
             </div>
-            <div>
-              <button
-                onClick={handleReject}
-                className="group border reject-button w-[150px]"
-              >
-                <Reject />
-                <span className="mr-2">رد</span>
-              </button>
-            </div>
-          </>
-        ) : user?.role === "admin" ? (
-          <div>
-            <button
-              onClick={handleReview}
-              className="group w-[150px] py-2 rounded-md review-button"
-            >
-              <Review />
-              <span className="mr-2">بازبینی</span>
-            </button>
           </div>
-        ) : null}
-      </div>
-    </div>
-  </div>
-)}
+        </div>
+      )}
 
       <Modal isOpen={isEditorOpen} onClose={closeModal} className="h-[90vh]">
         <RTEditor

@@ -20,7 +20,7 @@ const Search = () => {
 
   return (
     <>
-      <Tooltip text="Search">
+      <Tooltip text="جستجو" txtColor="text-white">
         <button
           className="p-1.5 border border-primary/20 hover:border-primary rounded"
           onClick={openModal}

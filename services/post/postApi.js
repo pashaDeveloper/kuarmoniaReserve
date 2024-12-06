@@ -86,7 +86,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
 export const {
   useAddPostMutation,
   useGetPostsQuery,
-  useGetAllpostsQuery,
+  useGetAllPostsQuery,
   useDeletePostMutation,
   useGetPostQuery,
   useUpdatePostMutation,

@@ -32,7 +32,7 @@ const LoadingIndicator = () => {
   return (
     <>
       {loading && (
-        <div className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center " style={{ background: 'rgba(0, 0, 0, 0.6)' }}>
+        <div className="fixed top-0 left-0  z-[9999] w-screen h-screen flex items-center justify-center " style={{ background: 'rgba(0, 0, 0, 0.6)' }}>
           <div className="bg-white dark:bg-slate-900  shadow-lg py-6 px-14 rounded-lg flex items-center flex-col just">
             <div className="loader-dots  relative w-24 h-6 mt-2 flex items-center justify-center">
               <div className="absolute mt-1 w-5 h-5 rounded-full bg-green-500 dark:bg-blue-500"></div>

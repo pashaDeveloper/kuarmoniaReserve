@@ -2,6 +2,7 @@
 import Blog from '@/models/blog.model';
 import Like from '@/models/like.model';
 import User from '@/models/user.model';
+import path from "path";
 
 export async function addBlog(req) {
   try {
@@ -20,16 +21,22 @@ export async function addBlog(req) {
       isFeatured,
       visibility,
       relatedPosts,
-      featuredImage,
     } = req.body;
 
     let parsedSocialLinks = [];
+    let featuredImage = null;
     if (socialLinks) {
       try {
         parsedSocialLinks = JSON.parse(socialLinks);
       } catch (e) {
         console.error("Error parsing socialLinks:", e.message);
       }
+    }
+    if (req.body.featuredImage && req.body.featuredImage.length) {
+      featuredImage = {
+        url: req.body.featuredImage[0] || "N/A", 
+        public_id: path.basename(req.body.featuredImage[0]) || "ناشناخته", 
+      };
     }
 
     const blog = await Blog.create({
@@ -39,11 +46,7 @@ export async function addBlog(req) {
       publishDate,
       tags,
       category,
-      featuredImage: {
-        url: req.body.filePath,
-        public_id: req.file?.filename || "N/A",
-        originalName: req.body.originalName || "ناشناخته",
-      },
+      featuredImage,
       authorId,
       socialLinks: parsedSocialLinks,
       metaTitle,

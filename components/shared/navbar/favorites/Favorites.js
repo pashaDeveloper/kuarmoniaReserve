@@ -63,7 +63,7 @@ const Favorites = () => {
 
   return (
     <>
-      <Tooltip text="Favorites">
+      <Tooltip text="علاقه مندی ها" txtColor="text-white">
         <button
           className="p-1.5 border border-primary/20 hover:border-primary rounded relative"
           onClick={openModal}
@@ -85,7 +85,7 @@ const Favorites = () => {
       >
         <div className="flex flex-col gap-y-4">
           <h1 className="text-2xl drop-shadow">
-            Check Your <HighlightText>Favorites</HighlightText>
+            بررسی <HighlightText>علاقه مندی ها</HighlightText>
           </h1>
           <section className="h-full w-full">
             {user?.favorite?.rents?.length === 0 ? (

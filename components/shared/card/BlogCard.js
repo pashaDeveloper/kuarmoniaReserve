@@ -5,18 +5,18 @@ import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 import {Star} from "@/utils/SaveIcon"; 
 
-const BlogCard = ({ title, description, featureImage, publishDate }) => {
+const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
 
   return (
     <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800 bg-clip-border text-gray-700 shadow-lg h-[550px]">
       <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
-        { !featureImage && (
+        { !thumbnailPreview && (
           <SkeletonImage width={1150}  height={500} showSize={true} borderRadius="rounded-xl" className="z-0" 
 
            />
         )} 
         <img
-          src={featureImage}
+          src={thumbnailPreview}
           alt="Blog Image"
           className={`w-full h-64 object-cover object-center rounded-xl `}
         />

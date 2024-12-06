@@ -8,6 +8,7 @@ export async function signUpUser(req) {
       const existingUser = await User.findOne({
           $or: [{ email: email }, { phone: phone }],
       });
+      console.log("avatarUrl",avatarUrl)
       let avatar = null;
 
       if (existingUser) {
@@ -22,6 +23,14 @@ export async function signUpUser(req) {
           url: req.body.avatar[0] || "N/A", 
           public_id: path.basename(req.body.avatar[0]) || "ناشناخته", 
         };
+      } else {
+        if (avatarUrl) {
+          avatar = {
+            url: avatarUrl || "N/A", 
+            public_id: "ناشناخته", 
+          };
+        }
+        console.log("avatar", avatar);
       }
 
       const userCount = await User.countDocuments();

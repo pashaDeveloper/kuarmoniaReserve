@@ -1,12 +1,11 @@
-import LoadImage from "@/components/shared/image/LoadImage";
-import React, { useState, useEffect, useMemo } from "react";
-import { BiRightArrowAlt, BiRightArrowCircle } from "react-icons/bi";
+import Image from "next/image";
+import React, { useState, useMemo } from "react";
 import { useGetAllBlogsQuery } from "@/services/blog/blogApi";
 import Pagination from "@/components/shared/pagination/Pagination";
 import SkeletonCard from "@/components/shared/card/SkeletonCard";
 import { useRouter } from "next/router";
 
-const BlogPosts = () => {
+const BlogCard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
@@ -26,13 +25,14 @@ const BlogPosts = () => {
               className="group flex flex-col gap-y-4 border rounded cursor-pointer h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative"
               onClick={() => router.push(`/blog/${blog.id}`)}
             >
-              <img
-                src={blog.featuredImage?.url} // استفاده از تصویر ویژه پست
+              <Image
+                src={blog.featuredImage?.url}
                 alt={blog.title}
-                width={427}
-                height={350}
+                height={427}
+                width={350}
                 className="rounded-t w-full object-cover"
               />
+
               <article className="flex flex-col gap-y-2.5 px-4 pb-4 relative">
                 {blog.isFeatured && (
                   <span
@@ -91,4 +91,4 @@ const BlogPosts = () => {
   );
 };
 
-export default BlogPosts;
+export default BlogCard;

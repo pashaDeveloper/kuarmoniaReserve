@@ -21,7 +21,7 @@ const Step3 = ({ setGalleryPreview ,setGallery,register,galleryPreview} ) => {
       {/* نمایش پیش‌نمایش تصاویر */}
       <DisplayImages 
       galleryPreview={
-        galleryPreview.map((item) => item.src)
+        galleryPreview.map((item) => item.url)
         } 
       imageSize={150} />
       </div>
