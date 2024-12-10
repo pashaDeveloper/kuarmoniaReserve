@@ -9,7 +9,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [
-        "post",
+        "Post",
       
       ],
     }),
@@ -42,7 +42,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
         method: "GET",
         params: { type: "client" }, 
       }),
-      providesTags: ["post", "Tag", "User","Category"],
+      providesTags: ["Post", "Tag", "User","Category"],
     }),
 
 

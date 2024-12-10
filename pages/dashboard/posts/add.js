@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useEffect , useMemo } from "react";
+import React, { useState, useCallback,useEffect , useMemo ,useRef} from "react";
 import { useForm, FormProvider, } from "react-hook-form";
 import { useSelector } from "react-redux";
 import CustomProgressBar from "./steps/CustomProgressBar";
@@ -21,6 +21,8 @@ import { useAddPostMutation, useUpdatePostMutation } from "@/services/post/postA
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import {  PrevIcon } from "@/utils/SaveIcon";
+import { BsArrowsFullscreen } from "react-icons/bs";
+import { toggleFullscreen } from '@/utils/functionHelpers';
 
 const Add = () => {
   const router = useRouter();
@@ -57,6 +59,29 @@ const Add = () => {
   const [thumbnail, setThumbnail] = useState(null);
 
   const [editorData, setEditorData] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const previewRef = useRef(null);
+
+
+  const handleToggleFullscreen = () => {
+    toggleFullscreen(previewRef);
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (document.fullscreenElement === previewRef.current) {
+        setIsFullscreen(true);
+      } else {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
   const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue,getValues,reset ,onSuccess  } = methods; 
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
   const [selectedTags, setSelectedTags] = useState([]);
@@ -230,7 +255,7 @@ const Add = () => {
   const featureImage = galleryPreview ? galleryPreview[0] :"";
   return (
     <section
-      className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
+      className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 py-4`}
     >
     <a onClick={handleBackList} className="fixed bottom-4 right-4 group items-center reject-button rounded-full  !bg-red-800/20 shadow-lg !p-4 text-slate-300 transition-all hover:text-slate-100 z-50" title="بازگشت">
     
@@ -258,9 +283,9 @@ const Add = () => {
               />
               </div>
  
-              <div className="md:grid md:grid-cols-3 flex flex-col md:flex-row-reverse gap-4 w-full">
+              <div className="flex flex-col lg:flex-row-reverse flex-1 gap-y-2">
               {/* بخش فرم */}
-  <div className="lg:col-span-1 flex flex-col items-center p-4 md:order-1">
+  <div className="flex-1  flex flex-col items-center px-2">
     <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden text-black dark:text-gray-300 flex flex-col p-8 gap-y-4 shadow-lg relative h-[560px] items-center">
       {currentStep === 1 && (
         <Step1
@@ -342,16 +367,42 @@ const Add = () => {
   </div>
 
   {/* بخش postCard */}
-  <div className="lg:col-span-2  py-4 items-center gap-y-2 flex flex-col">
+  <div className="flex-1 px-2 items-center max-h-[200px]  flex flex-col">
     <PostCard
       title={watch("title")}
       description={watch("description")}
       thumbnailPreview={thumbnailPreview}
       publishDate={publishDate}
       isLoading={false}
+      author={defaultValues?.name}
+      avatar={defaultValues?.avatar?.url}
+
     />
    
-   <PostContent
+  
+  </div>
+  <div className="flex-1 px-2  overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
+  
+  <div
+    className={`flex-1  pt-10 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
+      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto scrollbar-hide relative`}
+    ref={previewRef}
+  >
+    <button
+  className=" rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-20 absolute left-1/2 top-4 transform -translate-x-1/2 dark:text-gray-100"
+  onClick={handleToggleFullscreen}
+>
+  {isFullscreen ? (
+    <></>
+  ) : (
+    <BsArrowsFullscreen size={20} />
+  )}
+</button>
+    <div
+    className={`mt-8`}
+
+  >
+  <PostContent
       title={watch("title")}
         content={watch("content")}
         thumbnailPreview={thumbnailPreview}
@@ -363,10 +414,14 @@ const Add = () => {
         isLoading={false}
         scale={0.6}
         selectedTags={watch("tags")}
-
+        isMobile={!isFullscreen}
+        author={defaultValues?.name}
+        avatar={defaultValues?.avatar?.url}
       />
-    
+      </div>
+      </div>
   </div>
+
 </div>
           </form>
         </FormProvider>

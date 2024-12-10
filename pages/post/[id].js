@@ -16,7 +16,7 @@ const PostContent = () => {
     data: fetchData,
     error: fetchError,
   } = useGetPostQuery(id);
-console.log(fetchData)
+
   return (
     <main>
       <Head>
@@ -37,6 +37,8 @@ console.log(fetchData)
             comment={[]}
             isLoading={fetching}
             selectedTags={fetchData?.data?.tags}
+            author={fetchData?.data?.authorId?.name}
+            avatar={fetchData?.data?.authorId?.avatar?.url}
           />
         </div>
       </Main>

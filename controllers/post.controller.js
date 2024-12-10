@@ -192,7 +192,6 @@ export async function getClientPosts(req) {
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
     .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage visibility publishStatus publishDate');
-console.log("posts",posts)
     const total = await Post.countDocuments({ isDeleted: false });
 
     if (posts.length > 0) {

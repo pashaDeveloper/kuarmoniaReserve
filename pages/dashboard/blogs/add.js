@@ -323,7 +323,7 @@ const Add = () => {
               </div>
 
               {/* بخش BlogCard */}
-              <div className="flex-1 p-4 items-center flex flex-col">
+              <div className="flex-1 items-center flex flex-col">
                 <BlogCard
                   title={watch("title")}
                   description={watch("description")}
@@ -333,7 +333,7 @@ const Add = () => {
               </div>
 
               {/* بخش PreviewSection با overflow-y responsive */}
-              <div className="flex-1 p-4 overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
+              <div className="flex-1  overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
                 <PreviewSection
                   watch={watch}
                   thumbnailPreview={thumbnailPreview?.src}

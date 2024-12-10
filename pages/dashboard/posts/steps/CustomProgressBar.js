@@ -59,13 +59,13 @@ const steps = [
 const CustomProgressBar = ({ currentStep }) => {
   return (
     <div className="w-full lg:py-6 py-1 ">
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-start">
         {steps.map((step, index) => {
           const isCompleted = currentStep > step.number;
           const isActive = currentStep === step.number;
 
           return (
-            <div key={step.number} className="w-1/4 relative flex flex-col items-center">
+            <div key={step.number} className="w-1/4 relative flex flex-col justify-center items-center">
               {/* خط اتصال */}
               {index !== steps.length - 1 && (
                 <div className="absolute top-5 right-full translate-x-1/2 w-full flex justify-center">
