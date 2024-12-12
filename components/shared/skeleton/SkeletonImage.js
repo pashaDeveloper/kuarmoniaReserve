@@ -4,7 +4,7 @@ const SkeletonImage = ({
   showSize = false,
   width = null,
   height = null,
-  borderRadius = "rounded-xl",
+  borderRadius = "rounded-none",
   className = "",
 }) => {
   return (

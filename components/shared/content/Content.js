@@ -122,7 +122,7 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
                     className={`ml-2 text-xs inline-flex items-center  leading-sm uppercase px-3 py-1 rounded-full ${randomColor.bg}  ${randomColor.text} mb-2`}
                   >
                     <TagIcon className="ml-1" />
-                    {tag.title}
+                    {tag.title }
                   </div>
                 );
               })

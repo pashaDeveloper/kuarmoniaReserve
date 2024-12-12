@@ -41,6 +41,7 @@ const PreviewSection = ({
     };
   }, []);
 
+  console.log("selectedTags",selectedTags)
   return (
     <div
     className={`flex-1 px-4 pt-10 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  

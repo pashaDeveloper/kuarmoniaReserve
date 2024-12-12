@@ -16,13 +16,15 @@ const BlogCard = () => {
   const router = useRouter();
 
   return (
+    <>
+
     <section className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
       {blogs?.length === 0 || isLoading
         ? Array.from({ length: 8 }, (_, index) => <SkeletonCard key={index} />)
         : blogs.map((blog, index) => (
             <div
               key={index}
-              className="group flex flex-col gap-y-4 border rounded cursor-pointer h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative"
+              className="group flex flex-col gap-y-4 border rounded cursor-pointer h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative "
               onClick={() => router.push(`/blog/${blog.id}`)}
             >
               <Image
@@ -59,7 +61,7 @@ const BlogCard = () => {
                   <p className="text-sm line-clamp-4 text-justify">
                     {blog.description || "توضیح یافت نشد"}
                   </p>
-                  <p className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary px-2 py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
+                  <div className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary px-2 py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
                     <span>
                       {new Date(blog.publishDate).toLocaleDateString("fa-IR", {
                         weekday: "long",
@@ -82,12 +84,19 @@ const BlogCard = () => {
                         />
                       )}
                     </div>
-                  </p>
+                  </div>
                 </div>
               </article>
             </div>
           ))}
     </section>
+    <Pagination 
+           currentPage={currentPage}
+           totalPages={totalPages}
+           onPageChange={(page) => setCurrentPage(page)}
+    />
+
+    </>
   );
 };
 

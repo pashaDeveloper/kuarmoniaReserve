@@ -31,7 +31,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       {pages.map((page) => (
         <span
           key={page}
-          className={`custom-button ${currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
+          className={`custom-button w-11 h-11 flex items-center justify-center  text-lg ${currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
           onClick={() => onPageChange(page)}
         >
           {page}

@@ -267,12 +267,12 @@ export async function updateBlog(req) {
     if (title !== undefined) updateFields.title = title;
      if (description !== undefined) updateFields.description = description;
      if (content !== undefined) updateFields.content = content;
-    // if (publishDate !== undefined) updateFields.publishDate = publishDate;
-    // if (tags !== undefined) updateFields.tags = tags;
-    // if (category !== undefined) updateFields.category = category;
-    // // if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
-    // if (authorId !== undefined) updateFields.authorId = authorId;
-    // if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
+    if (publishDate !== undefined) updateFields.publishDate = publishDate;
+    if (tags !== undefined) updateFields.tags = tags;
+    if (category !== undefined) updateFields.category = category;
+    if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
+    if (authorId !== undefined) updateFields.authorId = authorId;
+    if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
     const blog = await Blog.findByIdAndUpdate(id, updateFields, { new: true })

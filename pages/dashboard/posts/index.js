@@ -28,6 +28,7 @@ const Listpost = () => {
     userId: user?._id,
   });
 
+  console.log("data",data)
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
 
   const router = useRouter();

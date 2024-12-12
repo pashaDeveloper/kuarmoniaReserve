@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
-import { useGetCategoriesQuery, useUpdateCategoryMutation } from "@/services/category/categoryApi";
-import AddCategory from "./add";
-import DeleteConfirmationModal from "../../../components/shared/modal/DeleteConfirmationModal";
+import { useGetGalleriesQuery, useUpdateGalleryMutation } from "@/services/gallery/galleryApi";
+import AddGallery from "./add";
 import { toast } from "react-hot-toast";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import AddButton from "@/components/shared/button/AddButton";
@@ -10,109 +9,52 @@ import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import { FiEdit3,FiTrash } from "react-icons/fi";
 import LoadImage from "@/components/shared/image/LoadImage";
 import Pagination from "@/components/shared/pagination/Pagination";
+import Delete from "./Delete";
 
-const ListCategory = () => {
+const ListGallery = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading, error, refetch } = useGetCategoriesQuery({
+  const { data, isLoading, error, refetch } = useGetGalleriesQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
     search: searchTerm,
   });
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
-  const [updateCategory] = useUpdateCategoryMutation();
-  const categories = useMemo(() => Array.isArray(data?.data) ? data.data : [], [data]);
+  const galleries = useMemo(() => Array.isArray(data?.data) ? data.data : [], [data]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedGallery, setSelectedGallery] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
 
-  const openEditModal = (category) => {
-    setSelectedCategory(category);
+  const openEditModal = (Gallery) => {
+    setSelectedGallery(Gallery);
     setIsEditModalOpen(true);
   };
   const closeEditModal = () => {
-    setSelectedCategory(null);
+    setSelectedGallery(null);
     setIsEditModalOpen(false);
   };
 
-  const openDeleteModal = (category) => {
-    setSelectedCategory(category);
-    setIsDeleteModalOpen(true);
-  };
-  const closeDeleteModal = () => {
-    setSelectedCategory(null);
-    setIsDeleteModalOpen(false);
-  };
 
-  const openInfoModal = (category) => {
-    setSelectedCategory(category);
-    setIsInfoModalOpen(true);
-  };
-  const closeInfoModal = () => {
-    setSelectedCategory(null);
-    setIsInfoModalOpen(false);
-  };
-
-  const handleDelete = async () => {
-    const categoryToDelete = selectedCategory;
-    try {
-      const response = await updateCategory({
-        id: categoryToDelete._id,
-        isDeleted: true,
-      }).unwrap();
-      closeDeleteModal();
-
-      if (response.success) {
-        toast.success(response.message);
-        refetch();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error(error.message || "خطا در حذف دسته‌بندی");
-      console.error("Error deleting category", error);
-    }
-  };
-
-  const toggleStatus = async (categoryId, currentStatus) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
-    try {
-      const response = await updateCategory({
-        id: categoryId,
-        status: newStatus,
-      }).unwrap();
-
-      if (response.success) {
-        toast.success(response.message);
-        refetch();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error("خطا در تغییر وضعیت");
-      console.error("Error toggling status", error);
-    }
-  };
-
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
   useEffect(() => {
     if (isLoading) {
-      toast.loading("در حال دریافت دسته بندی...", { id: "category-loading" });
+      toast.loading("در حال دریافت دسته بندی...", { id: "gallery-loading" });
     }
 
     if (data && !isLoading) {
-      toast.dismiss("category-loading");
+      toast.dismiss("gallery-loading");
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "category-loading" });
+      toast.error(error?.data?.message, { id: "gallery-loading" });
     }
   }, [data, error, isLoading]);
   const onStatusFilterChange = (status) => {
@@ -180,36 +122,33 @@ const ListCategory = () => {
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
         <div className="col-span-11 lg:col-span-3  text-sm">
-          <span class="hidden lg:flex">نویسنده</span>
-          <span class="flex lg:hidden">نویسنده و عنوان</span>
+          <span className="hidden lg:flex"> دسته بندی و عکس شخاص</span>
+          <span className="flex lg:hidden">دسته بندی</span>
 
 
         </div>
-          <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">عنوان</div>
           <div className="lg:col-span-4 lg:flex hidden text-sm md:block">
             توضیحات
           </div>
-          <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
-           اسلاگ
-          </div>
+         
           
           <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
 
         {/* نمایش داده‌های دسته‌بندی‌ها */}
-        {isLoading ||categories && categories.length == 0 ? (
+        {isLoading ||galleries && galleries.length == 0 ? (
           <SkeletonItem repeat={5} /> 
         ) 
-        :(categories.map((category) => (
+        :(galleries.map((gallery) => (
             <div
-              key={category._id}
+              key={gallery._id}
               className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
             >
               <div className="col-span-10 lg:col-span-3 text-center flex items-center">
-                <StatusIndicator isActive={category.status === "active"} />
+                <StatusIndicator isActive={gallery.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                 <LoadImage
-                    src={category?.authorId?.avatar.url}
+                    src={gallery?.featuredImage?.url}
                     alt={``}
                     height={100}
                     width={100}
@@ -217,60 +156,47 @@ const ListCategory = () => {
                   />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
-                      <span className="hidden lg:flex ">{category?.authorId?.name}</span>  
-                      <span className=" lg:hidden ">{category?.title}</span>                     
+                      <span className="hidden lg:flex ">{gallery?.category?.title}</span>  
+                      <span className=" lg:hidden ">{gallery?.title}</span>                     
                     </span>
                     <span className="text-xs hidden lg:flex">
-                      {new Date(category.createdAt).toLocaleDateString("fa-IR")}
+                      {new Date(gallery.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                    <span className=" lg:hidden text-xs  line-clamp-1">{category?.description ? category?.description : new Date(category.createdAt).toLocaleDateString("fa-IR")}</span>                     
 
                   </article>
                 </div>
               </div>
-              <div className="lg:col-span-2 hidden gap-2 lg:flex justify-left items-center text-right">
-  <article className="flex-col flex gap-y-2">
-    <span className="text-sm lg:text-base overflow-hidden text-ellipsis line-clamp-1">
-      <span className="flex">{category.title}</span>
-    </span>
-  </article>
-</div>
+             
 
 <div className="lg:col-span-4 hidden gap-2 lg:flex justify-left items-center text-right">
   <article className="flex-col flex gap-y-2">
     <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
-      {category.description}
+      {gallery.description}
     </span>
   </article>
 </div>
 
               
 
-              <div className="hidden lg:col-span-2 col-span-5 gap-2 text-right lg:flex justify-left items-center">
-                <article className="flex-col flex gap-y-2">
-                  <span className="flex text-right">
-                    {category.slug}
-                  </span>
-                </article>
-              </div>
               
               <div className="col-span-2 md:col-span-1 gap-2 text-center flex justify-center items-center">
                 <article className="lg:flex-row flex flex-col justify-center gap-x-2  gap-y-2">
                   <span
                     className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
-                    onClick={() => openEditModal(category)}
+                    onClick={() => openEditModal(gallery)}
                   >
-                    <FiEdit3 className="w-5 h-5" />
+                    <FiEdit3 className="w-5 h-5 rounded-full" />
                   </span>
                   <span
                     className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
-                    onClick={() => openDeleteModal(category)}
                   >
-                    <FiTrash className="w-5 h-5" />
+                   
+                   <Delete id={gallery?._id}  />
+
                   </span>
                 </article>
               </div>
-             
+  
             </div>
                ))
               )}
@@ -282,40 +208,23 @@ const ListCategory = () => {
           onPageChange={(page) => setCurrentPage(page)}
         /> 
 
-        {/* مودال حذف */}
-        {isDeleteModalOpen && (
-          <DeleteConfirmationModal
-            isOpen={isDeleteModalOpen}
-            onClose={closeDeleteModal}
-            onConfirm={handleDelete}
-            message={`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selectedCategory.title}" را حذف کنید؟`}
-          />
-        )}
+        
 
         {/* مودال ویرایش */}
         {isEditModalOpen && (
-          <AddCategory
+          <AddGallery
             isOpen={isEditModalOpen}
             onClose={closeEditModal}
             onSuccess={refetch}
-            categoryToEdit={selectedCategory}
+            GalleryToEdit={selectedGallery}
           />
         )}
 
-        {/* مودال جزئیات */}
-        {isInfoModalOpen && (
-          <Modal
-            isOpen={isInfoModalOpen}
-            onClose={closeInfoModal}
-            className="lg:w-1/3 md:w-1/2 w-full z-50"
-          >
-            <Info category={selectedCategory} onClose={closeInfoModal} />
-          </Modal>
-        )}
+
 
         {/* مودال افزودن */}
         {isAddModalOpen && (
-          <AddCategory
+          <AddGallery
             isOpen={isAddModalOpen}
             onClose={closeAddModal}
             onSuccess={refetch}
@@ -326,4 +235,4 @@ const ListCategory = () => {
   );
 };
 
-export default ListCategory;
+export default ListGallery;

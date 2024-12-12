@@ -39,7 +39,7 @@ export async function addPost(req) {
       featuredImage = {
         url: filePath || "N/A", 
         public_id: path.basename(filePath) || "ناشناخته",
-        Type: fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" ? "image" : 
+        type: fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" ? "image" : 
               fileExtension === "mp4" ? "video" : "unknown",
       };
     }
@@ -50,7 +50,7 @@ export async function addPost(req) {
         return {
           url: filePath, 
           public_id: path.basename(filePath) || "ناشناخته",
-          Type: fileExtension === "jpg" ||fileExtension === "jpeg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
+          type: fileExtension === "jpg" ||fileExtension === "jpeg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
         };
       });
     }
@@ -191,9 +191,9 @@ export async function getClientPosts(req) {
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id postId title description createdAt views likes dislikes status isFeatured featuredImage visibility publishStatus publishDate');
+    .populate('category', 'title') 
+    .select('_id postId title description createdAt category views likes dislikes status isFeatured featuredImage visibility publishStatus publishDate');
     const total = await Post.countDocuments({ isDeleted: false });
-
     if (posts.length > 0) {
       return {
         success: true,

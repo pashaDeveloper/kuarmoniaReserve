@@ -64,7 +64,7 @@ const SearchableDropdown = ({
   };
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative w-full" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => !isReadOnly && setIsOpen((prev) => !prev)}

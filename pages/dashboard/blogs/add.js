@@ -327,7 +327,7 @@ const Add = () => {
                 <BlogCard
                   title={watch("title")}
                   description={watch("description")}
-                  thumbnailPreview={thumbnailPreview?.src}
+                  thumbnailPreview={thumbnailPreview?.url}
                   publishDate={publishDate}
                 />
               </div>
@@ -336,7 +336,7 @@ const Add = () => {
               <div className="flex-1  overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
                 <PreviewSection
                   watch={watch}
-                  thumbnailPreview={thumbnailPreview?.src}
+                  thumbnailPreview={thumbnailPreview?.url}
                   isLoading={false}
                   handleImageLoad={() => {}}
                   publishDate={publishDate}

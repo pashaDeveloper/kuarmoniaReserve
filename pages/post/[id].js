@@ -1,12 +1,11 @@
-// pages/PostContent.js
-
 import Main from "@/layouts/Main";
 import Head from "next/head";
 import React from "react";
 import { useRouter } from "next/router";
 import { useGetPostQuery } from "@/services/post/postApi";
 import Content from "@/components/shared/content/PostContent";
-
+import LeftSidebar from "./leftSidebar";  
+import RightSidebar from "./rightSidebar";
 const PostContent = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -16,7 +15,7 @@ const PostContent = () => {
     data: fetchData,
     error: fetchError,
   } = useGetPostQuery(id);
-
+console.log(fetchData)
   return (
     <main>
       <Head>
@@ -24,7 +23,11 @@ const PostContent = () => {
       </Head>
 
       <Main>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-4  relative">
+        <div className="grid grid-cols-1 md:grid-cols-20 gap-4  relative ">
+        <LeftSidebar />
+
+        <div className="col-span-1 md:col-span-10 shadow  order-1 md:order-2">
+
           <Content
             title={fetchData?.data?.title}
             content={fetchData?.data?.content}
@@ -40,6 +43,10 @@ const PostContent = () => {
             author={fetchData?.data?.authorId?.name}
             avatar={fetchData?.data?.authorId?.avatar?.url}
           />
+
+        </div>
+        <RightSidebar />
+
         </div>
       </Main>
     </main>

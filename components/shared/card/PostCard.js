@@ -6,6 +6,7 @@ import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import LoadImage from "@/components/shared/image/LoadImage";
 
 const PostCard = ({
+  key,
   id,
   title,
   description,
@@ -13,19 +14,21 @@ const PostCard = ({
   thumbnailPreview,
   publishDate,
   category,
-  avatar
-}) => {
+  avatar,
+  author,
+  superAdmin,
+ }) => {
   const router = useRouter();
   return (
     <div
-    key={id}
+    key={key}
     onClick={() => router.push(`/post/${id}`)}
-      className="flex flex-col justify-center rtl dark:text-white w-full"
+      className="flex flex-col justify-center rtl dark:text-white w-full cursor-pointer"
     >
-      <div className="relative flex flex-row space-x-1 lg:min-h-[200px] space-x-reverse rounded-primary shadow-lg p-3 w-full md:min-w-[600px]  max-w-[650px] mx-auto border border-white dark:border-gray-700 dark:bg-gray-800/70 bg-white/70 ">
-        <div className="w-1/3  grid place-items-center  ">
+<div className="relative transition-color ease-linear delay-100 hover:border-primary flex sm:flex-row min-h-[120px] lg:min-h-[200px] rounded-primary shadow-lg w-full max-w-[650px] mx-auto p-3 border dark:border-gray-700 dark:bg-gray-800/70 bg-white/80">
+<div className="w-1/3  grid place-items-center  ">
           {!thumbnailPreview ? (
-            <SkeletonImage  />
+            <SkeletonImage borderRadius="rounded-xl" />
           ) : thumbnailPreview.type === "image" ? (
             <img
               src={thumbnailPreview.url}
@@ -40,14 +43,15 @@ const PostCard = ({
             />
           )}
         </div>
-        <div className="w-2/3  flex flex-col space-y-2 px-2 ">
-          <div className="flex justify-between items-center  gap-2">
+        <div className="w-2/3   mb-8  space-y-2 px-2  flex flex-col ">
+          <div className="lg:flex justify-between items-center hidden gap-2">
             {!category ? (
               <SkeletonText lines={1} />
             ) : (
               <>
+                <div className="flex w-2/3 items-center">
                 <p className="text-gray-500 font-medium  ">{category}</p>
-                <div className="flex items-center">
+
                   <Star className="h-6 w-6 transition-transform duration-300 transform group-hover:-translate-x-1 group-focus:translate-x-1" />
 
                   <p className="text-gray-600  text-sm mr-1">
@@ -58,15 +62,9 @@ const PostCard = ({
               </>
             )}
 
-            {!isFeature ? (
-              <SkeletonText lines={1} />
-            ) : (
-              <span class="inline-block px-3 py-1 text-sm  text-yellow-800 dark:text-blue-200 bg-yellow-200 rounded-md border border-yellow-300 dark:border-blue-500 dark:bg-blue-600 ">
-                پست ویژه
-              </span>
-            )}
+            
           </div>
-          <h3 className=" text-gray-800 dark:text-gray-100   md:text-lg">
+          <h3 className=" text-gray-800 line-clamp-1 dark:text-gray-100 m-0 text-sm  md:text-lg">
             {!title ? (
               <>
               <SkeletonText lines={1} />
@@ -75,7 +73,7 @@ const PostCard = ({
               title
             )}
           </h3>
-          <p className="text-sm text-justify mb-4 text-gray-500">
+          <p className="text-xs line-clamp-3 lg:line-clamp-4 lg:text-sm text-justify text-gray-500">
             {!description ? (
               <>
               <SkeletonText lines={3} />
@@ -85,7 +83,7 @@ const PostCard = ({
             )}
           </p>
  
-          <div className="absolute bottom-1 w-2/3  flex justify-between items-end">
+          <div className="absolute bottom-1 w-2/3 text-xs lg:text-sm flex justify-between items-end">
           <div> 
               {new Date(publishDate).toLocaleDateString("fa-IR", {
             weekday: "long",
@@ -99,10 +97,11 @@ const PostCard = ({
              height={30}
              width={30}
              showSize={false}
-             borderRadius="rounded-full !w-7 !h-7"
+             borderRadius="rounded-full  lg:!w-7 lg:!h-7"
            />
        </div>
         ) }
+       
 
            {avatar && (
             <div className=" text-center rounded-full flex justify-center ">
@@ -112,8 +111,17 @@ const PostCard = ({
                 alt="avatar"
                 height={300}
                 width={300}
-                className={`!h-[30px] !w-[30px] rounded-full text-center `}
+                className={`lg:!h-9 lg:!w-9 h-7 w-7  rounded-full text-center `}
               />
+              {author !== superAdmin?.name && (
+                        <img
+                          alt={superAdmin?.name}
+                          title={superAdmin?.name}
+                          src={superAdmin?.avatar}
+                          className=" inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
+                        />
+                      )}
+
             </div>
                   ) }
 

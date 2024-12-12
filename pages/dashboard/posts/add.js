@@ -427,13 +427,11 @@ const Add = () => {
         </FormProvider>
       </div>
 
-      {/* مدال افزودن دسته‌بندی */}
       <AddCategory
         isOpen={isCategoryModalOpen}
         onClose={closeCategoryModal}
         onSuccess={handleCategoryAdded}
       />
-      {/* مدال افزودن تگ */}
       <AddTag
         isOpen={isTagModalOpen}
         onClose={closeTagModal}

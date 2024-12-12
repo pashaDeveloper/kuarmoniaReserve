@@ -1,0 +1,57 @@
+import { addGallery, getGalleries } from "@/controllers/gallery.controller";
+import getUploadMiddleware from "@/middleware/upload.middleware";
+
+export const config = {
+  api: {
+    bodyParser: false,
+    externalResolver: true,
+  },
+};
+
+export default async function handler(req, res) {
+  switch (req.method) {
+    case "POST":
+      const upload = getUploadMiddleware("gallery");
+      try {
+        await new Promise((resolve, reject) => {
+          upload.fields([
+            { name: "featuredImage", maxCount: 1 },
+            { name: "gallery", maxCount: 100 },
+          ])(req, res, (err) => {
+            if (err) {
+              console.error("Upload Error: ", err.message);
+              return reject(err);
+            }
+            resolve();
+          });
+        });
+
+        const result = await addGallery(req);
+        return res.status(200).json(result);
+      } catch (error) {
+        console.error("POST Error: ", error.message);
+        return res.status(400).json({
+          success: false,
+          message: error.message,
+        });
+      }
+
+    case "GET":
+      try {
+        const result = await getGalleries(req);
+        return res.status(200).json(result);
+      } catch (error) {
+        console.error("GET Error: ", error.message);
+        return res.status(500).json({
+          success: false,
+          error: error.message,
+        });
+      }
+
+    default:
+      return res.status(405).json({
+        success: false,
+        message: "Method not allowed",
+      });
+  }
+}

@@ -7,7 +7,6 @@ import Navbar from "@/components/shared/container/Navbar";
 import { useSelector } from "react-redux";
 import {
   MdFavoriteBorder,
-  MdOutlineAddHomeWork,
   MdOutlineRateReview,
 } from "react-icons/md";
 import { AiOutlineUserSwitch } from "react-icons/ai";
@@ -18,6 +17,7 @@ import { BsTags } from "react-icons/bs";
 import { PiCreditCardLight, PiCubeTransparent } from "react-icons/pi";
 import { FiUsers } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { GrGallery } from "react-icons/gr";
 
 const Panel = ({ children }) => {
   const router = useRouter();
@@ -58,14 +58,14 @@ const Panel = ({ children }) => {
       icon: <FaBlog className="w-5 h-5" />,
     },
     {
-      name: "وبلاگ",
-      path: "/dashboard/add-rent",
-      icon: <MdOutlineAddHomeWork className="w-5 h-5" />,
+      name: "اخبار",
+      path: "/dashboard/news",
+      icon: <PiCubeTransparent className="w-5 h-5" />,
     },
     {
-      name: "اخبار",
-      path: "/dashboard/list-rents",
-      icon: <PiCubeTransparent className="w-5 h-5" />,
+      name: "گالری",
+      path: "/dashboard/gallery",
+      icon: <GrGallery className="w-5 h-5" />,
     },
     {
       name: "سفارشات",
@@ -109,7 +109,7 @@ const Panel = ({ children }) => {
     },
     {
       name: "تنظیمات سایت",
-      path: "/dashboard/view-reviews",
+      path: "/dashboard/setting",
       icon: <MdOutlineRateReview className="w-5 h-5" />,
     },
   ];

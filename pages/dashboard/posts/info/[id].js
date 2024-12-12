@@ -622,17 +622,18 @@ const Info = () => {
                       <span className="mr-2">رد</span>
                     </button>
                   </div>
+
                 </>
               ) : user?.role === "admin" ? (
                 <div>
-                  <button
-                    onClick={handleReview}
-                    className="group w-[150px] py-2 rounded-md review-button"
-                  >
-                    <Review />
-                    <span className="mr-2">بازبینی</span>
-                  </button>
-                </div>
+                <button
+                  onClick={handleReview}
+                  className="group w-[150px] py-2 rounded-md apply-button"
+                >
+                  <Apply />
+                  <span className="mr-2">تایید</span>
+                </button>
+              </div>
               ) : null}
             </div>
           </div>

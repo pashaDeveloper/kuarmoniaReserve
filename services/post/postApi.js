@@ -28,11 +28,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
       query: (id) => ({
         url: `/post/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
       }),
-
       providesTags: ["User"],
     }),
 
@@ -48,7 +44,7 @@ const postApi = kuarmoniaApi.injectEndpoints({
 
     deletePost: builder.mutation({
       query: (id) => ({
-        url: `/posts/${id}`,
+        url: `/post/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
