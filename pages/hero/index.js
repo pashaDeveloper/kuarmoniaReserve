@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const CustomNextArrow = ({ onClick }) => (
   <div
-    className="absolute top-1/2 right-4 md:right-3 lg:right-8 shadow-lg rounded-full bg-white/80 p-4 drop-shadow-lg text-[0.8rem] md:text-[1.8rem] transform -translate-y-1/2 cursor-pointer z-10"
+    className="absolute top-1/2 right-4 md:right-3 lg:right-8 shadow-lg rounded-full bg-palette-card/80 p-1 drop-shadow-lg text-[0.8rem] md:text-[1.8rem] transform -translate-y-1/2 cursor-pointer z-10"
     onClick={onClick}
   >
     <HiOutlineChevronRight />
@@ -18,7 +18,7 @@ const CustomNextArrow = ({ onClick }) => (
 
 const CustomPrevArrow = ({ onClick }) => (
   <div
-    className="absolute top-1/2 left-4 md:left-3 lg:left-8 shadow-lg rounded-full bg-white/80 p-4 drop-shadow-lg text-[0.8rem] md:text-[1.8rem] transform -translate-y-1/2 cursor-pointer z-10"
+    className="absolute top-1/2 left-4 md:left-3 lg:left-8 shadow-lg rounded-full bg-palette-card/80 p-1 drop-shadow-lg text-[0.8rem] md:text-[1.8rem] transform -translate-y-1/2 cursor-pointer z-10"
     onClick={onClick}
   >
     <HiOutlineChevronLeft />
@@ -38,7 +38,7 @@ const Hero = () => {
 
   return (
     <section
-    className=" bg-no-repeat bg-cover bg-bottom"
+    className="py-12 bg-no-repeat bg-cover bg-bottom"
     style={{
       backgroundImage: "url(/assets/home-page/banner/bannerBg.svg)",
     }}
@@ -53,6 +53,7 @@ const Hero = () => {
       </div>
     </Container>
     </section>
+
   );
 };
 

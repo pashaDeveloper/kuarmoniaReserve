@@ -384,23 +384,12 @@ const Add = () => {
   <div className="flex-1 px-2  overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
   
   <div
-    className={`flex-1  pt-10 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
-      ${isFullscreen ? "fixed inset-0 " : "relative"} overflow-y-auto scrollbar-hide relative`}
-    ref={previewRef}
+    className={`flex-1 rounded-xl bg-white dark:bg-gray-800  h-[550px] dark:text-gray-100  
+      relative overflow-y-auto scrollbar-hide relative`}
+  
   >
-    <button
-  className=" rounded-full shadow-lg cursor-pointer bg-white dark:bg-gray-800 z-20 absolute left-1/2 top-4 transform -translate-x-1/2 dark:text-gray-100"
-  onClick={handleToggleFullscreen}
->
-  {isFullscreen ? (
-    <></>
-  ) : (
-    <BsArrowsFullscreen size={20} />
-  )}
-</button>
+    
     <div
-    className={`mt-8`}
-
   >
   <PostContent
       title={watch("title")}

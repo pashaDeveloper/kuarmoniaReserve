@@ -1,6 +1,7 @@
 import Gallery from '@/models/gallery.model';
 import path from "path";
 import removeFile from "@/utils/removeFile";
+import Category from "@/models/category.model";
 
 export async function addGallery(req) {
   try {
@@ -154,12 +155,12 @@ export async function deleteGallery(req) {
 
       return {
         success: true,
-        message: "Successfully deleted Gallery",
+        message: "گالری با موفقیت حذف شد",
       };
     } else {
       return {
         success: false,
-        message: "Failed to delete Gallery",
+        message: "خطا در حذف گالری",
       };
     }
   } catch (error) {
@@ -172,23 +173,30 @@ export async function deleteGallery(req) {
 
 
 
-// get Gallery
+
 export async function getGallery(req) {
   try {
-    const gallery = await Gallery.findById(req.query.id);
+    const gallery = await Gallery.findById(req.query.id).populate("category", "title description");
 
-    if (gallery) {
-      return {
-        success: true,
-        message: "Successfully fetch Gallery information",
-        data: gallery,
-      };
-    } else {
+    if (!gallery) {
       return {
         success: false,
-        message: "Failed to fetch Gallery information",
+        message: "گالری موردنظر یافت نشد",
       };
     }
+
+    const categoriesInUse = await Gallery.distinct("category").exec();
+
+    const categories = await Category.find({ _id: { $in: categoriesInUse } }, "title description");
+
+    return {
+      success: true,
+      message: "اطلاعات گالری  با موفقیت دریافت شد",
+      data: {
+        gallery,      
+        categories,   
+      },
+    };
   } catch (error) {
     return {
       success: false,
@@ -196,3 +204,5 @@ export async function getGallery(req) {
     };
   }
 }
+
+
