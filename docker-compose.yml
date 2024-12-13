@@ -24,6 +24,8 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: kuarmonia
+    volumes:
+      - mongo_data:/data/db  # استفاده از volume برای ذخیره‌سازی داده‌ها
 
   traefik:
     image: traefik:v2.10
@@ -43,3 +45,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"  # برای اتصال به Docker API
       - "./letsencrypt:/letsencrypt"  # برای ذخیره‌سازی گواهی‌ها
     restart: always
+
+volumes:
+  mongo_data:  # تعریف volume برای MongoDB
