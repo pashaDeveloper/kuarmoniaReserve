@@ -1,4 +1,3 @@
-
 import { Schema, models, model } from "mongoose";
 import { genSaltSync, hashSync, compare } from "bcryptjs";
 import connectDB from "@/libs/db";
@@ -10,14 +9,15 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Please enter your name"],
-      maxLength: [100, "Name cannot be more than 100 characters"],
+      required: [true, "لطفاً نام خود را وارد کنید"],
+      maxLength: [100, "نام نمی‌تواند بیشتر از 100 کاراکتر باشد"],
     },
 
     email: {
       type: String,
-      required: [true, "Please enter your email"],
+      required: [true, "لطفاً ایمیل خود را وارد کنید"],
       unique: true,
+      match: [/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, "لطفاً یک ایمیل معتبر وارد کنید"],
     },
 
     avatar: {
@@ -36,27 +36,26 @@ const userSchema = new Schema(
 
     password: {
       type: String,
-      required: [true, "Please enter your password"],
+      required: [true, "لطفاً رمز عبور خود را وارد کنید"],
     },
 
     phone: {
       type: String,
-      required: [true, "Please enter your phone number"],
+      required: [true, "لطفاً شماره تلفن خود را وارد کنید"],
       unique: true,
+      match: [/^(\+98|0)?9\d{9}$/, "لطفاً یک شماره تلفن معتبر وارد کنید"],  // برای شماره‌های ایران
     },
 
     role: {
       type: String,
-      enum: ["superAdmin","admin","author","user","operator"],
+      enum: ["superAdmin", "admin", "author", "user", "operator"],
       default: "user",
     },
-
- 
 
     address: {
       type: String,
       trim: true,
-      maxLength: [200, "Address cannot be more than 200 characters"],
+      maxLength: [200, "آدرس نمی‌تواند بیشتر از 200 کاراکتر باشد"],
     },
 
     rents: [
@@ -96,12 +95,11 @@ const userSchema = new Schema(
       },
     ],
     ...baseSchema.obj
-
   },
   { timestamps: true }
 );
 
-// encrypt the password before saving
+// رمز عبور را قبل از ذخیره رمزنگاری کنید
 userSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) {
