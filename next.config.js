@@ -19,25 +19,16 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "3000",
-        pathname: "/dashboard/tags",
+        pathname: "/uploads/**", // مسیر درست تصاویر
       },
       {
         protocol: "https",
-        hostname: "via.placeholder.com",  // Add this line
+        hostname: "via.placeholder.com",
         port: "",
         pathname: "/**",
       },
     ],
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/",
-  //       destination: "/dashboard/blogs",
-  //       permanent: false,
-  //     },
-  //   ];
-  // },
   async headers() {
     return [
       {
