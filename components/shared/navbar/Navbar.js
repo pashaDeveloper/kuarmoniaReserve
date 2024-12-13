@@ -5,6 +5,7 @@ import Logo from "../logo/Logo";
 import Container from "../container/Container";
 import UserMenu from "./userMenu/UserMenu";
 import LargeMenu from './largeMenu/LargeMenu'; 
+import MobileMenu from './largeMenu/MobileMenu'; 
 
 const Navbar = () => {
   return (
@@ -12,8 +13,9 @@ const Navbar = () => {
       <Container>
         <nav className="py-4">
           <section className="flex flex-row justify-between items-center">
-            <LargeMenu />
             <UserMenu />
+            <LargeMenu />
+            <MobileMenu />
             <Logo />
           </section>
         </nav>

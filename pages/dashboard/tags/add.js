@@ -207,9 +207,9 @@ const AddTag = ({ isOpen, onClose, onSuccess, tagToEdit = null }) => {
         {/* robots */}
         ربات‌ها*
         <MultiSelectDropdown
-              options={robotOptions}
-              selectedOptions={selectedOptions}
-              handleChange={handleOptionsChange}
+              items={robotOptions}
+              selectedItems={selectedOptions}
+              handleSelect={handleOptionsChange}
               className="w-full"
               name="tags"
               icon={<LiaRobotSolid size={24} />

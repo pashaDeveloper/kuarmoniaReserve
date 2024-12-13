@@ -298,3 +298,34 @@ export async function updateBlog(req) {
     };
   }
 }
+
+
+
+// delete Blog
+export async function deleteBlog(req) {
+  try {
+    const blog = await Blog.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (blog) {
+      return {
+        success: true,
+        message: "بلاگ با موفقیت حذف شد",
+        data: blog
+      };
+    } else {
+      return {
+        success: false,
+        message: "بلاگ پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}

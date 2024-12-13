@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import {
   useDeletePostMutation,
   useGetPostQuery,
-  useUpdatePostMutation,
+  useUpdatePostMutation
 } from "@/services/post/postApi";
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
@@ -19,6 +19,8 @@ import { useForm, FormProvider } from "react-hook-form";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from "@/components/shared/modal/Modal";
 import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
+import { FiTrash } from "react-icons/fi";
+import DeleteModal from "@/components/shared/modal/DeleteModal";
 
 const Info = () => {
   const router = useRouter();
@@ -39,6 +41,8 @@ const Info = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [galleryPreview, setGalleryPreview] = useState([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 
   const { id } = router.query;
 
@@ -50,22 +54,22 @@ const Info = () => {
     setValue,
     getValues,
     reset,
-    onSuccess,
+    onSuccess
   } = useForm();
   const {
     isLoading: fetching,
     data: fetchData,
-    error: fetchError,
+    error: fetchError
   } = useGetPostQuery(id);
   const {
     isLoading: tagFetching,
     data: fetchTagData,
-    error: fetchTagError,
+    error: fetchTagError
   } = useGetTagsForDropDownMenuQuery();
   const {
     isLoading: categoryFetching,
     data: fetchCategoryData,
-    error: fetchCategoryError,
+    error: fetchCategoryError
   } = useGetCategoriesForDropDownMenuQuery();
   const categories = Array.isArray(fetchCategoryData?.data)
     ? fetchCategoryData.data
@@ -73,16 +77,16 @@ const Info = () => {
   const categoryOptions = categories?.map((category) => ({
     id: category._id,
     value: category.title,
-    description: category.description,
+    description: category.description
   }));
   const [
     deletepost,
-    { isLoading: deleting, data: deleteData, error: deleteError },
+    { isLoading: deleting, data: deleteData, error: deleteError }
   ] = useDeletePostMutation();
 
   const [
     updatepost,
-    { isLoading: updating, data: updateData, error: updateError },
+    { isLoading: updating, data: updateData, error: updateError }
   ] = useUpdatePostMutation();
 
   const dispatch = useDispatch();
@@ -107,6 +111,12 @@ const Info = () => {
     setIsEditorOpen(false);
   };
 
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
   useEffect(() => {
     if (fetchData?.data) {
       setTitle(fetchData?.data?.title);
@@ -133,14 +143,12 @@ const Info = () => {
     formData.append("category", category);
     formData.append("content", content);
 
-    // ارسال تصویر به صورت فایل
     if (galleryPreview) {
       formData.append("featuredImage", galleryPreview[0]);
-      console.log("galleryPreview", galleryPreview);
     }
     updatepost({
       id: id,
-      data: formData,
+      data: formData
     })
       .unwrap()
       .then((response) => {
@@ -162,7 +170,7 @@ const Info = () => {
   useEffect(() => {
     if (fetching) {
       toast.loading("در حال بروزرسانی اطلاعات...", {
-        id: "fetchpost",
+        id: "fetchpost"
       });
     }
 
@@ -181,15 +189,15 @@ const Info = () => {
     }
 
     if (fetchError?.data) {
-      toast.error(fetchError?.data?.message, { id: "fetchpost" });
+      toast.error(fetchError?.data?.message, { id: "fetchPost" });
     }
 
     if (deleting) {
-      toast.loading("در حال حذف کاربر...", { id: "deletepost" });
+      toast.loading("در حال حذف پست...", { id: "deletePost" });
     }
 
     if (deleteData) {
-      toast.success(deleteData?.message, { id: "deletepost" });
+      toast.success(deleteData?.message, { id: "deletePost" });
       setIsModalOpen(false);
       window.open("/", "_self");
     }
@@ -204,7 +212,7 @@ const Info = () => {
     deleting,
     deleteData,
     deleteError,
-    user?.role,
+    user?.role
   ]);
 
   const handleApprove = () => {
@@ -213,7 +221,7 @@ const Info = () => {
     formData.append("publishStatus", "approved");
     updatepost({
       id,
-      data: formData,
+      data: formData
     })
       .unwrap()
       .then((response) => {
@@ -231,7 +239,7 @@ const Info = () => {
     formData.append("publishStatus", "rejected");
     updatepost({
       id,
-      data: formData,
+      data: formData
     })
       .unwrap()
       .then((response) => {
@@ -249,7 +257,7 @@ const Info = () => {
     formData.append("publishStatus", "pending");
     updatepost({
       id,
-      data: formData,
+      data: formData
     })
       .unwrap()
       .then((response) => {
@@ -260,6 +268,21 @@ const Info = () => {
         toast.error("خطا در به‌روزرسانی وضعیت.");
       });
   };
+
+  const handleDelete = () => {
+    deletepost(id)
+      .unwrap()
+      .then((response) => {
+        toast.success("پست با موفقیت حذف شد");
+        setIsDeleteModalOpen(false);
+        window.open("/dashboard/posts", "_self"); 
+      })
+      .catch((error) => {
+        toast.error("خطا در حذف پست.");
+        setIsDeleteModalOpen(false);
+      });
+  };
+  
 
   return (
     <>
@@ -287,19 +310,20 @@ const Info = () => {
                     tabIndex="0"
                     aria-checked="true"
                   >
-                    <span className="sr-only">Power</span>
                     <span
                       aria-hidden="true"
                       className="translate-x-0 pointer-events-none inline-block  transform rounded-full h-7 w-7 bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
                     ></span>
                   </button>
                 </div>
-                {/*
-          <div >
-            <button className="rounded-lg border border-white/10 bg-slate-800 p-1.5 transition-all hover:bg-slate-900 v-popper--has-tooltip">
-             
-            </button>
-          </div> */}
+                <div>
+                  <button
+                    onClick={() => openDeleteModal()}
+                    className=" text-black dark:text-white hover:text-red-500 rounded-full p-2 shadow-md  transition duration-200"
+                  >
+                    <FiTrash size={36} />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -507,7 +531,7 @@ const Info = () => {
                         {content ? (
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: content,
+                              __html: content
                             }}
                           ></div>
                         ) : (
@@ -597,7 +621,7 @@ const Info = () => {
           className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-opacity-70 transition-all ease-in-out duration-500"
           style={{
             transform: "translateY(0)",
-            opacity: 1,
+            opacity: 1
           }}
         >
           <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
@@ -622,22 +646,30 @@ const Info = () => {
                       <span className="mr-2">رد</span>
                     </button>
                   </div>
-
                 </>
               ) : user?.role === "admin" ? (
                 <div>
-                <button
-                  onClick={handleReview}
-                  className="group w-[150px] py-2 rounded-md apply-button"
-                >
-                  <Apply />
-                  <span className="mr-2">تایید</span>
-                </button>
-              </div>
+                  <button
+                    onClick={handleReview}
+                    className="group w-[150px] py-2 rounded-md apply-button"
+                  >
+                    <Apply />
+                    <span className="mr-2">تایید</span>
+                  </button>
+                </div>
               ) : null}
             </div>
           </div>
         </div>
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onDelete={handleDelete}
+          onClose={closeDeleteModal}
+          message={`آیا مطمئن هستید که می‌خواهید پست "${title}" را حذف کنید؟`} 
+        />
       )}
 
       <Modal isOpen={isEditorOpen} onClose={closeModal} className="h-[90vh]">

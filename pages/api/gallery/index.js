@@ -1,4 +1,4 @@
-import { addGallery, getGalleries } from "@/controllers/gallery.controller";
+import { addGallery, getGalleries,getClientGallery } from "@/controllers/gallery.controller";
 import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
@@ -38,6 +38,11 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
+
+        if (req.query.type === "client") {
+          const result = await getClientGallery();
+          return res.status(200).json(result);
+        }
         const result = await getGalleries(req);
         return res.status(200).json(result);
       } catch (error) {

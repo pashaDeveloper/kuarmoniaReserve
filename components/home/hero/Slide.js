@@ -4,13 +4,13 @@ import Link from "next/link";
 const Slide = ({ title, description, bgImg, url }) => {
   return (
     <div
-      className={`relative w-[100%] h-[50vh] rounded-md md:h-[70vh] bg-cover bg-center bg-no-repeat`}
-      style={{ backgroundImage: `${bgImg}` }}
-    >
+      className={`relative w-[100%] h-[50vh] rounded-lg md:h-[70vh] bg-cover bg-center bg-no-repeat`}
+      style={{ backgroundImage: `url(${bgImg.url})` }}
+      >
       <Link href={url} passHref>
         <div className="block">
           <div
-            className={`backdrop-filter w-full backdrop-blur-[12px] bg-white/60 p-3 md:p-8 lg:p-10 shadow-lg md:overflow-hidden ltr:text-left rtl:text-right rounded-md md:w-[60%] lg:w-[50%] md:mt-auto absolute bottom-0 md:top-[45%] md:right-[25%] md:bottom-auto`}
+            className={`backdrop-filter w-full backdrop-blur-[12px] bg-white/60 p-3 md:p-8 lg:p-10 shadow-lg md:overflow-hidden ltr:text-left rtl:text-right  md:rounded-md md:w-[60%] lg:w-[50%] md:mt-auto absolute bottom-0 md:top-[45%] md:right-[25%] md:bottom-auto`}
           >
             <h3 className="text-lg md:text-2xl lg:text-3xl font-medium">
               {title}

@@ -1,7 +1,7 @@
 import verify from "@/middleware/verify.middleware";
 import authorization from "@/middleware/authorization.middleware";
 import getUploadMiddleware from "@/middleware/upload.middleware";
-import { updatePost, getPost } from "@/controllers/post.controller";
+import { updatePost, getPost ,deletePost } from "@/controllers/post.controller";
 
 export const config = {
   api: {
@@ -25,6 +25,37 @@ export default async function handler(req, res) {
       }
       break;
 
+      case "DELETE":
+        try {
+          verify(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message,
+              });
+            }
+  
+            authorization("superAdmin", "admin")(req, res, async (err) => {
+              if (err) {
+                return res.send({
+                  success: false,
+                  error: err.message,
+                });
+              }
+            });
+  
+            const result = await deletePost(req);
+  
+            res.send(result);
+          });
+        } catch (error) {
+          res.send({
+            success: false,
+            message: error.message,
+          });
+        }
+        break;
+  
     case "PATCH":
       const upload = getUploadMiddleware("Post");
       upload.single("featuredImage")(req, res, async (err) => {

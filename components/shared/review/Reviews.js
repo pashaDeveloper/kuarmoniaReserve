@@ -20,21 +20,15 @@ const Reviews = ({ className }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error?.data?.message, {
-        id: "reviews",
-      });
+   
     }
 
     if (isLoading) {
-      toast.loading("Fetching reviews...", {
-        id: "reviews",
-      });
+   
     }
 
     if (data) {
-      toast.success(data?.message, {
-        id: "reviews",
-      });
+    
     }
   }, [isLoading, data, error]);
 

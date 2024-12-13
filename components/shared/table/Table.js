@@ -4,7 +4,7 @@ import Popover from "@/components/shared/modal/Popover";
 import { AiTwotoneDelete, AiTwotoneEdit } from "react-icons/ai";
 import { LiaInfoCircleSolid } from "react-icons/lia";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import DeleteConfirmationModal from "@/components/shared/modal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "@/components/shared/modal/DeleteModal";
 import Pagination from "@/components/shared/pagination/Pagination"; 
 import LoadingTable from "@/components/shared/loading/Table";
 const TableComponent = ({

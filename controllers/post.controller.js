@@ -316,3 +316,34 @@ export async function updatePost(req) {
     };
   }
 }
+
+
+
+// delete Post
+export async function deletePost(req) {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (post) {
+      return {
+        success: true,
+        message: "پست با موفقیت حذف شد",
+        data: post
+      };
+    } else {
+      return {
+        success: false,
+        message: "پست پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}

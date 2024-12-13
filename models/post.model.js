@@ -84,7 +84,7 @@ const postSchema = new Schema(
             default: "https://placehold.co/296x200.png",
         
           },
-          Type: {
+          type: {
             type: String,
             enum: ["image", "video","unknown"],
             required: true,

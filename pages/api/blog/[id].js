@@ -1,11 +1,11 @@
-import { updateBlog, getBlog } from "@/controllers/blog.controller";
+import { updateBlog, getBlog ,deleteBlog } from "@/controllers/blog.controller";
 import verify from "@/middleware/verify.middleware";
 import authorization from "@/middleware/authorization.middleware";
-import getUploadMiddleware from "@/middleware/upload.middleware"; // اضافه کردن این خط
+import getUploadMiddleware from "@/middleware/upload.middleware"; 
 
 export const config = {
   api: {
-    bodyParser: false,  // باید bodyParser را غیر فعال کنید تا فایل‌ها به درستی ارسال شوند
+    bodyParser: false,  
     externalResolver: true,
   },
 };
@@ -42,6 +42,38 @@ export default async function handler(req, res) {
         });
       }
       break;
+
+      case "DELETE":
+        try {
+          verify(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message,
+              });
+            }
+  console.log("DELETE")
+            authorization("superAdmin", "admin")(req, res, async (err) => {
+              if (err) {
+                return res.send({
+                  success: false,
+                  error: err.message,
+                });
+              }
+            });
+  
+            const result = await deleteBlog(req);
+  
+            res.send(result);
+          });
+        } catch (error) {
+          res.send({
+            success: false,
+            message: error.message,
+          });
+        }
+        break;
+  
 
     case "PATCH":
       const upload = getUploadMiddleware("blog");

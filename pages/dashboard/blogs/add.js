@@ -227,7 +227,7 @@ const Add = () => {
   const featureImage = galleryPreview ? galleryPreview[0] : "";
   return (
     <section
-      className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300 p-4`}
+      className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-x-hidden lg:overflow-hidden text-black dark:text-gray-300`}
     >
       <a
         onClick={handleBackList}
@@ -323,7 +323,7 @@ const Add = () => {
               </div>
 
               {/* بخش BlogCard */}
-              <div className="flex-1 items-center flex flex-col">
+              <div className="flex-1 items-center p-4 flex flex-col">
                 <BlogCard
                   title={watch("title")}
                   description={watch("description")}
@@ -333,7 +333,7 @@ const Add = () => {
               </div>
 
               {/* بخش PreviewSection با overflow-y responsive */}
-              <div className="flex-1  overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
+              <div className="flex-1  p-4 overflow-y-auto lg:overflow-y-visible h-[550px] lg:h-auto">
                 <PreviewSection
                   watch={watch}
                   thumbnailPreview={thumbnailPreview?.url}

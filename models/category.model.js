@@ -1,10 +1,9 @@
 // category.model.js
 import { Schema, models, model } from "mongoose";
 import baseSchema from "./baseSchema.model";  
-import Counter from "./counter.model"; // اطمینان حاصل کنید که مسیر درست است
+import Counter from "./counter.model"; 
 import connectDB from '@/libs/db';
 
-// تابع برای دریافت مقدار بعدی از شمارنده
 async function getNextSequenceValue(sequenceName) {
   const sequenceDocument = await Counter.findOneAndUpdate(
     { model: sequenceName },
@@ -54,10 +53,9 @@ const categorySchema = new Schema(
     },
     ...baseSchema.obj
   },
-  { timestamps: true } // فیلدهای createdAt و updatedAt توسط baseSchema اضافه شده‌اند
+  { timestamps: true } 
 );
 
-// پیش‌محافظه برای تنظیم categoryId و به‌روزرسانی slug در صورت تغییر عنوان
 categorySchema.pre('save', async function(next) {
   if (this.isNew) {
     this.categoryId = await getNextSequenceValue('categoryId');

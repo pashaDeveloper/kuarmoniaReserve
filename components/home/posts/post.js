@@ -5,7 +5,7 @@ import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
-import Posts from "./Posts";
+import Posts from "./posts";
 
 const post = () => {
   return (

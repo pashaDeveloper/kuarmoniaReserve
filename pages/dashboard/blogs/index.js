@@ -3,7 +3,6 @@ import React, { useState,useEffect , useMemo } from "react";
 import AddButton from "@/components/shared/button/AddButton";
 import {
   useGetBlogsQuery,
-  useUpdateBlogMutation,
 } from "@/services/blog/blogApi";
 import { toast } from "react-hot-toast";
 import Metrics from "@/components/shared/tools/Metrics";
@@ -31,6 +30,7 @@ const ListBlog = () => {
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
 
   const router = useRouter();
+
 
 
 
@@ -65,6 +65,8 @@ const ListBlog = () => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
+
+
   return (
     <>
       <Panel>

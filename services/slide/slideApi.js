@@ -1,10 +1,10 @@
 import { kuarmoniaApi } from "../kuarmonia";
 
-const galleryApi = kuarmoniaApi.injectEndpoints({
+const slideApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
-    addGallery: builder.mutation({
+    addSlide: builder.mutation({
       query: (body) => ({
-        url: "/gallery/",
+        url: "/slide/",
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -12,42 +12,46 @@ const galleryApi = kuarmoniaApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [
-        "Gallery",
-        "Category",
+        "Rent",
+        "User",
+        "Cart",
+        "Favorite",
+        "Purchase",
+        "Review",
       ],
     }),
 
-    GetGalleries: builder.query({
+    GetSlides: builder.query({
       query: ({ page = 1, limit = 7, search = "" } = {}) => ({
-        url: `/gallery/?page=${page}&limit=${limit}&search=${search}`,
+        url: `/slide/?page=${page}&limit=${limit}&search=${search}`,
         method: "GET",
       }),
-      providesTags: ["Gallery"],
+      providesTags: ["Slide"],
     }),
 
-    // get gallery
-    getGallery: builder.query({
+    // get slide
+    getSlide: builder.query({
       query: (id) => ({
-        url: `/gallery/${id}`,
+        url: `/slide/${id}`,
         method: "GET",
       }),
 
-      providesTags: ["Gallery"],
+      providesTags: ["Slide"],
     }),
 
-    GetClientGallery: builder.query({
+    getClientSlides: builder.query({
       query: () => ({
-        url: `/gallery`,
+        url: `/slide`,
         method: "GET",
         params: { type: "client" }, 
       }),
-      providesTags: ["Gallery"],
+      providesTags: ["Slide", "User"],
     }),
 
 
-    deleteGallery: builder.mutation({
+    deleteSlide: builder.mutation({
       query: (id) => ({
-        url: `/gallery/${id}`,
+        url: `/slide/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -56,27 +60,26 @@ const galleryApi = kuarmoniaApi.injectEndpoints({
   
       invalidatesTags: [
         "User",
-        "Gallery",
-        "Category"
+        "Slide",
       ],
     }),
 
-    updateGallery: builder.mutation({
+    updateSlide: builder.mutation({
       query: ({ id, ...formData }) => ({
-        url: `/gallery/${id}`,
+        url: `/slide/${id}`,
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["Gallery"],
+      invalidatesTags: ["Slide"],
     }),
   }),
 });
 
 export const {
-  useAddGalleryMutation,
-  useGetGalleryQuery,
-  useGetClientGalleryQuery,
-  useGetGalleriesQuery,
-  useDeleteGalleryMutation,
-  useUpdateGalleryMutation,
-} = galleryApi;
+  useAddSlideMutation,
+  useGetSlideQuery,
+  useGetSlidesQuery,
+  useGetClientSlidesQuery,
+  useDeleteSlideMutation,
+  useUpdateSlideMutation,
+} = slideApi;

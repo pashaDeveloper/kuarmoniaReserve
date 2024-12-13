@@ -37,8 +37,8 @@ const Advantage = () => {
             </article>
 
             <div className="grid md:grid-cols-2 md:items-center grid-cols-1 gap-8">
-              <AdvantageBanner />
               <AdvantageArticle />
+              <AdvantageBanner />
             </div>
           </div>
         </section>

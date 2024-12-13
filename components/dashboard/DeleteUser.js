@@ -1,14 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useDeleteUserMutation, useGetUserQuery } from "@/services/user/userApi";
+import {
+  useDeleteUserMutation,
+  useGetUserQuery
+} from "@/services/user/userApi";
 import { toast } from "react-hot-toast";
 import Modal from "../shared/modal/Modal";
 import LoadImage from "../shared/image/LoadImage";
 import { RxCross2 } from "react-icons/rx";
 import { setUser } from "@/features/user/userSlice";
 import { useDispatch } from "react-redux";
-import { MdFavoriteBorder, MdOutlineReviews, MdWarningAmber } from "react-icons/md";
+import {
+  MdFavoriteBorder,
+  MdOutlineReviews,
+  MdWarningAmber
+} from "react-icons/md";
 import { LuShoppingCart } from "react-icons/lu";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { TbDoorEnter } from "react-icons/tb";
@@ -18,19 +25,19 @@ const DeleteUser = ({ id }) => {
   const {
     isLoading: fetching,
     data: fetchData,
-    error: fetchError,
+    error: fetchError
   } = useGetUserQuery(id);
   const user = useMemo(() => fetchData?.data || {}, [fetchData]);
   const [
     deleteUser,
-    { isLoading: deleting, data: deleteData, error: deleteError },
+    { isLoading: deleting, data: deleteData, error: deleteError }
   ] = useDeleteUserMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (fetching) {
       toast.loading("در حال به‌روزرسانی اطلاعات کاربر...", {
-        id: "fetchUser",
+        id: "fetchUser"
       });
     }
 
@@ -59,16 +66,16 @@ const DeleteUser = ({ id }) => {
   return (
     <>
       <span
-  type="button"
-  disabled={deleting ? true : undefined} // اصلاح شده
-  className="cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
-  onClick={() => {
-    dispatch(setUser(user));
-    setIsOpen(true);
-  }}
->
-  <FiTrash className="w-5 h-5" />
-</span>
+        type="button"
+        disabled={deleting ? true : undefined} // اصلاح شده
+        className="cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+        onClick={() => {
+          dispatch(setUser(user));
+          setIsOpen(true);
+        }}
+      >
+        <FiTrash className="w-5 h-5" />
+      </span>
 
       {isOpen && (
         <Modal
@@ -112,21 +119,24 @@ const DeleteUser = ({ id }) => {
               </div>
               <div className="text-sm flex flex-col gap-y-2.5">
                 <p className="flex flex-row gap-x-1 items-center">
-                  <MdWarningAmber className="w-5 h-5" /> این عملیات غیر قابل بازگشت است!
+                  <MdWarningAmber className="w-5 h-5" /> این عملیات غیر قابل
+                  بازگشت است!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <LuShoppingCart className="h-5 w-5" /> آیتم‌های سبد خرید شما حذف خواهند شد!
+                  <LuShoppingCart className="h-5 w-5" /> آیتم‌های سبد خرید شما
+                  حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <MdFavoriteBorder className="h-5 w-5" /> آیتم‌های مورد علاقه شما حذف خواهند شد!
+                  <MdFavoriteBorder className="h-5 w-5" /> آیتم‌های مورد علاقه
+                  شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <BiSolidPurchaseTag className="h-5 w-5" />{" "}
                   {user?.purchases?.length} خرید شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <TbDoorEnter className="h-5 w-5" />{" "}
-                  {user?.rents?.length} اجاره شما حذف خواهند شد!
+                  <TbDoorEnter className="h-5 w-5" /> {user?.rents?.length}{" "}
+                  اجاره شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <MdOutlineReviews className="h-5 w-5" />{" "}

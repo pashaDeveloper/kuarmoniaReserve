@@ -3,34 +3,45 @@ import HighlightText from "@/components/shared/highlightText/HighlightText";
 import LoadImage from "@/components/shared/image/LoadImage";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
-import { useGetGalleriesQuery, useGetGalleryQuery } from "@/services/gallery/galleryApi";
+import {
+  useGetClientGalleryQuery,
+  useGetGalleryQuery
+} from "@/services/gallery/galleryApi";
 
 const Gallery = () => {
-  const { data, isLoading, error } = useGetGalleriesQuery();
+  const { data, isLoading, error } = useGetClientGalleryQuery();
   const [selectedGalleryId, setSelectedGalleryId] = useState(null);
-  const { isLoading: fetching, data: fetchData, error: fetchError } = useGetGalleryQuery(selectedGalleryId);
+  const {
+    isLoading: fetching,
+    data: fetchData,
+    error: fetchError
+  } = useGetGalleryQuery(selectedGalleryId);
+
   const gallery = useMemo(() => fetchData?.data || {}, [fetchData]);
   const containerRef = useRef(null);
-  const galleries = Array.isArray(data?.data) ? data.data : [];
-  
-  const categorizedData = galleries.reduce((acc, item) => {
-    const categoryName = item.category?.title || "بدون دسته‌بندی";
-    if (!acc[categoryName]) {
-      acc[categoryName] = [];
-    }
-    acc[categoryName].push(item);
-    return acc;
-  }, {});
+  const categories = data?.data || [];
+  console.log("categories", categories);
+  console.log("gallery", gallery?.gallery);
 
-  const categories = Object.keys(categorizedData);
-  const [tab, setTab] = useState(categories[0] || "بدون دسته‌بندی");
+  const [tab, setTab] = useState(null);
   const [counter, setCounter] = useState(9);
 
   useEffect(() => {
-    if (galleries.length > 0) {
-      setSelectedGalleryId(galleries[0]._id);
+    if (categories.length > 0) {
+      setTab(categories[0].category._id);
     }
-  }, [galleries]);
+  }, [categories]);
+
+  useEffect(() => {
+    if (tab) {
+      const selectedCategory = categories.find(
+        (cat) => cat.category._id === tab
+      );
+      if (selectedCategory) {
+        setSelectedGalleryId(selectedCategory._id);
+      }
+    }
+  }, [tab, categories]);
 
   const renderSkeleton = () => {
     return (
@@ -48,7 +59,9 @@ const Gallery = () => {
               />
             </p>
             <p className="text-base">
-              با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا می‌شوید و می‌توانید ببینید که چگونه ما به مشتریان خود ارزش افزوده می‌دهیم.
+              با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا
+              می‌شوید و می‌توانید ببینید که چگونه ما به مشتریان خود ارزش افزوده
+              می‌دهیم.
             </p>
           </article>
         </div>
@@ -58,7 +71,9 @@ const Gallery = () => {
             {Array.from({ length: 9 }).map((_, index) => (
               <div
                 key={index}
-                className={`lg:col-span-3 md:col-span-6 col-span-12 border w-full bg-gray-300 drop-shadow rounded ${index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"}`}
+                className={`lg:col-span-3 md:col-span-6 col-span-12 border w-full bg-gray-300 drop-shadow rounded ${
+                  index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"
+                }`}
               ></div>
             ))}
           </div>
@@ -70,19 +85,15 @@ const Gallery = () => {
   if (isLoading || fetching) {
     return (
       <section id="deals" className="h-full py-12">
-        <Container>
-          {renderSkeleton()}
-        </Container>
+        <Container>{renderSkeleton()}</Container>
       </section>
     );
   }
 
-  if (error || galleries.length === 0) {
+  if (error || gallery.length === 0) {
     return (
       <section id="deals" className="h-full py-12">
-        <Container>
-          {renderSkeleton()}
-        </Container>
+        <Container>{renderSkeleton()}</Container>
       </section>
     );
   }
@@ -104,7 +115,9 @@ const Gallery = () => {
                 />
               </p>
               <p className="text-base">
-                با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا می‌شوید و می‌توانید ببینید که چگونه ما به مشتریان خود ارزش افزوده می‌دهیم.
+                با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا
+                می‌شوید و می‌توانید ببینید که چگونه ما به مشتریان خود ارزش
+                افزوده می‌دهیم.
               </p>
             </article>
           </div>
@@ -113,19 +126,19 @@ const Gallery = () => {
             <div className="flex flex-col gap-y-8">
               {/* تب‌های دسته‌بندی */}
               <div className="flex flex-row flex-wrap gap-4">
-                {categories.map((categoryName) => (
+                {categories.map((category) => (
                   <span
-                    key={categoryName}
+                    key={category?.category?.title}
                     className={
                       "border border-primary px-4 py-1 rounded-secondary text-sm hover:bg-primary hover:border-secondary hover:text-white transition-colors cursor-pointer" +
                       " " +
-                      (tab === categoryName
+                      (tab === category?.category?._id
                         ? "bg-primary border-secondary text-white"
                         : "")
                     }
-                    onClick={() => setTab(categoryName)}
+                    onClick={() => setTab(category?.category?._id)}
                   >
-                    {categoryName}
+                    {category?.category?.title}
                   </span>
                 ))}
               </div>
@@ -136,19 +149,19 @@ const Gallery = () => {
                   className="grid grid-cols-12 items-center gap-4 h-[720px] overflow-y-hidden scrollbar-hide"
                   ref={containerRef}
                 >
-                  {categorizedData[tab]?.slice(0, counter).map((item) =>
-                    item.gallery.map((image, index) => (
+                    {gallery?.gallery?.map((image,index) => (
                       <LoadImage
-                        key={`${item._id}-${index}`}
+                        key={`${image._id}-${index}`}
                         src={image.url}
-                        alt={item.description}
+                        alt={image.description}
                         height={(index + 1) % 2 === 0 ? 364 : 159}
                         width={267}
-                        className={`lg:col-span-3 md:col-span-6 col-span-12 border w-full object-cover border-primary/30 drop-shadow rounded ${index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"}`}
-                        title={item.description}
+                        className={`lg:col-span-3 md:col-span-6 col-span-6 border w-full object-cover border-primary/30 drop-shadow rounded ${index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"}`}
+                        title={image.description}
                       />
-                    ))
-                  )}
+                    
+                  ))}  
+
                 </div>
 
                 {/* دکمه‌های اسکرول */}
@@ -160,7 +173,7 @@ const Gallery = () => {
                       const scrollAmount = -512;
                       container.scrollBy({
                         top: scrollAmount,
-                        behavior: "smooth",
+                        behavior: "smooth"
                       });
                     }}
                   >
@@ -173,7 +186,7 @@ const Gallery = () => {
                       const scrollAmount = 512;
                       container.scrollBy({
                         top: scrollAmount,
-                        behavior: "smooth",
+                        behavior: "smooth"
                       });
                     }}
                   >

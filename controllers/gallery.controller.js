@@ -1,22 +1,29 @@
-import Gallery from '@/models/gallery.model';
+import Gallery from "@/models/gallery.model";
 import path from "path";
 import removeFile from "@/utils/removeFile";
 import Category from "@/models/category.model";
+import { TfiControlShuffle } from "react-icons/tfi";
 
 export async function addGallery(req) {
   try {
     const { category, description } = req.body;
     let featuredImage = null;
     let galleries = [];
- 
+
     if (req.body.featuredImage && req.body.featuredImage.length) {
       const filePath = req.body.featuredImage[0];
       const fileExtension = path.extname(filePath).substring(1).toLowerCase();
       featuredImage = {
-        url: filePath || "N/A", 
+        url: filePath || "N/A",
         public_id: path.basename(filePath) || "ناشناخته",
-        type: fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" ? "image" : 
-              fileExtension === "mp4" ? "video" : "unknown",
+        type:
+          fileExtension === "jpg" ||
+          fileExtension === "jpeg" ||
+          fileExtension === "png"
+            ? "image"
+            : fileExtension === "mp4"
+            ? "video"
+            : "unknown"
       };
     }
 
@@ -24,9 +31,16 @@ export async function addGallery(req) {
       galleries = req.body.gallery.map((filePath) => {
         const fileExtension = path.extname(filePath).substring(1).toLowerCase();
         return {
-          url: filePath, 
+          url: filePath,
           public_id: path.basename(filePath) || "ناشناخته",
-          type: fileExtension === "jpg" ||fileExtension === "jpeg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
+          type:
+            fileExtension === "jpg" ||
+            fileExtension === "jpeg" ||
+            fileExtension === "png"
+              ? "image"
+              : fileExtension === "mp4"
+              ? "video"
+              : "unknown"
         };
       });
     }
@@ -35,77 +49,76 @@ export async function addGallery(req) {
         category,
         description,
         featuredImage,
-        gallery: galleries,
+        gallery: galleries
       });
       console.log("گالری با موفقیت ذخیره شد", galleryInstance);
     } catch (error) {
       console.error("خطا در ذخیره‌سازی گالری:", error.message);
-      console.error("جزئیات خطا:", error.errors); 
+      console.error("جزئیات خطا:", error.errors);
     }
-    console.log("222")
+    console.log("222");
 
-    if (galleryInstance ) {
+    if (galleryInstance) {
       return {
         success: true,
-        message: "گالری با موفقیت ایجاد شد",
+        message: "گالری با موفقیت ایجاد شد"
       };
     } else {
       return {
         success: false,
-        message: "خطا در ساخت گالری",
+        message: "خطا در ساخت گالری"
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: error.message
     };
   }
 }
 
 export async function getGalleries(req) {
   try {
-
-    const { page = 1, limit = 7, search = "" } = req.query; 
+    const { page = 1, limit = 7, search = "" } = req.query;
     const skip = (page - 1) * limit;
     const searchQuery = search
       ? { title: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
 
-      const galleries = await Gallery.find(searchQuery)
+    const galleries = await Gallery.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate('category', 'title id') 
-      .select('_id galleryId gallery featuredImage description  createdAt status ');
-  
-  console.log("galleries",galleries)
+      .populate("category", "title id")
+      .select(
+        "_id galleryId gallery featuredImage description  createdAt status "
+      );
+
     const total = await Gallery.countDocuments(searchQuery);
     if (galleries.length > 0) {
       return {
         success: true,
         data: galleries,
         total: total,
-        message: "گالری با موفقیت دریافت شد",
+        message: "گالری با موفقیت دریافت شد"
       };
     } else {
       return {
         success: false,
-        message: "هیچ گالری یافت نشد",
+        message: "هیچ گالری یافت نشد"
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: error.message
     };
   }
 }
 
-
 export async function updateGallery(req) {
   try {
     const { id } = req.query;
-    console.log(req.body)
+    console.log(req.body);
 
     const { title, description, status, isDeleted } = req.body || {};
     const updateFields = {};
@@ -114,30 +127,29 @@ export async function updateGallery(req) {
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
 
-    const gallery = await Gallery.findByIdAndUpdate(id, updateFields, { new: true });
-
+    const gallery = await Gallery.findByIdAndUpdate(id, updateFields, {
+      new: true
+    });
 
     if (gallery) {
       return {
         success: true,
         message: "دسته‌بندی با موفقیت به‌روزرسانی شد",
-        data: gallery,
+        data: gallery
       };
     } else {
       return {
         success: false,
-        message: "دسته‌بندی پیدا نشد",
+        message: "دسته‌بندی پیدا نشد"
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: error.message
     };
   }
 }
-
-
 
 // delete Gallery
 export async function deleteGallery(req) {
@@ -150,59 +162,79 @@ export async function deleteGallery(req) {
         await removeFile(filePath);
       }
 
-      const featuredImagePath = path.join(process.cwd(), "public", gallery.featuredImage.url);
+      const featuredImagePath = path.join(
+        process.cwd(),
+        "public",
+        gallery.featuredImage.url
+      );
       await removeFile(featuredImagePath);
 
       return {
         success: true,
-        message: "گالری با موفقیت حذف شد",
+        message: "گالری با موفقیت حذف شد"
       };
     } else {
       return {
         success: false,
-        message: "خطا در حذف گالری",
+        message: "خطا در حذف گالری"
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: error.message
     };
   }
 }
 
-
-
-
 export async function getGallery(req) {
   try {
-    const gallery = await Gallery.findById(req.query.id).populate("category", "title description");
+    const gallery = await Gallery.findById(req.query.id).populate(
+      "category",
+      "title description"
+    );
 
     if (!gallery) {
       return {
         success: false,
-        message: "گالری موردنظر یافت نشد",
+        message: "گالری موردنظر یافت نشد"
       };
     }
 
     const categoriesInUse = await Gallery.distinct("category").exec();
 
-    const categories = await Category.find({ _id: { $in: categoriesInUse } }, "title description");
 
     return {
       success: true,
       message: "اطلاعات گالری  با موفقیت دریافت شد",
-      data: {
-        gallery,      
-        categories,   
-      },
+      data: gallery
     };
   } catch (error) {
     return {
       success: false,
-      message: error.message,
+      message: error.message
     };
   }
 }
+export async function getClientGallery() {
+  try {
 
 
+    const categories = await Gallery.find()
+      .select("_id")
+      .populate("category", "title") 
+      .exec();
+
+
+    return {
+      success: true,
+      message: "اطلاعات گالری‌ها و دسته‌بندی‌ها با موفقیت دریافت شد",
+      data:categories
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}

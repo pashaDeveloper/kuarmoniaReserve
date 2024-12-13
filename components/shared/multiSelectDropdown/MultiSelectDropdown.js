@@ -4,7 +4,7 @@ const MultiSelectDropdown = ({
   items = [],
   selectedItems = [],
   handleSelect,
-  placeholder = "یک مورد را انتخاب کنید",
+  placeholder = "میتوانید چند مورد را انتخاب کنید",
   className,
   icon
 }) => {

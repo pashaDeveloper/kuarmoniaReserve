@@ -22,7 +22,7 @@ const Search = () => {
     <>
       <Tooltip text="جستجو" txtColor="text-white">
         <button
-          className="p-1.5 border border-primary/20 hover:border-primary rounded"
+          className="p-1.5 border  rounded"
           onClick={openModal}
         >
           <BiSearch className="text-lg" />
@@ -32,7 +32,7 @@ const Search = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        className="lg:w-1/3 md:w-1/2 w-full z-50"
+        className="lg:w-50 md:w-50 w-screen z-50"
       >
         <div className="flex flex-col gap-y-4 h-full">
           <p className="text-2xl drop-shadow">

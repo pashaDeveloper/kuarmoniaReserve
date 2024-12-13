@@ -53,11 +53,11 @@ const postApi = kuarmoniaApi.injectEndpoints({
   
       invalidatesTags: [
         "User",
-        "Cart",
-        "Rent",
-        "Favorite",
-        "Purchase",
-        "Review",
+        "Category",
+        "Tag",
+        "Like",
+        "Comment",
+        "view",
       ],
     }),
  

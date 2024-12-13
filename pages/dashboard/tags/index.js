@@ -2,7 +2,7 @@ import Panel from "@/layouts/Panel";
 import React, { useState, useEffect } from "react";
 import { useGetTagsQuery, useUpdateTagMutation } from "@/services/tag/tagApi";
 import AddTag from "./add";
-import DeleteConfirmationModal from "@/components/shared/modal/DeleteConfirmationModal";
+import DeleteModal from "@/components/shared/modal/DeleteModal";
 import { toast } from "react-hot-toast";
 import { FiEdit3, FiTrash } from "react-icons/fi";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
@@ -22,7 +22,7 @@ const ListTag = () => {
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
-    search: searchTerm,
+    search: searchTerm
   });
   const [updateTag] = useUpdateTagMutation();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -57,7 +57,7 @@ const ListTag = () => {
     try {
       const response = await updateTag({
         id: selectedTag._id,
-        isDeleted: true,
+        isDeleted: true
       }).unwrap();
       closeDeleteModal();
       if (response.success) {
@@ -77,7 +77,7 @@ const ListTag = () => {
     try {
       const response = await updateTag({
         id: tagId,
-        status: newStatus,
+        status: newStatus
       }).unwrap();
       if (response.success) {
         toast.success(response.message);
@@ -169,13 +169,13 @@ const ListTag = () => {
         </div>
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
-        <div className="col-span-11 lg:col-span-3  text-sm">
-          <span class="hidden lg:flex">نویسنده</span>
-          <span class="flex lg:hidden">نویسنده و عنوان</span>
-
-
-        </div>
-          <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">عنوان</div>
+          <div className="col-span-11 lg:col-span-3  text-sm">
+            <span class="hidden lg:flex">نویسنده</span>
+            <span class="flex lg:hidden">نویسنده و عنوان</span>
+          </div>
+          <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">
+            عنوان
+          </div>
           <div className="lg:col-span-2 lg:flex hidden text-sm md:block">
             توضیحات
           </div>
@@ -183,7 +183,7 @@ const ListTag = () => {
             ربات
           </div>
           <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap hidden text-sm">
-          <span class="hidden lg:flex">کلمات کلیدی</span>
+            <span class="hidden lg:flex">کلمات کلیدی</span>
           </div>
           <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
@@ -198,7 +198,7 @@ const ListTag = () => {
               <div className="col-span-10 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={tag.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
-                <LoadImage
+                  <LoadImage
                     src={tag?.authorId?.avatar.url}
                     alt={``}
                     height={100}
@@ -207,14 +207,19 @@ const ListTag = () => {
                   />
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
-                      <span className="hidden lg:flex ">{tag?.authorId?.name}</span>  
-                      <span className=" lg:hidden ">{tag?.title}</span>                     
+                      <span className="hidden lg:flex ">
+                        {tag?.authorId?.name}
+                      </span>
+                      <span className=" lg:hidden ">{tag?.title}</span>
                     </span>
                     <span className="text-xs hidden lg:flex">
                       {new Date(tag.createdAt).toLocaleDateString("fa-IR")}
                     </span>
-                    <span className=" lg:hidden text-xs line-clamp-1 ">{tag?.description ? tag?.description : new Date(tag.createdAt).toLocaleDateString("fa-IR")}</span>                     
-
+                    <span className=" lg:hidden text-xs line-clamp-1 ">
+                      {tag?.description
+                        ? tag?.description
+                        : new Date(tag.createdAt).toLocaleDateString("fa-IR")}
+                    </span>
                   </article>
                 </div>
               </div>
@@ -224,10 +229,9 @@ const ListTag = () => {
                 </span>
               </div>
               <div className="lg:col-span-3 lg:flex hidden col-span-3 text-right  items-center">
-              <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
+                <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
                   {tag.description ? tag.description : "ندارد"}
                 </span>
-                
               </div>
               <div className="lg:col-span-2 hidden lg:flex col-span-2 justify-right text-center items-center gap-x-2 text-sm">
                 {tag.robots && tag.robots.length > 0
@@ -243,8 +247,7 @@ const ListTag = () => {
                     ))
                   : "ندارد"}
               </div>
-<div 
-              className="lg:col-span-2 lg:flex hidden justify-right max-h-16   overflow-y-hidden text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
+              <div className="lg:col-span-2 lg:flex hidden justify-right max-h-16   overflow-y-hidden text-right items-center gap-x-1 gap-y-1 flex-wrap  lg:text-sm">
                 {tag.keywords?.some((keyword) => keyword.trim())
                   ? tag.keywords.map((keyword, index) => (
                       <span
@@ -258,22 +261,22 @@ const ListTag = () => {
                   : "ندارد"}
               </div>
 
-                <div className="col-span-2 md:col-span-1 gap-2  text-center flex justify-center md:items-center items-left">
-                  <article className="lg:flex-row flex flex-col gap-x-2 justify-left gap-y-2">
-                    <span
-                      className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
-                      onClick={() => openEditModal(tag)}
-                    >
-                      <FiEdit3 className="w-5 h-5" />
-                    </span>
-                    <span
-                      className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
-                      onClick={() => openDeleteModal(tag)}
-                    >
-                      <FiTrash className="w-5 h-5" />
-                    </span>
-                  </article>
-                </div>
+              <div className="col-span-2 md:col-span-1 gap-2  text-center flex justify-center md:items-center items-left">
+                <article className="lg:flex-row flex flex-col gap-x-2 justify-left gap-y-2">
+                  <span
+                    className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    onClick={() => openEditModal(tag)}
+                  >
+                    <FiEdit3 className="w-5 h-5" />
+                  </span>
+                  <span
+                    className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    onClick={() => openDeleteModal(tag)}
+                  >
+                    <FiTrash className="w-5 h-5" />
+                  </span>
+                </article>
+              </div>
             </div>
           ))
         )}
@@ -284,13 +287,12 @@ const ListTag = () => {
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
         />
-
         {isDeleteModalOpen && (
-          <DeleteConfirmationModal
+          <DeleteModal
             isOpen={isDeleteModalOpen}
+            onDelete={handleDelete}
             onClose={closeDeleteModal}
-            onConfirm={handleDelete}
-            message={`آیا مطمئن هستید که می‌خواهید تگ "${selectedTag?.title}" را حذف کنید؟`}
+            message={`آیا مطمئن هستید که می‌خواهید تگ "${selectedTag?.title}" را حذف کنید؟`} // نمایش پیام به‌روز شده
           />
         )}
 

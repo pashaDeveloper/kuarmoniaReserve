@@ -24,7 +24,7 @@ const BlogCard = () => {
         : blogs.map((blog, index) => (
             <div
               key={index}
-              className="group flex flex-col gap-y-4 border rounded cursor-pointer h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative "
+              className="group flex flex-col gap-y-4 border rounded cursor-pointer  h-[550px] md:h-[500px]  break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative overflow-hidden"
               onClick={() => router.push(`/blog/${blog.id}`)}
             >
               <Image

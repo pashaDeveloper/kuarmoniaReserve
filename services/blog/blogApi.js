@@ -48,7 +48,7 @@ const blogApi = kuarmoniaApi.injectEndpoints({
 
     deleteBlog: builder.mutation({
       query: (id) => ({
-        url: `/blogs/${id}`,
+        url: `/blog/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -57,11 +57,11 @@ const blogApi = kuarmoniaApi.injectEndpoints({
   
       invalidatesTags: [
         "User",
-        "Cart",
-        "Rent",
-        "Favorite",
-        "Purchase",
-        "Review",
+        "Blog",
+        "Tag",
+        "Category",
+        "Like",
+        "Comment",
       ],
     }),
  

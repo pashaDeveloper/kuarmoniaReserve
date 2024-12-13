@@ -19,7 +19,8 @@ import { useForm, FormProvider } from "react-hook-form";
 import RTEditor from "@/components/shared/editor/RTEditor";
 import Modal from "@/components/shared/modal/Modal";
 import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
-
+import { FiTrash } from "react-icons/fi";
+import DeleteModal from "@/components/shared/modal/DeleteModal";
 const Info = () => {
   const router = useRouter();
   const user = useSelector((state) => state?.auth);
@@ -39,7 +40,8 @@ const Info = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [galleryPreview, setGalleryPreview] = useState([]);
- 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   
   const { id } = router.query;
 
@@ -134,7 +136,6 @@ const Info = () => {
     formData.append("category", category);
     formData.append("content", content);
     
-    // ارسال تصویر به صورت فایل
     if (galleryPreview) {
       formData.append("featuredImage", galleryPreview[0]);
       console.log("galleryPreview",galleryPreview)
@@ -185,7 +186,7 @@ const Info = () => {
     }
 
     if (deleting) {
-      toast.loading("در حال حذف کاربر...", { id: "deleteBlog" });
+      toast.loading("در حال حذف بلاگ...", { id: "deleteBlog" });
     }
 
     if (deleteData) {
@@ -262,7 +263,26 @@ const Info = () => {
       });
   };
 
-
+  const handleDelete = () => {
+    deleteBlog(id)
+      .unwrap()
+      .then((response) => {
+        toast.success("پست با موفقیت حذف شد");
+        setIsDeleteModalOpen(false);
+        window.open("/dashboard/blogs", "_self"); 
+      })
+      .catch((error) => {
+        toast.error("خطا در حذف پست.");
+        setIsDeleteModalOpen(false);
+      });
+  };
+  
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <>
@@ -290,19 +310,21 @@ const Info = () => {
                     tabIndex="0"
                     aria-checked="true"
                   >
-                    <span className="sr-only">Power</span>
                     <span
                       aria-hidden="true"
                       className="translate-x-0 pointer-events-none inline-block  transform rounded-full h-7 w-7 bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
                     ></span>
                   </button>
                 </div>
-                {/*
-          <div >
-            <button className="rounded-lg border border-white/10 bg-slate-800 p-1.5 transition-all hover:bg-slate-900 v-popper--has-tooltip">
-             
-            </button>
-          </div> */}
+                <div>
+                  <button
+                    onClick={() => openDeleteModal()}
+                    className=" text-black dark:text-white hover:text-red-500 rounded-full p-2 shadow-md  transition duration-200"
+                  >
+                    <FiTrash size={36} />
+                  </button>
+                </div>
+                
               </div>
             </div>
 
@@ -635,6 +657,15 @@ const Info = () => {
     </div>
   </div>
 )}
+
+{isDeleteModalOpen && (
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onDelete={handleDelete}
+          onClose={closeDeleteModal}
+          message={`آیا مطمئن هستید که می‌خواهید پست "${title}" را حذف کنید؟`} 
+        />
+      )}
 
       <Modal isOpen={isEditorOpen} onClose={closeModal} className="h-[90vh]">
         <RTEditor

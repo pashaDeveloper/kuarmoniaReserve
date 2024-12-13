@@ -4,7 +4,7 @@ import Panel from "@/layouts/Panel";
 export default function Setting() {
   const settings = [
     { name: 'تنظیمات عمومی', path: './general' },
-    { name: 'اسلایدها', path: './slides' },
+    { name: 'اسلایدها', path: './setting/slides' },
     { name: 'درباره ما', path: './about-us' },
     { name: 'تماس با ما', path: './contact' },
     { name: 'شبکه‌های اجتماعی', path: './social-media' }

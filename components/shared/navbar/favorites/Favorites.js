@@ -81,7 +81,7 @@ const Favorites = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        className="lg:w-1/3 md:w-1/2 w-full z-50"
+        className="lg:w-1/3  md:w-1/2 w-full z-50"
       >
         <div className="flex flex-col gap-y-4">
           <h1 className="text-2xl drop-shadow">
