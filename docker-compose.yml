@@ -25,7 +25,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: kuarmonia
     volumes:
-      - mongo_data:/data/db  # استفاده از volume برای ذخیره‌سازی داده‌ها
+      - mongo_external_data:/data/db  # استفاده از volume برای ذخیره‌سازی داده‌ها
 
   traefik:
     image: traefik:v2.10
