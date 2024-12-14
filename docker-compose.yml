@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.routers.app.tls.certresolver=myresolver"
     volumes:
-      - ./uploads:/app/public/uploads
+      - ./public/uploads:/app/public/uploads
     restart: always
 
   mongo:
