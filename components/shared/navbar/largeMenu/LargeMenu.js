@@ -13,7 +13,8 @@ const menuItems = [
 
 const largeMenu = () => {
   return (
-    <Tabs value="خانه" className="hidden md:flex lg:flex fixed top-2 right-60   z-[9998]    justify-center rounded-md text-sm md:text-base bg-green-100">
+    <Tabs value="خانه"      className="hidden md:flex lg:flex fixed top-2 left-1/2 transform -translate-x-1/2 z-[9998] justify-center rounded-md text-sm md:text-base bg-green-100"
+>
       <div className="w-full flexflex-col items-center">
         <TabsHeader className="h-15 !w-12/12 md:w-[50rem] border border-white/25 bg-opacity-90">
           {menuItems.map((item) => (

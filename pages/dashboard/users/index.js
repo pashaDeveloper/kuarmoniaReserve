@@ -18,7 +18,6 @@ const ListUsers = () => {
   const usr = useSelector((state) => state?.auth);
   const users = useMemo(() => data?.data || [], [data]);
   const dispatch = useDispatch();
-  console.log("user?.avatar?.url",user?.avatar?.url);
   useEffect(() => {
     if (error?.data) {
       alert(error?.data?.message);
