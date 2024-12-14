@@ -19,13 +19,19 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "3000",
-        pathname: "/uploads/**", // مسیر درست تصاویر
+        pathname: "/uploads/**", // مسیر تصاویر لوکال
       },
       {
         protocol: "https",
         hostname: "via.placeholder.com",
         port: "",
         pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "kuarmoniagroup.com",
+        port: "",
+        pathname: "/uploads/**", // مسیر تصاویر روی سرور
       },
     ],
   },
