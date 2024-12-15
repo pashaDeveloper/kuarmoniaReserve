@@ -30,6 +30,7 @@ services:
       MONGO_INITDB_DATABASE: kuarmonia
     volumes:
       - mongo_data:/data/db
+      - mongo_backup:/backup/db
     restart: always
 
   traefik:
