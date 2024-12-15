@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.routers.app.tls.certresolver=myresolver"
     volumes:
-      - ./public/uploads:/app/public/uploads
+      - ./public/uploads:/app/public/uploads  # مسیر ذخیره‌سازی برای آپلودها
     restart: always
 
   mongo:
@@ -29,8 +29,8 @@ services:
     environment:
       MONGO_INITDB_DATABASE: kuarmonia
     volumes:
-      - mongo_data:/data/db
-      - mongo_backup:/backup/db
+      - ./mongo_data:/data/db            # تغییر مسیر برای داده‌ها
+      - ./mongo_backup:/backup/db        # تغییر مسیر برای بکاپ‌ها
     restart: always
 
   traefik:
@@ -54,6 +54,3 @@ services:
     restart: always
 
 volumes:
-  mongo_data:
-  mongo_backup:
-
