@@ -29,8 +29,8 @@ services:
     environment:
       MONGO_INITDB_DATABASE: kuarmonia
     volumes:
-      - ./mongo_data:/data/db            # تغییر مسیر برای داده‌ها
-      - ./mongo_backup:/backup/db        # تغییر مسیر برای بکاپ‌ها
+      - mongo_data:/data/db            # تغییر مسیر برای داده‌ها
+      - ./mongo_backup:/backup/db      # تغییر مسیر برای بکاپ‌ها
     restart: always
 
   traefik:
@@ -54,3 +54,4 @@ services:
     restart: always
 
 volumes:
+  mongo_data: {}  # تعریف volume به صورت صحیح
