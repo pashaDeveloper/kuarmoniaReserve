@@ -2,9 +2,9 @@
 
 import Button from "@/components/shared/button/Button";
 import Container from "@/components/shared/container/Container";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React, { useState } from "react";
 import { BiHotel } from "react-icons/bi";
+import Image from 'next/image'
 
 const NewsLetter = () => {
   const [showAdditionalContent, setShowAdditionalContent] = useState(false);
@@ -15,11 +15,11 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="h-full py-12">
+    <section className="h-full py-12 dark:bg-black">
       <Container>
         <section className="w-full h-full lg:gap-x-4 gap-y-12 grid grid-cols-12">
           <div className="lg:col-span-5 col-span-12 rounded relative">
-            <LoadImage
+            <Image
               src="/assets/static/News Letter.png"
               alt="newsletter"
               height={302}
@@ -35,7 +35,7 @@ const NewsLetter = () => {
               {showAdditionalContent && (
                 <div className="bg-white flex flex-col gap-y-3 border p-4 rounded absolute top-1/3 left-1/4 mt-5">
                   <article className="flex flex-row gap-x-2">
-                    <LoadImage
+                    <Image
                       src="/assets/static/News Letter.png"
                       alt="thumbnail"
                       height={35}
@@ -65,14 +65,14 @@ const NewsLetter = () => {
             </div>
           </div>
           <div className="lg:col-span-7 col-span-12 bg-secondary/70 rounded relative p-8">
-            <LoadImage
+            <Image
               src="/assets/home-page/newsletter/air-ticket.svg"
               alt="ticket"
               height={285}
               width={612}
               className="h-[285px] w-full object-contain absolute lg:-top-4 -top-8 lg:-right-[8rem] md:right-[4rem] -right-[1rem]"
             />
-            <LoadImage
+            <Image
               src="/assets/home-page/newsletter/target-circle.svg"
               alt="ticket"
               height={50}
@@ -84,7 +84,7 @@ const NewsLetter = () => {
   خود را آماده کنید و زیبایی‌های جهان را کشف کنید
 </h2>
 <p className="text-sm">
-  ما در کنار شما هستیم تا بهترین پیشنهادات و پیش‌نمایش‌های انحصاری را در زمینه مهاجرت و پناهندگی ارائه دهیم. با ما سفر کنید و نکات مهم درباره مراحل مهاجرت و پناهندگی را دریافت کنید. همچنین، آخرین مشاوره‌ها در مورد مقاصد امن و راه‌های قانونی برای شروع یک زندگی جدید را برای شما فراهم خواهیم کرد.
+  ما در کنار شما هستیم تا بهترین پیشنهادات و پیش‌نمایش‌های انحصاری را در زمینه مهاجرت و ویزا ارائه دهیم. با ما سفر کنید و نکات مهم درباره مراحل مهاجرت و اخذ ویزا را دریافت کنید. همچنین، آخرین مشاوره‌ها در مورد مقاصد امن و راه‌های قانونی برای شروع یک زندگی جدید را برای شما فراهم خواهیم کرد.
 </p>
 
               <label

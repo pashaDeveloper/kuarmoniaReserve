@@ -1,13 +1,13 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
 import DestinationByMonth from "./DestinationByMonth";
+import Image from 'next/image'
 
 const PopularDestination = () => {
   return (
     <section
-      className="bg-no-repeat bg-cover h-full py-12"
+      className="bg-no-repeat bg-cover h-full py-12 dark:bg-gray-900"
       style={{
         backgroundImage: "url(/assets/home-page/popular-destination/bg.svg)",
       }}
@@ -18,7 +18,7 @@ const PopularDestination = () => {
             <article className="flex flex-col gap-y-4">
               <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>فرصت ها</HighlightText> بر اساس ماه
-                <LoadImage
+                <Image
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
                   height={7}

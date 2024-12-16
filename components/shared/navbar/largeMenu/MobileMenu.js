@@ -12,7 +12,7 @@ const menuItems = [
 
 const MobileMenu = () => {
   return (
-    <div className="fixed md:hidden  bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+    <div className="fixed md:hidden  bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-black dark:border-gray-600">
       <div className="grid h-full max-w-lg grid-cols-6 mx-auto font-medium">
         {menuItems.map((item) => (
           <button

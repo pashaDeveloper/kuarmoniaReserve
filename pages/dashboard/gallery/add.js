@@ -14,8 +14,8 @@ import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/catego
 
 const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
   const { register, handleSubmit, reset, setValue, control, formState: { errors } } = useForm();
-  const [addGallery, { isLoading: isAdding }] = useAddGalleryMutation();
-  const [updateGallery, { isLoading: isUpdating }] = useUpdateGalleryMutation();
+  const [addGallery, { isLoading: isAdding, data: addData, error: addError }] = useAddGalleryMutation();
+  const [updateGallery, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateGalleryMutation();
   const { data: categoriesData, refetch: refetchCategories } = useGetCategoriesForDropDownMenuQuery();
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -51,21 +51,41 @@ const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
       formData.append("gallery", gallery[i]);
     }    formData.append("category", data.category);
     formData.append("description", data.description);
-
-    try {
-      if (GalleryToEdit) {
-        await updateGallery({ id: GalleryToEdit._id, ...formData }).unwrap();
-      } else {
-        await addGallery(formData).unwrap();
-      }
-      toast.success("عملیات موفقیت‌آمیز بود");
-      if (onSuccess) onSuccess();
-      if (onClose) onClose();
-      reset();
-    } catch (err) {
-      toast.error("خطا در پردازش گالری");
+    
+     if (GalleryToEdit) {
+      await updateGallery({ id: GalleryToEdit._id, ...formData }).unwrap();
+    } else {
+      await addGallery(formData).unwrap();
     }
-  };
+  }
+    useEffect(() => {
+      const isLoading = isAdding || isUpdating;
+      const data = addData || updateData;
+      const error = addError || updateError;
+  console.log(data)
+      if (isLoading) {
+        toast.loading("در حال پردازش...", { id: "gallery" });
+      }
+  
+      if (data?.success) {
+        toast.success(data?.message, { id: "gallery" });
+        reset();
+        onClose();    
+  
+      }
+      if (error?.data) {
+        toast.error(error?.data?.message, { id: "gallery" });
+      }
+    }, [
+      addData,
+      updateData,
+      addError,
+      updateError,
+      isAdding,
+      isUpdating,
+      reset,
+      onSuccess,
+    ]);
 
   return (
     <>
@@ -125,8 +145,8 @@ const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
             <DisplayImages galleryPreview={galleryPreview.map(img => img.url)} imageSize={150} />
 
             <Button type="submit" className="py-2 mt-4" isLoading={isAdding || isUpdating}>
-              {GalleryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
-            </Button>
+  {GalleryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
+</Button>
           </div>
         </form>
       </Modal>

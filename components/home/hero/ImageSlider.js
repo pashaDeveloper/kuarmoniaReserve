@@ -1,7 +1,6 @@
 
 // import Image from "next/image";
-import LoadImage from "@/components/shared/image/LoadImage";
-// import Tooltip from "@/components/shared/tooltip/Tooltip";
+import Image from 'next/image'
 import { useState, useEffect } from "react";
 
 const ImageSlider = ({ images, delay }) => {
@@ -24,7 +23,7 @@ const ImageSlider = ({ images, delay }) => {
             index === currentImageIndex ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <LoadImage
+          <Image
             src={image}
             alt={`Image ${index + 1}`}
             height={512}

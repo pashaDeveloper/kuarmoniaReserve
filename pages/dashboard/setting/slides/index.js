@@ -11,9 +11,9 @@ import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import AddButton from "@/components/shared/button/AddButton";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import { FiEdit3, FiTrash } from "react-icons/fi";
-import LoadImage from "@/components/shared/image/LoadImage";
 import Pagination from "@/components/shared/pagination/Pagination";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
+import Image from "next/image";
 
 const ListSlide = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -113,21 +113,21 @@ const ListSlide = () => {
         {/* دکمه افزودن دسته‌بندی */}
         <AddButton onClick={openAddModal} />
         <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex overflow-hidden bg-white border rounded-lg dark:bg-gray-500 dark:border-white rtl:flex-row">
+        <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm   dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-300 border-l focus:bg-gray-300 dark:bg-gray-500"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
               onClick={() => onStatusFilterChange("all")}
             >
               همه
             </button>
             <button
-              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("active")}
             >
               فعال
             </button>
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 bg-gray-100 dark:bg-gray-500 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white last:border-none dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100  dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("inactive")}
             >
               غیر فعال
@@ -187,13 +187,18 @@ const ListSlide = () => {
               <div className="col-span-10 lg:col-span-4 text-center flex items-center">
                 <StatusIndicator isActive={slide.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
-                  <LoadImage
-                    src={slide?.bgImg?.url}
-                    alt={``}
-                    height={100}
-                    width={100}
-                    className="h-[60px] w-[60px] rounded-full object-cover"
-                  />
+                  {slide?.bgImg.type === "image" ? (
+                                     <Image
+                                     src={slide?.bgImg?.url || "/placeholder.png"}
+                                     height={100}
+                                     width={100}
+                                     className="h-[60px] w-[60px] rounded-full object-cover"
+                                   />
+                                    ) : (
+                                      <div className="h-[60px] w-[60px] rounded-full bg-gray-300 animate-pulse"></div> // Skeleton Loader
+                  
+                                    )}
+                  
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 max-h-[1.6em] text-base ">
                       <span className="    text-sm">{slide?.title}</span>

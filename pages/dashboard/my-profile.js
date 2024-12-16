@@ -1,5 +1,4 @@
 import Button from "@/components/shared/button/Button";
-import LoadImage from "@/components/shared/image/LoadImage";
 import Modal from "@/components/shared/modal/Modal";
 import { setUser } from "@/features/user/userSlice";
 import Panel from "@/layouts/Panel";
@@ -25,6 +24,7 @@ import {
 import { LuShoppingCart } from "react-icons/lu";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { TbDoorEnter } from "react-icons/tb";
+import Image from "next/image";
 
 const MyProfile = () => {
   const user = useSelector((state) => state?.auth);
@@ -98,13 +98,13 @@ const MyProfile = () => {
   >
     {/* تصویر پروفایل */}
     <div className="flex flex-col gap-y-2 w-fit">
-      <LoadImage
-        src={avatarPreview || defaultValues?.avatar?.url}
-        alt={defaultValues?.avatar?.public_id || "تصویر پروفایل"}
-        height={100}
-        width={100}
-        className="h-[100px] w-[100px] rounded object-cover"
-      />
+    <Image
+  src={avatarPreview || defaultValues?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
+  alt={defaultValues?.avatar?.public_id || "تصویر پروفایل"}
+  height={100}
+  width={100}
+  className="h-[100px] w-[100px] rounded object-cover"
+/>
       <label htmlFor="avatar" className="relative">
         <button
           type="button"
@@ -256,13 +256,13 @@ function RemoveInformation({ id }) {
           <article className="flex flex-col gap-y-8 h-full overflow-y-auto">
             <div className="flex flex-col gap-y-1">
               <div className="flex flex-col gap-y-4">
-                <LoadImage
-                  src={user?.avatar?.url}
-                  alt={user?.avatar?.public_id}
-                  height={100}
-                  width={100}
-                  className="h-[100px] w-[100px] rounded object-cover"
-                />
+              <Image
+  src={user?.avatar?.url || "/placeholder.png"} // مسیر پیش‌فرض در صورت نبودن تصویر
+  alt={user?.avatar?.public_id || "User Avatar"}
+  height={100}
+  width={100}
+  className="h-[100px] w-[100px] rounded object-cover"
+/>
                 <h1 className="text-2xl">{user.name}</h1>
               </div>
               <div className="flex flex-col gap-y-1">

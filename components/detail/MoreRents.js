@@ -4,7 +4,7 @@ import { useGetRentsQuery } from "@/services/rent/rentApi";
 import { useEffect, useMemo } from "react";
 import Container from "../shared/container/Container";
 import HighlightText from "../shared/highlightText/HighlightText";
-import LoadImage from "../shared/image/LoadImage";
+import Image from 'next/image'
 import Link from "next/link";
 import { BiRightArrowAlt } from "react-icons/bi";
 import SkeletonCard from "../shared/card/SkeletonCard";
@@ -21,7 +21,7 @@ const MoreRents = ({ className }) => {
           <article className="flex flex-col gap-y-4">
             <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
               <HighlightText>Same</HighlightText> Seller&lsquo;s
-              <LoadImage
+              <Image
                 src="/assets/home-page/destination/underline.svg"
                 alt="arrow"
                 height={7}

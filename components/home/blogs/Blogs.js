@@ -2,10 +2,9 @@
 
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
 import BlogCard from "./BlogCard";
-
+import Image from 'next/image'
 const Blogs = () => {
   return (
     <section
@@ -24,7 +23,7 @@ const Blogs = () => {
             <article className="flex flex-col gap-y-4">
               <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>بلاگ</HighlightText> & راهنما
-                <LoadImage
+                <Image
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
                   height={7}
@@ -33,7 +32,7 @@ const Blogs = () => {
                 />
               </h1>
               <p className="text-base">
-              این بلاگ‌ها به موضوعات مهاجرت، پناهندگی، ازدواج و سرمایه‌گذاری در کشورهای خارجی می‌پردازند و اطلاعات مفیدی برای افرادی که قصد تغییر و تحول در زندگی خود دارند، ارائه می‌دهند. مطالب ما راهنمایی‌های کاربردی و به‌روزی برای شروع یک زندگی جدید در کشورهای مختلف فراهم می‌کنند.
+              این بلاگ‌ها به موضوعات مهاجرت، اخذ ویزا ازدواج و سرمایه‌گذاری در کشورهای خارجی می‌پردازند و اطلاعات مفیدی برای افرادی که قصد تغییر و تحول در زندگی خود دارند، ارائه می‌دهند. مطالب ما راهنمایی‌های کاربردی و به‌روزی برای شروع یک زندگی جدید در کشورهای مختلف فراهم می‌کنند.
               </p>
             </article>
           </div>

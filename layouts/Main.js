@@ -8,7 +8,7 @@ const Main = ({ children }) => {
   return (
     <>
       <LoadingIndicator />
-
+<div className="dark:bg-gray-900"></div>
       <Navbar />
       {children}
       <a

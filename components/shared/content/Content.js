@@ -1,10 +1,10 @@
   
 import React, { useState, useEffect } from "react";
 import SkeletonText from "@/components/shared/skeleton/SkeletonText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import { TagIcon } from "@/utils/SaveIcon";
 import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
+import Image from 'next/image';
 
   const Content =  ({
     title = "",
@@ -37,11 +37,13 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
         )} 
         {featureImage &&(
           
-          <img
+          <Image
           src={featureImage}
-          alt=""
+          alt="Feature Image"
+          width={1200} // عرض تصویر (در اینجا باید اندازه‌ای مناسب وارد کنید)
+          height={500} // ارتفاع تصویر (در اینجا باید اندازه‌ای مناسب وارد کنید)
           className="w-full object-cover h-[500px]"
-          />
+         />
         )
         }
      </div>
@@ -65,13 +67,13 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
            {avatar && (
             <div className="profile-container text-center shine-effect rounded-full flex justify-center mb-4">
              
-              <LoadImage
-                src={avatar}
-                alt="avatar"
-                height={300}
-                width={300}
-                className={`h-[100px] w-[100px] profile-pic rounded-full text-center `}
-              />
+             <Image
+  src={avatar}
+  alt="avatar"
+  height={300}
+  width={300}
+  className="h-[100px] w-[100px] profile-pic rounded-full text-center"
+/>
             </div>
                   ) }
           </div>
@@ -157,11 +159,13 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
     comments.map((comment, index) => (
       <div className="bg-white p-4 rounded-lg shadow dark:bg-gray-700 dark:border dark:border-gray-600" key={index}>
         <div className="flex items-center mb-2">
-          <img
-            src={comment.userAvatar || "https://via.placeholder.com/40"}
-            alt="تصویر کاربر"
-            className="w-10 h-10 rounded-full ml-3"
-          />
+        <Image
+  src={comment.userAvatar}
+  alt="تصویر کاربر"
+  width={40}
+  height={40}
+  className="rounded-full ml-3"
+/>
           <div>
             <h3 className="font-semibold">{comment.userName}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -193,11 +197,13 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
             {comment.replies.map((reply, replyIndex) => (
               <div className="bg-gray-100 p-4 rounded-lg shadow dark:bg-gray-800" key={replyIndex}>
                 <div className="flex items-center mb-2">
-                  <img
-                    src={reply.userAvatar || "https://via.placeholder.com/40"}
-                    alt="تصویر کاربر"
-                    className="w-8 h-8 rounded-full ml-3"
-                  />
+                <Image
+  src={reply.userAvatar}
+  alt="تصویر کاربر"
+  width={32} 
+  height={32} 
+  className="rounded-full ml-3"
+/>
                   <div>
                     <h3 className="font-semibold">{reply.userName}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-300">

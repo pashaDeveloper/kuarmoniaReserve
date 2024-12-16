@@ -21,6 +21,8 @@ import Modal from "@/components/shared/modal/Modal";
 import GalleryUpload from "@/components/shared/gallery/ThumbnailUpload";
 import { FiTrash } from "react-icons/fi";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
+import Image from 'next/image';
+
 const Info = () => {
   const router = useRouter();
   const user = useSelector((state) => state?.auth);
@@ -498,12 +500,13 @@ const Info = () => {
                       <div className="h-full relative">
                         <article className="h-full">
                           <div className="h-full relative">
-                            <img
-                              className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
-                              src={fetchData?.data?.featuredImage?.url}
-                              alt=""
-                              width={600}
-                            />
+                          <Image
+  className="h-full object-cover rounded-t-lg sm:rounded-r-lg sm:rounded-t-none sm:rounded-tr-lg"
+  src={fetchData?.data?.featuredImage?.url}
+  alt="Description of the image"
+  width={600}
+  height={400} // ارتفاع را طبق نیاز تنظیم کنید
+/>
                             <span className=" absolute flex justify-center items-center m-auto inset-0  rounded-lg ">
                               <GalleryUpload
                                 border={false}

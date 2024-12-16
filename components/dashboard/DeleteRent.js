@@ -10,12 +10,12 @@ import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import Modal from "../shared/modal/Modal";
-import LoadImage from "../shared/image/LoadImage";
 import { MdOutlineReviews, MdWarningAmber } from "react-icons/md";
 import { LuShoppingCart } from "react-icons/lu";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import { TbDoorEnter } from "react-icons/tb";
+import Image from 'next/image'
 
 const DeleteRent = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,7 +89,7 @@ const DeleteRent = ({ id }) => {
                 <div className="flex flex-col gap-y-4">
                   <div className="flex -space-x-4">
                     {rent?.gallery?.map((gallery) => (
-                      <LoadImage
+                      <Image
                         key={gallery?._id}
                         src={gallery?.url}
                         alt={gallery?.public_id}

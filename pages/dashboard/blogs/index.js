@@ -8,10 +8,10 @@ import { toast } from "react-hot-toast";
 import Metrics from "@/components/shared/tools/Metrics";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import { useRouter } from "next/router";
-import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import Pagination from "@/components/shared/pagination/Pagination";
 import { useSelector } from "react-redux";
+import Image from 'next/image'
 
 const ListBlog = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,11 +74,11 @@ const ListBlog = () => {
         <AddButton onClick={handleAddItem} />
 
         <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
+        <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
             <button
               className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
               onClick={() => onStatusFilterChange("all")}
-            > 
+            >
               همه
             </button>
             <button
@@ -94,6 +94,7 @@ const ListBlog = () => {
               غیر فعال
             </button>
           </div>
+
 
           <div className="relative flex items-center mt-4 md:mt-0">
             <span className="absolute">
@@ -140,7 +141,7 @@ const ListBlog = () => {
               <div className=" col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={blog.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
-                  <LoadImage
+                  <Image
                     src={blog?.featuredImage?.url}
                     alt={``}
                     height={100}

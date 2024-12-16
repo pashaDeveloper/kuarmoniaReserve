@@ -1,6 +1,5 @@
 
 
-import LoadImage from "@/components/shared/image/LoadImage";
 import Table from "@/components/shared/loading/Table";
 import Link from "next/link";
 import React, { useEffect, useMemo } from "react";
@@ -11,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRent } from "@/features/rent/rentSlice";
 import Panel from "@/layouts/Panel";
 import { toast } from "react-hot-toast";
+import Image from 'next/image'
 
 const ListRents = () => {
   const user = useSelector((state) => state?.auth);
@@ -81,7 +81,7 @@ function UserRows({ rents }) {
                   >
                     <span className="flex -space-x-4">
                       {rent?.gallery?.map((gallery) => (
-                        <LoadImage
+                        <Image
                           key={gallery?._id}
                           src={gallery?.url}
                           alt={gallery?.public_id}
@@ -272,7 +272,7 @@ function AdminRows() {
                         >
                           <span className="flex -space-x-4">
                             {rent?.gallery?.map((gallery) => (
-                              <LoadImage
+                              <Image
                                 key={gallery?._id}
                                 src={gallery?.url}
                                 alt={gallery?.public_id}

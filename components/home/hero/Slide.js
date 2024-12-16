@@ -4,9 +4,26 @@ import Link from "next/link";
 const Slide = ({ title, description, bgImg, url }) => {
   return (
     <div
-      className={`relative w-[100%] h-[50vh] rounded-lg md:h-[70vh] bg-cover bg-center bg-no-repeat`}
-      style={{ backgroundImage: `url(${bgImg.url})` }}
+      className={`relative w-[100%] h-[50vh] rounded-md   md:h-[70vh] bg-cover bg-center bg-no-repeat`}
       >
+         {bgImg.type==="video" ? (
+       <video
+       className="absolute w-full h-full object-cover rounded-md"
+       src={bgImg?.url}
+       autoPlay
+       loop
+       muted
+       controlsList="nodownload"
+       onContextMenu={(e) => e.preventDefault()}
+     />
+      ) : (
+        <div
+          className="absolute w-full h-full bg-cover bg-center rounded-md"
+          style={{ backgroundImage: `url(${bgImg.url})` }}
+        ></div>
+      )}
+      {bgImg.type!=="video" && (
+
       <Link href={url} passHref>
         <div className="block">
           <div
@@ -21,6 +38,7 @@ const Slide = ({ title, description, bgImg, url }) => {
           </div>
         </div>
       </Link>
+      ) }
     </div>
   );
 };

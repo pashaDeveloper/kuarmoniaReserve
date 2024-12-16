@@ -2,6 +2,7 @@ import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import { FaRegHeart } from "react-icons/fa";
 import { IoMdMore } from "react-icons/io";
+import Image from 'next/image';
 
 const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
   <div className="flex flex-row-reverse justify-between items-center py-2 px-2">
@@ -21,11 +22,13 @@ const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
         </>
       ) : (
         <>
-          <img
-            src={avatar}
-            alt="User"
-            className="w-10 h-10 rounded-full object-cover"
-          />
+        <Image
+  src={avatar}
+  alt="User"
+  width={40} // عرض تصویر به پیکسل
+  height={40} // ارتفاع تصویر به پیکسل
+  className="rounded-full object-cover"
+/>
           <div className="ml-3 flex flex-col gap-y-2">
             <p className="text-gray-900 text-left text-sm">{author}</p>
             <p className="text-gray-900 text-left text-xs">
@@ -48,23 +51,25 @@ const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
 );
 
 const PostMedia = ({ isLoading, thumbnailPreview }) => (
-  <div className="w-100 h-96 relative">
-    {isLoading || !thumbnailPreview ? (
-      <SkeletonImage showSize={false} />
-    ) : thumbnailPreview.type === "image" ? (
-      <img
-        src={thumbnailPreview.url}
-        alt="Feature Preview"
-        className="w-full h-full !rounded-none object-cover"
-      />
-    ) : (
-      <video
-        src={thumbnailPreview.url}
-        controls
-        className="w-full h-full object-cover"
-      />
-    )}
-  </div>
+  <div className="w-full h-96 relative">
+  {isLoading || !thumbnailPreview ? (
+    <SkeletonImage showSize={false} />
+  ) : thumbnailPreview.type === "image" ? (
+    <Image
+      src={thumbnailPreview.url}
+      alt="Feature Preview"
+      layout="fill" // تنظیم اندازه تصویر به اندازه والد
+      objectFit="cover" // استفاده از خاصیت object-fit: cover
+      className="rounded-none" // اعمال گرد نشدن گوشه‌ها
+    />
+  ) : (
+    <video
+      src={thumbnailPreview.url}
+      controls
+      className="w-full h-full object-cover"
+    />
+  )}
+</div>
 );
 
 const PostContent = ({ content, isLoading }) => (
@@ -111,11 +116,13 @@ const PostComments = ({ comments }) => (
               key={index}
             >
               <div className="flex items-center mb-2">
-                <img
-                  src={comment.userAvatar || "https://via.placeholder.com/40"}
-                  alt="تصویر کاربر"
-                  className="w-10 h-10 rounded-full ml-3"
-                />
+              <Image
+  src={comment.userAvatar || "https://via.placeholder.com/40"}
+  alt="تصویر کاربر"
+  width={40} // عرض تصویر
+  height={40} // ارتفاع تصویر
+  className="rounded-full ml-3"
+/>
                 <div>
                   <h3 className="font-semibold">{comment.userName}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-300">

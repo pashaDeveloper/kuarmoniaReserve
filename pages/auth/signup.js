@@ -1,5 +1,5 @@
 // Signup.jsx
-import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
+import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import Logo from "@/components/shared/logo/Logo";
 import Link from "next/link";
 import StepSignUpForm from "./StepSignUpForm";

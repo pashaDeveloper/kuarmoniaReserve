@@ -1,7 +1,6 @@
 
 
 import { useSelector } from "react-redux";
-import LoadImage from "@/components/shared/image/LoadImage";
 import Modal from "@/components/shared/modal/Modal";
 import { setRent } from "@/features/rent/rentSlice";
 import Panel from "@/layouts/Panel";
@@ -11,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { IoMdPricetag } from "react-icons/io";
 import { MdLocationPin } from "react-icons/md";
 import { useDispatch } from "react-redux";
+import Image from 'next/image'
 
 const ListBuyers = () => {
   const user = useSelector((state) => state?.auth);
@@ -49,7 +49,7 @@ function SellerView({ rents }) {
               className="flex flex-col gap-y-4 p-4 rounded border border-primary/20 hover:border-primary"
             >
               <article className="flex flex-col gap-y-0.5 items-center">
-                <LoadImage
+                <Image
                   src={user?.avatar?.url}
                   alt={user?.avatar?.public_id}
                   height={50}
@@ -164,7 +164,7 @@ function AdminView() {
               className="flex flex-col gap-y-4 p-4 rounded border border-primary/20 hover:border-primary"
             >
               <article className="flex flex-col gap-y-0.5 items-center">
-                <LoadImage
+                <Image
                   src={user?.avatar?.url}
                   alt={user?.avatar?.public_id}
                   height={50}

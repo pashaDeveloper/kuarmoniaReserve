@@ -1,6 +1,6 @@
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
+import Image from 'next/image'
 
 const DestinationDescription = () => {
   return (
@@ -17,7 +17,7 @@ const DestinationDescription = () => {
         <article className="flex flex-col gap-y-4">
           <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
             <HighlightText>محبوب ترین</HighlightText> فرصت ها
-            <LoadImage
+            <Image
               src="/assets/home-page/destination/underline.svg"
               alt="arrow"
               height={7}
@@ -28,7 +28,7 @@ const DestinationDescription = () => {
           <p className="text-base">
             در اینجا برخی از محبوب‌ترین مقاصد ما را مشاهده می‌کنید که می‌توانید
             در آن‌ها <br />{" "}
-            فرصت‌های مهاجرت و پناهندگی را پیدا کنید. شامل تورها و تجارب
+            فرصت‌های مهاجرت و اخذ ویزا را پیدا کنید. شامل تورها و تجارب
             منحصر به فرد ما.
           </p>
         </article>

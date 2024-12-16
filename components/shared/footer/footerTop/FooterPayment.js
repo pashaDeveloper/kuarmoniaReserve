@@ -2,7 +2,7 @@
 // import Image from "next/image";
 import React from "react";
 import Tooltip from "../../tooltip/Tooltip";
-import LoadImage from "../../image/LoadImage";
+import Image from 'next/image'
 
 const FooterPayment = () => {
   const methods = [
@@ -44,7 +44,7 @@ const FooterPayment = () => {
           {methods.map(({ id, name, logo }) => (
             <span key={id}>
               <Tooltip text={name} txtColor={'text-white'}>
-                <LoadImage
+                <Image
                   src={logo}
                   alt={name}
                   width={50}

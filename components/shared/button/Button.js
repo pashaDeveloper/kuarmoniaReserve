@@ -1,8 +1,7 @@
-
-
 import React from "react";
+import  MoonLoader   from "@/components/shared/loading/MoonLoaderLoading";
 
-const Button = ({ children, className, ...rest }) => {
+const Button = ({ children, className, isLoading, ...rest }) => {
   return (
     <button
       {...rest}
@@ -10,8 +9,15 @@ const Button = ({ children, className, ...rest }) => {
         "text-sm bg-primary/80 text-white rounded-secondary border-primary border-b-[5px] border-solid hover:bg-primary/90 hover:text-black transition-all delay-100" +
         ` ${className}`
       }
+      disabled={isLoading} 
     >
-      {children}
+      {isLoading ? (
+        <>
+       <MoonLoader  />
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 };

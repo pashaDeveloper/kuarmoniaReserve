@@ -2,19 +2,20 @@
 
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
 import AdvantageArticle from "./AdvantageArticle";
 import AdvantageBanner from "./AdvantageBanner";
+import Image from 'next/image'
 
 const Advantage = () => {
   return (
     <section
-      className="bg-no-repeat bg-center h-full py-12"
+      className="bg-no-repeat bg-center h-full py-12 dark:bg-gray-900 "
       style={{
         backgroundImage: "url(/assets/home-page/advantage/manDirect.svg)",
         backgroundPosition: "125% 80%",
         backgroundSize: "50% 50%",
+        
       }}
     >
       <Container>
@@ -23,16 +24,16 @@ const Advantage = () => {
             <article className="flex flex-col gap-y-4">
               <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>چرا</HighlightText> کارمونیا
-                <LoadImage
-                  src="/assets/home-page/destination/underline.svg"
-                  alt="arrow"
-                  height={7}
-                  width={275}
-                  className="mt-1.5"
-                />
+                <Image
+        src="/assets/home-page/destination/underline.svg"
+        alt="arrow"
+        height={7}
+        width={275}
+        className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+        />
               </p>
               <p className="text-base">
-              چرا انتخاب ما برای مهاجرت و پناهندگی بهترین تصمیم شماست؟
+              چرا انتخاب ما برای مهاجرت و اخذ ویزا بهترین تصمیم شماست؟
               </p>
             </article>
 

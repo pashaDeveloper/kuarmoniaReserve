@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import LoadImage from "@/components/shared/image/LoadImage";
+import Image from 'next/image'
 
 const DestinationSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -93,7 +93,7 @@ const DestinationSlider = () => {
         <div ref={sliderRef} className="keen-slider">
           {images.map((image, index) => (
             <div key={index} className="keen-slider__slide">
-              <LoadImage
+              <Image
                 src={image}
                 alt={image}
                 height={512}

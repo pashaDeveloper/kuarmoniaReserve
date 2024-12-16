@@ -1,6 +1,5 @@
 
 
-import LoadImage from "@/components/shared/image/LoadImage";
 import Table from "@/components/shared/loading/Table";
 import Modal from "@/components/shared/modal/Modal";
 import Panel from "@/layouts/Panel";
@@ -18,6 +17,7 @@ import { toast } from "react-hot-toast";
 import { BsFillCartXFill } from "react-icons/bs";
 import { TbEyeShare } from "react-icons/tb";
 import { useSelector } from "react-redux";
+import Image from 'next/image'
 
 const ViewFavorites = () => {
   const user = useSelector((state) => state?.auth);
@@ -89,7 +89,7 @@ function UserRows({ favorites }) {
                   >
                     <span className="flex -space-x-4">
                       {rent?.gallery?.map((gallery) => (
-                        <LoadImage
+                        <Image
                           key={gallery?._id}
                           src={gallery?.url}
                           alt={gallery?.public_id}
@@ -289,7 +289,7 @@ function AdminRows() {
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
                         <span className="flex -space-x-4">
-                          <LoadImage
+                          <Image
                             src={user?.avatar?.url}
                             alt={user?.avatar?.public_id}
                             height={30}
@@ -322,7 +322,7 @@ function AdminRows() {
                       >
                         <span className="flex -space-x-4">
                           {rent?.gallery?.map((gallery) => (
-                            <LoadImage
+                            <Image
                               key={gallery?._id}
                               src={gallery?.url}
                               alt={gallery?.public_id}

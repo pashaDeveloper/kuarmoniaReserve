@@ -55,8 +55,8 @@ const FooterItems = () => {
         },
         {
           id: 24,
-          name: "پناهندگی",
-          href: "/asylum",
+          name: "اخذ ویزا",
+          href: "/visa",
         },
         
       ],

@@ -6,7 +6,7 @@ import React, { useState } from "react";
 // import { AiOutlineReload } from "react-icons/ai";
 // import { BiSolidStar } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import LoadImage from "../shared/image/LoadImage";
+import Image from 'next/image'
 import {
   setCategory,
   setCountries,
@@ -134,7 +134,7 @@ const FilterSidebar = () => {
                   }}
                 />
                 <span className="flex flex-row gap-x-2 items-center whitespace-normal truncate">
-                  <LoadImage
+                  <Image
                     src={country.flag}
                     alt={country.name}
                     height={10}

@@ -1,4 +1,3 @@
-import LoadImage from "@/components/shared/image/LoadImage";
 import Table from "@/components/shared/loading/Table";
 import { useGetUsersQuery } from "@/services/user/userApi";
 import React, { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import Panel from "@/layouts/Panel";
 import { setUser } from "@/features/user/userSlice";
 import DeleteUser from "@/components/dashboard/DeleteUser";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
+import Image from "next/image";
 
 const ListUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,13 +40,13 @@ const ListUsers = () => {
                 <StatusIndicator isActive={user.status === "active"} />
                 <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
                   <div className="user-container  rounded-full flex justify-center">
-                    <LoadImage
-                      src={user?.avatar?.url}
-                      alt="avatar"
-                      height={600}
-                      width={600}
-                      className="h-[60px] w-[60px] rounded-full object-cover"
-                      />
+                  <Image
+  src={user?.avatar?.url } 
+  alt="avatar"
+  height={600}
+  width={600}
+  className="h-[60px] w-[60px] rounded-full object-cover"
+/>
                   </div>
                   <article className="flex-col flex gap-y-2">
                     <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">

@@ -11,8 +11,8 @@ import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import AddButton from "@/components/shared/button/AddButton";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import { FiEdit3, FiTrash } from "react-icons/fi";
-import LoadImage from "@/components/shared/image/LoadImage";
 import Pagination from "@/components/shared/pagination/Pagination";
+import Image from 'next/image'
 
 const ListCategory = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,25 +88,6 @@ const ListCategory = () => {
     }
   };
 
-  const toggleStatus = async (categoryId, currentStatus) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
-    try {
-      const response = await updateCategory({
-        id: categoryId,
-        status: newStatus
-      }).unwrap();
-
-      if (response.success) {
-        toast.success(response.message);
-        refetch();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error("خطا در تغییر وضعیت");
-      console.error("Error toggling status", error);
-    }
-  };
 
   useEffect(() => {
     if (isLoading) {
@@ -123,7 +104,7 @@ const ListCategory = () => {
   }, [data, error, isLoading]);
   const onStatusFilterChange = (status) => {
     setStatusFilter(status);
-    setCurrentPage(1); // بازنشانی صفحه به صفحه اول بعد از تغییر فیلتر
+    setCurrentPage(1); 
     refetch();
   };
   const handleSearchChange = (e) => {
@@ -136,21 +117,21 @@ const ListCategory = () => {
         {/* دکمه افزودن دسته‌بندی */}
         <AddButton onClick={openAddModal} />
         <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex overflow-hidden bg-white border rounded-lg dark:bg-gray-500 dark:border-white rtl:flex-row">
+        <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm   dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-300 border-l focus:bg-gray-300 dark:bg-gray-500"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
               onClick={() => onStatusFilterChange("all")}
             >
               همه
             </button>
             <button
-              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("active")}
             >
               فعال
             </button>
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 bg-gray-100 dark:bg-gray-500 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white last:border-none dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100  dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("inactive")}
             >
               غیر فعال
@@ -186,8 +167,8 @@ const ListCategory = () => {
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
           <div className="col-span-11 lg:col-span-3  text-sm">
-            <span class="hidden lg:flex">نویسنده</span>
-            <span class="flex lg:hidden">نویسنده و عنوان</span>
+            <span className="hidden lg:flex">نویسنده</span>
+            <span className="flex lg:hidden">نویسنده و عنوان</span>
           </div>
           <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">
             عنوان
@@ -214,7 +195,7 @@ const ListCategory = () => {
               <div className="col-span-10 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={category.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
-                  <LoadImage
+                  <Image
                     src={category?.authorId?.avatar.url}
                     alt={``}
                     height={100}
@@ -266,13 +247,13 @@ const ListCategory = () => {
               <div className="col-span-2 md:col-span-1 gap-2 text-center flex justify-center items-center">
                 <article className="lg:flex-row flex flex-col justify-center gap-x-2  gap-y-2">
                   <span
-                    className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    className="edit-button "
                     onClick={() => openEditModal(category)}
                   >
                     <FiEdit3 className="w-5 h-5" />
                   </span>
                   <span
-                    className="line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
+                    className="delete-button"
                     onClick={() => openDeleteModal(category)}
                   >
                     <FiTrash className="w-5 h-5" />

@@ -6,7 +6,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 import Button from "@/components/shared/button/Button";
-import LoadImage from "@/components/shared/image/LoadImage";
 import { useRouter } from "next/router";
 import {
   useGetRentQuery,
@@ -17,6 +16,7 @@ import { toast } from "react-hot-toast";
 import dynamic from "next/dynamic";
 import { CgTrash } from "react-icons/cg";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import Image from 'next/image'
 
 const UpdateRent = () => {
   const [country, setCountry] = useState("Bangladesh");
@@ -199,7 +199,7 @@ const UpdateRent = () => {
           <div className="flex flex-col gap-y-2">
             <div className="flex flex-row overflow-x-auto gap-x-2">
               {galleryPreview?.map((image, index) => (
-                <LoadImage
+                <Image
                   key={index}
                   src={image?.url ? image?.url : image}
                   alt={image?.public_id || "gallery"}

@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Container from "../shared/container/Container";
 import HighlightText from "../shared/highlightText/HighlightText";
-import LoadImage from "../shared/image/LoadImage";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import Image from 'next/image'
 
 const FAQ = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -69,7 +69,7 @@ const FAQ = () => {
           <article className="flex flex-col gap-y-4">
             <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
               <HighlightText>F.A.Q.</HighlightText> from Travellers
-              <LoadImage
+              <Image
                 src="/assets/home-page/destination/underline.svg"
                 alt="arrow"
                 height={7}

@@ -1,8 +1,7 @@
 import Gallery from "@/models/gallery.model";
 import path from "path";
 import removeFile from "@/utils/removeFile";
-import Category from "@/models/category.model";
-import { TfiControlShuffle } from "react-icons/tfi";
+
 
 export async function addGallery(req) {
   try {
@@ -44,20 +43,13 @@ export async function addGallery(req) {
         };
       });
     }
-    try {
       const galleryInstance = await Gallery.create({
         category,
         description,
         featuredImage,
         gallery: galleries
       });
-      console.log("گالری با موفقیت ذخیره شد", galleryInstance);
-    } catch (error) {
-      console.error("خطا در ذخیره‌سازی گالری:", error.message);
-      console.error("جزئیات خطا:", error.errors);
-    }
-    console.log("222");
-
+     
     if (galleryInstance) {
       return {
         success: true,
@@ -118,7 +110,6 @@ export async function getGalleries(req) {
 export async function updateGallery(req) {
   try {
     const { id } = req.query;
-    console.log(req.body);
 
     const { title, description, status, isDeleted } = req.body || {};
     const updateFields = {};

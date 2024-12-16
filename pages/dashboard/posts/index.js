@@ -9,10 +9,10 @@ import { toast } from "react-hot-toast";
 import Metrics from "@/components/shared/tools/Metrics";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import { useRouter } from "next/router";
-import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import Pagination from "@/components/shared/pagination/Pagination";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const Listpost = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -136,13 +136,12 @@ const Listpost = () => {
                 <StatusIndicator isActive={post.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
                   {post?.featuredImage.type === "image" ? (
-                    <LoadImage
-                      src={post?.featuredImage?.url}
-                      alt={``}
-                      height={100}
-                      width={100}
-                      className="h-[60px] w-[60px] rounded-full object-cover"
-                    />
+                   <Image
+                   src={post?.featuredImage?.url || "/placeholder.png"}
+                   height={100}
+                   width={100}
+                   className="h-[60px] w-[60px] rounded-full object-cover"
+                 />
                   ) : (
                     <div className="h-[60px] w-[60px] rounded-full bg-gray-300 animate-pulse"></div> // Skeleton Loader
 

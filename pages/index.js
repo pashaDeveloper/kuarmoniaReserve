@@ -18,20 +18,20 @@ export default function Home() {
     <main>
       <Head>
         <title>
-        مهاجرت و سرمایه گذاری با کارمونیا - پلتفرم جامع برای تجربه‌های  آسان در مهاجرت و پناهندگی و سرمایه گذاری
+        مهاجرت و سرمایه گذاری با کارمونیا - پلتفرم جامع برای تجربه‌های  آسان در مهاجرت و  سرمایه گذاری
         </title>
       </Head>
       <Main>
-        <Hero />
+         <Hero />
         <Post />
         <BestSelling />
         <Advantage />
         <Reviews />
-        <Gallery />
+         <Gallery /> 
         <Blogs />
         <Steps />
         <PopularDestination />
-        <NewsLetter />
+        <NewsLetter /> 
       </Main>
     </main>
   );

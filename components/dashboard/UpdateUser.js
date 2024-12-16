@@ -1,11 +1,11 @@
 import { useUpdateUserMutation } from "@/services/user/userApi";
 import React, { useEffect, useState } from "react";
 import Button from "../shared/button/Button";
-import LoadImage from "../shared/image/LoadImage";
 import { useForm } from "react-hook-form";
 import { GrCloudUpload } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import Image from 'next/image'
 
 const UpdateUser = ({ setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -88,7 +88,7 @@ const UpdateUser = ({ setIsOpen }) => {
       <span className="text-sm">آپلود آواتار 300x300</span>
       {(avatarPreview || user?.avatar?.url) && (
         <div className="relative h-[100px] w-[100px]">
-          <LoadImage
+          <Image
             src={avatarPreview || `${user?.avatar?.url}`}
             alt={user?.avatar?.public_id || "avatar"}
             height={100}

@@ -59,7 +59,7 @@ const Cart = () => {
     <>
       <Tooltip text="سبد خرید" txtColor="text-white">
         <button
-          className="p-1.5 border border-primary/20 hover:border-primary rounded relative"
+          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
           onClick={openModal}
         >
           <IoCartOutline className="text-lg" />

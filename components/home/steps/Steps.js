@@ -1,9 +1,9 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React from "react";
 import BreakdownArticle from "./BreakdownArticle";
 import FeatureTour from "./FeatureTour";
+import Image from 'next/image'
 
 const Steps = () => {
   return (
@@ -14,7 +14,7 @@ const Steps = () => {
             <article className="flex flex-col gap-y-4">
               <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>مراحل</HighlightText> ساده و برتر
-                <LoadImage
+                <Image
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
                   height={7}

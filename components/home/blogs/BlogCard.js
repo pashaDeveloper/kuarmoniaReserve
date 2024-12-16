@@ -1,9 +1,9 @@
-import Image from "next/image";
 import React, { useState, useMemo } from "react";
 import { useGetAllBlogsQuery } from "@/services/blog/blogApi";
 import Pagination from "@/components/shared/pagination/Pagination";
 import SkeletonCard from "@/components/shared/card/SkeletonCard";
 import { useRouter } from "next/router";
+import Image from 'next/image';
 
 const BlogCard = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -69,20 +69,24 @@ const BlogCard = () => {
                       - {new Date(blog.publishDate).toLocaleDateString("fa-IR")}
                     </span>
                     <div className="flex items-center space-x-3">
-                      <img
-                        alt={blog?.authorId.name}
-                        title={blog?.authorId.name}
-                        src={blog?.authorId?.avatar?.url}
-                        className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
-                      />
-                      {blog?.authorId?.name !== superAdmin?.name && (
-                        <img
-                          alt={blog?.authorId.name}
-                          title={blog?.authorId.name}
-                          src={blog?.authorId?.avatar?.url}
-                          className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
-                        />
-                      )}
+                    <Image
+  alt={blog?.authorId?.name || "Default alt text"}
+  title={blog?.authorId?.name}
+  src={blog?.authorId?.avatar?.url}
+  width={36} // عرض تصویر
+  height={36} // ارتفاع تصویر
+  className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+/>
+{blog?.authorId?.name !== superAdmin?.name && (
+  <Image
+    alt={blog?.authorId?.name || "Default alt text"}
+    title={blog?.authorId?.name}
+    src={blog?.authorId?.avatar?.url}
+    width={36} // عرض تصویر
+    height={36} // ارتفاع تصویر
+    className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+  />
+)}
                     </div>
                   </div>
                 </div>

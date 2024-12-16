@@ -1,6 +1,5 @@
 
 
-// import LoadImage from "@/components/shared/image/LoadImage";
 // import Table from "@/components/shared/loading/Table";
 // import Panel from "@/layouts/Panel";
 // import {

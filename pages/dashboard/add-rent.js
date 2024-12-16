@@ -1,6 +1,5 @@
 
 
-import LoadImage from "@/components/shared/image/LoadImage";
 import migrationMethods from "@/data/migrationMethods";
 import useGetCountries from "@/hooks/useGetCountries";
 import Panel from "@/layouts/Panel";
@@ -13,6 +12,7 @@ import { CgTrash } from "react-icons/cg";
 import Button from "@/components/shared/button/Button";
 import { useAddRentMutation } from "@/services/rent/rentApi";
 import { toast } from "react-hot-toast";
+import Image from 'next/image'
 
 const AddRent = () => {
   const [galleryPreview, setGalleryPreview] = useState([]);
@@ -130,7 +130,7 @@ const AddRent = () => {
           <div className="flex flex-row overflow-x-auto gap-x-2">
             {galleryPreview?.length > 0 &&
               galleryPreview?.map((image, index) => (
-                <LoadImage
+                <Image
                   key={index}
                   src={image}
                   alt="gallery"

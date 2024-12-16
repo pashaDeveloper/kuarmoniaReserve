@@ -11,7 +11,7 @@ import {
   MdOutlineFavoriteBorder,
 } from "react-icons/md";
 import Button from "../button/Button";
-import LoadImage from "../image/LoadImage";
+import Image from 'next/image'
 import "keen-slider/keen-slider.min.css";
 import {
   useAddToFavoriteMutation,
@@ -130,7 +130,7 @@ const Card = ({ tour }) => {
             ref={sliderRef}
           >
             {gallery?.map((thumbnail, index) => (
-              <LoadImage
+              <Image
                 key={index}
                 src={thumbnail?.url}
                 alt={thumbnail?.public_id}

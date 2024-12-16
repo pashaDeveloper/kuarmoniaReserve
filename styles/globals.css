@@ -21,6 +21,7 @@ html {
 body {
   font-family: "Vazir", "Poppins", sans-serif !important;
   direction: rtl;
+
 }
 
 h1,
@@ -40,6 +41,9 @@ p {
   @apply bg-secondary text-primary;
 }
 
+body::-webkit-scrollbar {
+  display: none; /* مخفی کردن نوار اسکرول */
+}
 /* Width and height */
 ::-webkit-scrollbar {
   width: 10px;
@@ -137,6 +141,13 @@ blockquote {
 
 .reject-button {
   @apply border  border-red-600  py-2  bg-red-500/10 text-red-500 dark:text-red-500   text-center flex justify-center items-center transition-colors border-red-500/10 hover:bg-red-500/20  hover:!opacity-100 group-hover:opacity-70;
+}
+
+.delete-button {
+  @apply line-clamp-1 cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70 ;
+}
+.edit-button {
+  @apply line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70 ;
 }
 
 .link-hover {
@@ -302,6 +313,13 @@ focus {
   height: auto;
   width: auto;
 }
+.tab-item.active {
+  background-color: #3b82f6; /* رنگ پس‌زمینه فعال */
+  color: white; /* رنگ متن فعال */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* سایه برای تب فعال */
+  border-radius: 8px; /* گوشه‌های گرد برای تب فعال */
+}
+
 
 .navForSlider .swiper-slide img {
   border: 2px solid transparent;

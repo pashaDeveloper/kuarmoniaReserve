@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Image from 'next/image';
 
 const Avatar = ({ avatarUrl, onAvatarClick, loading }) => {
   const imageNumber = avatarUrl.split('/').pop().split('.')[0]; 
@@ -13,14 +14,16 @@ const Avatar = ({ avatarUrl, onAvatarClick, loading }) => {
             {loading || imageError ? (
               <div className="bg-gray-200 rounded-full shadow-xl h-28 w-28 animate-pulse"></div>
             ) : (
-              <img
-                className="w-full shadow-md rounded-full"
-                src={avatarUrl}
-                alt="Avatar"
-                aria-label={`Avatar ${imageNumber}`}
-                onError={() => setImageError(true)}
-                onClick={onAvatarClick}
-              />
+              <Image
+              className="w-full shadow-md rounded-full"
+              src={avatarUrl}
+              alt={`Avatar ${imageNumber}`}
+              aria-label={`Avatar ${imageNumber}`}
+              width={500} 
+              height={500}
+              onError={() => setImageError(true)}
+              onClick={onAvatarClick}
+            />
             )}
           </div>
           <div className="flex items-center justify-between gap-2">

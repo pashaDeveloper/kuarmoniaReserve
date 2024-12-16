@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import LoadImage from "@/components/shared/image/LoadImage";
+import Image from 'next/image'
 
 const DestinationByMonth = () => {
   const [selectMonth, setSelectMonth] = useState("January");
@@ -80,7 +80,7 @@ const DestinationByMonth = () => {
   const images = getRandomElements(photos, 8);
 
   return (
-    <div className="relative w-full flex flex-col gap-y-8">
+    <div className="relative w-full flex flex-col gap-y-8 ">
       <div ref={sliderRef} className="keen-slider">
         {months.map((month, index) => (
           <div
@@ -106,7 +106,7 @@ const DestinationByMonth = () => {
             key={index}
             className={`relative border rounded lg:col-span-3 md:col-span-6 col-span-12 bg-secondary`}
           >
-            <LoadImage
+            <Image
               src={img}
               alt={img}
               height={180}

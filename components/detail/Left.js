@@ -1,7 +1,6 @@
 
 
 import React, { useEffect } from "react";
-import LoadImage from "@/components/shared/image/LoadImage";
 import { AiOutlineCalendar, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BiCodeAlt } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
@@ -134,7 +133,7 @@ const Left = () => {
       <div className="lg:col-span-5 md:col-span-6 col-span-12 flex flex-col md:gap-y-8 gap-y-4">
         <div className="grid grid-cols-12 gap-4">
           {tour?.gallery?.map((thumbnail, index) => (
-            <LoadImage
+            <Image
               key={index}
               src={thumbnail?.url}
               alt={thumbnail?.public_id}
@@ -398,7 +397,7 @@ function Checkout({ rent, setIsOpen, members }) {
               <div className="flex flex-col gap-y-1">
                 <span className="flex -space-x-4">
                   {rent?.gallery?.map((gallery) => (
-                    <LoadImage
+                    <Image
                       key={gallery?._id}
                       src={gallery?.url}
                       alt={gallery?.public_id}

@@ -30,7 +30,7 @@ const ToggleThemeButton = () => {
         onChange={toggleTheme}
         className="peer sr-only "
       />
-      <div className={`flex h-7 w-14 mx-2 items-center rounded-full bg-blue-100 px-1 transition-colors ${isDark ? 'bg-gray-600' : 'bg-blue-100'} relative`}>
+      <div className={`flex h-7 w-14 mx-2 items-center rounded-full bg-blue-100 px-1 transition-colors ${isDark ? 'bg-gray-700' : 'bg-blue-100'} relative`}>
         {/* دایره متحرک */}
         <div
           className={`absolute top-0 left-0 inline-flex items-center justify-center w-7 h-7 transition-all duration-150 transform scale-110 rounded-full text-gray-500 dark:text-gray-400 bg-white focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 ${isDark ? 'bg-gray-900 translate-x-7' : 'translate-x-0'}`}

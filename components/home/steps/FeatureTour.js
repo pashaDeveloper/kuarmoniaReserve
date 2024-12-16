@@ -1,5 +1,4 @@
 import Button from "@/components/shared/button/Button";
-import LoadImage from "@/components/shared/image/LoadImage";
 import OutsideClick from "@/components/shared/outsideClick/OutsideClick";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -7,6 +6,7 @@ import { AiFillCar } from "react-icons/ai";
 import { BiMap } from "react-icons/bi";
 import { FaPlaneDeparture } from "react-icons/fa";
 import { FiGift } from "react-icons/fi";
+import Image from 'next/image'
 
 const FeatureTour = () => {
   const [gift, setGift] = useState(false);
@@ -20,7 +20,7 @@ const FeatureTour = () => {
     <>
       <section className="group flex lg:flex-row flex-col gap-4 border border-secondary p-4 rounded relative hover:border-primary transition-colors delay-100">
         <div className="flex flex-col gap-y-2">
-          <LoadImage
+          <Image
             src="/assets/static/migration-to-canada.png" // آدرس تصویر جدید
             alt="feature tour"
             width={256}
@@ -81,7 +81,7 @@ const FeatureTour = () => {
             <div className="h-full w-full rounded flex justify-center items-center">
               <OutsideClick onOutsideClick={handleOutsideClick}>
                 <div className="flex flex-row gap-x-4 border border-primary p-4 rounded bg-white">
-                  <LoadImage
+                  <Image
                     src="/assets/static/migration-update.png" // تصویر آپدیت مهاجرت
                     alt="avatar"
                     width={85.3}

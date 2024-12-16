@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import PreviewSection from "./steps/PreviewSection";
 import CustomProgressBar from "./steps/CustomProgressBar";
 import NavigationButton from "@/components/shared/button/NavigationButton";
-import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
+import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import BlogCard from "@/components/shared/card/BlogCard";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";

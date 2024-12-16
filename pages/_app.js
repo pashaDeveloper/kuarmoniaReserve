@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 // import AppWithTracking from './AppWithTracking'; // مسیر صحیح را تنظیم کنید
 
 export default function App({ Component, pageProps }) {
+
   return (
     <Provider store={store}>
       {/* <AppWithTracking> */}

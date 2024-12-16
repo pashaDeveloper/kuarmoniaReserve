@@ -5,9 +5,9 @@ import Link from "next/link";
 import React, { useEffect, useMemo } from "react";
 import { BiRightArrowAlt } from "react-icons/bi";
 import Card from "@/components/shared/card/Card";
-import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonCard from "@/components/shared/card/SkeletonCard";
 import { useGetRentsQuery } from "@/services/rent/rentApi";
+import Image from 'next/image'
 
 const BestSelling = ({ className }) => {
   const { data, isLoading, error } = useGetRentsQuery();
@@ -20,20 +20,20 @@ const BestSelling = ({ className }) => {
   }, [error]);
 
   return (
-    <section id="flights" className="py-12">
+    <section id="flights" className="py-12 dark:bg-gray-900">
       <Container className={`${className}`}>
         <section className="w-full h-full flex flex-col gap-y-12">
           <div className="flex flex-row justify-between items-center">
             <article className="flex flex-col gap-y-4">
               <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>جدید ترین</HighlightText> اخبار
-                <LoadImage
+                <Image
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
                   height={7}
                   width={275}
-                  className="mt-1.5"
-                />
+                  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+                  />
               </p>
               <p className="text-base">
               اخبار ما شامل اطلاعات درباره فرصت‌های شغلی و تحصیلی جدید در کشورهای مختلف است که می‌تواند به شما در یافتن بهترین گزینه‌های موجود کمک کند.

@@ -1,13 +1,13 @@
 import Head from 'next/head';
 import NewsItem from './newsItem';
-import LoadImage from "@/components/shared/image/LoadImage";
+import Image from 'next/image'
 
 const BlogPage = () => {
     const items = [
         {
           _id: 1,
           icon: (
-            <LoadImage
+            <Image
               src={"/assets/home-page/advantage/earth.svg"}
               alt={"earth"}
               height={60}
@@ -22,7 +22,7 @@ const BlogPage = () => {
         {
           _id: 2,
           icon: (
-            <LoadImage
+            <Image
               src={"/assets/home-page/advantage/smile.svg"}
               alt={"smile"}
               height={60}
@@ -37,7 +37,7 @@ const BlogPage = () => {
         {
           _id: 3,
           icon: (
-            <LoadImage
+            <Image
               src={"/assets/home-page/advantage/star.svg"}
               alt={"star"}
               height={60}
@@ -47,12 +47,12 @@ const BlogPage = () => {
           ),
           title: "رویکرد سریع و کارآمد",
           description:
-            "ما از روش‌های به‌روز و کارآمد استفاده می‌کنیم تا فرآیندهای مهاجرت و پناهندگی ",
+            "ما از روش‌های به‌روز و کارآمد استفاده می‌کنیم تا فرآیندهای مهاجرت   ",
         },
         {
           _id: 4,
           icon: (
-            <LoadImage
+            <Image
               src={"/assets/home-page/advantage/star.svg"}
               alt={"star"}
               height={60}
@@ -66,7 +66,7 @@ const BlogPage = () => {
         },
       ];
       const newsIcon = (
-      <LoadImage
+      <Image
         src={"/assets/home-page/advantage/earth.svg"}
         alt={"earth"}
         height={60}
@@ -83,7 +83,7 @@ const BlogPage = () => {
        <article className="flex flex-col gap-y-8">
         <title>اخبار</title>
         <div className="flex items-center gap-2">
-       <LoadImage
+       <Image
               src={"/assets/home-page/advantage/earth.svg"}
               alt={"earth"}
               height={60}

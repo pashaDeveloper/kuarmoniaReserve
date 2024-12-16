@@ -7,7 +7,7 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import Container from "../shared/container/Container";
 import HighlightText from "../shared/highlightText/HighlightText";
-import LoadImage from "../shared/image/LoadImage";
+import Image from 'next/image'
 import Link from "next/link";
 import { LiaPlusSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
@@ -96,8 +96,8 @@ const AllReviews = ({ className }) => {
           <div className="flex flex-row justify-between items-center">
             <article className="flex flex-col gap-y-4">
               <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-              <HighlightText>مهاجرت و پناهندگی</HighlightText>
-              <LoadImage
+              <HighlightText>مهاجرت و اخذ ویزا </HighlightText>
+              <Image
                   src="/assets/home-page/destination/underline.svg"
                   alt="arrow"
                   height={7}
@@ -106,7 +106,7 @@ const AllReviews = ({ className }) => {
                 />
               </h1>
               <p className="text-base">
-  تجربیات و نظرات مشتریان ما در رابطه با خدمات مهاجرت و پناهندگی
+  تجربیات و نظرات مشتریان ما در رابطه با خدمات مهاجرت 
 </p>
             </article>
             <div className="text-primary border-b-2 border-b-transparent hover:border-b-primary transition-all">
@@ -128,7 +128,7 @@ const AllReviews = ({ className }) => {
                   className="group relative flex flex-col gap-y-4 border hover:border-primary transition-colors ease-linear p-4 rounded keen-slider__slide"
                 >
                   <div className="flex flex-row gap-x-2.5 items-end">
-                    <LoadImage
+                    <Image
                       src={review?.reviewer?.avatar?.url}
                       alt={review?.reviewer?.avatar?.public_id}
                       width={50}

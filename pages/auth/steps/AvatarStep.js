@@ -1,9 +1,8 @@
-// components/signup/steps/AvatarStep.jsx
 import React from "react";
-import LoadImage from "@/components/shared/image/LoadImage";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import ProfileImageSelector from "@/components/shared/gallery/ProfileImageSelector";
 import NavigationButton from "@/components/shared/button/NavigationButton";
+import Image from 'next/image'
 
 const AvatarStep = ({
   avatarPreview,
@@ -16,7 +15,7 @@ const AvatarStep = ({
       <div className="flex flex-col items-center">
         <div className="profile-container shine-effect rounded-full flex justify-center mb-4">
           {avatarPreview ? (
-            <LoadImage
+            <Image
               src={avatarPreview}
               alt="avatar"
               height={100}

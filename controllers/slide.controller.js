@@ -71,7 +71,6 @@ export async function getSlides(req) {
       .select(
         "_id slideId authorId title bgImg  description  createdAt status "
       );
-
     const total = await Slide.countDocuments(searchQuery);
     if (slides.length > 0) {
       return {
@@ -96,7 +95,7 @@ export async function getSlides(req) {
 
 export async function getClientSlides() {
   try {
-    const slides = await Slide.find({}, "_id slideId title bgImg.url description url");
+    const slides = await Slide.find({isDeleted: false}, "_id slideId title bgImg description url");
     if (slides.length > 0) {
       return {
         success: true,

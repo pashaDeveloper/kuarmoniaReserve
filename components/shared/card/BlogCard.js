@@ -4,7 +4,7 @@ import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 import {Star} from "@/utils/SaveIcon"; 
-
+import Image from 'next/image';
 const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
 
   return (
@@ -15,11 +15,13 @@ const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
 
            />
         )} 
-        <img
-          src={thumbnailPreview}
-          alt="Blog Image"
-          className={`w-full h-64 object-cover object-center rounded-xl `}
-        />
+        <Image
+            src={thumbnailPreview}
+            alt="Blog Image"
+            width={1150} 
+            height={500} 
+            className="w-full h-64 object-cover object-center rounded-xl"
+          />
         <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
         <button
           className="!absolute top-4 right-4 h-12 max-h-[40px] w-12 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -163,16 +165,21 @@ const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
         </div>
         <div className="flex items-center justify-between ">
           <div className="flex items-center -space-x-3">
-            <img
-              alt="natali craig"
-              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1061&amp;q=80"
-              className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
-            />
-            <img
-              alt="Tania Andrew"
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
-              className="relative inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
-            />
+            
+          {/* <Image
+          alt="natali craig"
+          src=""
+          width={36} // Equivalent to h-9 and w-9
+          height={36} // Equivalent to h-9 and w-9
+          className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+        />
+            <Image
+          alt="Tania Andrew"
+          src=""
+          width={36} // Equivalent to h-9 and w-9
+          height={36} // Equivalent to h-9 and w-9
+          className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+        /> */}
           </div>
           <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
             <span className="font-medium">

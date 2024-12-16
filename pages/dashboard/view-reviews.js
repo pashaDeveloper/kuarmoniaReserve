@@ -1,6 +1,5 @@
 
 
-import LoadImage from "@/components/shared/image/LoadImage";
 import Panel from "@/layouts/Panel";
 import {
   useDeleteReviewMutation,
@@ -11,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { AiFillStar } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import Image from 'next/image'
 
 const ViewReviews = () => {
   const user = useSelector((state) => state?.auth);
@@ -57,7 +57,7 @@ const UserRows = ({ reviews }) => {
                 <div className="flex flex-col gap-y-1">
                   <span className="flex -space-x-4">
                     {rent?.gallery?.map((gallery) => (
-                      <LoadImage
+                      <Image
                         key={gallery?._id}
                         src={gallery?.url}
                         alt={gallery?.public_id}
@@ -72,7 +72,7 @@ const UserRows = ({ reviews }) => {
                 <div className="flex flex-col gap-y-2">
                   <p className="text-sm">{comment}</p>
                   <div className="text-xs flex flex-row gap-x-2 items-start">
-                    <LoadImage
+                    <Image
                       src={reviewer?.avatar?.url}
                       alt={reviewer?.avatar?.public_id}
                       height={30}
@@ -210,7 +210,7 @@ const AdminRows = () => {
                 <div className="flex flex-col gap-y-1">
                   <span className="flex -space-x-4">
                     {rent?.gallery?.map((gallery) => (
-                      <LoadImage
+                      <Image
                         key={gallery?._id}
                         src={gallery?.url}
                         alt={gallery?.public_id}
@@ -225,7 +225,7 @@ const AdminRows = () => {
                 <div className="flex flex-col gap-y-2">
                   <p className="text-sm">{comment}</p>
                   <div className="text-xs flex flex-row gap-x-2 items-start">
-                    <LoadImage
+                    <Image
                       src={reviewer?.avatar?.url}
                       alt={reviewer?.avatar?.public_id}
                       height={30}

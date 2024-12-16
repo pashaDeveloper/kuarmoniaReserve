@@ -11,7 +11,7 @@ import Pagination from "@/components/shared/pagination/Pagination";
 import AddButton from "@/components/shared/button/AddButton";
 import { LiaRobotSolid } from "react-icons/lia";
 import { MdOutlineTag } from "react-icons/md";
-import LoadImage from "@/components/shared/image/LoadImage";
+import Image from "next/image";
 
 const ListTag = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -120,21 +120,21 @@ const ListTag = () => {
         </div>
 
         <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex overflow-hidden bg-white border rounded-lg dark:bg-gray-500 dark:border-white rtl:flex-row">
+        <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm   dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-300 border-l focus:bg-gray-300 dark:bg-gray-500"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
               onClick={() => onStatusFilterChange("all")}
             >
               همه
             </button>
             <button
-              className="px-5 py-2 bg-gray-100 dark:bg-gray-500 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("active")}
             >
               فعال
             </button>
             <button
-              className="px-5 py-2 text-xs font-medium text-gray-600 bg-gray-100 dark:bg-gray-500 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-white last:border-none dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
+              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100  dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
               onClick={() => onStatusFilterChange("inactive")}
             >
               غیر فعال
@@ -170,8 +170,8 @@ const ListTag = () => {
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
           <div className="col-span-11 lg:col-span-3  text-sm">
-            <span class="hidden lg:flex">نویسنده</span>
-            <span class="flex lg:hidden">نویسنده و عنوان</span>
+            <span className="hidden lg:flex">نویسنده</span>
+            <span className="flex lg:hidden">نویسنده و عنوان</span>
           </div>
           <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">
             عنوان
@@ -183,7 +183,7 @@ const ListTag = () => {
             ربات
           </div>
           <div className="lg:col-span-2 lg:flex col-span-3 justify-right text-right items-center gap-x-1 gap-y-1 flex-wrap hidden text-sm">
-            <span class="hidden lg:flex">کلمات کلیدی</span>
+            <span className="hidden lg:flex">کلمات کلیدی</span>
           </div>
           <div className="col-span-1 md:block text-sm">عملیات</div>
         </div>
@@ -198,13 +198,13 @@ const ListTag = () => {
               <div className="col-span-10 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={tag.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
-                  <LoadImage
-                    src={tag?.authorId?.avatar.url}
-                    alt={``}
-                    height={100}
-                    width={100}
-                    className="h-[60px] w-[60px] rounded-full object-cover"
-                  />
+                <Image
+  src={tag?.authorId?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
+  alt="Description of the image"
+  height={100}
+  width={100}
+  className="h-[60px] w-[60px] rounded-full object-cover"
+/>
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex ">

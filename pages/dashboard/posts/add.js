@@ -3,7 +3,7 @@ import { useForm, FormProvider, } from "react-hook-form";
 import { useSelector } from "react-redux";
 import CustomProgressBar from "./steps/CustomProgressBar";
 import NavigationButton from "@/components/shared/button/NavigationButton";
-import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
+import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import PostCard from "@/components/shared/card/PostCard"; 
 import PostContent from "@/components/shared/content/PostContent"; 
 import Step1 from "./steps/Step1";
@@ -59,29 +59,7 @@ const Add = () => {
   const [thumbnail, setThumbnail] = useState(null);
 
   const [editorData, setEditorData] = useState("");
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const previewRef = useRef(null);
 
-
-  const handleToggleFullscreen = () => {
-    toggleFullscreen(previewRef);
-  };
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      if (document.fullscreenElement === previewRef.current) {
-        setIsFullscreen(true);
-      } else {
-        setIsFullscreen(false);
-      }
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
   const { watch, handleSubmit, trigger, formState: { errors }, register, control, clearErrors, setValue,getValues,reset ,onSuccess  } = methods; 
   const publishDate = watch("publishDate") || new Date().toISOString().split("T")[0];
   const [selectedTags, setSelectedTags] = useState([]);

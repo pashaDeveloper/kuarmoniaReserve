@@ -1,12 +1,12 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
 import {
   useGetClientGalleryQuery,
   useGetGalleryQuery
 } from "@/services/gallery/galleryApi";
+import Image from 'next/image';
 
 const Gallery = () => {
   const { data, isLoading, error } = useGetClientGalleryQuery();
@@ -20,8 +20,6 @@ const Gallery = () => {
   const gallery = useMemo(() => fetchData?.data || {}, [fetchData]);
   const containerRef = useRef(null);
   const categories = data?.data || [];
-  console.log("categories", categories);
-  console.log("gallery", gallery?.gallery);
 
   const [tab, setTab] = useState(null);
   const [counter, setCounter] = useState(9);
@@ -45,18 +43,18 @@ const Gallery = () => {
 
   const renderSkeleton = () => {
     return (
-      <section className="w-full h-full flex flex-col gap-y-12">
+      <section className="w-full h-full flex flex-col gap-y-12 dark:bg-gray-900">
         <div className="flex flex-col gap-y-12">
           <article className="flex flex-col gap-y-4">
             <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
               <HighlightText>گالری</HighlightText> تصاویر
-              <LoadImage
-                src="/assets/home-page/destination/underline.svg"
-                alt="arrow"
-                height={7}
-                width={275}
-                className="mt-1.5"
-              />
+              <Image
+  src="/assets/home-page/destination/underline.svg"
+  alt="arrow"
+  height={7}
+  width={275}
+  className="mt-1.5"
+/>
             </p>
             <p className="text-base">
               با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا
@@ -66,7 +64,7 @@ const Gallery = () => {
           </article>
         </div>
 
-        <div className="border border-primary/30 rounded-2xl bg-secondary/30 lg:p-12 md:p-6 p-3 animate-pulse">
+        <div className="border border-primary/30  rounded-2xl bg-secondary/30  lg:p-12 md:p-6 p-3 animate-pulse">
           <div className="grid grid-cols-12 items-center gap-4 h-[720px] overflow-hidden">
             {Array.from({ length: 9 }).map((_, index) => (
               <div
@@ -106,13 +104,13 @@ const Gallery = () => {
             <article className="flex flex-col gap-y-4">
               <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
                 <HighlightText>گالری</HighlightText> تصاویر
-                <LoadImage
-                  src="/assets/home-page/destination/underline.svg"
-                  alt="arrow"
-                  height={7}
-                  width={275}
-                  className="mt-1.5"
-                />
+                <Image
+  src="/assets/home-page/destination/underline.svg"
+  alt="arrow"
+  height={7}
+  width={275}
+  className="mt-1.5"
+/>
               </p>
               <p className="text-base">
                 با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا
@@ -150,15 +148,14 @@ const Gallery = () => {
                   ref={containerRef}
                 >
                     {gallery?.gallery?.map((image,index) => (
-                      <LoadImage
-                        key={`${image._id}-${index}`}
-                        src={image.url}
-                        alt={image.description}
-                        height={(index + 1) % 2 === 0 ? 364 : 159}
-                        width={267}
-                        className={`lg:col-span-3 md:col-span-6 col-span-6 border w-full object-cover border-primary/30 drop-shadow rounded ${index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"}`}
-                        title={image.description}
-                      />
+                    <Image
+                    key={`${image._id}-${index}`}
+                    src={image.url}
+                    alt={""}
+                    height={(index + 1) % 2 === 0 ? 364 : 159}
+                    width={267}
+                    className={`lg:col-span-3 md:col-span-6 col-span-6 border w-full object-cover border-primary/30 drop-shadow rounded ${index % 2 === 0 ? "row-span-2 h-[364px]" : "h-[159px]"}`}
+                  />
                     
                   ))}  
 

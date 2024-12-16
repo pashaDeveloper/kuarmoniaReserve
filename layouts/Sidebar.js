@@ -1,11 +1,11 @@
 
 
-import LoadImage from "@/components/shared/image/LoadImage";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const Sidebar = ({ routes }) => {
   const router = useRouter();
@@ -42,13 +42,14 @@ const Sidebar = ({ routes }) => {
             window.open("/", "_self");
           }}
         >
-          <LoadImage
-            src={user?.avatar?.url}
-            alt={user?.avatar?.public_id}
-            height={100}
-            width={100}
-            className="rounded-secondary object-cover w-[35px] h-[35px]  "
-          />
+         <Image
+  src={user?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
+  alt={user?.avatar?.public_id || "User Avatar"}
+  height={100}
+  width={100}
+  className="rounded-secondary object-cover w-[35px] h-[35px]"
+  style={{ borderRadius: "var(--rounded-secondary)" }} // در صورت استفاده از CSS Custom Properties
+/>
           <article className="flex flex-col gap-y-0.5">
             <h2 className="line-clamp-1 text-base">{user?.name}</h2>
             <span className="text-xs">خروج</span>

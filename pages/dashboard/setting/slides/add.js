@@ -140,8 +140,8 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
           />
           {thumbnailPreview && (
             <DisplayImages
-              galleryPreview={[thumbnailPreview.url]}
-              imageSize={150}
+              galleryPreview={thumbnailPreview}
+              imageSize={200}
             />
           )}
 

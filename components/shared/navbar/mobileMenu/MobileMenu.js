@@ -11,8 +11,8 @@ const MobileMenu = () => {
   return (
     <div className="relative">
       <button
-        className="p-1.5 shadow rounded border-primary/20 border"
-        onClick={() => setIsOpen(!isOpen)}
+          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
+          onClick={() => setIsOpen(!isOpen)}
       >
         <HiOutlineUser className="text-lg" />
       </button>

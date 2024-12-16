@@ -7,7 +7,6 @@ import {
 } from "@/services/user/userApi";
 import { toast } from "react-hot-toast";
 import Modal from "../shared/modal/Modal";
-import LoadImage from "../shared/image/LoadImage";
 import { RxCross2 } from "react-icons/rx";
 import { setUser } from "@/features/user/userSlice";
 import { useDispatch } from "react-redux";
@@ -19,6 +18,7 @@ import {
 import { LuShoppingCart } from "react-icons/lu";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { TbDoorEnter } from "react-icons/tb";
+import Image from 'next/image'
 
 const DeleteUser = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,7 +90,7 @@ const DeleteUser = ({ id }) => {
             <article className="flex flex-col gap-y-8 h-full overflow-y-auto">
               <div className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-4">
-                  <LoadImage
+                  <Image
                     src={user?.avatar?.url}
                     alt={user?.avatar?.public_id}
                     height={100}

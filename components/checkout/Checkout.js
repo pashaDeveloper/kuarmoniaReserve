@@ -13,7 +13,7 @@ import {
   useIntegratePurchaseMutation,
 } from "@/services/payment/paymentApi";
 import { toast } from "react-hot-toast";
-import LoadImage from "../shared/image/LoadImage";
+import Image from 'next/image'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -84,7 +84,7 @@ const Checkout = ({ members, duration }) => {
                   <div className="flex flex-col gap-y-1">
                     <span className="flex -space-x-4">
                       {rent?.gallery?.map((gallery) => (
-                        <LoadImage
+                        <Image
                           key={gallery?._id}
                           src={gallery?.url}
                           alt={gallery?.public_id}

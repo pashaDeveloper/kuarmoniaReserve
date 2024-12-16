@@ -1,7 +1,6 @@
 
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import LoadImage from "@/components/shared/image/LoadImage";
 import React, { useEffect, useMemo } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { RiChatQuoteFill } from "react-icons/ri";
@@ -9,6 +8,7 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useGetAllReviewsQuery } from "@/services/review/reviewApi";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const animation = { duration: 50000, easing: (t) => t };
 
@@ -16,7 +16,6 @@ const Reviews = ({ className }) => {
   const { isLoading, data, error } = useGetAllReviewsQuery();
   const reviews = useMemo(() => data?.data || [], [data]);
 
-  console.log(reviews);
 
   useEffect(() => {
     if (error) {
@@ -65,22 +64,22 @@ const Reviews = ({ className }) => {
   });
 
   return (
-    <section className="h-full py-12">
+    <section className="h-full py-12 dark:bg-gray-900">
       <Container className={`${className}`}>
         <div className="w-full h-full flex flex-col gap-y-12">
           <article className="flex flex-col gap-y-4">
             <h1 className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-            <HighlightText>مهاجرت و پناهندگی</HighlightText>
-            <LoadImage
-                src="/assets/home-page/destination/underline.svg"
-                alt="arrow"
-                height={7}
-                width={275}
-                className="mt-1.5"
-              />
+            <HighlightText>مهاجرت و اخذ ویزا</HighlightText>
+            <Image
+  src="/assets/home-page/destination/underline.svg"
+  alt="arrow"
+  height={7}
+  width={275}
+  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+/>
             </h1>
             <p className="text-base">
-  تجربیات و نظرات مشتریان ما در رابطه با خدمات مهاجرت و پناهندگی
+  تجربیات و نظرات مشتریان ما در رابطه با خدمات مهاجرت و اخذ ویزا
 </p>
           </article>
 
@@ -125,13 +124,13 @@ const Reviews = ({ className }) => {
                   className="group relative flex flex-col gap-y-4 border hover:border-primary transition-colors ease-linear p-4 rounded keen-slider__slide"
                 >
                   <div className="flex flex-row gap-x-2.5 items-end">
-                    <LoadImage
-                      src={review?.reviewer?.avatar?.url}
-                      alt={review?.reviewer?.avatar?.public_id}
-                      width={50}
-                      height={50}
-                      className="rounded h-[50px] w-[50px] object-cover"
-                    />
+                  <Image
+  src={review?.reviewer?.avatar?.url} // مقدار پیش‌فرض در صورت نبود تصویر
+  alt={review?.reviewer?.avatar?.public_id} // مقدار پیش‌فرض برای alt
+  width={50}
+  height={50}
+  className="rounded h-[50px] w-[50px] object-cover"
+/>
                     <div className="flex flex-row justify-between w-full">
                       <div className="">
                         <h2 className="">{review?.reviewer?.name}</h2>

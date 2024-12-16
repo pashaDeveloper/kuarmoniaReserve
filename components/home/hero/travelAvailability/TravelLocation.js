@@ -1,13 +1,13 @@
 
 
 // import Image from "next/image";
-import LoadImage from "@/components/shared/image/LoadImage";
 import OutsideClick from "@/components/shared/outsideClick/OutsideClick";
 import { addTravelAvailability } from "@/features/travelAvailability/travelAvailabilitySlice";
 import useGetCountries from "@/hooks/useGetCountries";
 import React, { useEffect, useState } from "react";
 import { BiChevronDown, BiMap } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import Image from 'next/image'
 
 const TravelLocation = () => {
   const travelAvailability = useSelector((state) => state?.travelAvailability);
@@ -67,7 +67,7 @@ const TravelLocation = () => {
                         className="flex flex-row gap-x-2 items-center"
                         onClick={() => setLocation(name)}
                       >
-                        <LoadImage
+                        <Image
                           src={flag}
                           alt={name}
                           height={10}

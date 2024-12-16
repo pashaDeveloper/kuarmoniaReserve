@@ -6,11 +6,10 @@ import { IoCartOutline } from "react-icons/io5";
 import Modal from "../../modal/Modal";
 import HighlightText from "../../highlightText/HighlightText";
 import CartCard from "../../loading/cartCard";
-import Image from "next/image";
 import { useGetCartQuery } from "@/services/cart/cartApi";
 import { useSelector } from "react-redux";
 import { MdFavoriteBorder } from "react-icons/md";
-import LoadImage from "../../image/LoadImage";
+import Image from 'next/image'
 import { useDeleteFromFavoriteMutation } from "@/services/favorite/favoriteApi";
 import { FiTrash } from "react-icons/fi";
 import { toast } from "react-hot-toast";
@@ -65,7 +64,7 @@ const Favorites = () => {
     <>
       <Tooltip text="علاقه مندی ها" txtColor="text-white">
         <button
-          className="p-1.5 border border-primary/20 hover:border-primary rounded relative"
+          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
           onClick={openModal}
         >
           <MdFavoriteBorder className="text-lg" />
@@ -99,7 +98,7 @@ const Favorites = () => {
                   >
                     <span className="flex -space-x-4">
                       {rent?.gallery?.map((gallery) => (
-                        <LoadImage
+                        <Image
                           key={gallery?._id}
                           src={gallery?.url}
                           alt={gallery?.public_id}

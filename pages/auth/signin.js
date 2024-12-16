@@ -1,6 +1,6 @@
 import Button from "@/components/shared/button/Button";
 import Logo from "@/components/shared/logo/Logo";
-import ToggleThemeButton from "@/components/shared/button/ToggleThemeButton";
+import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import { useSigninMutation } from "@/services/auth/authApi";
 import Link from "next/link";
 import React, { useEffect } from "react";
