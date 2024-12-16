@@ -4,7 +4,7 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import React from "react";
-import Posts from "./Posts";
+import Posts from "./posts";
 import Image from 'next/image'
 
 const post = () => {
