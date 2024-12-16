@@ -7,23 +7,21 @@ const ToggleThemeButton = () => {
     return savedTheme === 'true'; // تبدیل به boolean
   });
 
-  // تابع برای تغییر تم و ذخیره آن در localStorage
   const toggleTheme = () => {
     setIsDark((prev) => {
       const newTheme = !prev;
-      localStorage.setItem('isDark', newTheme); // ذخیره وضعیت جدید در localStorage
+      localStorage.setItem('isDark', newTheme); 
       document.body.classList.toggle('dark', newTheme);
       return newTheme;
     });
   };
 
-  // برای بارگذاری تم هنگام بارگذاری صفحه
   useEffect(() => {
     document.body.classList.toggle('dark', isDark);
   }, [isDark]);
 
   return (
-    <label className="relative inline-flex cursor-pointer items-center">
+    <label className="relative justify-start lg:col-span-1 inline-flex cursor-pointer items-center">
       <input
         type="checkbox"
         checked={isDark}
@@ -31,19 +29,16 @@ const ToggleThemeButton = () => {
         className="peer sr-only "
       />
       <div className={`flex h-7 w-14 mx-2 items-center rounded-full bg-blue-100 px-1 transition-colors ${isDark ? 'bg-gray-700' : 'bg-blue-100'} relative`}>
-        {/* دایره متحرک */}
         <div
           className={`absolute top-0 left-0 inline-flex items-center justify-center w-7 h-7 transition-all duration-150 transform scale-110 rounded-full text-gray-500 dark:text-gray-400 bg-white focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 ${isDark ? 'bg-gray-900 translate-x-7' : 'translate-x-0'}`}
         >
           <div className="flex relative items-center justify-center">
-            {/* آیکون خورشید برای حالت روشن */}
             <div className={`absolute transition-opacity z-50 duration-300 ${isDark ? 'opacity-0' : 'opacity-100'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12 18a6 6 0 1 1 0-12a6 6 0 0 1 0 12M11 1h2v3h-2zm0 19h2v3h-2zM3.515 4.929l1.414-1.414L7.05 5.636L5.636 7.05zM16.95 18.364l1.414-1.414l2.121 2.121l-1.414 1.414zm2.121-14.85l1.414 1.415l-2.121 2.121l-1.414-1.414zM5.636 16.95l1.414 1.414l-2.121 2.121l-1.414-1.414zM23 11v2h-3v-2zM4 11v2H1v-2z" />
               </svg>
             </div>
 
-            {/* آیکون ماه برای حالت تاریک */}
             <div className={`absolute transition-opacity duration-300 ${isDark ? 'opacity-100' : 'opacity-0'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20">
                 <g fill="currentColor">

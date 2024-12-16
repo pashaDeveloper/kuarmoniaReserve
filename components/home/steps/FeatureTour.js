@@ -18,7 +18,7 @@ const FeatureTour = () => {
 
   return (
     <>
-      <section className="group flex lg:flex-row flex-col gap-4 border border-secondary p-4 rounded relative hover:border-primary transition-colors delay-100">
+      <section className="group flex lg:flex-row flex-col gap-4 border border-secondary p-4 rounded relative hover:border-primary transition-colors delay-100 dark:hover:border-blue-500 dark:text-blue-500">
         <div className="flex flex-col gap-y-2">
           <Image
             src="/assets/static/migration-to-canada.png" // آدرس تصویر جدید
@@ -28,14 +28,14 @@ const FeatureTour = () => {
             className="object-cover w-full rounded"
           />
           <p className="flex flex-row lg:justify-center gap-x-2">
-            <span className="p-1.5 hover:border-primary ease-linear delay-100 transition-colors border-secondary border rounded-primary">
-              <BiMap className="w-6 h-6 text-primary" />
+            <span className="p-1.5 hover:border-primary dark:hover:border-blue-500  ease-linear delay-100 transition-colors  border-secondary border rounded-primary">
+              <BiMap className="w-6 h-6 text-primary dark:text-blue-500" />
             </span>
-            <span className="p-1.5 hover:border-primary ease-linear delay-100 transition-colors border-secondary border rounded-primary">
-              <FaPlaneDeparture className="w-6 h-6 text-primary" />
+            <span className="p-1.5 hover:border-primary dark:hover:border-blue-500  ease-linear delay-100 transition-colors border-secondary border rounded-primary">
+              <FaPlaneDeparture className="w-6 h-6 text-primary dark:text-blue-500" />
             </span>
-            <span className="p-1.5 hover:border-primary ease-linear delay-100 transition-colors border-secondary border rounded-primary">
-              <AiFillCar className="w-6 h-6 text-primary" />
+            <span className="p-1.5 hover:border-primary dark:hover:border-blue-500  ease-linear delay-100 transition-colors border-secondary border rounded-primary dark:text-blue-500">
+              <AiFillCar className="w-6 h-6 text-primary dark:text-blue-500" />
             </span>
           </p>
         </div>
@@ -52,7 +52,7 @@ const FeatureTour = () => {
              
             </p>
           </div>
-          <span className="border group-hover:border-primary transition-colors delay-100 px-4 py-0.5 rounded-primary flex items-center text-xs w-fit">
+          <span className="border group-hover:border-primary   dark:group-hover:border-blue-500 dark:hover:border-blue-500 dark:text-gray-100 transition-colors delay-100 px-4 py-0.5 rounded-primary flex items-center text-xs w-fit">
             مهاجرت به کانادا
           </span>
           <div className="flex flex-row flex-wrap justify-between">
@@ -80,7 +80,7 @@ const FeatureTour = () => {
           <div className="absolute top-0 left-0 w-full h-full rounded bg-secondary/20 backdrop-blur-sm backdrop-filter">
             <div className="h-full w-full rounded flex justify-center items-center">
               <OutsideClick onOutsideClick={handleOutsideClick}>
-                <div className="flex flex-row gap-x-4 border border-primary p-4 rounded bg-white">
+                <div className="flex flex-row gap-x-4 border border-primary dark::border-blue-500  p-4 rounded bg-white">
                   <Image
                     src="/assets/static/migration-update.png" // تصویر آپدیت مهاجرت
                     alt="avatar"
@@ -99,11 +99,11 @@ const FeatureTour = () => {
                       <div className="flex flex-col gap-y-2">
                         <p className="text-sm">60% تکمیل شده</p>
                         <p className="border h-1.5 w-full bg-gray-200 rounded">
-                          <span className="h-full bg-primary block w-[60%] rounded"></span>
+                          <span className="h-full bg-primary dark:bg-blue-500 block w-[60%] rounded"></span>
                         </p>
                       </div>
                     </article>
-                    <span className="border group-hover:border-primary transition-colors delay-100 px-4 py-0.5 rounded flex items-center text-xs w-fit">
+                    <span className="border group-hover:border-primary dark:group-hover:border-blue-500 transition-colors delay-100 px-4 py-0.5 rounded flex items-center text-xs w-fit">
                       مهاجرت به کانادا
                     </span>
                   </div>

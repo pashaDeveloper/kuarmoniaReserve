@@ -26,7 +26,7 @@ const BlogContent = () => {
       </Head>
 
       <Main>
-        <div className="grid grid-cols-1 md:grid-cols-20 gap-4 p-4 relative mt-2">
+        <div className="grid grid-cols-1 md:grid-cols-20 gap-4 dark:bg-gray-900 p-4 relative mt-2">
           <LeftSidebar />
           <Content 
             title={fetchData?.data?.title}

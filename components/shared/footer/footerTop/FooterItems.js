@@ -86,7 +86,7 @@ const FooterItems = () => {
 
   return (
     <section>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 dark:text-gray-100 grid-cols-1 gap-4">
         {items.map(({ id, name, href }) => (
           <div key={id} className="flex flex-col gap-y-2">
             <h2 className="text-lg">{name}</h2>

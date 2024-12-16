@@ -7,23 +7,23 @@ const BreakdownArticle = () => {
   const items = [
     {
       title: "مشاوره",
-      icon: <FaRegAddressCard className="w-8 h-8 text-primary" />, // آیکون مشاوره
+      icon: <FaRegAddressCard className="w-8 h-8 text-primary dark:text-blue-500" />, 
       description: "مشاوره‌ای برای برنامه‌ریزی بهتر سفر و مهاجرت.",
     },
     {
       title: "انتخاب مکان",
-      icon: <MdLocationCity className="w-8 h-8 text-primary" />,
+      icon: <MdLocationCity className="w-8 h-8 text-primary dark:text-blue-500" />,
       description: "انتخاب مکان ایده‌آل برای زندگی یا سفر.",
     },
     {
       title: "پرداخت امن و آسان",
-      icon: <MdPayment className="w-8 h-8 text-primary" />,
+      icon: <MdPayment className="w-8 h-8 text-primary dark:text-blue-500" />,
       description:
         "تراکنش‌های امن و سریع برای تجربه‌ای راحت و بی‌نگرانی.",
     },
     {
       title: "تماس با آژانس در تاریخ انتخابی",
-      icon: <BiCar className="w-8 h-8 text-primary" />,
+      icon: <BiCar className="w-8 h-8 text-primary dark:text-blue-500" />,
       description:
         "با ما تماس بگیرید تا برنامه‌های مهاجرتی و سفر خود را نهایی کنید.",
     },
@@ -34,9 +34,9 @@ const BreakdownArticle = () => {
       {items.map(({ title, icon, description }, index) => (
         <article
           key={index}
-          className="group border border-secondary hover:border-primary transition-colors delay-100 ease-linear p-4 rounded flex flex-col gap-y-2.5 relative overflow-hidden lg:flex-1 lg:basis-60"
+          className="group border border-secondary hover:border-primary dark:hover:border-blue-500 dark:border-blue-500 transition-colors delay-100 ease-linear p-4 rounded flex flex-col gap-y-2.5 relative overflow-hidden lg:flex-1 lg:basis-60"
         >
-          <span className="border w-fit p-2 rounded-primary border-secondary group-hover:border-primary transition-colors delay-100 ease-linear">
+          <span className="border w-fit p-2 rounded-primary border-secondary group-hover:border-primary dark:group-hover:border-blue-500 transition-colors delay-100 ease-linear">
             {icon}
           </span>
           <div className="flex flex-col gap-y-0.5 z-10">

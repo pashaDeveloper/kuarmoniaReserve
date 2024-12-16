@@ -23,7 +23,7 @@ console.log(fetchData)
       </Head>
 
       <Main>
-        <div className="grid grid-cols-1 md:grid-cols-20 gap-4  relative ">
+        <div className="grid grid-cols-1 dark:bg-gray-900 py-20 md:grid-cols-20 gap-4  relative ">
         <LeftSidebar />
 
         <div className="col-span-1 md:col-span-10 shadow  order-1 md:order-2">

@@ -15,7 +15,7 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="h-full py-12 dark:bg-black">
+    <section className="h-full py-12 dark:bg-gray-900">
       <Container>
         <section className="w-full h-full lg:gap-x-4 gap-y-12 grid grid-cols-12">
           <div className="lg:col-span-5 col-span-12 rounded relative">
@@ -53,7 +53,7 @@ const NewsLetter = () => {
                   <p className="text-xs flex flex-row justify-between items-center whitespace-nowrap">
                     <span className="flex flex-row gap-x-0.5 items-baseline">
                       Start from $
-                      <span className="text-sm text-primary">120</span>
+                      <span className="text-sm text-primary dark:bg-blue-500">120</span>
                     </span>
                     <span className="min-w-[1rem]" />
                     <span className="border px-3 py-0.5 rounded-secondary">
@@ -64,7 +64,7 @@ const NewsLetter = () => {
               )}
             </div>
           </div>
-          <div className="lg:col-span-7 col-span-12 bg-secondary/70 rounded relative p-8">
+          <div className="lg:col-span-7 col-span-12 bg-secondary/70 dark:bg-blue-500/40 rounded relative p-8">
             <Image
               src="/assets/home-page/newsletter/air-ticket.svg"
               alt="ticket"
@@ -102,14 +102,14 @@ const NewsLetter = () => {
                       name="newsletter"
                       id="newsletter"
                       disabled={visible}
-                      placeholder="Enter your email"
+                      placeholder="ایمیل خود را وارد کنید"
                       className="w-full rounded border-1 border-primary text-sm z-50"
                     />
                     <Button
                       className="px-4 py-1 text-xs"
                       onClick={() => setVisible(true)}
                     >
-                      Subscribe
+                       عضویت
                     </Button>
                   </>
                 )}

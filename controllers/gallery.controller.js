@@ -213,7 +213,7 @@ export async function getClientGallery() {
 
     const categories = await Gallery.find()
       .select("_id")
-      .populate("category", "title") 
+      .populate("category", "title id") 
       .exec();
 
 

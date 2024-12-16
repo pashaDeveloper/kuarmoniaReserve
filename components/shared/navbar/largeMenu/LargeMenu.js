@@ -13,9 +13,10 @@ const menuItems = [
 
 const largeMenu = () => {
   return (
-    <Tabs value="خانه"      className="hidden md:flex lg:flex fixed top-2 left-1/2 transform -translate-x-1/2 z-[9998] justify-center rounded-md text-sm md:text-base bg-gray-100 dark:bg-gray-900"
+    <Tabs value="خانه"     
+    className="lg:col-span-8 lg:flex hidden "
 >
-      <div className="w-full flexflex-col items-center">
+      <div className="w-full flex flex-col items-center ">
         <TabsHeader className="h-15 !w-12/12 md:w-[50rem] border dark:text-gray-500  border-white/25 bg-opacity-90">
           {menuItems.map((item) => (
             <Tab key={item.id} value={item.label}>

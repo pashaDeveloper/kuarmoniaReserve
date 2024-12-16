@@ -1,25 +1,24 @@
-
-
 import React from "react";
 import Logo from "../logo/Logo";
 import Container from "../container/Container";
 import UserMenu from "./userMenu/UserMenu";
-import LargeMenu from './largeMenu/LargeMenu'; 
-import MobileMenu from './largeMenu/MobileMenu'; 
-import ProgressBar  from '@/components/shared/loading/ProgressBar'; 
+import LargeMenu from "./largeMenu/LargeMenu";
+import MobileMenu from "./largeMenu/MobileMenu";
+import ProgressBar from "@/components/shared/loading/ProgressBar";
+import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 
 const Navbar = () => {
- 
   return (
     <header className="">
       <Container>
-<ProgressBar  />
-        <nav className="fixed top-0 left-0 right-0 shadow-lg flex flex-row justify-between items-center z-[9998] p-4 bg-white/80 dark:bg-black dark:text-gray-100">
+        <ProgressBar />
+        <nav className="fixed top-0  left-0 flex flex-row justify-between right-0 shadow-lg lg:grid lg:grid-cols-12 items-center z-[9998] p-4 bg-white/80 dark:bg-black dark:text-gray-100">
         <UserMenu />
-            <LargeMenu />
-            <MobileMenu />
-            <Logo />
+          <LargeMenu />
+          <ToggleThemeButton />
+          <Logo />
         </nav>
+          <MobileMenu />
       </Container>
     </header>
   );

@@ -12,7 +12,7 @@ const BlogPage = () => {
               alt={"earth"}
               height={60}
               width={60}
-              className="border border-primary shadow-lg rounded-full"
+              className="border border-primary dark:border-blue-500 shadow-lg rounded-full"
             />
           ),
           title: "تجربه و تخصص",
@@ -27,7 +27,7 @@ const BlogPage = () => {
               alt={"smile"}
               height={60}
               width={60}
-              className="border border-primary shadow-lg rounded-full"
+              className="border border-primary dark:border-blue-500 shadow-lg rounded-full"
             />
           ),
           title: "پشتیبانی شخصی‌سازی شده",
@@ -42,7 +42,7 @@ const BlogPage = () => {
               alt={"star"}
               height={60}
               width={60}
-              className="border border-primary shadow-lg rounded-full"
+              className="border border-primary dark:border-blue-500 shadow-lg rounded-full"
             />
           ),
           title: "رویکرد سریع و کارآمد",
@@ -57,7 +57,7 @@ const BlogPage = () => {
               alt={"star"}
               height={60}
               width={60}
-              className="border border-primary shadow-lg rounded-full"
+              className="border border-primary dark:border-blue-500 shadow-lg rounded-full"
             />
           ),
           title: "پشتیبانی از ابتدای تا انتهای فرآیند",
@@ -66,13 +66,14 @@ const BlogPage = () => {
         },
       ];
       const newsIcon = (
-      <Image
-        src={"/assets/home-page/advantage/earth.svg"}
-        alt={"earth"}
+        <Image
+        src="/assets/home-page/advantage/earth.svg"
+        alt="earth"
         height={60}
         width={60}
-        className="border border-primary shadow-lg rounded-full"
-      />)
+        className="border border-primary dark:border-blue-500 shadow-lg rounded-full flex items-center justify-center"
+      />
+      )
         
            
             
@@ -88,7 +89,7 @@ const BlogPage = () => {
               alt={"earth"}
               height={60}
               width={60}
-              className="border border-primary shadow-lg rounded-full"
+             className="border border-primary dark:border-blue-500 shadow-lg rounded-full flex items-center justify-center"
             />
             <h1 className="text-lg">اخبار</h1>
             </div>
@@ -96,7 +97,7 @@ const BlogPage = () => {
         {items.map(({ _id, icon, title, description }) => (
           <div
             key={_id}
-            className="flex gap-x-2 items-start bg-white/70 shadow p-primary rounded-primary"
+            className="flex gap-x-2 items-start bg-white/70 dark:bg-gray-800 shadow p-primary rounded-primary"
           >
             {icon}
             <div className="w-full flex flex-col gap-y-1">

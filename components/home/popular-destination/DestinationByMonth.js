@@ -8,18 +8,18 @@ import Image from 'next/image'
 const DestinationByMonth = () => {
   const [selectMonth, setSelectMonth] = useState("January");
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "ژانویه",
+    "فوریه",
+    "مارث",
+    "آوریل",
+    "می",
+    "ژوئن",
+    "جولای",
+    "آگوست",
+    "سپتامبر",
+    "اکتبر",
+    "نوامبر",
+    "دسامبر",
   ];
 
   const [sliderRef] = useKeenSlider({
@@ -87,14 +87,14 @@ const DestinationByMonth = () => {
             key={index}
             data-index={index}
             onClick={() => setSelectMonth(month)}
-            className={`keen-slider__slide px-2 py-1 border border-primary text-center rounded-full cursor-pointer transition-colors delay-100 flex gap-x-2 items-center justify-center ${
+            className={`keen-slider__slide px-2 py-1 border border-primary dark:border-blue-500 text-center rounded-full cursor-pointer transition-colors delay-100 flex gap-x-2 items-center justify-center ${
               selectMonth === month
-                ? "bg-secondary text-primary"
-                : "bg-primary text-secondary"
+                ? "bg-secondary dark:bg-blue-500/30 text-primary dark:text-blue-500"
+                : "bg-primary dark:bg-blue-500 text-secondary"
             }`}
           >
             <span className="border px-1.5 py-0.5 rounded text-xs">
-              {index + 1}. {month.slice(0, 3)}
+              {index + 1}. {month.slice(0, 10)}
             </span>
             {month}
           </div>
@@ -104,7 +104,7 @@ const DestinationByMonth = () => {
         {images.map((img, index) => (
           <div
             key={index}
-            className={`relative border rounded lg:col-span-3 md:col-span-6 col-span-12 bg-secondary`}
+            className={`relative border rounded lg:col-span-3 md:col-span-6 col-span-12 bg-secondary dark:bg-blue-500/30`}
           >
             <Image
               src={img}
@@ -113,11 +113,11 @@ const DestinationByMonth = () => {
               width={237}
               className="h-[180px] w-full max-w-full object-contain rounded border border-primary"
             />
-            <span className="absolute top-0 left-4 bg-primary h-8 w-5 flex justify-center items-center rounded-b-full text-white text-sm">
+            <span className="absolute top-0 left-4 bg-primary dark:bg-blue-500 h-8 w-5 flex justify-center items-center rounded-b-full text-white text-sm">
               {index + 1}
             </span>
             <span
-              className="absolute bottom-2 right-2 bg-primary h-fit w-fit px-0.5 py-2.5 flex justify-center items-center rounded-xl text-white text-xs"
+              className="absolute bottom-2 right-2 bg-primary dark:bg-blue-500 h-fit w-fit px-0.5 py-2.5 flex justify-center items-center rounded-xl text-white text-xs"
               style={{ writingMode: "vertical-rl" }}
             >
               {selectMonth}
