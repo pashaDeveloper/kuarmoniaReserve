@@ -1,49 +1,61 @@
+import React, {  useMemo,useState } from "react";
+import { useGetAllPostsQuery } from "@/services/post/postApi";
+import SkeletonText from "@/components/shared/skeleton/SkeletonText";
+import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
+import PostCard from "@/components/shared/card/PostCard"; 
+import Pagination from "@/components/shared/pagination/Pagination";
 
-
-// import Image from "next/image";
-import Container from "@/components/shared/container/Container";
-import HighlightText from "@/components/shared/highlightText/HighlightText";
-import React from "react";
-import Posts from "./Posts";
-import Image from 'next/image'
-
-const post = () => {
+const Post = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const { isLoading, data } = useGetAllPostsQuery({ page: 1, limit: 8 });
+  const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
+  const posts = useMemo(() => data?.data || [], [data]);
+  const superAdmin = useMemo(() => data?.superAdmin || [], [data]);
   return (
-    <section
-      className="bg-no-repeat bg-contain bg-center h-full py-12 dark:bg-gray-900 "
-      style={{
-        backgroundImage:
-          "url(/assets/home-page/offer/tree1.svg), url(/assets/home-page/offer/tree2.svg)",
-        backgroundPosition: "0% 0%, 100% 100%",
-        backgroundSize: "251px 300px, 251px 300px",
-      }}
-    >
-      <Container>
-        <div className="w-full h-full flex flex-col gap-y-12">
-          <article className="flex flex-col gap-y-4">
-            <p className="lg:text-5xl md:text-4xl text-3xl whitespace-normal">
-              <HighlightText>پست های </HighlightText> جدید
-              <Image
-  src="/assets/home-page/destination/underline.svg"
-  alt="arrow"
-  height={7}
-  width={275}
-  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
-/>
-            </p>
-            <p className="text-base">
-            پست های ما شامل جدیدترین اطلاعات و تغییرات در قوانین مهاجرت و اخذ ویزا هستند که می‌توانند به شما در تصمیم‌گیری‌های مهم کمک کنند.            </p>
-          </article>
-<div>
-
-          <Posts />
-</div>
-
-  
-        </div>
-      </Container>
+    <>
+<section className="grid grid-cols-1 gap-4 sm:grid-cols-2  lg:grid-cols-2 ">
+{isLoading || posts.length === 0
+        ? Array.from({ length: 4 }, (_, index) => (
+          <div
+          key={index}
+          className="flex flex-col justify-center rtl min-h-[120px] lg:min-h-[200px]  dark:text-white"
+            >
+              <div className="relative flex flex-row space-x-3 h-full space-x-reverse rounded-primary shadow-lg p-3 w-full md:min-w-[600px] max-w-[650px] mx-auto border border-white dark:border-gray-700 dark:bg-gray-800/70 bg-white/70">
+                <div className="w-1/3 grid place-items-center ">
+                <SkeletonImage borderRadius={"rounded-lg"}  />
+                </div>
+                <div className="w-2/3 flex flex-col space-y-2  lg:p-3">
+                <SkeletonText lines={7} />
+               
+                </div>
+              </div>
+            </div>
+          ))
+          : posts.map((post) => (
+          <PostCard
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          description={post.description}
+          thumbnailPreview={post.featuredImage}
+          publishDate={post.publishDate}
+          isLoading={isLoading}
+          author={post?.authorId?.name}
+          avatar={post?.authorId?.avatar?.url}
+          superAdmin={superAdmin}
+          category={post?.category?.title}
+          />
+        ))}
+          
     </section>
+    <Pagination 
+           currentPage={currentPage}
+           totalPages={totalPages}
+           onPageChange={(page) => setCurrentPage(page)}
+    />
+        </>
   );
 };
 
-export default post;
+export default Post;

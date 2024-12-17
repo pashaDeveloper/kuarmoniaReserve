@@ -1,6 +1,6 @@
 import Hero from "@/components/home/hero/Hero";
 import Destination from "@/components/home/destination/Destination";
-import Post from "@/components/home/posts/post";
+import Post from "@/components/home/posts/posts";
 import Main from "@/layouts/Main";
 import BestSelling from "@/components/home/bestSelling/BestSelling";
 import Advantage from "@/components/home/advantage/Advantage";
