@@ -5,7 +5,7 @@ import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import PostCard from "@/components/shared/card/PostCard"; 
 import Pagination from "@/components/shared/pagination/Pagination";
 
-const Posts = () => {
+const posts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const { isLoading, data } = useGetAllPostsQuery({ page: 1, limit: 8 });
@@ -58,4 +58,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default posts;
