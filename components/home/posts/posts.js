@@ -4,10 +4,10 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import React from "react";
-import Post from "./Post";
+import postIndex from "./postIndex";
 import Image from 'next/image'
 
-const Posts = () => {
+const posts = () => {
   return (
     <section
       className="bg-no-repeat bg-contain bg-center h-full py-12 dark:bg-gray-900 "
@@ -46,4 +46,4 @@ const Posts = () => {
   );
 };
 
-export default post;
+export default posts;
