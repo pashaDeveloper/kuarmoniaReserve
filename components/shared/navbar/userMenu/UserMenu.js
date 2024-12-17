@@ -7,7 +7,7 @@ import Favorites from "../favorites/Favorites";
 import MobileMenu from "../mobileMenu/MobileMenu";
 const UserMenu = () => {
   return (
-    <div className="flex flex-row lg:col-span-2 items-center gap-x-1 z-[9999] ">
+    <div className="flex flex-row lg:col-span-2 items-center gap-x-3 z-[9999] ">
       <Search />
       <Favorites />
       <Cart />

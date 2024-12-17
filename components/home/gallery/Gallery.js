@@ -120,7 +120,7 @@ console.log(categories)
             </article>
           </div>
 
-          <div className="border border-primary/30 dark:border-blue-500 rounded-2xl bg-secondary/30  lg:p-12 md:p-6 p-3 dark:text-gray-100">
+          <div className="border border-primary/30 dark:border-blue-500 rounded-2xl bg-secondary/30  lg:p-12 md:p-6 p-3 dark:text-gray-100 dark:bg-[#0a2d4d]">
             <div className="flex flex-col gap-y-8">
               {/* تب‌های دسته‌بندی */}
               <div className="flex flex-row flex-wrap gap-4">
@@ -164,7 +164,7 @@ console.log(categories)
                 {/* دکمه‌های اسکرول */}
                 <div className="absolute top-4 right-4 flex flex-col gap-y-2">
                   <span
-                    className="p-1.5 border border-primary dark:border-blue-500 rounded-secondary bg-secondary dark:bg-blue-500/30 hover:bg-primary dark:hover:bg-blue-500 hover:border-secondary hover:text-white  transition-colors cursor-pointer"
+                    className="p-1.5 border border-primary dark:border-blue-500 rounded-secondary bg-secondary dark:bg-blue-500/80 hover:bg-primary dark:hover:bg-blue-500 hover:border-secondary hover:text-white  transition-colors cursor-pointer"
                     onClick={() => {
                       const container = containerRef.current;
                       const scrollAmount = -512;

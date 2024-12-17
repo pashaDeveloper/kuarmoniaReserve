@@ -5,7 +5,7 @@ const Tooltip = ({ text, children, bgColor = "bg-primary dark:bg-blue-600" ,txtC
 
   return (
     <div
-      className="relative h-full w-full"
+      className="relative h-full"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
       // اضافه کردن z-index به صورت داخلی

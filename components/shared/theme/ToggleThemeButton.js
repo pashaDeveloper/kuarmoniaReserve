@@ -4,7 +4,7 @@ const ToggleThemeButton = () => {
   // حالت اولیه را بر اساس localStorage تنظیم کنید
   const [isDark, setIsDark] = useState(() => {
     const savedTheme = localStorage.getItem('isDark');
-    return savedTheme === 'true'; // تبدیل به boolean
+    return savedTheme !== null ? savedTheme === 'true' : true; 
   });
 
   const toggleTheme = () => {
@@ -17,8 +17,12 @@ const ToggleThemeButton = () => {
   };
 
   useEffect(() => {
-    document.body.classList.toggle('dark', isDark);
-  }, [isDark]);
+    if (isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, []);
 
   return (
     <label className="relative justify-start lg:col-span-1 inline-flex cursor-pointer items-center">
