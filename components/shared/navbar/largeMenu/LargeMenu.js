@@ -17,7 +17,7 @@ const largeMenu = () => {
     className="lg:col-span-8 lg:flex hidden "
 >
       <div className="w-full flex flex-col items-center ">
-        <TabsHeader className="h-15 !w-12/12 md:w-[50rem] border dark:text-gray-500  border-white/25 bg-opacity-90">
+        <TabsHeader className="h-15 !w-12/12 md:w-[50rem] border bg-gray-200 dark:bg-black dark:text-gray-500  border-white/25 bg-opacity-90">
           {menuItems.map((item) => (
             <Tab key={item.id} value={item.label}>
               <div className="flex items-center gap-2">

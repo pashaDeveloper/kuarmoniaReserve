@@ -57,7 +57,7 @@ const Hero = () => {
 
   return (
     <section
-      className="bg-no-repeat  h-auto  bg-cover dark:bg-gray-900 py-20 "
+      className="bg-no-repeat  h-auto  bg-white dark:bg-gray-900 py-20 "
     >
       <Container className="h-full !max-w-full px-1 lg:px-primary">
         <div className="relative h-full border dark:border-gray-600 rounded-lg p-3 lg:p-6   max-w-screen overflow-hidden text-white">

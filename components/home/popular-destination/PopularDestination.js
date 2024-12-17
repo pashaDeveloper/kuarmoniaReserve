@@ -23,8 +23,8 @@ const PopularDestination = () => {
                   alt="arrow"
                   height={7}
                   width={275}
-                  className="mt-1.5"
-                />
+                  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+                  />
               </h1>
               <p className="text-base">
                 در اینجا برخی از  محبوب ترین فرصت های ما در تمام مقاصدمان را مشاهده می‌کنید

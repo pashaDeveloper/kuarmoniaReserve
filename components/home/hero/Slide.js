@@ -27,12 +27,12 @@ const Slide = ({ title, description, bgImg, url }) => {
       <Link href={url} passHref>
         <div className="block">
           <div
-            className={`backdrop-filter w-full backdrop-blur-[12px] bg-white/60 p-3 md:p-8 lg:p-10 shadow-lg md:overflow-hidden ltr:text-left rtl:text-right  md:rounded-md md:w-[60%] lg:w-[50%] md:mt-auto absolute bottom-0 md:top-[45%] md:right-[25%] md:bottom-auto`}
+            className={`backdrop-filter w-full backdrop-blur-[12px] bg-white/60 p-3 md:p-8 lg:p-10 shadow-lg md:overflow-hidden ltr:text-left rtl:text-right  md:rounded-md md:w-[60%] lg:w-[50%] md:mt-auto absolute bottom-0 md:top-[45%] md:right-[25%] md:bottom-auto text-gray-700`}
           >
             <h3 className="text-lg md:text-2xl lg:text-3xl font-medium">
               {title}
             </h3>
-            <p className="text-[13px] md:text-lg mt-2 md:mt-4 lg:mt-8">
+            <p className="text-[13px] md:text-lg mt-2 md:mt-4 lg:mt-8 dark:text-gray-600 ">
               {description}
             </p>
           </div>

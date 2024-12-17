@@ -20,11 +20,11 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
     control,
     formState: { errors }
   } = useForm();
-  const [addSlide, { isLoading: isAdding }] = useAddSlideMutation();
-  const [updateSlide, { isLoading: isUpdating }] = useUpdateSlideMutation();
+  const [addSlide, { isLoading: isAdding, data: addData, error: addError }] = useAddSlideMutation();
+  const [updateSlide, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateSlideMutation();
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [url, setUrl] = useState(null);
-  const [isFeatured, setIsFeatured] = useState(null);
+  const [isFeatured, setIsFeatured] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
   const user = useSelector((state) => state?.auth);
 
@@ -39,6 +39,7 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
       reset();
     }
   }, [SlideToEdit, setValue, reset]);
+
   const defaultValues = useMemo(() => {
     return {
       name: user?.name,
@@ -46,6 +47,7 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
       id: user?._id
     };
   }, [user]);
+
   const handleAddOrUpdateSlide = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -61,14 +63,31 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
       } else {
         await addSlide(formData).unwrap();
       }
-      toast.success("عملیات موفقیت‌آمیز بود");
-      if (onSuccess) onSuccess();
-      if (onClose) onClose();
-      reset();
-    } catch (err) {
-      toast.error("خطا در پردازش گالری");
+    } catch (error) {
+      console.error("Error: ", error);
     }
+
   };
+
+console.log(addData)
+  useEffect(() => {
+    const isLoading = isAdding || isUpdating;
+    const data = addData || updateData;
+    const error = addError || updateError;
+    if (isLoading) {
+      toast.loading("در حال پردازش...", { id: "slide" });
+    }
+
+    if (data?.success) {
+      toast.success(data?.message, { id: "slide" });
+      reset();
+      onSuccess();
+      onClose();
+    }
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "slide" });
+    }
+  }, [addData, updateData, addError, updateError, isAdding, isUpdating, reset, onSuccess]);
 
   return (
     <Modal
@@ -111,39 +130,43 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
           </label>
 
           {/* توضیحات */}
-          <label htmlFor="description">توضیحات</label>
-          <textarea
-            id="description"
-            {...register("description", {
-              maxLength: {
-                value: 300,
-                message: "توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد."
-              }
-            })}
-            className="rounded h-32"
-            placeholder="توضیحات اسلاید را تایپ کنید..."
-          />
-          {errors.description && (
-            <span className="text-red-500 text-sm">
-              {errors.description.message}
-            </span>
-          )}
+          <label htmlFor="description">
+            توضیحات
+            <textarea
+              id="description"
+              {...register("description", {
+                required: "توضیحات الزامی است",
+                minLength: {
+                  value: 10,
+                  message: "توضیحات باید حداقل 10 کاراکتر باشد"
+                },
+                maxLength: {
+                  value: 300,
+                  message: "توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد."
+                }
+              })}
+              className="rounded h-32 w-full"
+              placeholder="توضیحات اسلاید را تایپ کنید..."
+            />
+            {errors.description && (
+              <span className="text-red-500 text-sm">
+                {errors.description.message}
+              </span>
+            )}
+          </label>
 
           {/* آپلود تصویر */}
           <ThumbnailUpload
-            setThumbnailPreview={setThumbnailPreview}
-            setThumbnail={setThumbnail}
-            register={register("Thumbnail", {
-              required: "آپلود تصویر عنوان الزامی است"
-            })}
-            maxFiles={1}
-          />
-          {thumbnailPreview && (
-            <DisplayImages
-              galleryPreview={thumbnailPreview}
-              imageSize={200}
-            />
-          )}
+              setThumbnailPreview={setThumbnailPreview}
+              setThumbnail={setThumbnail}
+              register={register('Thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
+              maxFiles={1}
+              />
+              {errors.Thumbnail && (
+                <span className="text-red-500">{errors.Thumbnail.message}</span>
+              )}
+            {thumbnailPreview && <DisplayImages galleryPreview={[thumbnailPreview]} imageSize={150} />}
+       
 
           {/* لینک مقصد */}
           <label htmlFor="url" className="flex flex-col gap-y-1 w-full">
@@ -171,18 +194,21 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
               <span className="text-red-500 text-sm">{errors.url.message}</span>
             )}
           </label>
-          <div className="flex flex-col gap-y-2 w-full ">
+
+          {/* اسلاید ویژه */}
+          <div className="flex flex-col gap-y-2 w-full">
             <label className="inline-flex items-center cursor-pointer justify-start w-full">
               <span className="ml-3 text-right">آیا این اسلاید ویژه است؟</span>
               <input
                 type="checkbox"
                 className="sr-only peer"
                 id="isFeatured"
-                {...control.register("isFeatured")}
+                {...register("isFeatured")}
               />
               <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
             </label>
           </div>
+
           {/* دکمه ارسال */}
           <Button
             type="submit"

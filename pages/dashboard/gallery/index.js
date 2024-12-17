@@ -82,7 +82,7 @@ const ListGallery = () => {
   }, [data, error, isLoading]);
   const onStatusFilterChange = (status) => {
     setStatusFilter(status);
-    setCurrentPage(1); // بازنشانی صفحه به صفحه اول بعد از تغییر فیلتر
+    setCurrentPage(1);
     refetch();
   };
   const handleSearchChange = (e) => {
@@ -151,7 +151,7 @@ const ListGallery = () => {
 
 
         </div>
-          <div className="lg:col-span-4 lg:flex hidden text-sm md:block">
+          <div className="lg:col-span-8 lg:flex hidden text-sm md:block">
             توضیحات
           </div>
          
@@ -191,9 +191,9 @@ const ListGallery = () => {
               </div>
              
 
-<div className="lg:col-span-4 hidden gap-2 lg:flex justify-left items-center text-right">
+<div className="lg:col-span-8 hidden gap-2 lg:flex justify-left items-center text-right">
   <article className="flex-col flex gap-y-2">
-    <span className="text-sm lg:text-base overflow-hidden text-ellipsis block line-clamp-1 max-h-[1.2em]">
+    <span className="text-sm lg:text-base overflow-hidden text-wrap block line-clamp-2 max-h-[3em]">
       {gallery.description}
     </span>
   </article>

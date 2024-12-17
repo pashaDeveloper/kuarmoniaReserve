@@ -14,6 +14,7 @@ import { FiEdit3, FiTrash } from "react-icons/fi";
 import Pagination from "@/components/shared/pagination/Pagination";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
 import Image from "next/image";
+import { TfiVideoClapper } from "react-icons/tfi";
 
 const ListSlide = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -195,8 +196,11 @@ const ListSlide = () => {
                                      className="h-[60px] w-[60px] rounded-full object-cover"
                                    />
                                     ) : (
-                                      <div className="h-[60px] w-[60px] rounded-full bg-gray-300 animate-pulse"></div> // Skeleton Loader
-                  
+                                      
+                                      <span className="text-secondary dark:text-blue-500">
+                                      <TfiVideoClapper  size={54}  />
+                                      </span>
+
                                     )}
                   
                   <article className="flex-col flex gap-y-2  ">

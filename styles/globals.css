@@ -345,3 +345,6 @@ focus {
   z-index: 100;
  }
  
+ .dark .floating {
+  box-shadow: none;
+}

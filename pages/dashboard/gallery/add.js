@@ -23,13 +23,14 @@ const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [gallery, setGallery] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
+
   useEffect(() => {
     if (GalleryToEdit) {
       setValue("title", GalleryToEdit.title);
       setValue("description", GalleryToEdit.description);
       setValue("category", GalleryToEdit.category._id);
-            setThumbnailPreview(GalleryToEdit.featuredImage);
-      setGalleryPreview(GalleryToEdit.gallery)
+      setThumbnailPreview(GalleryToEdit.featuredImage);
+      setGalleryPreview(GalleryToEdit.gallery);
     } else {
       reset();
     }
@@ -49,43 +50,39 @@ const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
     formData.append("featuredImage", thumbnail);
     for (let i = 0; i < gallery.length; i++) {
       formData.append("gallery", gallery[i]);
-    }    formData.append("category", data.category);
-    formData.append("description", data.description);
-    
-     if (GalleryToEdit) {
-      await updateGallery({ id: GalleryToEdit._id, ...formData }).unwrap();
-    } else {
-      await addGallery(formData).unwrap();
     }
-  }
-    useEffect(() => {
-      const isLoading = isAdding || isUpdating;
-      const data = addData || updateData;
-      const error = addError || updateError;
-  console.log(data)
-      if (isLoading) {
-        toast.loading("در حال پردازش...", { id: "gallery" });
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+
+    try {
+      if (GalleryToEdit) {
+        await updateGallery({ id: GalleryToEdit._id, ...formData }).unwrap();
+      } else {
+        await addGallery(formData).unwrap();
       }
-  
-      if (data?.success) {
-        toast.success(data?.message, { id: "gallery" });
-        reset();
-        onClose();    
-  
-      }
-      if (error?.data) {
-        toast.error(error?.data?.message, { id: "gallery" });
-      }
-    }, [
-      addData,
-      updateData,
-      addError,
-      updateError,
-      isAdding,
-      isUpdating,
-      reset,
-      onSuccess,
-    ]);
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const isLoading = isAdding || isUpdating;
+    const data = addData || updateData;
+    const error = addError || updateError;
+    if (isLoading) {
+      toast.loading("در حال پردازش...", { id: "gallery" });
+    }
+
+    if (data?.success) {
+      toast.success(data?.message, { id: "gallery" });
+      reset();
+      onSuccess(); 
+      onClose();
+    }
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "gallery" });
+    }
+  }, [addData, updateData, addError, updateError, isAdding, isUpdating, reset, onSuccess]);
 
   return (
     <>
@@ -119,34 +116,47 @@ const AddGallery = ({ isOpen, onClose, onSuccess, GalleryToEdit = null }) => {
             </div>
             {errors.category && <span className="text-red-500">{errors.category.message}</span>}
 
-            <label htmlFor="description">توضیحات</label>
-            <textarea
-              id="description"
-              {...register("description", { maxLength: 200 })}
-              className="rounded h-32"
-              placeholder="توضیحات دسته‌بندی را تایپ کنید..."
-            />
+            <label htmlFor="description">توضیحات
+  <textarea
+    id="description"
+    {...register("description", { 
+      required: "توضیحات الزامی است", 
+      minLength: {
+        value: 10,
+        message: "توضیحات باید حداقل 10 کاراکتر باشد"
+      },
+      maxLength: {
+        value: 400,
+        message: "توضیحات نباید بیشتر از 400 کاراکتر باشد"
+      }
+    })}
+    className="rounded h-32 w-full"
+    placeholder="توضیحات دسته‌بندی را تایپ کنید..."
+  />
+  {errors.description && <span className="text-red-500">{errors.description.message}</span>}
+</label>
+
 
             <ThumbnailUpload
-                    setThumbnailPreview={setThumbnailPreview}
-                    setThumbnail={setThumbnail}
-                    register={register('Thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
-                    maxFiles={1}
+              setThumbnailPreview={setThumbnailPreview}
+              setThumbnail={setThumbnail}
+              register={register('Thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
+              maxFiles={1}
             />
-            {thumbnailPreview && <DisplayImages galleryPreview={[thumbnailPreview.url]} imageSize={150} />}
+            {thumbnailPreview && <DisplayImages galleryPreview={[thumbnailPreview]} imageSize={150} />}
 
             <GalleryUpload
-                  setGallery={setGallery}
-                  setGalleryPreview={setGalleryPreview}
-                  maxFiles={100}
-                  register={register("gallery", { required: "آپلود حداقل یک تصویر الزامی است" })}
-                  title="آپلود تصاویر گالری"
-                />
-            <DisplayImages galleryPreview={galleryPreview.map(img => img.url)} imageSize={150} />
+              setGallery={setGallery}
+              setGalleryPreview={setGalleryPreview}
+              maxFiles={100}
+              register={register("gallery", { required: "آپلود حداقل یک تصویر الزامی است" })}
+              title="آپلود تصاویر گالری"
+            />
+            <DisplayImages galleryPreview={galleryPreview.map(img => img)} imageSize={150} />
 
             <Button type="submit" className="py-2 mt-4" isLoading={isAdding || isUpdating}>
-  {GalleryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
-</Button>
+              {GalleryToEdit ? "ویرایش کردن" : "ایجاد کردن"}
+            </Button>
           </div>
         </form>
       </Modal>

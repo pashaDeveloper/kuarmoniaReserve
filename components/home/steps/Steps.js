@@ -19,8 +19,8 @@ const Steps = () => {
                   alt="arrow"
                   height={7}
                   width={275}
-                  className="mt-1.5"
-                />
+                  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+                  />
               </h1>
               <p className="text-base">
                 رویای مهاجرت شما تنها در ۳ مرحله است - همین حالا با سهولت اقدام کنید!

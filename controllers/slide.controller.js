@@ -22,8 +22,8 @@ export async function addSlide(req) {
       };
     }
 
-    try {
-      const slideInstance = await Slide.create({
+ 
+      const slide = await Slide.create({
         title,
         description,
         bgImg,
@@ -31,13 +31,8 @@ export async function addSlide(req) {
         authorId,
         isFeatured
       });
-      console.log("اسلاید با موفقیت ذخیره شد", slideInstance);
-    } catch (error) {
-      console.error("خطا در ذخیره‌سازی اسلاید:", error.message);
-      console.error("جزئیات خطا:", error.errors);
-    }
 
-    if (slideInstance) {
+    if (slide) {
       return {
         success: true,
         message: "اسلاید با موفقیت ایجاد شد"

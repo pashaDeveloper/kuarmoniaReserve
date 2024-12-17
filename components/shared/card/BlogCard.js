@@ -5,10 +5,16 @@ import { TfiHeart } from "react-icons/tfi";
 import { PiBookmarkSimpleDuotone } from "react-icons/pi";
 import {Star} from "@/utils/SaveIcon"; 
 import Image from 'next/image';
-const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
+import { useRouter } from "next/router";
+
+const BlogCard = ({ id,index,title, description, thumbnailPreview, publishDate ,authorId ,superAdmin  }) => {
+  const router = useRouter();
 
   return (
-    <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800 bg-clip-border text-gray-700 shadow-lg h-[550px]">
+    <div 
+    key={id || index}
+    onClick={() => id ? router.push(`/blog/${id}`) : console.log("ID is missing")}
+    className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800  border dark:border-gray-700 bg-clip-border text-gray-700 shadow-lg h-[550px] hover:border-primary cursor-pointer dark:hover:border-blue-500">
       <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
         { !thumbnailPreview && (
           <SkeletonImage width={1150}  height={500} showSize={true} borderRadius="rounded-xl" className="z-0" 
@@ -44,7 +50,7 @@ const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
       </div>
       <div className="px-6 py-3">
         <div className="mb-3 flex items-center justify-between">
-          <h5 className="block  text-xl  tracking-normal dark:text-blue-100 min-w-[80%] ">
+          <h5 className="block  text-md tracking-normal dark:text-blue-100 min-w-[80%] ">
             {title ? (
               `${title}`
             ) : (
@@ -56,7 +62,7 @@ const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
             5.0
           </p>
         </div>
-        <div className="block font-sans text-base text-justify  leading-relaxed text-gray-700 dark:text-blue-100 antialiased">
+        <div className="block font-sans text-base text-justify  leading-relaxed text-gray-700 dark:text-blue-100 antialiased line-climp-2 ">
           {description ? (
             description
           ) : (
@@ -163,33 +169,40 @@ const BlogCard = ({ title, description, thumbnailPreview, publishDate }) => {
           </span>
          
         </div>
-        <div className="flex items-center justify-between ">
-          <div className="flex items-center -space-x-3">
             
-          {/* <Image
-          alt="natali craig"
-          src=""
-          width={36} // Equivalent to h-9 and w-9
-          height={36} // Equivalent to h-9 and w-9
-          className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
-        />
-            <Image
-          alt="Tania Andrew"
-          src=""
-          width={36} // Equivalent to h-9 and w-9
-          height={36} // Equivalent to h-9 and w-9
-          className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
-        /> */}
-          </div>
-          <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-            <span className="font-medium">
-              {new Date(publishDate).toLocaleDateString("fa-IR", {
-                weekday: "long",
-              })}{" "}
-              - {new Date(publishDate).toLocaleDateString("fa-IR")}
-            </span>
-          </p>
-        </div>
+  
+          <div className=" flex items-center justify-between dark:text-gray-100">
+                      <span>
+                        {new Date(publishDate).toLocaleDateString(
+                          "fa-IR",
+                          {
+                            weekday: "long"
+                          }
+                        )}{" "}
+                        -{" "}
+                        {new Date(publishDate).toLocaleDateString("fa-IR")}
+                      </span>
+                      <div className="flex items-center space-x-3">
+                        <Image
+                          alt={authorId?.name}
+                          title={authorId?.name}
+                          src={authorId?.avatar?.url}
+                          width={36} 
+                          height={36}
+                          className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+                        />
+                        {authorId?.name !== superAdmin?.name && (
+                          <Image
+                            alt={authorId?.name }
+                            title={authorId?.name}
+                            src={authorId?.avatar?.url}
+                            width={36}
+                            height={36} // ارتفاع تصویر
+                            className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
+                          />
+                        )}
+                      </div>
+                    </div>
       </div>
     </div>
   );

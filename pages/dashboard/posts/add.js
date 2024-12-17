@@ -381,7 +381,6 @@ const Add = () => {
         isLoading={false}
         scale={0.6}
         selectedTags={watch("tags")}
-        isMobile={!isFullscreen}
         author={defaultValues?.name}
         avatar={defaultValues?.avatar?.url}
       />

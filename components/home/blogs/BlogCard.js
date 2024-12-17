@@ -25,14 +25,15 @@ const BlogCard = () => {
           : blogs.map((blog, index) => (
               <div
                 key={index}
-                className="group flex flex-col gap-y-4 border rounded cursor-pointer  h-[550px] md:h-[500px]  break-inside-avoid dark:bg-gray-900 bg-white transition-color ease-linear delay-100 hover:border-primary dark:hover:border-blue-500 relative overflow-hidden"
+                className="group flex flex-col gap-y-4 border rounded h-fit break-inside-avoid bg-white transition-color ease-linear delay-100 hover:border-primary relative"
+
                 onClick={() => router.push(`/blog/${blog.id}`)}
               >
                 <Image
                   src={blog.featuredImage?.url}
                   alt={blog.title}
-                  height={300}
-                  width={300}
+                  height={427}
+                  width={350}
                   className="rounded-t w-full object-cover"
                 />
 
@@ -62,7 +63,7 @@ const BlogCard = () => {
                     <p className="text-sm line-clamp-4 text-justify">
                       {blog.description || "توضیح یافت نشد"}
                     </p>
-                    <div className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary dark:group-hover:border-blue-500 px-2 py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
+                    <div className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary dark:group-hover:border-blue-500 px-1  py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
                       <span>
                         {new Date(blog.publishDate).toLocaleDateString(
                           "fa-IR",
@@ -78,8 +79,8 @@ const BlogCard = () => {
                           alt={blog?.authorId?.name || "Default alt text"}
                           title={blog?.authorId?.name}
                           src={blog?.authorId?.avatar?.url}
-                          width={36} // عرض تصویر
-                          height={36} // ارتفاع تصویر
+                          width={36} 
+                          height={36}
                           className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
                         />
                         {blog?.authorId?.name !== superAdmin?.name && (
@@ -87,7 +88,7 @@ const BlogCard = () => {
                             alt={blog?.authorId?.name || "Default alt text"}
                             title={blog?.authorId?.name}
                             src={blog?.authorId?.avatar?.url}
-                            width={36} // عرض تصویر
+                            width={36}
                             height={36} // ارتفاع تصویر
                             className="relative inline-block rounded-full border-2 border-white object-cover object-center hover:z-10"
                           />

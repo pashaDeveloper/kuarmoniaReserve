@@ -109,8 +109,8 @@ console.log(categories)
                   alt="arrow"
                   height={7}
                   width={275}
-                  className="mt-1.5"
-                />
+                  className="mt-1.5 filter dark:invert  dark:brightness-0 dark:sepia dark:hue-rotate-180"
+                  />
               </p>
               <p className="text-base">
                 با مرور گالری تصاویر، شما با کیفیت خدمات و راهکارهای ما آشنا
@@ -164,7 +164,7 @@ console.log(categories)
                 {/* دکمه‌های اسکرول */}
                 <div className="absolute top-4 right-4 flex flex-col gap-y-2">
                   <span
-                    className="p-1.5 border border-primary rounded-secondary bg-secondary hover:bg-primary hover:border-secondary hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 border border-primary dark:border-blue-500 rounded-secondary bg-secondary dark:bg-blue-500/30 hover:bg-primary dark:hover:bg-blue-500 hover:border-secondary hover:text-white  transition-colors cursor-pointer"
                     onClick={() => {
                       const container = containerRef.current;
                       const scrollAmount = -512;
@@ -177,7 +177,7 @@ console.log(categories)
                     <BiUpArrowAlt className="h-6 w-6" />
                   </span>
                   <span
-                    className="p-1.5 border border-primary rounded-secondary bg-secondary hover:bg-primary hover:border-secondary hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 border border-primary dark:border-blue-500 rounded-secondary bg-secondary dark:bg-blue-500/30 hover:bg-primary dark:hover:bg-blue-500 hover:border-secondary hover:text-white  transition-colors cursor-pointer"
                     onClick={() => {
                       const container = containerRef.current;
                       const scrollAmount = 512;
