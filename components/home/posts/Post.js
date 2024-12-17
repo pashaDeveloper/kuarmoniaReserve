@@ -7,7 +7,7 @@ import React from "react";
 import postIndex from "./postIndex";
 import Image from 'next/image'
 
-const posts = () => {
+const Post = () => {
   return (
     <section
       className="bg-no-repeat bg-contain bg-center h-full py-12 dark:bg-gray-900 "
@@ -36,7 +36,7 @@ const posts = () => {
           </article>
 <div>
 
-          <Posts />
+          <postIndex />
 </div>
 
   
@@ -46,4 +46,4 @@ const posts = () => {
   );
 };
 
-export default posts;
+export default Post;
