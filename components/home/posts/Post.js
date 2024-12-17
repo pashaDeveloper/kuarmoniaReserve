@@ -4,7 +4,7 @@
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
 import React from "react";
-import postIndex from "./postIndex";
+import Posts from "./Posts";
 import Image from 'next/image'
 
 const Post = () => {
@@ -36,7 +36,7 @@ const Post = () => {
           </article>
 <div>
 
-          <postIndex />
+          <Posts />
 </div>
 
   
