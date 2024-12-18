@@ -109,7 +109,7 @@ const PostCard = ({
         src={superAdmin?.avatar}
         height={36} // تنظیم ارتفاع
         width={36}  // تنظیم عرض
-        className="inline-block h-9 w-9 rounded-full border-2 border-white object-cover object-center hover:z-10"
+        className="inline-block h-9 w-9 rounded-full   object-cover object-center hover:z-10"
       />
     )}
   </div>

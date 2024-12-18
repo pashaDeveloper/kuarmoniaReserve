@@ -23,12 +23,12 @@ export default function Home() {
       </Head>
       <Main>
          <Hero />
-        <Post />
         <Advantage />
+        <Post />
+        <Blogs />
+         <Gallery /> 
         <BestSelling />
         <Reviews />
-         <Gallery /> 
-        <Blogs />
         <Steps />
         <PopularDestination />
         <NewsLetter /> 

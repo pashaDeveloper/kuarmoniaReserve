@@ -46,7 +46,7 @@ const Blogs = () => {
           <section className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 place-items-center">
 
           {blogs?.length === 0 || isLoading
-            ? Array.from({ length: 8 }, (_, index) => (
+            ? Array.from({ length: 6 }, (_, index) => (
                 <BlogCard key={index} />
               ))
             : blogs.map((blog, index) => (
@@ -59,6 +59,7 @@ const Blogs = () => {
                   publishDate={blog?.publishDate}
                   authorId={blog?.authorId}
                   superAdmin={superAdmin}
+                  isLoading={isLoading}
                 />
               ))
           }

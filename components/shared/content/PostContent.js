@@ -2,7 +2,7 @@ import SkeletonText from "@/components/shared/skeleton/SkeletonText";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import { FaRegHeart } from "react-icons/fa";
 import { IoMdMore } from "react-icons/io";
-import Image from 'next/image';
+import Image from "next/image";
 
 const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
   <div className="flex flex-row-reverse justify-between items-center py-2 px-2">
@@ -22,18 +22,18 @@ const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
         </>
       ) : (
         <>
-        <Image
-  src={avatar}
-  alt="User"
-  width={40} // عرض تصویر به پیکسل
-  height={40} // ارتفاع تصویر به پیکسل
-  className="rounded-full object-cover"
-/>
+          <Image
+            src={avatar}
+            alt="User"
+            width={40} // عرض تصویر به پیکسل
+            height={40} // ارتفاع تصویر به پیکسل
+            className="rounded-full object-cover"
+          />
           <div className="ml-3 flex flex-col gap-y-2">
             <p className="text-gray-900 text-left text-sm">{author}</p>
             <p className="text-gray-900 text-left text-xs">
               {new Date(publishDate).toLocaleDateString("fa-IR", {
-                weekday: "long",
+                weekday: "long"
               })}{" "}
               - {new Date(publishDate).toLocaleDateString("fa-IR")}
             </p>
@@ -52,24 +52,24 @@ const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
 
 const PostMedia = ({ isLoading, thumbnailPreview }) => (
   <div className="w-full h-96 relative">
-  {isLoading || !thumbnailPreview ? (
-    <SkeletonImage showSize={false} />
-  ) : thumbnailPreview.type === "image" ? (
-    <Image
-      src={thumbnailPreview.url}
-      alt="Feature Preview"
-      layout="fill" // تنظیم اندازه تصویر به اندازه والد
-      objectFit="cover" // استفاده از خاصیت object-fit: cover
-      className="rounded-none" // اعمال گرد نشدن گوشه‌ها
-    />
-  ) : (
-    <video
-      src={thumbnailPreview.url}
-      controls
-      className="w-full h-full object-cover"
-    />
-  )}
-</div>
+    {isLoading || !thumbnailPreview ? (
+      <SkeletonImage showSize={false} />
+    ) : thumbnailPreview.type === "image" ? (
+      <Image
+        src={thumbnailPreview.url}
+        alt="Feature Preview"
+        layout="fill" // تنظیم اندازه تصویر به اندازه والد
+        objectFit="cover" // استفاده از خاصیت object-fit: cover
+        className="rounded-none" // اعمال گرد نشدن گوشه‌ها
+      />
+    ) : (
+      <video
+        src={thumbnailPreview.url}
+        controls
+        className="w-full h-full object-cover"
+      />
+    )}
+  </div>
 );
 
 const PostContent = ({ content, isLoading }) => (
@@ -77,7 +77,7 @@ const PostContent = ({ content, isLoading }) => (
     {content ? (
       <div
         dangerouslySetInnerHTML={{
-          __html: content,
+          __html: content
         }}
       ></div>
     ) : (
@@ -116,13 +116,13 @@ const PostComments = ({ comments }) => (
               key={index}
             >
               <div className="flex items-center mb-2">
-              <Image
-  src={comment.userAvatar || "https://via.placeholder.com/40"}
-  alt="تصویر کاربر"
-  width={40} // عرض تصویر
-  height={40} // ارتفاع تصویر
-  className="rounded-full ml-3"
-/>
+                <Image
+                  src={comment.userAvatar || "https://via.placeholder.com/40"}
+                  alt="تصویر کاربر"
+                  width={40} // عرض تصویر
+                  height={40} // ارتفاع تصویر
+                  className="rounded-full ml-3"
+                />
                 <div>
                   <h3 className="font-semibold">{comment.userName}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -135,56 +135,56 @@ const PostComments = ({ comments }) => (
             </div>
           ))
         )}
-         <form
-      className="mt-8 bg-white p-4 rounded-lg shadow dark:bg-gray-700 dark:border dark:border-gray-600"
-      onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        console.log({
-          name: formData.get("name"),
-          comment: formData.get("comment"),
-        });
-        // ارسال داده‌ها به API یا پردازش بیشتر
-      }}
-    >
-      <h3 className="text-lg font-semibold mb-2">افزودن نظر</h3>
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-gray-700 font-medium mb-2 dark:text-gray-300"
+        <form
+          className="mt-8 bg-white p-4 rounded-lg shadow dark:bg-gray-700 dark:border dark:border-gray-600"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            console.log({
+              name: formData.get("name"),
+              comment: formData.get("comment")
+            });
+            // ارسال داده‌ها به API یا پردازش بیشتر
+          }}
         >
-          نام
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="comment"
-          className="block text-gray-700 font-medium mb-2 dark:text-gray-300"
-        >
-          نظر
-        </label>
-        <textarea
-          id="comment"
-          name="comment"
-          rows="4"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
-          required
-        ></textarea>
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-      >
-        ارسال نظر
-      </button>
-    </form>
+          <h3 className="text-lg font-semibold mb-2">افزودن نظر</h3>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2 dark:text-gray-300"
+            >
+              نام
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="comment"
+              className="block text-gray-700 font-medium mb-2 dark:text-gray-300"
+            >
+              نظر
+            </label>
+            <textarea
+              id="comment"
+              name="comment"
+              rows="4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+          >
+            ارسال نظر
+          </button>
+        </form>
       </div>
     </div>
   </section>
@@ -198,7 +198,7 @@ const Post = ({
   comments,
   avatar,
   author,
-  publishDate,
+  publishDate
 }) => {
   return (
     <div className="relative bg-white dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow-lg">

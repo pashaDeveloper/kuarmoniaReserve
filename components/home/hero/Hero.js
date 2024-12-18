@@ -49,7 +49,7 @@ const Hero = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 41000,
     cssEase: "linear",
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,

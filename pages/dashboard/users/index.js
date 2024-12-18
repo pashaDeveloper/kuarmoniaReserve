@@ -36,50 +36,51 @@ const ListUsers = () => {
               key={user._id}
               className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
             >
-              <div className="col-span-5 lg:col-span-3 text-center flex items-center">
+              <div className="col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={user.status === "active"} />
                 <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
                   <div className="user-container  rounded-full flex justify-center">
-                  <Image
-  src={user?.avatar?.url } 
-  alt="avatar"
-  height={600}
-  width={600}
-  className="h-[60px] w-[60px] rounded-full object-cover"
-/>
+                    <Image
+                      src={user?.avatar?.url}
+                      alt="avatar"
+                      height={600}
+                      width={600}
+                      className="h-[60px] w-[60px] rounded-full object-cover"
+                    />
                   </div>
                   <article className="flex-col flex gap-y-2">
-                    <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400">
+                    <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400 flex-row flex">
                       <span className=" flex">{user?.name}</span>
-                    </span>
-                    <span className="text-xs lg:flex hidden">
-                      {new Date(user.createdAt).toLocaleDateString("fa-IR")}
-                    </span>
-                    <span className="lg:hidden flex">
+                      <span className=" flex lg:hidden"> &nbsp;- &nbsp; </span>
+                      <span className="lg:hidden  flex">
                       {user?.role === "superAdmin"
                         ? "مدیر کل"
                         : user?.role === "admin"
                         ? "مدیر"
-                        : "کاربر"}
+                        : "کاربر"}                        
+                        </span>
+                    </span>
+                    <span className=" lg:flex hidden ">
+                      {new Date(user.createdAt).toLocaleDateString("fa-IR")}
+                    </span>
+                    <span className="lg:hidden flex text-xs">
+                    <span className="flex">{user?.email}</span>
+
                     </span>
                   </article>
                 </div>
               </div>
 
-              <div className="lg:col-span-3 col-span-5 gap-2 text-center flex justify-left items-center">
-                <article className="flex-col flex  gap-y-2">
+             
+              <div className="lg:col-span-5 lg:flex hidden gap-2 text-center  justify-center items-center">
+              <article className="flex-col flex  gap-y-2">
                   <span className="line-clamp-1 text-sm lg:text-base">
                     <span className="flex">{user?.email}</span>
                   </span>
-                  <span className="flex lg:hidden">
+                  <span className="flex ">
                     <span className="">{user?.phone}</span>
                   </span>
-                </article>
-              </div>
-              <div className="lg:col-span-2 lg:flex hidden gap-2 text-center  justify-center items-center">
-              <span className="">{user?.phone}</span>
-
-              </div>
+                </article>              </div>
               <div className="hidden lg:col-span-3 col-span-5 gap-2 text-center lg:flex justify-center items-center">
                 <article className="flex-col flex gap-y-2">
                   <span className="flex">
@@ -92,10 +93,10 @@ const ListUsers = () => {
                 </article>
               </div>
               {usr?.role === "superAdmin" ? (
-                <div className="lg:col-span-1 col-span-2 text-gray-500 text-right flex justify-right flex-row-reverse items-center">
-                  <article className="flex-col flex  gap-y-1 ">
+                <div className="lg:col-span-1 ml-3 lg:flex col-span-1 text-gray-500 text-right  justify-right flex-row-reverse items-center">
+                  <article className="flex-col flex  gap-y-1 items-center justify-center ">
                     <span
-                      className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+                      className="edit-button w-10 h-10"
                       onClick={() => {
                         setIsOpen(true);
                         dispatch(setUser(user));

@@ -12,7 +12,6 @@ const Slide = ({ title, description, bgImg, url }) => {
        src={bgImg?.url}
        autoPlay
        loop
-       muted
        controlsList="nodownload"
        onContextMenu={(e) => e.preventDefault()}
      />

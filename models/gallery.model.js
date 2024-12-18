@@ -12,6 +12,14 @@ const gallerySchema = new Schema(
     type: Schema.Types.ObjectId,
     ref: "Category",
     required: [true, "دسته‌بندی گالری الزامی است"],
+    unique: true, // اضافه کردن خاصیت unique
+      validate: {
+        validator: async function(value) {
+          const count = await this.model("Gallery").countDocuments({ category: value });
+          return count === 0;
+        },
+        message: "این دسته‌بندی گالری قبلاً وجود دارد، لطفاً دسته‌بندی دیگری انتخاب کنید." // پیام خطای custom
+      }
   },
     galleryId: {
       type: Number,
