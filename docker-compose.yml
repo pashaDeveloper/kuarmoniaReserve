@@ -10,4 +10,4 @@ services:
     restart: always
     volumes:
       - .:/app
-    command: yarn dev
+    command: pnpm dev
