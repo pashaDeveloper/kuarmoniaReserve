@@ -16,8 +16,9 @@ WORKDIR /app
 # Install pnpm in the builder stage as well
 RUN npm install -g pnpm  # Ensure pnpm is available in the builder stage
 
-COPY . . 
-COPY --from=deps /app/node_modules ./node_modules  # Copy the installed node_modules from the deps stage
+# Copy application files and install dependencies directly in the builder stage
+COPY . .  # Copy the rest of the application source code
+RUN pnpm install --frozen-lockfile  # Install dependencies in the builder stage
 RUN pnpm build  # Build the project using pnpm
 
 # Production image, copy all the files and run next
