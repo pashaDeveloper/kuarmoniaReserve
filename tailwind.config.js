@@ -1,5 +1,5 @@
 import forms from "@tailwindcss/forms";
-import scrollbarHide from "tailwind-scrollbar-hide";
+import { scrollbarHide } from "tailwind-scrollbar-hide"; // اصلاح شده
 
 export default {
   darkMode: 'class', 
