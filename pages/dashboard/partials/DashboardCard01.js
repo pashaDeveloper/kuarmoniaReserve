@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import LineChart from '@/components/shared/charts/LineChart01';
 import { chartAreaGradient } from '@/utils/ChartjsConfig';
 

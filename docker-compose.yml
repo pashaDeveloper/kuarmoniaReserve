@@ -1,57 +1,13 @@
-version: '3.8'
-
+version: "3.8"
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
       - .env
-    depends_on:
-      - mongo
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`kuarmoniagroup.com`)"
-      - "traefik.http.services.app.loadbalancer.server.port=3000"
-      - "traefik.http.routers.app.entrypoints=websecure"
-      - "traefik.http.routers.app.tls=true"
-      - "traefik.http.routers.app.tls.certresolver=myresolver"
-    volumes:
-      - ./uploads:/app/uploads
     restart: always
-
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: kuarmonia
     volumes:
-      - ./mongo_data:/data/db            
-      - ./mongo_backup:/backup/db     
-    restart: always
-
-  traefik:
-    image: traefik:v2.10
-    container_name: traefik
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.httpChallenge.entryPoint=web"
-      - "--certificatesresolvers.myresolver.acme.email=orebu@tmvaswgcsdlcscaacsafdvgfdbybudc.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./letsencrypt:/letsencrypt"
-      - "./logs:/logs"
-    restart: always
-
-volumes:
-  mongo_data: {}  # تعریف volume به صورت صحیح
+      - .:/app
+    command: yarn dev

@@ -1,34 +1,28 @@
-# Use official Node.js image
-FROM node:18
+# Install dependencies only when needed
+FROM node:18-alpine AS deps
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Create and set the working directory
+# Rebuild the source code only when needed
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+RUN yarn build
+
+# Production image, copy all the files and run next
+FROM node:18-alpine AS runner
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml (if exists) to install dependencies
-COPY package.json pnpm-lock.yaml ./
+ENV NODE_ENV production
 
-# Install pnpm
-RUN npm install -g pnpm
+# Copy the compiled application
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# Install dependencies
-RUN pnpm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Set environment variables for production
-ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
-ENV TOKEN_SECRET=${TOKEN_SECRET}
-ENV DB_NAME=${DB_NAME}
-ENV ATLAS_URI=${ATLAS_URI}
-ENV STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
-
-# Build the application
-RUN pnpm build
-
-# Expose the port Next.js runs on
 EXPOSE 3000
 
-# Start the Next.js application
-CMD ["pnpm", "start"]
+CMD ["yarn", "start"]
