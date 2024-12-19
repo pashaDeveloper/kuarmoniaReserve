@@ -10,4 +10,9 @@ services:
     restart: always
     volumes:
       - .:/app
+      - uploads:/app/public/uploads 
     command: pnpm dev
+
+volumes:
+  uploads:  # تعریف volume برای پوشه uploads
+    driver: local

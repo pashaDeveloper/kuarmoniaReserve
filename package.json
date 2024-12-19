@@ -93,6 +93,7 @@
     "react-spinners": "^0.15.0",
     "react-typewriter-effect": "^1.1.0",
     "react-typing-animation": "^1.6.2",
+    "sharp": "^0.33.5",
     "slick-carousel": "^1.8.1",
     "stripe": "^14.15.0",
     "swiper": "^11.1.15",
