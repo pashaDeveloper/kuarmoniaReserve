@@ -46,7 +46,7 @@ const BlogCard = ({
           />
         )}
         <Image
-          src={thumbnailPreview}
+          src={thumbnailPreview ||"/placeholder.png"}
           alt="Blog Image"
           width={1150}
           height={500}

@@ -20,7 +20,6 @@ const Gallery = () => {
   const gallery = useMemo(() => fetchData?.data || {}, [fetchData]);
   const containerRef = useRef(null);
   const categories = data?.data || [];
-console.log(categories)
   const [tab, setTab] = useState(null);
   const [counter, setCounter] = useState(9);
 
