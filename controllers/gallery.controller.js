@@ -43,6 +43,8 @@ export async function addGallery(req) {
         };
       });
     }
+    console.log("category",category)
+    console.log("featuredImage",featuredImage)
       const galleryInstance = await Gallery.create({
         category,
         description,
@@ -84,7 +86,7 @@ export async function getGalleries(req) {
       .select(
         "_id galleryId gallery featuredImage description  createdAt status "
       );
-
+    
     const total = await Gallery.countDocuments(searchQuery);
     if (galleries.length > 0) {
       return {

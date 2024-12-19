@@ -28,7 +28,12 @@ const ListGallery = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedGallery , setSelectedGallery] = useState(null);
 
-  const openAddModal = () => setIsAddModalOpen(true);
+
+  galleries.forEach(gallery => {
+    console.log("get featuredImage", gallery.featuredImage); 
+    console.log("get gallery", gallery.gallery);
+  });
+    const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
 
   const openEditModal = (Gallery) => {
