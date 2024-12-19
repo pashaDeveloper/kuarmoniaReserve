@@ -10,7 +10,7 @@ const getUploadMiddleware = (folderName) => {
       const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}`;
-      const fullPath = path.join(process.cwd(), "app/public/uploads", folderName, monthFolder);
+      const fullPath = path.join(process.cwd(), "public/uploads", folderName, monthFolder);
 
       if (!fs.existsSync(fullPath)) {
         fs.mkdirSync(fullPath, { recursive: true });
