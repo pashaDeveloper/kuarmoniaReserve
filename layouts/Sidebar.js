@@ -43,12 +43,11 @@ const Sidebar = ({ routes }) => {
           }}
         >
          <Image
-  src={user?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
+  src={user?.avatar?.url || "/placeholder.png"} 
   alt={user?.avatar?.public_id || "User Avatar"}
   height={100}
   width={100}
-  className="rounded-secondary object-cover w-[35px] h-[35px]"
-  style={{ borderRadius: "var(--rounded-secondary)" }} // در صورت استفاده از CSS Custom Properties
+  className="rounded-full object-cover w-[35px] h-[35px]"
 />
           <article className="flex flex-col gap-y-0.5">
             <h2 className="line-clamp-1 text-base">{user?.name}</h2>
