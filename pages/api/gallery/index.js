@@ -1,4 +1,4 @@
-import { addGallery, getGalleries,getClientGallery } from "@/controllers/gallery.controller";
+import { addGallery, getGalleries, getClientGallery } from "@/controllers/gallery.controller";
 import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
@@ -8,13 +8,16 @@ export const config = {
   },
 };
 
+const bucketName = "gallery";
+const uploadMiddleware = getUploadMiddleware(bucketName);
+
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const upload = getUploadMiddleware("gallery");
       try {
+        // اجرای middleware برای آپلود فایل‌ها
         await new Promise((resolve, reject) => {
-          upload.fields([
+          uploadMiddleware.fields([
             { name: "featuredImage", maxCount: 1 },
             { name: "gallery", maxCount: 100 },
           ])(req, res, (err) => {
@@ -25,6 +28,11 @@ export default async function handler(req, res) {
             resolve();
           });
         });
+
+        // پردازش فایل‌ها و ذخیره لینک‌ها در req.body
+        const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
+        req.body.featuredImageUrl = fileUrls.featuredImage?.[0] || null;
+        req.body.galleryUrls = fileUrls.gallery || [];
 
         const result = await addGallery(req);
         return res.status(200).json(result);
@@ -38,18 +46,18 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
-
         if (req.query.type === "client") {
           const result = await getClientGallery();
           return res.status(200).json(result);
         }
+
         const result = await getGalleries(req);
         return res.status(200).json(result);
       } catch (error) {
         console.error("GET Error: ", error.message);
         return res.status(500).json({
           success: false,
-          error: error.message,
+          message: error.message,
         });
       }
 
