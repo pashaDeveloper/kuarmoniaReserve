@@ -51,7 +51,6 @@ const getUploadMiddleware = (bucketName) => {
           const key = `${monthFolder}/${filename}`;
 
           try {
-            // ارسال فایل به Minio (S3)
             await s3Client.send(
               new PutObjectCommand({
                 Bucket: bucketName,
@@ -60,8 +59,7 @@ const getUploadMiddleware = (bucketName) => {
                 ContentType: file.mimetype,
               })
             );
-            console.log("Upload Success:", result);
-            // ساخت لینک فایل آپلود شده
+            console.log("process:", process.env.MINIO_PUBLIC_URL);
             const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
             console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
