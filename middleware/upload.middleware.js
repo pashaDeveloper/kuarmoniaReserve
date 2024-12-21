@@ -1,41 +1,23 @@
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 import crypto from "crypto";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-const getUploadMiddleware = (folderName) => {
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const date = new Date();
-      const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      const fullPath = path.join(process.cwd(), "public/uploads", folderName, monthFolder);
+const s3Client = new S3Client({
+  endPoint: process.env.MINIO_ENDPOINT,
+  port: parseInt(process.env.MINIO_PORT), 
+  useSSL: process.env.MINIO_USE_SSL === 'true', 
+  accessKey: process.env.MINIO_ACCESS_KEY,
+  secretKey: process.env.MINIO_SECRET_KEY
+});
 
-      if (!fs.existsSync(fullPath)) {
-        fs.mkdirSync(fullPath, { recursive: true });
-      }
+const getUploadMiddleware = (bucketName) => {
+  const storage = multer.memoryStorage();
 
-      req.monthFolder = monthFolder; 
-      cb(null, fullPath); 
-    },
-    filename: (req, file, cb) => {
-      const hashedName = crypto.randomBytes(16).toString("hex");
-      const extension = path.extname(file.originalname);
-      const filename = `${hashedName}${extension}`;
-      const filePath = `/uploads/${folderName}/${req.monthFolder}/${filename}`.replace(/\\/g, '/');
-
-      if (!req.body[file.fieldname]) req.body[file.fieldname] = [];
-      req.body[file.fieldname].push(filePath);
-      cb(null, filename);
-    },
-  });
-
-  return multer({
+  const upload = multer({
     storage,
     fileFilter: (_, file, cb) => {
       const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
-      const extension = path.extname(file.originalname).toLowerCase();
+      const extension = file.originalname.toLowerCase();
 
       if (supportedFormats.test(extension)) {
         cb(null, true);
@@ -44,6 +26,49 @@ const getUploadMiddleware = (folderName) => {
       }
     },
   });
+
+  return {
+    single: (fieldName) => {
+      const middleware = upload.single(fieldName);
+
+      return async (req, res, next) => {
+        middleware(req, res, async (err) => {
+          if (err) {
+            return next(err);
+          }
+
+          try {
+            const date = new Date();
+            const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}`;
+
+            const hashedName = crypto.randomBytes(16).toString("hex");
+            const extension = req.file.originalname.split('.').pop();
+            const filename = `${hashedName}.${extension}`;
+            const key = `${monthFolder}/${filename}`;
+
+            // آپلود به MinIO
+            await s3Client.send(
+              new PutObjectCommand({
+                Bucket: bucketName,
+                Key: key,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype,
+              })
+            );
+
+            const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
+            req.body[fieldName + "Url"] = fileUrl; // ذخیره لینک فایل آپلود شده
+
+            next();
+          } catch (uploadError) {
+            next(uploadError);
+          }
+        });
+      };
+    },
+  };
 };
 
 export default getUploadMiddleware;
