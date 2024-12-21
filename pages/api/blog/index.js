@@ -20,7 +20,6 @@ export default async function handler(req, res) {
             message: err.message,
           });
         }
-
         try {
           const result = await addBlog(req);
           res.status(200).json(result);

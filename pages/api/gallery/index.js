@@ -15,7 +15,6 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        // اجرای middleware برای آپلود فایل‌ها
         await new Promise((resolve, reject) => {
           uploadMiddleware.fields([
             { name: "featuredImage", maxCount: 1 },
@@ -28,8 +27,7 @@ export default async function handler(req, res) {
             resolve();
           });
         });
-
-        // پردازش فایل‌ها و ذخیره لینک‌ها در req.body
+console.log("dawdawd")
         const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
         req.body.featuredImageUrl = fileUrls.featuredImage?.[0] || null;
         req.body.galleryUrls = fileUrls.gallery || [];

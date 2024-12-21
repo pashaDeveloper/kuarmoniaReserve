@@ -2,6 +2,7 @@ import multer from "multer";
 import crypto from "crypto";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
+// تنظیمات اتصال به Minio
 const s3Client = new S3Client({
   endpoint: process.env.MINIO_ENDPOINT,
   port: parseInt(process.env.MINIO_PORT, 10),
@@ -40,6 +41,7 @@ const getUploadMiddleware = (bucketName) => {
         .padStart(2, "0")}`;
       const uploadedFiles = {};
 
+      // پیمایش در فایل‌ها
       for (const fieldName in files) {
         uploadedFiles[fieldName] = [];
         for (const file of files[fieldName]) {
@@ -48,17 +50,24 @@ const getUploadMiddleware = (bucketName) => {
           const filename = `${hashedName}.${extension}`;
           const key = `${monthFolder}/${filename}`;
 
-          await s3Client.send(
-            new PutObjectCommand({
-              Bucket: bucketName,
-              Key: key,
-              Body: file.buffer,
-              ContentType: file.mimetype,
-            })
-          );
-
-          const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
-          uploadedFiles[fieldName].push(fileUrl);
+          try {
+            // ارسال فایل به Minio (S3)
+            await s3Client.send(
+              new PutObjectCommand({
+                Bucket: bucketName,
+                Key: key,
+                Body: file.buffer,
+                ContentType: file.mimetype,
+              })
+            );
+            console.log("Upload Success:", result);
+            // ساخت لینک فایل آپلود شده
+            const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
+            uploadedFiles[fieldName].push(fileUrl);
+          } catch (error) {
+            console.error(`Error uploading file ${filename}:`, error.message);
+            throw new Error("Error uploading file to S3");
+          }
         }
       }
 
