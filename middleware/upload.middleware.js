@@ -59,11 +59,11 @@ const getUploadMiddleware = (bucketName) => {
                 ContentType: file.mimetype,
               })
             );
-            const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
+            const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
             console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
-            console.error(`process:`, process.env.MINIO_PUBLIC_URL);
+            console.error(`process:`, process.env.MINIO_ENDPOINT);
             console.error(`Error uploading file ${filename}:`, error.message);
             throw new Error("Error uploading file to S3");
           }
