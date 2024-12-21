@@ -63,6 +63,7 @@ const getUploadMiddleware = (bucketName) => {
             console.log("Upload Success:", result);
             // ساخت لینک فایل آپلود شده
             const fileUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${key}`;
+            console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
             console.error(`Error uploading file ${filename}:`, error.message);
