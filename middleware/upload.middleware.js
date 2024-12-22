@@ -1,7 +1,8 @@
 import multer from "multer";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { v4 as uuidv4 } from "uuid";
 
-// تنظیمات اتصال به Minio
+// تنظیمات اتصال به MinIO
 const s3Client = new S3Client({
   endpoint: process.env.MINIO_ENDPOINT,
   port: parseInt(process.env.MINIO_PORT, 10),
@@ -13,15 +14,14 @@ const s3Client = new S3Client({
   },
 });
 
-const getUploadMiddleware = (bucketName) => {
+// تنظیمات Multer
+const getUploadMiddleware = () => {
   const storage = multer.memoryStorage();
-
-  const upload = multer({
+  return multer({
     storage,
     fileFilter: (_, file, cb) => {
       const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
       const extension = file.originalname.split(".").pop().toLowerCase();
-
       if (supportedFormats.test(extension)) {
         cb(null, true);
       } else {
@@ -29,57 +29,27 @@ const getUploadMiddleware = (bucketName) => {
       }
     },
   });
-
-  return {
-    single: (fieldName) => upload.single(fieldName),
-    fields: (fieldDefinitions) => upload.fields(fieldDefinitions),
-    processFiles: async (files) => {
-      const uploadedFiles = {};
-
-      // پیمایش در فایل‌ها
-      for (const fieldName in files) {
-        uploadedFiles[fieldName] = [];
-        for (const file of files[fieldName]) {
-          const filename = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');  // تبدیل کاراکترهای غیرمجاز
-          const key = `${filename}`;
-
-          console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
-          console.log("bucketName:", bucketName);
-          console.log("key:", key);
-          console.log("Attempting to upload file...");
-          console.log("File Details:", {
-            name: file.originalname,
-            mimetype: file.mimetype,
-            size: file.size,
-          });
-
-          try {
-            // ارسال فایل به Minio
-            await s3Client.send(
-              new PutObjectCommand({
-                Bucket: bucketName, // استفاده از نام سطل (bucket) از پارامتر
-                Key: key, // استفاده از نام اصلی فایل
-                Body: file.buffer,
-                ContentType: file.mimetype,
-              })
-            );
-
-            const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
-            console.log("Generated File URL:", fileUrl);
-            uploadedFiles[fieldName].push(fileUrl);
-          } catch (error) {
-            console.error(`Error uploading file ${filename}:`, error.message);
-            if (error.$response) {
-              console.error("Raw Response:", error.$response);
-            }
-            throw error;
-          }
-        }
-      }
-
-      return uploadedFiles;
-    },
-  };
 };
 
-export default getUploadMiddleware;
+// آپلود فایل به MinIO
+const uploadToMinio = async (file, bucketName) => {
+  const fileKey = `${Date.now()}_${uuidv4()}_${file.originalname}`;
+
+  const params = {
+    Bucket: bucketName,
+    Key: fileKey,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  try {
+    await s3Client.send(new PutObjectCommand(params));
+    const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${fileKey}`;
+    return fileUrl;
+  } catch (error) {
+    console.error("MinIO Upload Error:", error.message);
+    throw new Error("Failed to upload file to MinIO");
+  }
+};
+
+export { getUploadMiddleware, uploadToMinio };
