@@ -59,7 +59,6 @@ const getUploadMiddleware = (bucketName) => {
               })
             );
             const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
-            console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
             console.error(`process:`, process.env.MINIO_ENDPOINT);

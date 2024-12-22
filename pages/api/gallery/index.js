@@ -28,6 +28,7 @@ export default async function handler(req, res) {
           });
         });
         const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
+        console.log("fileUrls",fileUrls)
         req.body.featuredImageUrl = fileUrls.featuredImage?.[0] || null;
         req.body.galleryUrls = fileUrls.gallery || [];
 
