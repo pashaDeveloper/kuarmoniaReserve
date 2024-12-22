@@ -10,7 +10,7 @@ export async function addGallery(req) {
     let galleries = [];
 
     if (req.body.featuredImage && req.body.featuredImage.length) {
-      const filePath = req.body.featuredImage[0];
+      const filePath = req.body.featuredImage;
       const fileExtension = path.extname(filePath).substring(1).toLowerCase();
       featuredImage = {
         url: filePath || "N/A",
@@ -35,7 +35,7 @@ export async function addGallery(req) {
           type:
             fileExtension === "jpg" ||
             fileExtension === "jpeg" ||
-            fileExtension === "png"
+            fileExtension === "png" 
               ? "image"
               : fileExtension === "mp4"
               ? "video"
