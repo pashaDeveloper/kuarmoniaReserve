@@ -31,6 +31,8 @@ export default async function handler(req, res) {
         console.log("fileUrls",fileUrls)
         req.body.featuredImageUrl = fileUrls.featuredImage?.[0] || null;
         req.body.galleryUrls = fileUrls.gallery || [];
+        console.log("req.body.featuredImageUrl",req.body.featuredImageUrl)
+        console.log("req.body.galleryUrls",req.body.galleryUrls)
 
         const result = await addGallery(req);
         return res.status(200).json(result);
