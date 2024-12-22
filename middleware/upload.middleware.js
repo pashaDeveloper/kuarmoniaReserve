@@ -2,7 +2,8 @@ import multer from "multer";
 import crypto from "crypto";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-// تنظیمات اتصال به Minio
+console.log("S3 Endpoint:", process.env.MINIO_ENDPOINT);
+console.log("Full Endpoint:", `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}`);
 const s3Client = new S3Client({
   endpoint: process.env.MINIO_ENDPOINT,
   port: parseInt(process.env.MINIO_PORT, 10),
@@ -48,14 +49,14 @@ const getUploadMiddleware = (bucketName) => {
           const hashedName = crypto.randomBytes(16).toString("hex");
           const extension = file.originalname.split(".").pop();
           const filename = `${hashedName}.${extension}`;
-          const key = `${monthFolder}/${filename}`;
+          const key = `${filename}`;
           console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
           console.log("bucketName:", bucketName);
           console.log("key:", key);
           try {
             await s3Client.send(
               new PutObjectCommand({
-                Bucket: bucketName,
+                Bucket: "uploads",
                 Key: key,
                 Body: file.buffer,
                 ContentType: file.mimetype,
