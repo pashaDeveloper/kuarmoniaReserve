@@ -4,13 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 
 // تنظیمات اتصال به MinIO
 const s3Client = new S3Client({
-  endpoint: process.env.MINIO_ENDPOINT,
-  port: parseInt(process.env.MINIO_PORT, 10),
-  useSSL: process.env.MINIO_USE_SSL === "true",
-  region: process.env.MINIO_REGION || "us-east-1",
+  endpoint: "http://91.107.189.133",
+  port: 9000,
+  useSSL: false, // اگر SSL غیرفعال است
+  region: "us-east-1", // مقدار پیش‌فرض
   credentials: {
-    accessKeyId: process.env.MINIO_ACCESS_KEY,
-    secretAccessKey: process.env.MINIO_SECRET_KEY,
+    accessKeyId: "minioadmin", // نام کاربری MinIO
+    secretAccessKey: "minioadmin", // رمز عبور MinIO
   },
 });
 
