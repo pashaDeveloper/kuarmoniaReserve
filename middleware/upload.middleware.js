@@ -4,8 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 // تنظیمات اتصال به MinIO
 const s3Client = new S3Client({
-  endpoint: "http://91.107.189.133",
-  port: 9000,
+  endpoint: "http://91.107.189.133:9000",
   useSSL: false, // اگر SSL غیرفعال است
   region: "us-east-1", // مقدار پیش‌فرض
   credentials: {
