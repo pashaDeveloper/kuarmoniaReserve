@@ -49,7 +49,9 @@ const getUploadMiddleware = (bucketName) => {
           const extension = file.originalname.split(".").pop();
           const filename = `${hashedName}.${extension}`;
           const key = `${monthFolder}/${filename}`;
-
+          console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
+          console.log("bucketName:", bucketName);
+          console.log("key:", key);
           try {
             await s3Client.send(
               new PutObjectCommand({
@@ -60,9 +62,7 @@ const getUploadMiddleware = (bucketName) => {
               })
             );
 
-            console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
-            console.log("bucketName:", bucketName);
-            console.log("key:", key);
+    
             const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
             console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
