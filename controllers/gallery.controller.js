@@ -43,8 +43,7 @@ export async function addGallery(req) {
         };
       });
     }
-    console.log("category",category)
-    console.log("featuredImage",featuredImage)
+
       const galleryInstance = await Gallery.create({
         category,
         description,
