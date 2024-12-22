@@ -1,5 +1,5 @@
 import { addGallery, getGalleries, getClientGallery } from "@/controllers/gallery.controller";
-import {getUploadMiddleware ,uploadToMinio} from "@/middleware/upload.middleware";
+import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -8,7 +8,7 @@ export const config = {
   },
 };
 
-const bucketName = "uploads";
+const bucketName = "gallery";
 const uploadMiddleware = getUploadMiddleware(bucketName);
 
 export default async function handler(req, res) {
@@ -27,26 +27,7 @@ export default async function handler(req, res) {
             resolve();
           });
         });
-        const fileUrls = {
-          featuredImage: [],
-          gallery: [],
-        };
-
-        if (req.files.featuredImage) {
-          fileUrls.featuredImage = await Promise.all(
-            req.files.featuredImage.map((file) =>
-              uploadToMinio(file, bucketName)
-            )
-          );
-        }
-
-        if (req.files.gallery) {
-          fileUrls.gallery = await Promise.all(
-            req.files.gallery.map((file) =>
-              uploadToMinio(file, bucketName)
-            )
-          );
-        }        
+        const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
         req.body.featuredImageUrl = fileUrls.featuredImage?.[0] || null;
         req.body.galleryUrls = fileUrls.gallery || [];
 
