@@ -36,12 +36,12 @@ const uploadToMinio = async (file, bucketName) => {
   const fileKey = `${Date.now()}_${uuidv4()}_${file.originalname}`;
 
   const params = {
-    Bucket: bucketName,
-    Key: fileKey,
-    Body: file.buffer,
-    ContentType: file.mimetype,
+    Bucket: "uploads",
+    Key: "test-file.txt",
+    Body: Buffer.from("This is a test file content"),
+    ContentType: "text/plain",
   };
-
+  console.log("Params: ", params);
   try {
     await s3Client.send(new PutObjectCommand(params));
     const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${fileKey}`;
