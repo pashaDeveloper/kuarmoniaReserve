@@ -1,9 +1,7 @@
 import multer from "multer";
-import crypto from "crypto";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-console.log("S3 Endpoint:", process.env.MINIO_ENDPOINT);
-console.log("Full Endpoint:", `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}`);
+// تنظیمات اتصال به Minio
 const s3Client = new S3Client({
   endpoint: process.env.MINIO_ENDPOINT,
   port: parseInt(process.env.MINIO_PORT, 10),
@@ -35,21 +33,16 @@ const getUploadMiddleware = (bucketName) => {
   return {
     single: (fieldName) => upload.single(fieldName),
     fields: (fieldDefinitions) => upload.fields(fieldDefinitions),
-    processFiles: async (files, bucketName) => {
-      const date = new Date();
-      const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
+    processFiles: async (files) => {
       const uploadedFiles = {};
 
       // پیمایش در فایل‌ها
       for (const fieldName in files) {
         uploadedFiles[fieldName] = [];
         for (const file of files[fieldName]) {
-          const hashedName = crypto.randomBytes(16).toString("hex");
-          const extension = file.originalname.split(".").pop();
-          const filename = `${hashedName}.${extension}`;
-          const key = `${filename}`;
+          const filename = file.originalname; // نام فایل اصلی
+          const key = filename; // ذخیره فایل با نام اصلی در Minio
+
           console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
           console.log("bucketName:", bucketName);
           console.log("key:", key);
@@ -59,24 +52,22 @@ const getUploadMiddleware = (bucketName) => {
             mimetype: file.mimetype,
             size: file.size,
           });
+
           try {
-            
+            // ارسال فایل به Minio
             await s3Client.send(
               new PutObjectCommand({
-                Bucket: "uploads",
-                Key: key,
+                Bucket: bucketName, // استفاده از نام سطل (bucket) از پارامتر
+                Key: key, // استفاده از نام اصلی فایل
                 Body: file.buffer,
                 ContentType: file.mimetype,
               })
             );
 
-    
             const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
             console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
-            
-            console.error(`process:`, process.env.MINIO_ENDPOINT);
             console.error(`Error uploading file ${filename}:`, error.message);
             if (error.$response) {
               console.error("Raw Response:", error.$response);
