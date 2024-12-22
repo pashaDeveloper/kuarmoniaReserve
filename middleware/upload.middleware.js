@@ -48,6 +48,7 @@ const uploadToMinio = async (file, bucketName) => {
     return fileUrl;
   } catch (error) {
     console.error("MinIO Upload Error:", error.message);
+    console.error("Raw Response: ", error.$response);  // مشاهده پاسخ خام
     throw new Error("Failed to upload file to MinIO");
   }
 };
