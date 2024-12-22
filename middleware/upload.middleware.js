@@ -40,8 +40,8 @@ const getUploadMiddleware = (bucketName) => {
       for (const fieldName in files) {
         uploadedFiles[fieldName] = [];
         for (const file of files[fieldName]) {
-          const filename = file.originalname; // نام فایل اصلی
-          const key = filename; // ذخیره فایل با نام اصلی در Minio
+          const filename = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');  // تبدیل کاراکترهای غیرمجاز
+          const key = `${filename}`;
 
           console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
           console.log("bucketName:", bucketName);
