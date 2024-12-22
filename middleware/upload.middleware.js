@@ -53,7 +53,14 @@ const getUploadMiddleware = (bucketName) => {
           console.log("process.env.MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
           console.log("bucketName:", bucketName);
           console.log("key:", key);
+          console.log("Attempting to upload file...");
+          console.log("File Details:", {
+            name: file.originalname,
+            mimetype: file.mimetype,
+            size: file.size,
+          });
           try {
+            
             await s3Client.send(
               new PutObjectCommand({
                 Bucket: "uploads",
@@ -68,9 +75,13 @@ const getUploadMiddleware = (bucketName) => {
             console.log("Generated File URL:", fileUrl);
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
+            
             console.error(`process:`, process.env.MINIO_ENDPOINT);
             console.error(`Error uploading file ${filename}:`, error.message);
-            throw new Error("Error uploading file to S3");
+            if (error.$response) {
+              console.error("Raw Response:", error.$response);
+            }
+            throw error;
           }
         }
       }
