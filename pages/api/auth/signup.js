@@ -1,5 +1,5 @@
 import { signUpUser } from "@/controllers/auth.controller";
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload,{ uploadToMinIO } from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -7,37 +7,30 @@ export const config = {
     externalResolver: true,
   },
 };
-const bucketName = "users";
-const uploadMiddleware = getUploadMiddleware(bucketName);
-export default async function handler(req, res) {
+
+export default function handler(req, res) {
   switch (req.method) {
     case "POST":
+      const folderName = req.body.folderName || 'default';
       try {
-        await new Promise((resolve, reject) => {
-          uploadMiddleware.single("avatar")(req, res, (err) => {
-            if (err) {
-              console.error("Upload Error: ", err.message);
-              return reject(err);
-            }
-            resolve();
-          });
+        upload(folderName).single("avatar")(req, res, async (err) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: err.message,
+            });
+          }
+          await uploadToMinIO(req.file, folderName);
+          const result = await signUpUser(req);
+          res.send(result);
         });
-        console.log("req.file",req.file)
-        const file = req.file;
-        // پردازش فایل آپلود شده
-        const fileUrls = await uploadMiddleware.processFiles({ avatar: [file] }, bucketName);
-        req.body.avatar = fileUrls.avatar || null;
-
-        // ادامه فرآیند ثبت کاربر
-        const result = await signUpUser(req);
-        return res.status(200).json(result);
       } catch (error) {
-        console.error("POST Error: ", error.message);
-        return res.status(400).json({
+        res.send({
           success: false,
           message: error.message,
         });
       }
+      break;
 
     default:
       res.status(405).json({
