@@ -35,19 +35,30 @@ const getUploadMiddleware = (bucketName) => {
     single: (fieldName) => upload.single(fieldName),
     fields: (fieldDefinitions) => upload.fields(fieldDefinitions),
     processFiles: async (files, bucketName) => {
+      console.log("processFiles: received files:", files);
+      console.log("processFiles: bucketName:", bucketName);
+    
       const date = new Date();
       const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}`;
-      const uploadedFiles = {};
+      console.log("processFiles: monthFolder:", monthFolder);
 
       for (const fieldName in files) {
+        console.log(`processFiles: Processing fieldName: ${fieldName}`);
         uploadedFiles[fieldName] = [];
         for (const file of files[fieldName]) {
           const hashedName = crypto.randomBytes(16).toString("hex");
           const extension = file.originalname.split(".").pop();
           const filename = `${hashedName}.${extension}`;
           const key = `${monthFolder}/${filename}`;
+          console.log("processFiles: Processing file:", file);
+          console.log("processFiles: file.originalname:", file.originalname);
+          console.log("processFiles: file.mimetype:", file.mimetype);
+          console.log("processFiles: hashedName:", hashedName);
+          console.log("processFiles: file extension:", extension);
+          console.log("processFiles: filename:", filename);
+          console.log("processFiles: key:", key);
 
           try {
             await s3Client.send(
@@ -58,7 +69,10 @@ const getUploadMiddleware = (bucketName) => {
                 ContentType: file.mimetype,
               })
             );
+
             const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
+            console.log("processFiles: File uploaded successfully:", fileUrl);
+
             uploadedFiles[fieldName].push(fileUrl);
           } catch (error) {
             console.error(`process:`, process.env.MINIO_ENDPOINT);

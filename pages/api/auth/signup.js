@@ -22,7 +22,7 @@ export default async function handler(req, res) {
             resolve();
           });
         });
-
+        console.log("upload success")
         // پردازش فایل آپلود شده
         const fileUrls = await uploadMiddleware.processFiles(req.file, bucketName);
         req.body.avatar = fileUrls.avatar || null;
