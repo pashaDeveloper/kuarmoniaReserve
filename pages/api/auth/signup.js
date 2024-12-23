@@ -7,41 +7,36 @@ export const config = {
     externalResolver: true,
   },
 };
-
-export default function handler(req, res) {
+const bucketName = "users";
+const uploadMiddleware = getUploadMiddleware(bucketName);
+export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-  const upload = getUploadMiddleware("user");    
-  upload.single("avatar")(req, res, async (err) => {
-    if (err) {
-      console.error("Upload Error: ", err.message);
-      return res.status(400).json({
-        success: false,
-        message: err.message,
-      });
-    }
+        await new Promise((resolve, reject) => {
+          uploadMiddleware.single("avatar")(req, res, (err) => {
+            if (err) {
+              console.error("Upload Error: ", err.message);
+              return reject(err);
+            }
+            resolve();
+          });
+        });
 
-    try {
-      const result = await signUpUser(req);
-      res.status(200).json(result);
-    } catch (signUpError) {
-      console.error("SignUp Error: ", signUpError.message);
-      res.status(500).json({
-        success: false,
-        message: signUpError.message,
-      });
-    }
-  });
+        // پردازش فایل آپلود شده
+        const fileUrls = await uploadMiddleware.processFiles(req.file, bucketName);
+        req.body.avatar = fileUrls.avatar || null;
 
+        // ادامه فرآیند ثبت کاربر
+        const result = await signUpUser(req);
+        return res.status(200).json(result);
       } catch (error) {
-        console.error("Handler Error: ", error.message);
-        res.status(500).json({
+        console.error("POST Error: ", error.message);
+        return res.status(400).json({
           success: false,
           message: error.message,
         });
       }
-      break;
 
     default:
       res.status(405).json({

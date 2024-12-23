@@ -40,7 +40,6 @@ const getUploadMiddleware = (bucketName) => {
         .padStart(2, "0")}`;
       const uploadedFiles = {};
 
-      // پیمایش در فایل‌ها
       for (const fieldName in files) {
         uploadedFiles[fieldName] = [];
         for (const file of files[fieldName]) {

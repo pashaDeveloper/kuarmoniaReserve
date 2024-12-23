@@ -18,10 +18,11 @@ export async function signUpUser(req) {
               redirectToLogin: true,
           };
       }
+      console.log("req.body.avatar",req.body.avatar)
       if (req.body.avatar && req.body.avatar.length) {
         avatar = {
-          url: req.body.avatar[0] || "N/A", 
-          public_id: path.basename(req.body.avatar[0]) || "ناشناخته", 
+          url: req.body.avatar || "N/A", 
+          public_id: path.basename(req.body.avatar) || "ناشناخته", 
         };
       } else {
         if (avatarUrl) {
