@@ -17,7 +17,6 @@ const s3Client = new S3Client({
 
 const storage = (folderName) => multer.diskStorage({
   destination: (req, file, cb) => {
-    // داینامیک بودن پوشه
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");

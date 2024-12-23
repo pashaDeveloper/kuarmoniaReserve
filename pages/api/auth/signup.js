@@ -11,7 +11,7 @@ export const config = {
 export default function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const folderName = req.body.folderName || 'default';
+      const folderName = 'avatar';
       try {
         upload(folderName).single("avatar")(req, res, async (err) => {
           if (err) {
@@ -20,6 +20,8 @@ export default function handler(req, res) {
               message: err.message,
             });
           }
+          console.log("avatar successs")
+          console.log("req.file successs",req.file)
           await uploadToMinIO(req.file, folderName);
           const result = await signUpUser(req);
           res.send(result);
