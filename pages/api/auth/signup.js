@@ -23,8 +23,9 @@ export default async function handler(req, res) {
           });
         });
         console.log("req.file",req.file)
+        const file = req.file;
         // پردازش فایل آپلود شده
-        const fileUrls = await uploadMiddleware.processFiles(req.file, bucketName);
+        const fileUrls = await uploadMiddleware.processFiles({ avatar: [file] }, bucketName);
         req.body.avatar = fileUrls.avatar || null;
 
         // ادامه فرآیند ثبت کاربر
