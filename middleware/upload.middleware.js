@@ -20,6 +20,7 @@ const getUploadMiddleware = (bucketName) => {
     storage,
     fileFilter: (_, file, cb) => {
       const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
+      console.log("File received:", file);
       const extension = file.originalname.split(".").pop().toLowerCase();
 
       if (supportedFormats.test(extension)) {
