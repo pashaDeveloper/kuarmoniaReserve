@@ -1,5 +1,5 @@
 import { signUpUser } from "@/controllers/auth.controller";
-import upload,{ uploadToMinIO } from "@/middleware/upload.middleware";
+import getUploadMiddleware from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -7,27 +7,38 @@ export const config = {
     externalResolver: true,
   },
 };
-
+const bucketName = "user";
+const uploadMiddleware = getUploadMiddleware(bucketName);
 export default function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const folderName = 'avatar';
       try {
-        upload(folderName).single("avatar")(req, res, async (err) => {
-          if (err) {
-            return res.send({
-              success: false,
-              message: err.message,
-            });
-          }
-          console.log("avatar successs")
-          console.log("req.file successs",req.file)
-          await uploadToMinIO(req.file, folderName);
-          const result = await signUpUser(req);
-          res.send(result);
-        });
+        uploadMiddleware.fields([
+          { name: "avatar", maxCount: 1 }])(req, res, async (err) => {
+    if (err) {
+      console.error("Upload Error: ", err.message);
+      return res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    }
+    const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
+    req.body.avatar = fileUrls.avatar?.[0] || null;
+    try {
+      const result = await signUpUser(req);
+      res.status(200).json(result);
+    } catch (signUpError) {
+      console.error("SignUp Error: ", signUpError.message);
+      res.status(500).json({
+        success: false,
+        message: signUpError.message,
+      });
+    }
+  });
+
       } catch (error) {
-        res.send({
+        console.error("Handler Error: ", error.message);
+        res.status(500).json({
           success: false,
           message: error.message,
         });
