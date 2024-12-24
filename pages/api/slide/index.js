@@ -11,6 +11,7 @@ export const config = {
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
+      console.log("slide");
       upload("slide").single("bgImg")(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
