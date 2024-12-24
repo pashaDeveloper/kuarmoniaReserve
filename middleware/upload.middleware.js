@@ -22,16 +22,16 @@ const upload = (bucketName) => {
   const multerInstance = multer({
     storage,
     fileFilter: (_, file, cb) => {
-      const supportedImage = /jpg|jpeg|png/i;
+      const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
       const extension = file.originalname
         .split(".")
         .pop()
         .toLowerCase();
 
-      if (supportedImage.test(extension)) {
+      if (supportedFormats.test(extension)) {
         cb(null, true);
       } else {
-        cb(new Error("Must be a png/jpg/jpeg format"));
+        cb(new Error("فرمت فایل باید تصویر (png/jpg/jpeg) یا ویدئو (mp4/avi/mkv) باشد"));
       }
     },
   });
@@ -42,8 +42,7 @@ const upload = (bucketName) => {
         return res.status(400).json({ success: false, message: err.message });
       }
 
-      const dateFolder = format(new Date(), "yyyy-MM-dd");
-
+      const dateFolder = format(new Date(), "yyyy-MM");
       try {
         try {
           await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
