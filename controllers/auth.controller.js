@@ -8,7 +8,7 @@ export async function signUpUser(req) {
       const existingUser = await User.findOne({
           $or: [{ email: email }, { phone: phone }],
       });
-      console.log("avatarUrl",avatarUrl)
+      // console.log("avatarUrl",avatarUrl)
 
       if (existingUser) {
           return {
