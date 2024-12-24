@@ -1,3 +1,21 @@
+import multer from "multer";
+import crypto from "crypto";
+import { S3Client, PutObjectCommand, CreateBucketCommand, HeadBucketCommand } from "@aws-sdk/client-s3";
+import { format } from "date-fns";
+
+// تنظیمات MinIO
+const s3Client = new S3Client({
+  endpoint: process.env.MINIO_ENDPOINT,
+  useSSL: process.env.MINIO_USE_SSL === "true",
+  region: process.env.MINIO_REGION || "us-east-1",
+  credentials: {
+    accessKeyId: process.env.MINIO_ACCESS_KEY,
+    secretAccessKey: process.env.MINIO_SECRET_KEY,
+  },
+  forcePathStyle: true,
+});
+
+// ساخت تابع `upload`
 const upload = (bucketName) => {
   const storage = multer.memoryStorage();
 
@@ -74,3 +92,6 @@ const upload = (bucketName) => {
     fields: (fieldsConfig) => minioUploadMiddleware(fieldsConfig),
   };
 };
+
+
+export default upload;
