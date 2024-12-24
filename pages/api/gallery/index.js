@@ -1,5 +1,5 @@
 import { addGallery, getGalleries, getClientGallery } from "@/controllers/gallery.controller";
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -8,15 +8,14 @@ export const config = {
   },
 };
 
-const bucketName = "gallery";
-const uploadMiddleware = getUploadMiddleware(bucketName);
+
 
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
         await new Promise((resolve, reject) => {
-          uploadMiddleware.fields([
+          upload("gallery").fields([
             { name: "featuredImage", maxCount: 1 },
             { name: "gallery", maxCount: 100 },
           ])(req, res, (err) => {
@@ -27,9 +26,7 @@ export default async function handler(req, res) {
             resolve();
           });
         });
-        const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
-        req.body.featuredImage = fileUrls.featuredImage?.[0] || null;
-        req.body.gallery = fileUrls.gallery || [];
+        console.log("gallery")
          const result = await addGallery(req);
         return res.status(200).json(result);
       } catch (error) {
