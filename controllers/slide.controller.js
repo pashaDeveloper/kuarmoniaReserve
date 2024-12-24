@@ -5,12 +5,12 @@ export async function addSlide(req) {
     const { title, description, url, authorId, isFeatured } = req.body;
     let bgImg = null;
 
-    if (req.body.bgImg && req.body.bgImg.length) {
-      const filePath = req.body.bgImg[0];
+
+    if (req.uploadedFiles && req.uploadedFiles.length > 0) {
       const fileExtension = path.extname(filePath).substring(1).toLowerCase();
       bgImg = {
-        url: filePath || "N/A",
-        public_id: path.basename(filePath) || "ناشناخته",
+        url: req.uploadedFiles[0].url,
+        public_id: req.uploadedFiles[0].key,
         type:
           fileExtension === "jpg" ||
           fileExtension === "jpeg" ||
@@ -21,7 +21,10 @@ export async function addSlide(req) {
             : "unknown"
       };
     }
+console.log("bgImg",bgImg)
 
+
+  
  
       const slide = await Slide.create({
         title,

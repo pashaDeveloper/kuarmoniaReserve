@@ -1,5 +1,5 @@
 import { addSlide, getSlides,getClientSlides } from "@/controllers/slide.controller";
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -11,8 +11,7 @@ export const config = {
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const upload = getUploadMiddleware("slide");
-      upload.single("bgImg")(req, res, async (err) => {
+      upload("slide").single("bgImg")(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
           return res.status(400).json({
