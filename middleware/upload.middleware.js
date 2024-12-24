@@ -11,6 +11,7 @@ const s3Client = new S3Client({
     accessKeyId: process.env.MINIO_ACCESS_KEY,
     secretAccessKey: process.env.MINIO_SECRET_KEY,
   },
+  forcePathStyle: true,
 });
 
 const getUploadMiddleware = (bucketName) => {
@@ -62,6 +63,10 @@ const getUploadMiddleware = (bucketName) => {
 
           try {
             try {
+              console.log("Bucket Name:", bucketName);
+console.log("Endpoint:", process.env.MINIO_ENDPOINT);
+console.log("Full URL:", `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${bucketName}/${key}`);
+
               const result = await s3Client.send(
                 new PutObjectCommand({
                   Bucket: bucketName,
