@@ -4,12 +4,11 @@ import path from "path";
 
 export async function signUpUser(req) {
   try {
-      const { email, phone, avatarUrl } = req.body;
+      const { email, phone } = req.body;
       const existingUser = await User.findOne({
           $or: [{ email: email }, { phone: phone }],
       });
       console.log("avatarUrl",avatarUrl)
-      let avatar = null;
 
       if (existingUser) {
           return {
@@ -18,22 +17,15 @@ export async function signUpUser(req) {
               redirectToLogin: true,
           };
       }
-      console.log("req.body.avatar",req.body.avatar)
-      if (req.body.avatar && req.body.avatar.length) {
-        avatar = {
-          url: req.body.avatar || "N/A", 
-          public_id: path.basename(req.body.avatar) || "ناشناخته", 
-        };
-      } else {
-        if (avatarUrl) {
-          avatar = {
-            url: avatarUrl || "N/A", 
-            public_id: "ناشناخته", 
-          };
-        }
-        console.log("avatar", avatar);
-      }
+      let avatar = null;
 
+      if (req.uploadedFiles && req.uploadedFiles.length > 0) {
+        avatar = {
+          url: req.uploadedFiles[0].url,
+          public_id: req.uploadedFiles[0].key,
+        };
+      }
+  console.log("avatar",avatar)
       const userCount = await User.countDocuments();
       const role = userCount === 0 ? "superAdmin" : "user";
       const status = userCount === 0 ? "active" : "inactive";

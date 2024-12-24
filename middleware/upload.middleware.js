@@ -1,101 +1,76 @@
-import multer from "multer";
-import crypto from "crypto";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-
-const s3Client = new S3Client({
-  endpoint: `${process.env.MINIO_ENDPOINT}`,  
-  useSSL: process.env.MINIO_USE_SSL === "true",
-  region: process.env.MINIO_REGION || "us-east-1",
-  credentials: {
-    accessKeyId: process.env.MINIO_ACCESS_KEY,
-    secretAccessKey: process.env.MINIO_SECRET_KEY,
-  },
-  forcePathStyle: true,
-});
-
-const getUploadMiddleware = (bucketName) => {
+const upload = (bucketName) => {
   const storage = multer.memoryStorage();
 
-  const upload = multer({
+  const multerInstance = multer({
     storage,
     fileFilter: (_, file, cb) => {
-      const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
-      console.log("File received:", file);
-      const extension = file.originalname.split(".").pop().toLowerCase();
+      const supportedImage = /jpg|jpeg|png/i;
+      const extension = file.originalname
+        .split(".")
+        .pop()
+        .toLowerCase();
 
-      if (supportedFormats.test(extension)) {
+      if (supportedImage.test(extension)) {
         cb(null, true);
       } else {
-        cb(new Error("Must be a png/jpg/jpeg or mp4/avi/mkv format"));
+        cb(new Error("Must be a png/jpg/jpeg format"));
       }
     },
   });
 
-  return {
-    single: (fieldName) => upload.single(fieldName),
-    fields: (fieldDefinitions) => upload.fields(fieldDefinitions),
-    processFiles: async (files, bucketName) => {
-      console.log("processFiles: received files:", files);
-      console.log("processFiles: bucketName:", bucketName);
-    
-      const date = new Date();
-      const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      console.log("processFiles: monthFolder:", monthFolder);
-      const uploadedFiles = {};
-      for (const fieldName in files) {
-        console.log(`processFiles: Processing fieldName: ${fieldName}`);
-        uploadedFiles[fieldName] = [];
-        for (const file of files[fieldName]) {
-          const hashedName = crypto.randomBytes(16).toString("hex");
-          const extension = file.originalname.split(".").pop();
-          const filename = `${hashedName}.${extension}`;
-          const key = `${monthFolder}/${filename}`;
-          console.log("processFiles: Processing file:", file);
-          console.log("processFiles: file.originalname:", file.originalname);
-          console.log("processFiles: file.mimetype:", file.mimetype);
-          console.log("processFiles: hashedName:", hashedName);
-          console.log("processFiles: file extension:", extension);
-          console.log("processFiles: filename:", filename);
-          console.log("processFiles: key:", key);
-
-          try {
-            try {
-              console.log("Bucket Name:", bucketName);
-console.log("Endpoint:", process.env.MINIO_ENDPOINT);
-console.log("Full URL:", `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${bucketName}/${key}`);
-
-              const result = await s3Client.send(
-                new PutObjectCommand({
-                  Bucket: bucketName,
-                  Key: key,
-                  Body: file.buffer,
-                  ContentType: file.mimetype,
-                })
-              );
-            
-              console.log("File uploaded successfully:", result);
-            } catch (error) {
-              console.error("Error uploading file:", error);
-            }
-
-            const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
-            console.log("processFiles: File uploaded successfully:", fileUrl);
-
-            uploadedFiles[fieldName].push(fileUrl);
-          } catch (error) {
-            console.error(`process:`, process.env.MINIO_ENDPOINT);
-            console.error(`Error uploading file ${filename}:`, error.message);
-            console.error("Raw Response: ", error.$response);
-            throw new Error("Error uploading file to S3");
-          }
-        }
+  const minioUploadMiddleware = (fieldConfig) => async (req, res, next) => {
+    multerInstance.fields(fieldConfig)(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
       }
 
-      return uploadedFiles;
-    },
+      const dateFolder = format(new Date(), "yyyy-MM-dd");
+
+      try {
+        try {
+          await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
+        } catch (e) {
+          await s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
+        }
+
+        const uploadedFiles = [];
+        const fileFields = Object.keys(req.files || {});
+        for (const field of fileFields) {
+          for (const file of req.files[field]) {
+            const uniqueKey = `${dateFolder}/${crypto
+              .randomBytes(16)
+              .toString("hex")}_${file.originalname.replace(/[^\w\s.-]/g, "")}`;
+
+            const result = await s3Client.send(
+              new PutObjectCommand({
+                Bucket: bucketName,
+                Key: uniqueKey,
+                Body: file.buffer,
+                ContentType: file.mimetype,
+              })
+            );
+
+            uploadedFiles.push({
+              fieldName: field,
+              url: `${process.env.MINIO_ENDPOINT}/${bucketName}/${uniqueKey}`,
+              key: uniqueKey,
+              result,
+            });
+          }
+        }
+
+        req.uploadedFiles = uploadedFiles;
+        next();
+      } catch (error) {
+        console.error("Error uploading to MinIO:", error);
+        res.status(500).json({ success: false, message: "Error uploading files" });
+      }
+    });
+  };
+
+  return {
+    single: (fieldName) => minioUploadMiddleware([{ name: fieldName, maxCount: 1 }]),
+    array: (fieldName, maxCount) => minioUploadMiddleware([{ name: fieldName, maxCount: maxCount || 10 }]),
+    fields: (fieldsConfig) => minioUploadMiddleware(fieldsConfig),
   };
 };
-
-export default getUploadMiddleware;

@@ -1,5 +1,5 @@
 import { signUpUser } from "@/controllers/auth.controller";
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload from "@/middleware/upload.middleware";
 
 export const config = {
   api: {
@@ -7,14 +7,12 @@ export const config = {
     externalResolver: true,
   },
 };
-const bucketName = "user";
-const uploadMiddleware = getUploadMiddleware(bucketName);
+
 export default function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        uploadMiddleware.fields([
-          { name: "avatar", maxCount: 1 }])(req, res, async (err) => {
+        upload("user").single("avatar")(req, res, async (err) => {
     if (err) {
       console.error("Upload Error: ", err.message);
       return res.status(400).json({
@@ -22,8 +20,7 @@ export default function handler(req, res) {
         message: err.message,
       });
     }
-    const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
-    req.body.avatar = fileUrls.avatar?.[0] || null;
+  
     try {
       const result = await signUpUser(req);
       res.status(200).json(result);
