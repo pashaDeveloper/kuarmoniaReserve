@@ -3,7 +3,7 @@ import crypto from "crypto";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 const s3Client = new S3Client({
-  endpoint: `${process.env.MINIO_ENDPOINT}`,
+  endpoint: `${process.env.MINIO_ENDPOINT}`,  
   useSSL: process.env.MINIO_USE_SSL === "true",
   region: process.env.MINIO_REGION || "us-east-1",
   credentials: {
@@ -37,7 +37,7 @@ const getUploadMiddleware = (bucketName) => {
     processFiles: async (files, bucketName) => {
       console.log("processFiles: received files:", files);
       console.log("processFiles: bucketName:", bucketName);
-
+    
       const date = new Date();
       const monthFolder = `${date.getFullYear()}-${(date.getMonth() + 1)
         .toString()
@@ -61,16 +61,24 @@ const getUploadMiddleware = (bucketName) => {
           console.log("processFiles: key:", key);
 
           try {
-            const result = await s3Client.send(
-              new PutObjectCommand({
-                Bucket: bucketName,
-                Key: key,
-                Body: file.buffer,
-                ContentType: file.mimetype,
-              })
-            );
+            try {
+              console.log("Bucket Name:", bucketName);
+console.log("Endpoint:", process.env.MINIO_ENDPOINT);
+console.log("Full URL:", `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${bucketName}/${key}`);
 
-            console.log("File uploaded successfully:", result);
+              const result = await s3Client.send(
+                new PutObjectCommand({
+                  Bucket: bucketName,
+                  Key: key,
+                  Body: file.buffer,
+                  ContentType: file.mimetype,
+                })
+              );
+            
+              console.log("File uploaded successfully:", result);
+            } catch (error) {
+              console.error("Error uploading file:", error);
+            }
 
             const fileUrl = `${process.env.MINIO_ENDPOINT}/${bucketName}/${key}`;
             console.log("processFiles: File uploaded successfully:", fileUrl);
