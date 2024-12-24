@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['kuarmoniagroup.com'],
+    domains: ['s3-console.kuarmoniagroup.com'],
     remotePatterns: [
       {
         protocol: "https",
