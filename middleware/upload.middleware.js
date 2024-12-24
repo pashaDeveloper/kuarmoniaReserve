@@ -52,10 +52,14 @@ const upload = (bucketName) => {
 
         const uploadedFiles = [];
         const fileFields = Object.keys(req.files || {});
+
         for (const field of fileFields) {
           for (const file of req.files[field]) {
-            const uniqueKey = `${dateFolder}/${crypto.randomBytes(16).toString("hex")}`; // حذف originalname
-        
+            const hashedName = crypto.randomBytes(16).toString("hex");
+            const extension = file.originalname.split(".").pop();
+            const filename = `${hashedName}.${extension}`;
+            const uniqueKey = `${dateFolder}/${filename}`;
+
             const result = await s3Client.send(
               new PutObjectCommand({
                 Bucket: bucketName,
@@ -64,7 +68,7 @@ const upload = (bucketName) => {
                 ContentType: file.mimetype,
               })
             );
-        
+
             uploadedFiles.push({
               fieldName: field,
               url: `${process.env.MINIO_ENDPOINT}/${bucketName}/${uniqueKey}`,
@@ -89,6 +93,5 @@ const upload = (bucketName) => {
     fields: (fieldsConfig) => minioUploadMiddleware(fieldsConfig),
   };
 };
-
 
 export default upload;
