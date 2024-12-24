@@ -1,4 +1,4 @@
-import { addSlide, getSlides,getClientSlides } from "@/controllers/slide.controller";
+import { addSlide, getSlides, getClientSlides } from "@/controllers/slide.controller";
 import upload from "@/middleware/upload.middleware";
 
 export const config = {
@@ -8,53 +8,46 @@ export const config = {
   },
 };
 
+const handleError = (res, message, status = 500) => {
+  console.error(message);
+  return res.status(status).json({
+    success: false,
+    message,
+  });
+};
+
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      console.log("slide");
+      console.log("POST request for slide upload received.");
       upload("slide").single("bgImg")(req, res, async (err) => {
         if (err) {
-          console.error("Upload Error: ", err.message);
-          return res.status(400).json({
-            success: false,
-            message: err.message,
-          });
+          return handleError(res, `Upload Error: ${err.message}`, 400);
         }
 
         try {
           const result = await addSlide(req);
           res.status(200).json(result);
         } catch (AddSlideError) {
-          console.error("AddSlide Error: ", AddSlideError.message);
-          res.status(500).json({
-            success: false,
-            message: AddSlideError.message,
-          });
+          return handleError(res, `AddSlide Error: ${AddSlideError.message}`);
         }
       });
       break;
 
     case "GET":
+      console.log("GET request received, query: ", req.query);
       try {
         if (req.query.type === "client") {
-
           const result = await getClientSlides(req);
           return res.status(200).json(result);
         }
-        const result = await getSlides(req); 
-        return res.status(200).json(result); 
+        const result = await getSlides(req);
+        return res.status(200).json(result);
       } catch (error) {
-        console.error("GET Error: ", error.message);
-        return res.status(500).json({
-          success: false,
-          error: error.message,
-        });
+        return handleError(res, `GET Error: ${error.message}`);
       }
 
     default:
-      return res.status(405).json({
-        success: false,
-        message: "Method not allowed",
-      });
+      return handleError(res, "Method not allowed", 405);
   }
 }
