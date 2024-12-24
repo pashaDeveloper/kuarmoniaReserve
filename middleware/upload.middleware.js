@@ -2,9 +2,8 @@ import multer from "multer";
 import crypto from "crypto";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-// تنظیمات اتصال به Minio
 const s3Client = new S3Client({
-  endpoint: `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}`,  // ترکیب آدرس endpoint و port
+  endpoint: `${process.env.MINIO_ENDPOINT}`,  
   useSSL: process.env.MINIO_USE_SSL === "true",
   region: process.env.MINIO_REGION || "us-east-1",
   credentials: {
