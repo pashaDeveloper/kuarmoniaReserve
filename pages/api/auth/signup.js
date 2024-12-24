@@ -7,29 +7,41 @@ export const config = {
     externalResolver: true,
   },
 };
-const uploadMiddleware = getUploadMiddleware();
-
+const bucketName = "user";
+const uploadMiddleware = getUploadMiddleware(bucketName);
 export default function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        const upload = getUploadMiddleware("user");
-        uploadMiddleware.fields(
-          [{ name: "avatar", maxCount: 1 }],
-          "user" // bucketName
-        )(req, res, async () => {
-          try {
-            const result = await signUpUser(req);
-            res.status(200).json(result);
-          } catch (signUpError) {
-            res.status(500).json({
-              success: false,
-              message: signUpError.message,
-            });
-          }
-        });
+        uploadMiddleware.fields([
+          { name: "avatar", maxCount: 1 }])(req, res, async (err) => {
+    if (err) {
+      console.error("Upload Error: ", err.message);
+      return res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    }
+    const fileUrls = await uploadMiddleware.processFiles(req.files, bucketName);
+    req.body.avatar = fileUrls.avatar?.[0] || null;
+    try {
+      const result = await signUpUser(req);
+      res.status(200).json(result);
+    } catch (signUpError) {
+      console.error("SignUp Error: ", signUpError.message);
+      res.status(500).json({
+        success: false,
+        message: signUpError.message,
+      });
+    }
+  });
+
       } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.error("Handler Error: ", error.message);
+        res.status(500).json({
+          success: false,
+          message: error.message,
+        });
       }
       break;
 
