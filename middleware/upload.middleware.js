@@ -43,7 +43,7 @@ const getUploadMiddleware = (bucketName) => {
         .toString()
         .padStart(2, "0")}`;
       console.log("processFiles: monthFolder:", monthFolder);
-
+      const uploadedFiles = {};
       for (const fieldName in files) {
         console.log(`processFiles: Processing fieldName: ${fieldName}`);
         uploadedFiles[fieldName] = [];
