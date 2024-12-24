@@ -83,6 +83,7 @@ const getUploadMiddleware = (bucketName) => {
           } catch (error) {
             console.error(`process:`, process.env.MINIO_ENDPOINT);
             console.error(`Error uploading file ${filename}:`, error.message);
+            console.error("Raw Response: ", error.$response);
             throw new Error("Error uploading file to S3");
           }
         }
