@@ -24,6 +24,7 @@ export default async function handler(req, res) {
         if (err) {
           return handleError(res, `Upload Error: ${err.message}`, 400);
         }
+        console.log("recev image handler")
 
         try {
           const result = await addSlide(req);

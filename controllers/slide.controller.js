@@ -2,9 +2,11 @@ import Slide from "@/models/slide.model";
 import path from "path";
 export async function addSlide(req) {
   try {
+    console.log("recev image controller")
     const { title, description, url, authorId, isFeatured } = req.body;
     let bgImg = null;
 
+    console.log("bgImg",bgImg)
 
     if (req.uploadedFiles && req.uploadedFiles.length > 0) {
       const fileExtension = path.extname(filePath).substring(1).toLowerCase();
