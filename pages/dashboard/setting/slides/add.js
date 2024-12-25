@@ -138,11 +138,11 @@ console.log(addData)
                 required: "توضیحات الزامی است",
                 minLength: {
                   value: 10,
-                  message: "توضیحات باید حداقل 10 کاراکتر باشد"
+                  message: "توضیحات باید حداقل ۱۰ کاراکتر داشته باشد."
                 },
                 maxLength: {
-                  value: 300,
-                  message: "توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد."
+                  value: 500,
+                  message: "توضیحات نباید بیشتر از ۵۰۰ کاراکتر باشد."
                 }
               })}
               className="rounded h-32 w-full"
