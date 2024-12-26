@@ -23,10 +23,7 @@ const upload = (bucketName) => {
     storage,
     fileFilter: (_, file, cb) => {
       const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
-      const extension = file.originalname
-        .split(".")
-        .pop()
-        .toLowerCase();
+      const extension = file.originalname.split(".").pop().toLowerCase();
 
       if (supportedFormats.test(extension)) {
         cb(null, true);
@@ -44,16 +41,19 @@ const upload = (bucketName) => {
 
       const dateFolder = format(new Date(), "yyyy-MM");
       try {
+        // بررسی و ایجاد سطل
         try {
           await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
         } catch (e) {
           await s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
         }
 
-        const uploadedFiles = [];
-        const fileFields = Object.keys(req.files || {});
+        // نگهداری فایل‌ها بر اساس نام فیلد
+        req.uploadedFiles = {};
 
+        const fileFields = Object.keys(req.files || {});
         for (const field of fileFields) {
+          req.uploadedFiles[field] = [];
           for (const file of req.files[field]) {
             const hashedName = crypto.randomBytes(16).toString("hex");
             const extension = file.originalname.split(".").pop();
@@ -69,8 +69,7 @@ const upload = (bucketName) => {
               })
             );
 
-            uploadedFiles.push({
-              fieldName: field,
+            req.uploadedFiles[field].push({
               url: `${process.env.MINIO_ENDPOINT}/${bucketName}/${uniqueKey}`,
               key: uniqueKey,
               result,
@@ -78,7 +77,6 @@ const upload = (bucketName) => {
           }
         }
 
-        req.uploadedFiles = uploadedFiles;
         next();
       } catch (error) {
         console.error("Error uploading to MinIO:", error);

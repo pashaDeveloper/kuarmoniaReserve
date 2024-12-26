@@ -7,14 +7,14 @@ export async function addGallery(req) {
   try {
     const { category, description } = req.body;
     let featuredImage = null;
-    let galleries = [];
-
-    if (req.body.featuredImage && req.body.featuredImage.length) {
-      const filePath = req.body.featuredImage;
-      const fileExtension = path.extname(filePath).substring(1).toLowerCase();
+let galleries = [];
+    if (req.uploadedFiles && req.uploadedFiles["featuredImage"] && req.uploadedFiles["featuredImage"].length > 0) {
+      const file = req.uploadedFiles["featuredImage"][0]; 
+      const fileExtension = path.extname(file.url).substring(1).toLowerCase();
+    
       featuredImage = {
-        url: filePath || "N/A",
-        public_id: path.basename(filePath) || "ناشناخته",
+        url: file.url || "N/A",
+        public_id: file.key || "ناشناخته",
         type:
           fileExtension === "jpg" ||
           fileExtension === "jpeg" ||
@@ -22,29 +22,28 @@ export async function addGallery(req) {
             ? "image"
             : fileExtension === "mp4"
             ? "video"
-            : "unknown"
+            : "unknown",
       };
     }
-
-    if (req.body.gallery && req.body.gallery.length) {
-      galleries = req.body.gallery.map((filePath) => {
-        const fileExtension = path.extname(filePath).substring(1).toLowerCase();
+    
+    if (req.uploadedFiles && req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"].length > 0) {
+      galleries = req.uploadedFiles["gallery"].map((file) => {
+        const fileExtension = path.extname(file.url).substring(1).toLowerCase();
         return {
-          url: filePath,
-          public_id: path.basename(filePath) || "ناشناخته",
+          url: file.url,
+          public_id: file.key || "ناشناخته",
           type:
             fileExtension === "jpg" ||
             fileExtension === "jpeg" ||
-            fileExtension === "png" 
+            fileExtension === "png"
               ? "image"
               : fileExtension === "mp4"
               ? "video"
-              : "unknown"
+              : "unknown",
         };
       });
     }
-console.log("gallery",galleries);
-console.log("featurImage",featuredImage);
+
       const galleryInstance = await Gallery.create({
         category,
         description,

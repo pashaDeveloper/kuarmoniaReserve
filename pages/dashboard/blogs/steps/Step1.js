@@ -63,7 +63,7 @@ const Step1 = ({publishDate,register,errors}) => {
     id="publishDate"
     className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
     {...register("publishDate", { required: "تاریخ انتشار الزامی است" })}
-    defaultValue={publishDate} // مقدار پیش‌فرض تاریخ امروز
+    defaultValue={publishDate} 
   />
   {errors.publishDate && ( 
     <span className="text-red-500 text-sm">{errors.publishDate.message}</span>

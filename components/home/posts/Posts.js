@@ -37,6 +37,7 @@ const Posts = () => {
           key={post.id}
           id={post.id}
           title={post.title}
+          slug={post.slug}
           description={post.description}
           thumbnailPreview={post.featuredImage}
           publishDate={post.publishDate}

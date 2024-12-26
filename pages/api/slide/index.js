@@ -19,7 +19,6 @@ const handleError = (res, message, status = 500) => {
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      console.log("POST request for slide upload received.");
       upload("slide").single("bgImg")(req, res, async (err) => {
         if (err) {
           return handleError(res, `Upload Error: ${err.message}`, 400);

@@ -1,6 +1,6 @@
 import verify from "@/middleware/verify.middleware";
 import authorization from "@/middleware/authorization.middleware";
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload from "@/middleware/upload.middleware";
 import { updatePost, getPost ,deletePost } from "@/controllers/post.controller";
 
 export const config = {
@@ -57,8 +57,8 @@ export default async function handler(req, res) {
         break;
   
     case "PATCH":
-      const upload = getUploadMiddleware("Post");
-      upload.single("featuredImage")(req, res, async (err) => {
+    
+      upload("post").single("featuredImage")(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
           return res.status(400).json({

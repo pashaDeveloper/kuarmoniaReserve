@@ -33,27 +33,41 @@ export async function addPost(req) {
       }
     }
 
-    if (req.body.featuredImage && req.body.featuredImage.length) {
-      const filePath = req.body.featuredImage[0];
-      const fileExtension = path.extname(filePath).substring(1).toLowerCase();  // بررسی نوع فایل به حروف کوچک
-      featuredImage = {
-        url: filePath || "N/A", 
-        public_id: path.basename(filePath) || "ناشناخته",
-        type: fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" ? "image" : 
-              fileExtension === "mp4" ? "video" : "unknown",
-      };
-    }
-    
-    if (req.body.gallery && req.body.gallery.length) {
-      gallery = req.body.gallery.map((filePath) => {
-        const fileExtension = path.extname(filePath).substring(1).toLowerCase();  // بررسی نوع فایل به حروف کوچک
-        return {
-          url: filePath, 
-          public_id: path.basename(filePath) || "ناشناخته",
-          type: fileExtension === "jpg" ||fileExtension === "jpeg" || fileExtension === "png" ? "image" : fileExtension === "mp4" ? "video" : "unknown",
-        };
-      });
-    }
+        if (req.uploadedFiles && req.uploadedFiles["featuredImage"] && req.uploadedFiles["featuredImage"].length > 0) {
+          const file = req.uploadedFiles["featuredImage"][0]; 
+          const fileExtension = path.extname(file.url).substring(1).toLowerCase();
+        
+          featuredImage = {
+            url: file.url || "N/A",
+            public_id: file.key || "ناشناخته",
+            type:
+              fileExtension === "jpg" ||
+              fileExtension === "jpeg" ||
+              fileExtension === "png"
+                ? "image"
+                : fileExtension === "mp4"
+                ? "video"
+                : "unknown",
+          };
+        }
+        
+        if (req.uploadedFiles && req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"].length > 0) {
+          gallery = req.uploadedFiles["gallery"].map((file) => {
+            const fileExtension = path.extname(file.url).substring(1).toLowerCase();
+            return {
+              url: file.url,
+              public_id: file.key || "ناشناخته",
+              type:
+                fileExtension === "jpg" ||
+                fileExtension === "jpeg" ||
+                fileExtension === "png"
+                  ? "image"
+                  : fileExtension === "mp4"
+                  ? "video"
+                  : "unknown",
+            };
+          });
+        }
     
   
     const post = await Post.create({
@@ -148,7 +162,7 @@ export async function getPosts(req) {
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id postId title createdAt views likes dislikes status likeCount dislikeCount featuredImage');
+    .select('_id postId title createdAt  views likes dislikes status likeCount dislikeCount featuredImage');
 
 
 
@@ -192,7 +206,7 @@ export async function getClientPosts(req) {
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title') 
-    .select('_id postId title description createdAt category views likes dislikes status isFeatured featuredImage visibility publishStatus publishDate');
+    .select('_id postId title description createdAt category views likes dislikes status isFeatured featuredImage visibility slug publishStatus publishDate');
     const total = await Post.countDocuments({ isDeleted: false });
     if (posts.length > 0) {
       return {

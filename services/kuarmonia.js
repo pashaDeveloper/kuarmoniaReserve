@@ -1,10 +1,7 @@
 
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-console.log("Base URL:", process.env.NEXT_PUBLIC_BASE_URL);
-console.log("MongoDB URI:", process.env.ATLAS_URI);
-console.log("DB Name:", process.env.DB_NAME);
-console.log(process.env);
+
 
 export const kuarmoniaApi = createApi({
   reducerPath: "kuarmonia",

@@ -247,7 +247,6 @@ const Add = () => {
             className="w-full h-full flex flex-col"
           >
             <div className="flex  items-center">
-              <div></div>
               <CustomProgressBar
                 currentStep={currentStep}
                 totalSteps={totalSteps}

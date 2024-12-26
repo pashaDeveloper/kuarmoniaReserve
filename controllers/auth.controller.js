@@ -17,12 +17,12 @@ export async function signUpUser(req) {
       }
       let avatar = null;
 
-      if (req.uploadedFiles && req.uploadedFiles.length > 0) {
-        avatar = {
-          url: req.uploadedFiles[0].url,
-          public_id: req.uploadedFiles[0].key,
-        };
-      }
+if (req.uploadedFiles && req.uploadedFiles["avatar"] && req.uploadedFiles["avatar"].length > 0) {
+    avatar = {
+        url: req.uploadedFiles["avatar"][0].url,
+        public_id: req.uploadedFiles["avatar"][0].key,
+    };
+}
   console.log("avatar",avatar)
       const userCount = await User.countDocuments();
       const role = userCount === 0 ? "superAdmin" : "user";

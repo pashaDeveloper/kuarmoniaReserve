@@ -122,13 +122,12 @@ select {
 }
 
 blockquote {
-  border-right: 4px solid rgb(0 0 0 / 0.4); /* رنگ ایندگو */
-  padding: 16px;
-  font-style: italic;
-  font-size: 1rem;
-  line-height: 2rem;
-  margin: 20px 0;
-  color: rgb(79 70 229 / 10);
+  @apply border-r-4 border-primary p-4 italic text-green-500 text-base leading-8 my-5;
+}
+
+/* حالت دارک مود */
+.dark blockquote {
+  @apply border-r-4 border-blue-500 p-4 italic text-blue-500 text-base leading-8 my-5;
 }
 .custom-button {
   @apply cursor-pointer rounded-full border border-green-500/5 dark:border-blue-500/5 bg-green-500/5 dark:bg-blue-500/5 p-2 text-green-500 dark:text-blue-500 transition-colors hover:border-green-500/10 dark:hover:border-blue-500/10 hover:bg-green-500/10 dark:hover:bg-blue-500/10 hover:!opacity-100 group-hover:opacity-70;

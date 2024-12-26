@@ -1,4 +1,4 @@
-import getUploadMiddleware from "@/middleware/upload.middleware";
+import upload from "@/middleware/upload.middleware";
 import { addPost, getPosts,getClientPosts } from "@/controllers/post.controller";
 
 export const config = {
@@ -11,8 +11,7 @@ export const config = {
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const upload = getUploadMiddleware("Post");
-      upload.fields([
+      upload("post").fields([
         { name: "featuredImage", maxCount: 1 },
         { name: "gallery", maxCount: 5 }, 
       ])(req, res, async (err) => {

@@ -259,7 +259,7 @@ postSchema.pre('save', async function(next) {
     this.postId = await getNextSequenceValue('postId');
   }
   if (!this.canonicalUrl) {
-    this.canonicalUrl = `${defaultDomain}/post/${encodeURIComponent(this.slug)}/${this._id}`;
+    this.canonicalUrl = `${defaultDomain}/post/${this.slug}/${encodeURIComponent(this._id)}`;
   }
   next();
 });

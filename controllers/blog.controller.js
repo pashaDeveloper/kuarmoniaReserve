@@ -32,12 +32,17 @@ export async function addBlog(req) {
         console.error("Error parsing socialLinks:", e.message);
       }
     }
-    if (req.body.featuredImage && req.body.featuredImage.length) {
+
+    
+    if (req.uploadedFiles && req.uploadedFiles["featuredImage"] && req.uploadedFiles["featuredImage"].length > 0) {
+      const file = req.uploadedFiles["featuredImage"][0]; 
+    
       featuredImage = {
-        url: req.body.featuredImage[0] || "N/A", 
-        public_id: path.basename(req.body.featuredImage[0]) || "ناشناخته", 
-      };
+        url: file.url || "N/A",
+        public_id: file.key || "ناشناخته",
+       
     }
+  }
 
     const blog = await Blog.create({
       title,

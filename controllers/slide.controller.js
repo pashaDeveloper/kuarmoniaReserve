@@ -6,14 +6,15 @@ export async function addSlide(req) {
     let bgImg = null;
 
 
-    if (req.uploadedFiles && req.uploadedFiles.length > 0) {
-      const filePath = req.uploadedFiles[0].path || req.uploadedFiles[0].url;  
-      
+    if (req.uploadedFiles && req.uploadedFiles["bgImg"] && req.uploadedFiles["bgImg"].length > 0) {
+      const file = req.uploadedFiles["bgImg"][0]; 
+      const filePath = file.url;
+    
       const fileExtension = path.extname(filePath).substring(1).toLowerCase();
     
       bgImg = {
-        url: req.uploadedFiles[0].url,
-        public_id: req.uploadedFiles[0].key,
+        url: file.url,
+        public_id: file.key,
         type:
           fileExtension === "jpg" ||
           fileExtension === "jpeg" ||
@@ -21,7 +22,7 @@ export async function addSlide(req) {
             ? "image"
             : fileExtension === "mp4"
             ? "video"
-            : "unknown"
+            : "unknown",
       };
     }
 
