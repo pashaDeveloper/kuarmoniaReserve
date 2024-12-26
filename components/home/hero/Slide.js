@@ -1,16 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import ReactPlayer from "react-player";
 import Link from "next/link";
-import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; // آیکون‌ها
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; 
 
-const Slide = ({ title, description, bgImg, url }) => {
+const Slide = ({ title, description, bgImg, url , isActive }) => {
   const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false); // وضعیت پخش
-  const playerRef = useRef(null); // مرجع به پلیر
+  const [isPlaying, setIsPlaying] = useState(true);
+  const playerRef = useRef(null);
+  const slideRef = useRef(null);
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying); // وضعیت پخش را تغییر می‌دهد
+    setIsPlaying(!isPlaying);
   };
+
+  
 
   return (
     <div
@@ -20,16 +23,16 @@ const Slide = ({ title, description, bgImg, url }) => {
         <>
             <button             onClick={togglePlayPause}           >
           <ReactPlayer
-            ref={playerRef} // اضافه کردن ref به پلیر
+            ref={playerRef} 
             url={bgImg?.url}
-            playing={isPlaying} // وضعیت پخش
+            playing={isPlaying } 
             loop
-            muted={isMuted}
+            muted={isMuted }
             controls={false}
             width="100%"
             height="100%"
             className="absolute w-full h-full rounded-md"
-            onClick={togglePlayPause} // رویداد کلیک برای پخش/توقف
+
           />
                     </button>
         </>

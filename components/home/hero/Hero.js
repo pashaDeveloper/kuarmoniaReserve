@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import Slide from "./Slide";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 import Container from "@/components/shared/container/Container";
-import KeyServices  from "@/components/home/steps/KeyServices ";
+import KeyServices  from "@/components/home/steps/KeyServices";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useGetClientSlidesQuery } from "@/services/slide/slideApi";
@@ -35,8 +35,8 @@ const Hero = () => {
     if (!a.isFeatured && b.isFeatured) return 1;
     return 0;
   });
-
-  const [activeSlide, setActiveSlide] = useState(1); // شروع از اسلاید اول
+console.log("slide")
+  const [activeSlide, setActiveSlide] = useState(1); // ذخیره ایندکس اسلاید فعال
 
   const settings = {
     dots: true,
@@ -75,6 +75,7 @@ const Hero = () => {
                   {...slideContent}
                   url={slideContent.url || "/"}
                   media={slideContent.bgImg.url}
+                   // ارسال وضعیت اسلاید فعال
                 />
               ))}
             </Slider>
@@ -85,4 +86,5 @@ const Hero = () => {
     </section>
   );
 };
+
 export default Hero;
