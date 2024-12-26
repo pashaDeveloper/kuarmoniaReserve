@@ -80,11 +80,11 @@ import Image from 'next/image';
 
           <div className="relative bg-gray-50 z-10 dark:bg-gray-800 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 ">
             <div className="flex items-center mt-14 justify-center text-center">
-              <div className="text-gray-700">
+              <div className="text-gray-700 mt-6 md:mt-0">
                 <p>
                   <a
                     href="#"
-                    className="text-indigo-600 font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out dark:text-gray-300"
+                    className="text-indigo-600  font-medium hover:text-gray-900 transition text-center duration-500 ease-in-out dark:text-gray-300"
                   >
                     <span className="text-2xl"> {author}</span>
                   </a>
