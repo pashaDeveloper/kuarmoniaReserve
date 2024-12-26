@@ -40,8 +40,8 @@ import Image from 'next/image';
           <Image
           src={featureImage}
           alt="Feature Image"
-          width={1200} // عرض تصویر (در اینجا باید اندازه‌ای مناسب وارد کنید)
-          height={500} // ارتفاع تصویر (در اینجا باید اندازه‌ای مناسب وارد کنید)
+          width={1200} 
+          height={500} 
           className="w-full object-cover h-[500px]"
          />
         )
@@ -79,7 +79,7 @@ import Image from 'next/image';
           </div>
 
           <div className="relative bg-gray-50 z-10 dark:bg-gray-800 dark:text-gray-100 shadow-lg top-0 -mt-20 p-5 sm:p-10 ">
-            <div className="flex items-center mt-14 justify-center">
+            <div className="flex items-center mt-14 justify-center text-center">
               <div className="text-gray-700">
                 <p>
                   <a

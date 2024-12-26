@@ -82,7 +82,7 @@ const BlogCard = ({
             5.0
           </p>
         </div>
-        <div className="  text-base text-justify leading-relaxed text-gray-700 dark:text-blue-100 antialiased line-clamp-5  overflow-hidden text-ellipsis break-words">
+        <div className="  text-base text-justify leading-relaxed text-gray-700 dark:text-blue-100 antialiased line-clamp-4  overflow-hidden text-ellipsis break-words">
           {description ? description : <SkeletonText lines={5} />}
         </div>
         <div className="absolute bottom-1 right-1 w-full px-3">
