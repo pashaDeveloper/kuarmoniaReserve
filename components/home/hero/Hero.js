@@ -36,7 +36,7 @@ const Hero = () => {
     return 0;
   });
 
-  const [activeSlide, setActiveSlide] = useState(0); // شروع از اسلاید اول
+  const [activeSlide, setActiveSlide] = useState(1); // شروع از اسلاید اول
 
   const settings = {
     dots: true,
@@ -49,7 +49,6 @@ const Hero = () => {
     cssEase: "linear",
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
-    beforeChange: (_, next) => setActiveSlide(next), // ذخیره اسلاید بعدی
   };
 
   if (isLoading) {
@@ -76,7 +75,6 @@ const Hero = () => {
                   {...slideContent}
                   url={slideContent.url || "/"}
                   media={slideContent.bgImg.url}
-                  isActive={index === activeSlide} // ارسال وضعیت فعال
                 />
               ))}
             </Slider>

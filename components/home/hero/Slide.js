@@ -3,29 +3,13 @@ import ReactPlayer from "react-player";
 import Link from "next/link";
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa"; // آیکون‌ها
 
-const Slide = ({ title, description, bgImg, url, isActive }) => {
+const Slide = ({ title, description, bgImg, url }) => {
   const [isMuted, setIsMuted] = useState(true);
-  const [isLoading, setIsLoading] = useState(true); // برای بارگذاری ویدئو
-  const [thumbUrl, setThumbUrl] = useState(null); // ذخیره URL تصویر بندانگشتی
-  const playerRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false); // وضعیت پخش
+  const playerRef = useRef(null); // مرجع به پلیر
 
-  // گرفتن فریم از ویدئو
-  const captureThumbnail = () => {
-    const player = playerRef.current;
-    if (player) {
-      const videoElement = player.getInternalPlayer();
-      const canvas = document.createElement("canvas");
-      canvas.width = videoElement.videoWidth;
-      canvas.height = videoElement.videoHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-      setThumbUrl(canvas.toDataURL()); // ذخیره تصویر بندانگشتی در state
-    }
-  };
-
-  const handleVideoReady = () => {
-    setIsLoading(false);
-    captureThumbnail(); // گرفتن فریم پس از بارگذاری
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying); // وضعیت پخش را تغییر می‌دهد
   };
 
   return (
@@ -34,33 +18,20 @@ const Slide = ({ title, description, bgImg, url, isActive }) => {
     >
       {bgImg.type === "video" ? (
         <>
-          {isLoading && (
-            <div
-              className="absolute w-full h-full bg-cover bg-center rounded-md"
-              style={{
-                backgroundImage: thumbUrl ? `url(${thumbUrl})` : "none", // استفاده از تصویر بندانگشتی
-              }}
-            ></div>
-          )}
+            <button             onClick={togglePlayPause}           >
           <ReactPlayer
-  ref={playerRef}
-  url={bgImg?.url}
-  playing={isActive}
-  loop
-  muted={!isActive || isMuted}
-  controls={false}
-  width="100%"
-  height="100%"
-  className="absolute w-full h-full rounded-md"
-  onReady={handleVideoReady}
-  config={{
-    file: {
-      attributes: {
-        crossOrigin: "anonymous", // این خط برای جلوگیری از مشکل CORS
-      },
-    },
-  }}
-/>
+            ref={playerRef} // اضافه کردن ref به پلیر
+            url={bgImg?.url}
+            playing={isPlaying} // وضعیت پخش
+            loop
+            muted={isMuted}
+            controls={false}
+            width="100%"
+            height="100%"
+            className="absolute w-full h-full rounded-md"
+            onClick={togglePlayPause} // رویداد کلیک برای پخش/توقف
+          />
+                    </button>
         </>
       ) : (
         <div
@@ -69,12 +40,17 @@ const Slide = ({ title, description, bgImg, url, isActive }) => {
         ></div>
       )}
       {bgImg.type === "video" && (
-        <button
-          onClick={() => setIsMuted(!isMuted)}
-          className="absolute bottom-4 right-4 bg-gray-700 text-white p-2 rounded-full"
-        >
-          {isMuted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
-        </button>
+        <>
+          {/* دکمه قطع و وصل صدا */}
+          <button
+            onClick={() => setIsMuted(!isMuted)}
+            className="absolute bottom-4 right-4 bg-gray-700 text-white p-2 rounded-full"
+          >
+            {isMuted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
+          </button>
+      
+          
+        </>
       )}
       {bgImg.type !== "video" && (
         <Link href={url} passHref>
