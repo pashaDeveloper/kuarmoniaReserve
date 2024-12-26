@@ -1,7 +1,7 @@
 import { updateBlog, getBlog ,deleteBlog } from "@/controllers/blog.controller";
 import verify from "@/middleware/verify.middleware";
 import authorization from "@/middleware/authorization.middleware";
-import upload from "@/middleware/upload.middleware"; 
+import getUploadMiddleware from "@/middleware/upload.middleware"; 
 
 export const config = {
   api: {
@@ -15,27 +15,9 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        verify(req, res, async (err) => {
-          if (err) {
-            return res.status(401).json({
-              success: false,
-              error: err.message,
-            });
-          }
-
-          authorization("superAdmin")(req, res, async (err) => {
-            if (err) {
-              return res.status(403).json({
-                success: false,
-                error: err.message,
-              });
-            }
-
-            const result = await getBlog(req);
-            return res.status(200).json(result);
-          });
-        });
-      } catch (error) {
+        const result = await getBlog(req);
+        return res.status(200).json(result);
+      }  catch (error) {
         res.status(500).json({
           success: false,
           error: error.message,
@@ -76,7 +58,8 @@ export default async function handler(req, res) {
   
 
     case "PATCH":
-      upload("blog").single("featuredImage")(req, res, async (err) => {
+      const upload = getUploadMiddleware("blog");
+      upload.single("featuredImage")(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
           return res.status(400).json({

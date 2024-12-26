@@ -18,9 +18,7 @@ const blogApi = kuarmoniaApi.injectEndpoints({
       query: ({ page = 1, limit = 7, search = "", userId }) => ({
         url: `/blog/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        
       }),
     }),
 
@@ -28,9 +26,7 @@ const blogApi = kuarmoniaApi.injectEndpoints({
       query: (id) => ({
         url: `/blog/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+       
       }),
 
       providesTags: ["User"],

@@ -18,7 +18,7 @@ const BlogContent = () => {
     data: fetchData,
     error: fetchError,
   } = useGetBlogQuery(id);
-
+console.log("fetchData",fetchData)
   return (
     <main>
       <Head>
