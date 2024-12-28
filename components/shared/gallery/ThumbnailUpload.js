@@ -6,9 +6,11 @@ const ThumbnailUpload = ({
   setThumbnail,
   setThumbnailPreview,
   register,
-  title = true,
+  isTitle = true,
   iconSize = 5,
   border = true,
+  title="انتخاب یک فایل (عکس یا ویدئو)",
+  name="thumbnail"
 }) => {
   const handleThumbnailPreview = (event) => {
     const file = event.target.files[0]; 
@@ -35,12 +37,12 @@ const ThumbnailUpload = ({
             ${border ? "border border-green-900 cursor-pointer rounded-secondary" : "rounded-md"} dark:border-blue-900 text-green-900 dark:text-blue-900 w-fit`}
         >
           <IoCloudUploadOutline className={`h-${iconSize} w-${iconSize}`} />
-          {title && `انتخاب یک فایل (عکس یا ویدئو)`}
+          {isTitle && title}
         </button>
         <input
           type="file"
-          name="thumbnail"
-          id="thumbnail"
+          name={name}
+          id={name}
           accept="image/*, video/*"
           className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
           {...register}

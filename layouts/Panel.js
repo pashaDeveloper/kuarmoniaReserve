@@ -18,6 +18,7 @@ import { PiCreditCardLight, PiCubeTransparent } from "react-icons/pi";
 import { FiUsers } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { GrGallery } from "react-icons/gr";
+import { RxVideo } from "react-icons/rx";
 
 const Panel = ({ children }) => {
   const router = useRouter();
@@ -46,6 +47,11 @@ const Panel = ({ children }) => {
       name: "تگ ها",
       path: "/dashboard/tags",
       icon: <BsTags className="w-5 h-5" />,
+    },
+    {
+      name: "رسانه",
+      path: "/dashboard/media",
+      icon: <RxVideo className="w-5 h-5" />,
     },
     {
       name: "پست",

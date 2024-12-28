@@ -272,8 +272,8 @@ postSchema.pre("save", async function (next) {
     this.postId = await getNextSequenceValue("postId");
   }
 
-  if (this.isNew || this.isModified("publishStatus")) {
-    this.metaRobots = this.publishStatus === "private" ? "noindex, nofollow" : "index, follow";
+  if (this.isNew || this.isModified("visibility")) {
+    this.metaRobots = this.visibility === "private" ? "noindex, nofollow" : "index, follow";
   }
 
   if (

@@ -67,14 +67,14 @@ const MultiSelectDropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500 rounded-md shadow-sm focus:outline-none ${className}`}
+        className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500  rounded-md shadow-sm focus:outline-none ${className}`}
       >
-        <div className="flex flex-wrap  gap-1 ">
-          {selectedItems.length > 0 ? (
+<div className="flex gap-1 overflow-x-hidden scrollbar-hidden w-[320px] whitespace-nowrap">
+{selectedItems.length > 0 ? (
             selectedItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
+                className="bg-blue-100  text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
               >
                 {icon && <span className="mr-1">{icon}</span>}
                 {item.value}

@@ -152,6 +152,9 @@ blockquote {
 .link-hover {
   @apply hover:bg-green-500 dark:hover:bg-blue-500;
 }
+
+
+
 .fullscreen-editor {
   position: fixed;
   top: 0;

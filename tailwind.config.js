@@ -90,6 +90,7 @@ module.exports = {
         primary: "1rem",
         secondary: "1.5rem",
       },
+      
       colors: {
         primary: "#01BC1FD6",
         secondary: "#E4FFEA",
