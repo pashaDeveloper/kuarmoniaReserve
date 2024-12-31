@@ -5,11 +5,11 @@ const mediaApi = kuarmoniaApi.injectEndpoints({
     addMedia: builder.mutation({
       query: (body) => ({
         url: "/media/",
-        method: "media",
+        method: "POST",
         body,
       }),
       invalidatesTags: [
-        "media",
+        "Media",
       
       ],
     }),

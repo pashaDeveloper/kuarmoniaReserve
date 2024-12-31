@@ -10,10 +10,10 @@ export const config = {
 
 export default async function handler(req, res) {
   switch (req.method) {
-    case "Media":
-      upload("Media").fields([
-        { name: "featuredImage", maxCount: 1 },
-        { name: "gallery", maxCount: 5 }, 
+    case "POST":
+      upload("media").fields([
+        { name: "thumbnail", maxCount: 1 },
+        { name: "media", maxCount: 1 }, 
       ])(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
@@ -24,6 +24,7 @@ export default async function handler(req, res) {
         }
 
         try {
+
           const result = await addMedia(req);
           res.status(200).json(result);
         } catch (AddMediaError) {
@@ -37,14 +38,10 @@ export default async function handler(req, res) {
       break;
     case "GET":
       try {
-
-
         if (req.query.type === "client") {
-
           const result = await getClientMedias(req);
           return res.status(200).json(result);
         }
-
         const result = await getMedias(req);
         return res.status(200).json(result);
       } catch (error) {

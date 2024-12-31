@@ -3,6 +3,7 @@ import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";
 import Counter from "./counter.model";
 import Category from "./category.model";
+import Tag from "./tag.model";
 
 connectDB();
 
@@ -62,6 +63,10 @@ const mediaSchema = new Schema(
         type: String,
         required: [true, "رسانه الزامی است"],
       },
+      type:{
+        type:String,
+        default:"video"
+      },
       public_id: {
         type: String,
         default: "N/A",
@@ -86,10 +91,14 @@ const mediaSchema = new Schema(
       enum: ["index, follow", "noindex, nofollow", "index, nofollow", "noindex, follow"],
       default: "index, follow",
     },
+    authorId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "شناسه نویسنده الزامی است"],
+    },
     visibility: {
-      type: String,
-      enum: ["public", "private"],
-      default: "public",
+      type: Boolean,
+      default: true,
     },
     canonicalUrl: {
       type: String,
@@ -223,9 +232,9 @@ mediaSchema.pre("save", async function (next) {
   next();
 });
 
-const media = models.media || model("media", mediaSchema);
+const Media = models.Media || model("Media", mediaSchema);
 
-export default media;
+export default Media;
 
 async function getNextSequenceValue(sequenceName) {
   const sequenceDocument = await Counter.findOneAndUpdate(

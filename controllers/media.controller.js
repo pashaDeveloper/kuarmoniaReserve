@@ -2,120 +2,82 @@
 import Media from '@/models/media.model';
 import Like from '@/models/like.model';
 import User from '@/models/user.model';
-import path from "path";
 export async function addMedia(req) {
   try {
     const {
       title,
       description,
-      content,
-      publishDate,
       tags,
       category,
       authorId,
-      socialLinks,
       metaTitle,
       metaDescription,
-      readTime,
       isFeatured,
       visibility,
-      relatedMedias,
- 
-    } = req.body;
-    let parsedSocialLinks = [];
-    let featuredImage = null;
-    let gallery = [];
-    if (socialLinks) {
-      try {
-        parsedSocialLinks = JSON.parse(socialLinks);
-      } catch (e) {
-        console.error("Error parsing socialLinks:", e.message);
-      }
-    }
 
-        if (req.uploadedFiles && req.uploadedFiles["featuredImage"] && req.uploadedFiles["featuredImage"].length > 0) {
-          const file = req.uploadedFiles["featuredImage"][0]; 
-          const fileExtension = path.extname(file.url).substring(1).toLowerCase();
+    } = req.body;
+    let thumbnail = null;
+    let media = null;
+    
+
+        if (req.uploadedFiles && req.uploadedFiles["thumbnail"] && req.uploadedFiles["thumbnail"].length > 0) {
+          const file = req.uploadedFiles["thumbnail"][0]; 
         
-          featuredImage = {
+          thumbnail = {
             url: file.url || "N/A",
             public_id: file.key || "ناشناخته",
-            type:
-              fileExtension === "jpg" ||
-              fileExtension === "jpeg" ||
-              fileExtension === "png"
-                ? "image"
-                : fileExtension === "mp4"
-                ? "video"
-                : "unknown",
           };
         }
+        if (req.uploadedFiles && req.uploadedFiles["media"] && req.uploadedFiles["media"].length > 0) {
+          const file = req.uploadedFiles["media"][0]; 
         
-        if (req.uploadedFiles && req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"].length > 0) {
-          gallery = req.uploadedFiles["gallery"].map((file) => {
-            const fileExtension = path.extname(file.url).substring(1).toLowerCase();
-            return {
-              url: file.url,
-              public_id: file.key || "ناشناخته",
-              type:
-                fileExtension === "jpg" ||
-                fileExtension === "jpeg" ||
-                fileExtension === "png"
-                  ? "image"
-                  : fileExtension === "mp4"
-                  ? "video"
-                  : "unknown",
-            };
-          });
+          media = {
+            url: file.url || "N/A",
+            public_id: file.key || "ناشناخته",
+          };
         }
-    
   
-    const Media = await Media.create({
+    const result = await Media.create({
       title,
       description,
-      content,
-      publishDate,
       tags,
+      media,
+      thumbnail,
       category,
-      featuredImage,
-      gallery,
       authorId,
-      socialLinks: parsedSocialLinks,
       metaTitle,
       metaDescription,
-      readTime,
       isFeatured,
       visibility,
-      relatedMedias,
     });
 
-    if (Media) {
+    if (result) {
       const like = await Like.create({
-        entityId: Media._id,
+        entityId: result._id,
         entityType: "Media", 
         type: "like", 
       });
 
       const dislike = await Like.create({
-        entityId: Media._id, 
+        entityId: result._id, 
         entityType: "Media",
         type: "dislike",
       });
 
     
-      Media.likes = [like._id];
-      Media.dislikes = [dislike._id];
-      await Media.save(); 
+      result.likes = [like._id];
+      result.dislikes = [dislike._id];
+      await result.save(); 
 
       return {
         success: true,
-        message: "پست با موفقیت ایجاد شد",
-        data: Media,
+        message: "رسانه با موفقیت ایجاد شد",
+        data: result,
       };
     } else {
       return {
         success: false,
-        message: "خطا در ساخت پست",
+        message: "خطا در ساخت رسانه",
       };
     }
   } catch (error) {
@@ -140,10 +102,7 @@ export async function getMedias(req) {
         message: "کاربر پیدا نشد",
       };
     }
-
     const isSuperAdmin = user.role === 'superAdmin';
-
-
 
     const searchQuery = search
     ? { 
@@ -158,27 +117,26 @@ export async function getMedias(req) {
     if (!isSuperAdmin) {
       searchQuery.authorId = userId;
     }
-    const Medias = await Media.find(searchQuery)
+    const result = await Media.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
-    .select('_id MediaId title createdAt  views likes dislikes status likeCount dislikeCount featuredImage');
-
-
+    .populate('tags', 'title') 
+    .select('_id mediaId thumbnail media title description category tags createdAt views likes dislikes status likeCount dislikeCount ');
 
     const total = await Media.countDocuments(searchQuery);
 
-    if (Medias.length > 0) {
+    if (result.length > 0) {
       return {
         success: true,
-        data: Medias,
+        data: result,
         total,
-        message: "پست‌ها با موفقیت دریافت شد",
+        message: "رسانه با موفقیت دریافت شد",
       };
     } else {
       return {
         success: false,
-        message: "هیچ پستی یافت نشد",
+        message: "هیچ رسانه ای یافت نشد",
       };
     }
   } catch (error) {
@@ -197,21 +155,20 @@ export async function getClientMedias(req) {
 
     const filter = {
       isDeleted: false,
-      publishStatus: "approved", 
       status: "active", 
     };
     const superAdmin = await User.findOne({ role: 'superAdmin' });
-    const Medias = await Media.find(filter)
+    const result = await Media.find(filter)
     .skip(skip)
     .limit(Number(limit))
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title') 
-    .select('_id MediaId title description createdAt category views likes dislikes status isFeatured featuredImage visibility slug publishStatus publishDate');
+    .select('_id mediaId title description createdAt category views likes dislikes status isFeatured thumbnail visibility slug authorId publishDate');
     const total = await Media.countDocuments({ isDeleted: false });
-    if (Medias.length > 0) {
+    if (result.length > 0) {
       return {
         success: true,
-        data: Medias,
+        data: result,
         superAdmin:{
           avatar:superAdmin?.avatar?.url,
           name:superAdmin?.name
@@ -261,16 +218,16 @@ export async function getMediasForDropDownMenu() {
 export async function getMedia(req) {
   try {
 
-    const Media = await Media.findById(req.query.id)
+    const result = await Media.findById(req.query.id)
     .populate('authorId', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
-    .select('_id MediaId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured gallery featuredImage metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
-    if (Media) {
+    .select('_id mediaId title description slug canonicalUrl content createdAt views likes dislikes media thumbnail status isFeatured gallery featuredImage metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
+    if (result) {
       return {
         success: true,
         message: "اطلاعات پست با موفقیت دریافت شد",
-        data: Media,
+        data: result,
       };
     } else {
       return {
@@ -293,7 +250,6 @@ export async function updateMedia(req) {
   const { id } = req.query;
   try {
     const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
-    console.log("publishStatus",publishStatus)
 
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
@@ -336,13 +292,13 @@ export async function updateMedia(req) {
 // delete Media
 export async function deleteMedia(req) {
   try {
-    const Media = await Media.findByIdAndUpdate(
+    const result = await Media.findByIdAndUpdate(
       req.query.id,
       { isDeleted: true },
       { new: true }
     );
 
-    if (Media) {
+    if (result) {
       return {
         success: true,
         message: "پست با موفقیت حذف شد",

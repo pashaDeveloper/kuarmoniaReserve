@@ -54,6 +54,7 @@ const Blogs = () => {
                   key={index}
                   id={blog.id}
                   title={blog?.title}
+                  slug={blog?.slug}
                   description={blog?.description}
                   thumbnailPreview={blog?.featuredImage?.url}
                   publishDate={blog?.publishDate}

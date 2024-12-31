@@ -19,7 +19,7 @@ const likeSchema = new Schema(
       },
       entityType: {
         type: String,
-        enum: ["Blog","News", "Product", "Comment","Post"], 
+        enum: ["Blog","News", "Product", "Comment","Post","Media"], 
         required: [true, "نوع موجودیت الزامی است"],
       },
       type: {

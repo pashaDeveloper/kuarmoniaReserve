@@ -10,8 +10,7 @@ import {
   useUpdateMediaMutation
 } from "@/services/media/mediaApi";
 import { useSelector } from "react-redux";
-import { useFieldArray, Controller } from "react-hook-form";
-import Dropdown from "@/components/shared/dropdownmenu/Dropdown";
+import {  Controller } from "react-hook-form";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
 import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/categoryApi";
@@ -38,20 +37,20 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
   const [mediaPreview, setMediaPreview] = useState(null);
   const [url, setUrl] = useState(null);
   const [isFeatured, setIsFeatured] = useState(false);
+  const [visibility, setVisibility] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
   const [media, setMedia] = useState(null);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
   const user = useSelector((state) => state?.auth);
-
   useEffect(() => {
     if (mediaToEdit) {
       setValue("title", mediaToEdit.title);
       setValue("description", mediaToEdit.description);
       setThumbnailPreview(mediaToEdit.thumbnail);
       setMediaPreview(mediaToEdit.media);
-      setUrl(mediaToEdit.url);
       setIsFeatured(mediaToEdit.isFeatured);
+      setVisibility(mediaToEdit.visibility);
     } else {
       reset();
     }
@@ -64,6 +63,7 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
       id: user?._id
     };
   }, [user]);
+
   const categories = Array.isArray(categoriesData?.data) ? categoriesData.data : [];
   const tags = Array.isArray(tagsData?.data) ? tagsData.data : [];
 
@@ -89,10 +89,10 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
     formData.append("description", data.description);
     formData.append("thumbnail", thumbnail);
     formData.append("media", media);
-    formData.append("authorId", user?._id);
     formData.append("isFeatured", data.isFeatured);
     formData.append("category", data.category);
     formData.append("visibility", data.visibility);
+    formData.append("authorId", user?._id);
     data.tags.forEach((tag) => {
       formData.append("tags[]", tag.id);
     });
@@ -113,17 +113,17 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
     const data = addData || updateData;
     const error = addError || updateError;
     if (isLoading) {
-      toast.loading("در حال پردازش...", { id: "Media" });
+      toast.loading("در حال پردازش...", { id: "media" });
     }
 
     if (data?.success) {
-      toast.success(data?.message, { id: "Media" });
+      toast.success(data?.message, { id: "media" });
       reset();
       onSuccess();
       onClose();
     }
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "Media" });
+      toast.error(error?.data?.message, { id: "media" });
     }
   }, [addData, updateData, addError, updateError, isAdding, isUpdating, reset, onSuccess]);
   const handleTagChange = (selectedTags) => {
@@ -206,10 +206,15 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
                   control={control}
                   name="tags"
                   rules={{ required: 'انتخاب تگ الزامی است' }}
-                  render={({ field: { onChange, value } }) => (
+                  render={({ field: {value} }) => (
                     <MultiSelectDropdown
                       items={tagsOptions}
-                      selectedItems={value || []}
+                      selectedItems={
+                        mediaToEdit?.tags?.map(tag => ({
+                          id: tag._id,
+                          value: tag.title
+                        })) || value
+                      }
                       handleSelect={handleTagChange}
                       icon={<TagIcon />}
                       placeholder="چند مورد انتخاب کنید"
@@ -249,7 +254,7 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
                     <SearchableDropdown
                     items={categoryOptions}
                       handleSelect={onChange}
-                      value={value}
+                      value={mediaToEdit?.category||value}
                       sendId={true}
                       errors={errors.category}
                       className={"w-full h-12"}
@@ -274,37 +279,13 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
           )}
         </div>
 
-          <label htmlFor="visibility" className="flex flex-col gap-y-2 w-full">
-          دسترسی
-          <Controller
-            control={control}
-            name="visibility"
-            render={({ field: { onChange, value } }) => (
-              <Dropdown
-                options={[
-                  { id: 1, value: 'public', label: 'عمومی', description: 'عمومی' },
-                  { id: 2, value: 'private', label: 'خصوصی', description: 'خصوصی' }
-                ]}
-                placeholder="به صورت پیش فرض عمومی است"
-                value={value}
-                onChange={onChange}
-                className="w-full"
-                height="py-3"
-                error={errors.visibility}
-              />
-            )}
-          />
-          {errors.visibility && (
-            <span className="text-red-500 text-sm">{errors.visibility.message}</span>
-          )}
-        </label>
           {/* آپلود تصویر */}
           <ThumbnailUpload
               setThumbnailPreview={setMediaPreview}
               setThumbnail={setMedia}
               name="media"
               title="یک رسانه پویا انتخاب کنید"
-              register={register('media', { required: 'آپلود رسانه عنوان الزامی است' })}
+              register={register('media')}
               maxFiles={1}
               />
               {errors.media && (
@@ -326,10 +307,11 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
               )}
             {thumbnailPreview && <DisplayImages galleryPreview={[thumbnailPreview]} imageSize={150} />}
        
-          
+          <div className="flex flex-row justify-between">
+
 
           {/* رسانه ویژه */}
-          <div className="flex flex-col gap-y-2 w-full">
+          <div className="flex flex-col gap-y-2 w-full ">
             <label className="inline-flex items-center cursor-pointer justify-start w-full">
               <span className="ml-3 text-right">آیا این رسانه ویژه است؟</span>
               <input
@@ -340,6 +322,20 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
               />
               <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-blue-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-blue-600"></div>
             </label>
+          </div>
+
+          <div className="flex flex-col gap-y-2 w-full flex-end">
+            <label className="inline-flex items-center cursor-pointer justify-start w-full">
+              <span className="ml-3 text-right">محتوای خصوصی</span>
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                id="visibility"
+                {...register("visibility")}
+              />
+              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-blue-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
           </div>
 
           {/* دکمه ارسال */}

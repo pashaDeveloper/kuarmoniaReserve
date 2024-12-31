@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Eye} from "@/utils/saveIcon"
 const BlogMetrics = ({ likeCount = 0, dislikeCount = 0, views = 0, rating = 0, iconSize = 22 ,gap=2}) => {
   return (
     <div className={`flex gap-${gap} justify-center`}>
@@ -44,7 +44,7 @@ const BlogMetrics = ({ likeCount = 0, dislikeCount = 0, views = 0, rating = 0, i
                   >
                     <path
                       fill="currentColor"
-                      fill-opacity="0.15"
+                      fillOpacity="0.15"
                       d="M273 100.1v428h.3zM820.4 525l-21.9-19l14-25.5a56.2 56.2 0 0 0 6.9-27.3c0-16.5-7.1-32.2-19.6-43l-21.9-19l13.9-25.4a56.2 56.2 0 0 0 6.9-27.3c0-16.5-7.1-32.2-19.6-43l-21.9-19l13.9-25.4a56.2 56.2 0 0 0 6.9-27.3c0-22.4-13.2-42.6-33.6-51.8H345v345.2c18.6 67.2 46.4 168 83.5 302.5a44.28 44.28 0 0 0 42.2 32.3c7.5.1 15-2.2 21.1-6.7c9.9-7.4 15.2-18.6 14.6-30.5l-9.6-198.4h314.4C829 605.5 840 587.1 840 568c0-16.5-7.1-32.2-19.6-43"
                     />
                     <path

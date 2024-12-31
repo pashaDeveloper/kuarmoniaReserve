@@ -193,6 +193,7 @@ const ListSlide = () => {
                                      src={slide?.bgImg?.url || "/placeholder.png"}
                                      height={100}
                                      width={100}
+                                     alt={slide?.title}
                                      className="h-[60px] w-[60px] rounded-full object-cover"
                                    />
                                     ) : (

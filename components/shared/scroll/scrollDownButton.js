@@ -4,7 +4,7 @@ import { FaArrowDown } from "react-icons/fa";
 const ScrollDownButton = () => {
   const handleScrollDown = () => {
     window.scrollBy({
-      top: -window.innerHeight, // Scrolls up by the height of the viewport
+      top: -window.innerHeight,
       behavior: 'smooth',
     });
   };

@@ -13,7 +13,6 @@ const MultiSelectDropdown = ({
   const dropdownRef = useRef(null);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
-
   const filteredItems = items.filter((item) =>
     item.value.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -69,7 +68,7 @@ const MultiSelectDropdown = ({
         onClick={() => setIsOpen((prev) => !prev)}
         className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500  rounded-md shadow-sm focus:outline-none ${className}`}
       >
-<div className="flex gap-1 overflow-x-hidden scrollbar-hidden w-[320px] whitespace-nowrap">
+<div className="flex gap-1 overflow-x-hidden overflow-y-hidden scrollbar-hidden w-[320px] whitespace-nowrap">
 {selectedItems.length > 0 ? (
             selectedItems.map((item) => (
               <div
@@ -78,7 +77,7 @@ const MultiSelectDropdown = ({
               >
                 {icon && <span className="mr-1">{icon}</span>}
                 {item.value}
-                <button
+                <span
                   className="text-red-500"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -86,7 +85,7 @@ const MultiSelectDropdown = ({
                   }}
                 >
                   &times;
-                </button>
+                </span>
               </div>
             ))
           ) : (

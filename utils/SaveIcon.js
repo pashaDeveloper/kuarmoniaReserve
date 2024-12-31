@@ -22,7 +22,7 @@ export const TagIcon = ({ className = '' }) => (
 
   export const SendIcon = ({ className = '' }) => (
     <svg className={`${className}`} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-	<path fill="currentColor" fill-opacity="0.25" stroke="currentColor" d="m16.205 5.265l-6.49 2.164c-1.634.544-2.45.816-2.776 1.129a2 2 0 0 0 0 2.884c.325.313 1.142.585 2.775 1.13c.33.11.494.164.64.241a2 2 0 0 1 .833.833c.077.146.132.31.242.64c.544 1.633.816 2.45 1.129 2.775a2 2 0 0 0 2.884 0c.313-.325.585-1.142 1.13-2.775l2.163-6.491c.552-1.656.828-2.484.391-2.921s-1.265-.161-2.92.39Z" />
+	<path fill="currentColor" fillOpacity="0.25" stroke="currentColor" d="m16.205 5.265l-6.49 2.164c-1.634.544-2.45.816-2.776 1.129a2 2 0 0 0 0 2.884c.325.313 1.142.585 2.775 1.13c.33.11.494.164.64.241a2 2 0 0 1 .833.833c.077.146.132.31.242.64c.544 1.633.816 2.45 1.129 2.775a2 2 0 0 0 2.884 0c.313-.325.585-1.142 1.13-2.775l2.163-6.491c.552-1.656.828-2.484.391-2.921s-1.265-.161-2.92.39Z" />
 </svg>
   );
 
@@ -379,5 +379,20 @@ export const Star = ({ className = '' }) => (
             >
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>);
-    
+
+    export const Eye = ({ className = '', iconSize=20}) => (
+		<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width={iconSize}
+		height={iconSize}
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	  >
+		<path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+		<circle cx="12" cy="12" r="3"></circle>
+	  </svg>);
           

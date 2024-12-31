@@ -29,10 +29,7 @@ const ListGallery = () => {
   const [selectedGallery , setSelectedGallery] = useState(null);
 
 
-  galleries.forEach(gallery => {
-    console.log("get featuredImage", gallery.featuredImage); 
-    console.log("get gallery", gallery.gallery);
-  });
+
     const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
 

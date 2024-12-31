@@ -58,7 +58,7 @@ export default async function handler(req, res) {
   
     case "PATCH":
     
-      upload("post").single("featuredImage")(req, res, async (err) => {
+      upload("media").single("featuredImage")(req, res, async (err) => {
         if (err) {
           console.error("Upload Error: ", err.message);
           return res.status(400).json({

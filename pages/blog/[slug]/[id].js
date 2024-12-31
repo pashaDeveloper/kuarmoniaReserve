@@ -1,5 +1,3 @@
-// pages/BlogContent.js
-
 import Main from "@/layouts/Main";
 import Head from "next/head";
 import React from "react";
@@ -18,7 +16,6 @@ const BlogContent = () => {
     data: fetchData,
     error: fetchError,
   } = useGetBlogQuery(id);
-console.log("fetchData",fetchData)
   return (
     <main>
       <Head>

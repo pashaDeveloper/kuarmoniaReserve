@@ -47,8 +47,8 @@ const ThumbnailUpload = ({
           className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
           {...register}
           onChange={(event) => {
-            register.onChange(event); // ارسال تغییرات به react-hook-form
-            handleThumbnailPreview(event); // مدیریت پیش‌نمایش فایل
+            register.onChange(event); 
+            handleThumbnailPreview(event); 
           }}
         />
       </label>

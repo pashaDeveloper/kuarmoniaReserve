@@ -35,7 +35,6 @@ const Hero = () => {
     if (!a.isFeatured && b.isFeatured) return 1;
     return 0;
   });
-console.log("slide")
   const [activeSlide, setActiveSlide] = useState(1); // ذخیره ایندکس اسلاید فعال
 
   const settings = {

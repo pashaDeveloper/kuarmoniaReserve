@@ -23,7 +23,8 @@ const BlogCard = ({
   publishDate,
   authorId,
   superAdmin,
-  isLoading
+  isLoading,
+  slug
 }) => {
   const router = useRouter();
 
@@ -31,7 +32,7 @@ const BlogCard = ({
     <div
       key={id || index}
       onClick={() =>
-        id ? router.push(`/blog/${id}`) : console.log("ID is missing")
+        id ? router.push(`/blog/${slug}/${id}`) : console.log("ID is missing")
       }
       className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white dark:bg-gray-800  border dark:border-gray-700 bg-clip-border text-gray-700 shadow-lg h-[550px] hover:border-primary cursor-pointer dark:hover:border-blue-500"
     >
