@@ -25,7 +25,7 @@ const ToggleThemeButton = () => {
   }, []);
 
   return (
-    <label className="relative justify-start lg:col-span-1 inline-flex cursor-pointer items-center">
+    <label className="relative justify-end lg:col-span-1 inline-flex cursor-pointer items-center">
       <input
         type="checkbox"
         checked={isDark}

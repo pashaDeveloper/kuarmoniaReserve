@@ -52,7 +52,7 @@ const MediaDetails = () => {
       </Head>
 
       <Main>
-        <div className="flex  w-full justify-center mt-16 flex-row h-[calc(100%-56px)] bg-white dark:bg-gray-900">
+        <div className="flex  w-full justify-center pt-28 flex-row h-[calc(100%-56px)] bg-white dark:bg-gray-900">
       <div className="w-full mx-auto px-4 gap-2  flex flex-col lg:flex-row-reverse ">
         <div className="flex flex-col lg:w-[calc(100%-350px)] xl:w-[calc(100%-400px)]  lg:py-6 overflow-y-auto">
         <div className="rounded-lg w-full h-full lg:overflow-hidden">
@@ -113,7 +113,7 @@ const MediaDetails = () => {
               <AiOutlineDislike className="text-xl dark:text-white text-black ml-2" />
               </div>
               <svg className="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" strokeLinecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"></path>
+          <path stroke="currentColor" strokeLinecap="round" stroke-linejoin="round" strokeWidth="1.5" d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"></path>
         </svg>
             </div>
           </div>

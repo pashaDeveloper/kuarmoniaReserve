@@ -26,14 +26,14 @@ const VideoCard = ({
       }
       className="group cursor-pointer flex flex-col gap-y-4 border shadow-lg dark:border-gray-600 rounded h-fit md:h-96 break-inside-avoid bg-white dark:bg-gray-800 transition-color ease-linear delay-100 hover:border-primary dark:hover:border-blue-500 relative "
     >
-      <div className="relative w-full h-full">
+      <div className="relative w-full w-50 ">
 
       <Image
   src={thumbnail?.url}
   alt={title}
   width={600}
   height={600}
-  className="rounded-t w-full h-full"
+  className="rounded-t h-full"
   controls
   
 />
@@ -43,10 +43,12 @@ const VideoCard = ({
 <p className="absolute right-2 bottom-2 mb-2 flex items-center bg-gray-900/70 text-gray-100 text-xs px-1 py">1:15</p>
   </div>
 
-<article className="flex flex-col gap-y-2.5 px-4 pb-4">
+<article className="flex flex-col gap-y-2.5 px-4 pb-4 h-full justify-between">
+  <div >
             <h2 className="text-lg line-clamp-1">{title}</h2>
-            <div className="mt-auto flex flex-col gap-y-2.5">
               <p className="text-sm line-clamp-2">{description}</p>
+              </div>
+            <div className="mt-auto flex flex-col gap-y-2.5">
               <div className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary dark:group-hover:border-blue-500 px-1  py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
                       <span>
                         {new Date(createdAt).toLocaleDateString(

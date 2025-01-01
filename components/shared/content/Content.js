@@ -29,7 +29,7 @@ import Image from 'next/image';
       ];
       return (
         <div className="col-span-1 md:col-span-10 shadow  mt-116 order-1 md:order-2">
-        <div className="absolute inset-0 z-10">
+        <div className="absolute inset-0  z-10">
         { !featureImage && (
           <SkeletonImage width={1150}  height={500} showSize={true} borderRadius="rounded-xl" className="z-50 h-[500px]" 
 
@@ -42,7 +42,7 @@ import Image from 'next/image';
           alt="Feature Image"
           width={1200} 
           height={500} 
-          className="w-full object-cover h-[500px]"
+          className="w-full object-cover  h-[500px]"
          />
         )
         }
