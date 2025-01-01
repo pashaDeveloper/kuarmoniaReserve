@@ -21,8 +21,7 @@ import { useAddPostMutation, useUpdatePostMutation } from "@/services/post/postA
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import {  PrevIcon } from "@/utils/SaveIcon";
-import { BsArrowsFullscreen } from "react-icons/bs";
-import { toggleFullscreen } from '@/utils/functionHelpers';
+
 
 const Add = () => {
   const router = useRouter();

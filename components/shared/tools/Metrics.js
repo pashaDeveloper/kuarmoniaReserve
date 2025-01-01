@@ -1,5 +1,5 @@
 import React from 'react';
-import {Eye} from "@/utils/saveIcon"
+import {Eye} from "@/utils/SaveIcon"
 const BlogMetrics = ({ likeCount = 0, dislikeCount = 0, views = 0, rating = 0, iconSize = 22 ,gap=2}) => {
   return (
     <div className={`flex gap-${gap} justify-center`}>
