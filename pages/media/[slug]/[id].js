@@ -69,7 +69,7 @@ const MediaDetails = () => {
             {media?.title}
           </div>
           
-          <div className="flex justify-between flex-col m-2 md:flex-row mt-4">
+          <div className="flex justify-between  m-2 flex-row mt-4">
             <div className="flex ">
             <div className="flex items-start ">
                 <div className="flex  h-11 w-11 rounded-full overflow-hidden">
@@ -105,13 +105,9 @@ const MediaDetails = () => {
               
 
             </div>
-            <div className="flex text-black dark:text-white mt-4 md:mt-0">
-              <div className="flex items-center justify-center h-11 px-6 rounded-3xl dark:bg-white/[0.15] bg-black/[0.2]">
-                <AiOutlineLike className="text-xl dark:text-white text-black ml-2" />
-              </div>
-              <div className="flex items-center justify-center h-11 px-6 rounded-3xl dark:bg-white/[0.15] bg-black/[0.2] mr-4">
-              <AiOutlineDislike className="text-xl dark:text-white text-black ml-2" />
-              </div>
+            <div className="flex  dark:text-white mt-4 md:mt-0">
+                <AiOutlineLike className="w-8 h-8 text-blue-600 k ml-2" />
+              <AiOutlineDislike className="w-8 h-8 text-red-600 ml-2" />
               <svg className="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" strokeLinecap="round" stroke-linejoin="round" strokeWidth="1.5" d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"></path>
         </svg>

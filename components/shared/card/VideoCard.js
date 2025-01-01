@@ -67,7 +67,7 @@ const VideoCard = ({
                           src={avatar}
                           width={36} 
                           height={36}
-                          className="relative inline-block    object-cover object-center hover:z-10"
+                          className="relative inline-block rounded-full   object-cover object-center hover:z-10"
                         />
                         {author !== superAdmin?.name && (
                           <Image
@@ -76,7 +76,7 @@ const VideoCard = ({
                             src={avatar}
                             width={36}
                             height={36} // ارتفاع تصویر
-                            className="relative inline-block    object-cover object-center hover:z-10"
+                            className="relative inline-block rounded-full   object-cover object-center hover:z-10"
                           />
                         )}
                       </div>
