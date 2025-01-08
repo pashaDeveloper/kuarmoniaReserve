@@ -72,7 +72,7 @@ function AboutUs() {
   <h1 className="text-3xl rounded-sm  bg-cyan-300 text-white w-fit py-2 text-right px-6  bg-opacity-70	 ">
 کارمونیا  </h1>
 
-  <h1 className=" text-4xl md:text-6xl rounded-sm bg-cyan-300 text-white  md:w-[500px] py-4 text-right px-2 font-bold bg-opacity-70	w-[350px] ">
+  <h1 className=" text-4xl md:text-6xl rounded-sm bg-cyan-300 text-white  md:w-[550px] py-4 text-right px-2 font-bold bg-opacity-70	w-[350px] ">
 
   <TypingAnimation texts={["ازدواج بین المللی", "مهاجرت", "سرمایه گذاری", "اخذ ویزا","پی گیری امور وکالتی"]} speed={80} pause={6000} />
   </h1>
@@ -157,9 +157,9 @@ function AboutUs() {
                         className=" absolute  translate-y-96  left-0">                        
                         <img    src="https://tragod.com/wp-content/uploads/2024/04/plane1.webp" alt=""  />
                         </motion.div>        
-                    <div className="  absolute">
-                    {/* <motion.div
-      className="gt-banner-men position-absolute z-8"
+                   
+                     <motion.div
+      className=" fixed  z-8"
       initial={{ opacity: 1, x: 300 }} 
       animate={{
         opacity: 1,
@@ -179,12 +179,10 @@ function AboutUs() {
       }}
     >
       <img
-        decoding="async"
         src="https://tragod.com/wp-content/uploads/2024/04/cloud2.webp"
         alt="Banner"
       />
-    </motion.div> */}
-                        </div>
+    </motion.div> 
                         <div className="absolute ">
              {/* <img decodin
              
