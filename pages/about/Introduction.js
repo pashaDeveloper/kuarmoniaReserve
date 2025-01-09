@@ -2,11 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 
 const Introduction = () => {
+  const { ref, inView } = useInView({
+    triggerOnce: true, // انیمیشن فقط یک بار اجرا شود
+    threshold: 0.6, // زمانی که 10% از بخش قابل مشاهده باشد
+  });
   return (
     
-    <section className="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] ">
+    <section ref={ref} className="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] ">
     <div className="container mx-auto">
       <div className="flex flex-wrap items-center justify-between -mx-4">
         <div className="w-full px-4 lg:w-6/12">
@@ -15,8 +20,8 @@ const Introduction = () => {
             <motion.div
     className="py-3 sm:py-4"
     initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.5, ease: "easeOut" }}
+    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+    transition={{ duration: 1.2, ease: "easeOut" }}
   >
     <Image
       src="https://i.ibb.co/gFb3ns6/image-1.jpg"
@@ -30,8 +35,8 @@ const Introduction = () => {
   <motion.div
     className="py-3 sm:py-4"
     initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.5, ease: "easeOut" }}
+    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+    transition={{ duration: 1, ease: "easeOut" }}
   >
     <Image
       src="https://i.ibb.co/rfHFq15/image-2.jpg"
@@ -47,8 +52,8 @@ const Introduction = () => {
               <div className="relative z-10 my-4">
               <motion.div
      initial={{ opacity: 0, x: 20 }}
-     animate={{ opacity: 1, x: 0 }}
-     transition={{ duration: 0.5, ease: "easeOut" }}
+     animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+     transition={{ duration: 0.3, ease: "easeOut" }}
 >
   <Image
     src="https://i.ibb.co/9y7nYCD/image-3.jpg"
@@ -639,7 +644,7 @@ const Introduction = () => {
 <motion.span
 className="block mb-4 text-lg font-semibold text-primary"
 initial={{ opacity: 0, y: -20 }}
-animate={{ opacity: 1, y: 0 }}
+animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}  
 transition={{ duration: 0.5, ease: "easeOut" }}
 >
 چرا کارمونیا ؟
@@ -648,7 +653,7 @@ transition={{ duration: 0.5, ease: "easeOut" }}
 <motion.h2
 className="mb-5 text-3xl font-bold text-dark dark:text-white sm:text-[40px]/[48px]"
 initial={{ opacity: 0, x: -20 }}
-animate={{ opacity: 1, x: 0 }}
+animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
 transition={{ duration: 0.6, ease: "easeOut" }}
 >
 فرصت‌های ویژه برای مهاجرت و سرمایه‌گذاری در ترکیه و کانادا
@@ -657,7 +662,7 @@ transition={{ duration: 0.6, ease: "easeOut" }}
 <motion.p
 className="mb-5 text-base text-body-color dark:text-dark-6"
 initial={{ opacity: 0, x: -20 }}
-animate={{ opacity: 1, x: 0 }}
+animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
 transition={{ duration: 0.7, ease: "easeOut" }}
 >
 شرکت ما با تجربه‌ای طولانی در زمینه مهاجرت و سرمایه‌گذاری، راهکارهای مطمئن و
@@ -668,7 +673,7 @@ transition={{ duration: 0.7, ease: "easeOut" }}
 <motion.p
 className="mb-8 text-base text-body-color dark:text-dark-6"
 initial={{ opacity: 0, x: -20 }}
-animate={{ opacity: 1, x: 0 }}
+animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
 transition={{ duration: 0.8, ease: "easeOut" }}
 >
 تیم ما همراه شماست تا با انتخابی مناسب و برنامه‌ریزی دقیق، مسیری هموار برای

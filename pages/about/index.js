@@ -63,7 +63,7 @@ function AboutUs() {
     backgroundSize: "cover"
   }}
 > 
-<div className="absolute h-[1000px] md:h-screen inset-0  bg-black bg-opacity-70"></div>
+<div className="absolute h-[1000px] md:h-screen inset-0  bg-blue-500 bg-opacity-70"></div>
 
     <section  className=" flex flex-col md:grid md:grid-cols-2  relative">
     <div className="container">
