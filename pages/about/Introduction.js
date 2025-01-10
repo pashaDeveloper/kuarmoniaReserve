@@ -1,70 +1,109 @@
-// components/Introduction.js
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 
 const Introduction = () => {
-  const { ref, inView } = useInView({
-    triggerOnce: true, // انیمیشن فقط یک بار اجرا شود
-    threshold: 0.6, // زمانی که 10% از بخش قابل مشاهده باشد
+  // مشاهده برای تصاویر
+  const { ref: image1Ref, inView: image1InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1 // 60% قابل مشاهده باشد
   });
+  const { ref: image2Ref, inView: image2InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.8 // 60% قابل مشاهده باشد
+  });
+  const { ref: image3Ref, inView: image3InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.8 // 60% قابل مشاهده باشد
+  });
+  // مشاهده برای متن
+  const { ref: text1Ref, inView: text1InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.6 // 30% قابل مشاهده باشد
+  });
+  const { ref: text2Ref, inView: text2InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.7 // 30% قابل مشاهده باشد
+  });
+  const { ref: text3Ref, inView: text3InView } = useInView({
+    triggerOnce: true,
+    threshold: 0.8 // 30% قابل مشاهده باشد
+  });
+
   return (
-    
-    <section ref={ref} className="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] ">
-    <div className="container mx-auto">
-      <div className="flex flex-wrap items-center justify-between -mx-4">
-        <div className="w-full px-4 lg:w-6/12">
-          <div className="flex items-center -mx-3 sm:-mx-4">
-            <div className="w-full px-3 sm:px-4 xl:w-1/2">
-            <motion.div
-    className="py-3 sm:py-4"
-    initial={{ opacity: 0, x: 20 }}
-    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-    transition={{ duration: 1.2, ease: "easeOut" }}
-  >
-    <Image
-      src="https://i.ibb.co/gFb3ns6/image-1.jpg"
-      alt="Image 1"
-      className="w-full rounded-2xl"
-      width={500} // مقدار مناسب عرض تصویر
-      height={300} // مقدار مناسب ارتفاع تصویر
-      layout="responsive"
-    />
-  </motion.div>
-  <motion.div
-    className="py-3 sm:py-4"
-    initial={{ opacity: 0, x: 20 }}
-    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-    transition={{ duration: 1, ease: "easeOut" }}
-  >
-    <Image
-      src="https://i.ibb.co/rfHFq15/image-2.jpg"
-      alt="Image 2"
-      className="w-full rounded-2xl"
-      width={500} 
-      height={300} 
-      layout="responsive"
-    />
-  </motion.div>
-            </div>
-            <div className="w-full px-3 sm:px-4 xl:w-1/2">
-              <div className="relative z-10 my-4">
-              <motion.div
-     initial={{ opacity: 0, x: 20 }}
-     animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-     transition={{ duration: 0.3, ease: "easeOut" }}
->
-  <Image
-    src="https://i.ibb.co/9y7nYCD/image-3.jpg"
-    alt="Image 3"
-    width={500} 
-    height={300} 
-    className="w-full rounded-2xl"
-    priority 
-  />
-</motion.div>
-                <span className="absolute -right-7 -bottom-7 z-[-1]">
+    <section className="overflow-hidden   curved-section pb-12  lg:pb-[90px]">
+      <div ref={image1Ref}>
+        <div ref={image2Ref}>
+          <div ref={image3Ref}>
+            <div ref={text1Ref}>
+              <div ref={text2Ref}>
+                <div ref={text3Ref}>
+                  <div className="container mx-auto">
+                    <div className="flex flex-wrap items-center justify-between -mx-4">
+                      <div className="w-full px-4 lg:w-6/12">
+                        <div className="flex items-center -mx-3 sm:-mx-4">
+                          <div className="w-full px-3 sm:px-4 xl:w-1/2">
+                            <motion.div
+                              className="py-3 sm:py-4"
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={
+                                image1InView
+                                  ? { opacity: 1, x: 0 }
+                                  : { opacity: 0, x: 20 }
+                              }
+                              transition={{ duration: 1.2, ease: "easeOut" }}
+                            >
+                              <Image
+                                src="https://i.ibb.co/gFb3ns6/image-1.jpg"
+                                alt="Image 1"
+                                className="w-full rounded-2xl"
+                                width={500}
+                                height={300}
+                                layout="responsive"
+                              />
+                            </motion.div>
+                            <motion.div
+                              className="py-3 sm:py-4"
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={
+                                image2InView
+                                  ? { opacity: 1, x: 0 }
+                                  : { opacity: 0, x: 20 }
+                              }
+                              transition={{ duration: 1, ease: "easeOut" }}
+                            >
+                              <Image
+                                src="https://i.ibb.co/rfHFq15/image-2.jpg"
+                                alt="Image 2"
+                                className="w-full rounded-2xl"
+                                width={500}
+                                height={300}
+                                layout="responsive"
+                              />
+                            </motion.div>
+                            
+                          </div>
+                          <div className="w-full relative px-3 sm:px-4 xl:w-1/2">
+                            <motion.div
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={
+                                image3InView
+                                  ? { opacity: 1, x: 0 }
+                                  : { opacity: 0, x: 20 }
+                              }
+                              transition={{ duration: 0.3, ease: "easeOut" }}
+                            >
+                              <Image
+                                src="https://i.ibb.co/9y7nYCD/image-3.jpg"
+                                alt="Image 3"
+                                width={500}
+                                height={300}
+                                className="w-full rounded-2xl"
+                                priority
+                              />
+                            </motion.div>
+                            <span className="absolute -right-7 -bottom-7 z-[-1]">
                   <svg
                     width={134}
                     height={106}
@@ -634,68 +673,78 @@ const Introduction = () => {
                     />
                   </svg>
                 </span>
+                          </div>
+                        </div>
+                        
+                      </div>
+
+                      <div className="w-full text-justify px-4 lg:w-1/2 xl:w-5/12">
+                        <div className="mt-10 lg:mt-0 ">
+                          <motion.span
+                            className="block mb-4 text-lg font-semibold text-primary"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={
+                              text1InView
+                                ? { opacity: 1, y: 0 }
+                                : { opacity: 0, y: -20 }
+                            }
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                          >
+                            <h1 className="text-6xl ">چرا کارمونیا ؟</h1>
+                          </motion.span>
+
+                          <motion.h2
+                            className="mb-5 text-3xl  text-dark dark:text-white sm:text-[40px]/[48px]"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={
+                              text2InView
+                                ? { opacity: 1, x: 0 }
+                                : { opacity: 0, x: -20 }
+                            }
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                          >
+                            فرصت‌های ویژه برای مهاجرت و سرمایه‌گذاری در ترکیه و
+                            کانادا
+                          </motion.h2>
+
+                          <motion.p
+                            className="mb-5 text-base text-body-color dark:text-dark-6"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={
+                              text3InView
+                                ? { opacity: 1, x: 0 }
+                                : { opacity: 0, x: -20 }
+                            }
+                            transition={{ duration: 0.7, ease: "easeOut" }}
+                          >
+                            شرکت ما با تجربه‌ای طولانی در زمینه مهاجرت و
+                            سرمایه‌گذاری، راهکارهای مطمئن و حرفه‌ای برای شروع
+                            زندگی و سرمایه‌گذاری در کشورهای ترکیه و کانادا ارائه
+                            می‌دهد.
+                          </motion.p>
+
+                          <motion.a
+                            href="javascript:void(0)"
+                            className="inline-flex items-center justify-center py-3 text-base font-medium text-center text-white border border-transparent rounded-md px-7 bg-primary hover:bg-opacity-90"
+                            initial={{ scale: 0.9 }}
+                            animate={
+                              text3InView ? { scale: 1 } : { scale: 0.9 }
+                            }
+                            transition={{ duration: 0.9, ease: "easeOut" }}
+                          >
+                            شروع کنید
+                          </motion.a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
-        <div className="mt-10 lg:mt-0">
-<motion.span
-className="block mb-4 text-lg font-semibold text-primary"
-initial={{ opacity: 0, y: -20 }}
-animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}  
-transition={{ duration: 0.5, ease: "easeOut" }}
->
-چرا کارمونیا ؟
-</motion.span>
-
-<motion.h2
-className="mb-5 text-3xl font-bold text-dark dark:text-white sm:text-[40px]/[48px]"
-initial={{ opacity: 0, x: -20 }}
-animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
-transition={{ duration: 0.6, ease: "easeOut" }}
->
-فرصت‌های ویژه برای مهاجرت و سرمایه‌گذاری در ترکیه و کانادا
-</motion.h2>
-
-<motion.p
-className="mb-5 text-base text-body-color dark:text-dark-6"
-initial={{ opacity: 0, x: -20 }}
-animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
-transition={{ duration: 0.7, ease: "easeOut" }}
->
-شرکت ما با تجربه‌ای طولانی در زمینه مهاجرت و سرمایه‌گذاری، راهکارهای مطمئن و
-حرفه‌ای برای شروع زندگی و سرمایه‌گذاری در کشورهای ترکیه و کانادا ارائه
-می‌دهد.
-</motion.p>
-
-<motion.p
-className="mb-8 text-base text-body-color dark:text-dark-6"
-initial={{ opacity: 0, x: -20 }}
-animate={ inView ? { opacity: 1, x: 0 } :{ opacity: 0, x: -20}}
-transition={{ duration: 0.8, ease: "easeOut" }}
->
-تیم ما همراه شماست تا با انتخابی مناسب و برنامه‌ریزی دقیق، مسیری هموار برای
-موفقیت و رشد شما ایجاد کند. با انتخاب ما، آینده‌ای روشن برای خود و خانواده‌تان
-بسازید.
-</motion.p>
-
-<motion.a
-href="javascript:void(0)"
-className="inline-flex items-center justify-center py-3 text-base font-medium text-center text-white border border-transparent rounded-md px-7 bg-primary hover:bg-opacity-90"
-initial={{ scale: 0.9 }}
-animate={{ scale: 1 }}
-transition={{ duration: 0.9, ease: "easeOut" }}
->
-شروع کنید
-</motion.a>
-</div>
-
-        </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };
 
