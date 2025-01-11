@@ -10,7 +10,7 @@ import HeaderSection from './HeaderSection';
 import TeamSection from "./TeamSection";
 import CompanyResults from "./CompanyResult";
 import UserTestimonials from "./UserTestimonials";
-import TeamSlider from "./TeamSlider";
+import TeamSlider from "./TeamMembers";
 
 function AboutUs() {
   return (
