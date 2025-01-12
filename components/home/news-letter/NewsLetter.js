@@ -20,7 +20,7 @@ const NewsLetter = () => {
         <section className="w-full h-full lg:gap-x-4 gap-y-12 grid grid-cols-12">
           <div className="lg:col-span-5 col-span-12 rounded relative">
             <Image
-              src="/assets/static/News Letter.png"
+              src="/assets/static/News Letter.jpg"
               alt="newsletter"
               height={302}
               width={440}
@@ -34,33 +34,32 @@ const NewsLetter = () => {
 
               {showAdditionalContent && (
                 <div className="bg-white flex flex-col gap-y-3 border p-4 rounded absolute top-1/3 left-1/4 mt-5">
-                  <article className="flex flex-row gap-x-2">
-                    <Image
-                      src="/assets/static/News Letter.png"
-                      alt="thumbnail"
-                      height={35}
-                      width={35}
-                      className="rounded-[5px] object-cover h-[35px] w-[35px] border border-primary"
-                    />
-                    <div className="flex flex-col gap-y-1">
-                      <h2 className="text-base line-clamp-1">North Atlantic</h2>
-                      <p className="flex flex-row gap-x-0.5 items-center text-xs line-clamp-1">
-                        <BiHotel className="w-4 h-4 text-primary" /> Hotel of
-                        Iceland
-                      </p>
-                    </div>
-                  </article>
-                  <p className="text-xs flex flex-row justify-between items-center whitespace-nowrap">
-                    <span className="flex flex-row gap-x-0.5 items-baseline">
-                      Start from $
-                      <span className="text-sm text-primary dark:bg-blue-500">120</span>
-                    </span>
-                    <span className="min-w-[1rem]" />
-                    <span className="border px-3 py-0.5 rounded-secondary">
-                      2 Days & 2 Nights
-                    </span>
-                  </p>
-                </div>
+                <article className="flex flex-row gap-x-2">
+                  <Image
+                    src="/assets/static/News Letter.jpg"
+                    alt="thumbnail"
+                    height={300}
+                    width={300}
+                    className="rounded-[5px] object-cover h-[35px] w-[35px] border border-primary"
+                  />
+                  <div className="flex flex-col gap-y-1">
+                    <h2 className="text-base line-clamp-1">مهاجرت و سرمایه‌گذاری</h2>
+                    <p className="flex flex-row gap-x-0.5 items-center text-xs line-clamp-1">
+                      <BiHotel className="w-4 h-4 text-primary" /> کانادا و ترکیه
+                    </p>
+                  </div>
+                </article>
+                <p className="text-xs flex flex-row justify-between items-center whitespace-nowrap">
+                  <span className="flex flex-row gap-x-0.5 items-baseline">
+                    شروع از 
+                    <span className="text-sm text-primary dark:bg-blue-500">شنبه</span>
+                  </span>
+                  <span className="min-w-[1rem]" />
+                  <span className="border px-3 py-0.5 rounded-secondary">
+فقط 5 روز تا پایان فرصت                  </span>
+                </p>
+              </div>
+              
               )}
             </div>
           </div>

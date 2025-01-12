@@ -11,28 +11,28 @@ const Introduction = () => {
   });
   const { ref: image2Ref, inView: image2InView } = useInView({
     triggerOnce: true,
-    threshold: 0.8 // 60% قابل مشاهده باشد
+    threshold: 0.2 // 60% قابل مشاهده باشد
   });
   const { ref: image3Ref, inView: image3InView } = useInView({
     triggerOnce: true,
-    threshold: 0.8 // 60% قابل مشاهده باشد
+    threshold: 0.3 // 60% قابل مشاهده باشد
   });
   // مشاهده برای متن
   const { ref: text1Ref, inView: text1InView } = useInView({
     triggerOnce: true,
-    threshold: 0.6 // 30% قابل مشاهده باشد
+    threshold: 0.2 // 30% قابل مشاهده باشد
   });
   const { ref: text2Ref, inView: text2InView } = useInView({
     triggerOnce: true,
-    threshold: 0.7 // 30% قابل مشاهده باشد
+    threshold: 0.3 // 30% قابل مشاهده باشد
   });
   const { ref: text3Ref, inView: text3InView } = useInView({
     triggerOnce: true,
-    threshold: 0.8 // 30% قابل مشاهده باشد
+    threshold: 0.3 // 30% قابل مشاهده باشد
   });
 
   return (
-    <section className="overflow-hidden   curved-section pb-12  lg:pb-[90px]">
+    <section className="overflow-hidden z-9    curved-section pb-12  lg:pb-[90px]">
       <div ref={image1Ref}>
         <div ref={image2Ref}>
           <div ref={image3Ref}>
@@ -55,7 +55,7 @@ const Introduction = () => {
                               transition={{ duration: 1.2, ease: "easeOut" }}
                             >
                               <Image
-                                src="https://i.ibb.co/gFb3ns6/image-1.jpg"
+                                src="/assets/about/intro1.jpg"
                                 alt="Image 1"
                                 className="w-full rounded-2xl"
                                 width={500}
@@ -74,7 +74,7 @@ const Introduction = () => {
                               transition={{ duration: 1, ease: "easeOut" }}
                             >
                               <Image
-                                src="https://i.ibb.co/rfHFq15/image-2.jpg"
+                                src="/assets/about/intro3.jpg"
                                 alt="Image 2"
                                 className="w-full rounded-2xl"
                                 width={500}
@@ -84,7 +84,7 @@ const Introduction = () => {
                             </motion.div>
                             
                           </div>
-                          <div className="w-full relative px-3 sm:px-4 xl:w-1/2">
+                          <div className="w-full relative px-3 z-50 sm:px-4 xl:w-1/2">
                             <motion.div
                               initial={{ opacity: 0, x: 20 }}
                               animate={
@@ -95,15 +95,15 @@ const Introduction = () => {
                               transition={{ duration: 0.3, ease: "easeOut" }}
                             >
                               <Image
-                                src="https://i.ibb.co/9y7nYCD/image-3.jpg"
+                                src="/assets/about/intro2.jpg"
                                 alt="Image 3"
                                 width={500}
                                 height={300}
-                                className="w-full rounded-2xl"
+                                className="w-full rounded-2xl flex "
                                 priority
                               />
                             </motion.div>
-                            <span className="absolute -right-7 -bottom-7 z-[-1]">
+                            <span className="absolute -right-7 -bottom-7 z-49 ">
                   <svg
                     width={134}
                     height={106}
@@ -690,11 +690,11 @@ const Introduction = () => {
                             }
                             transition={{ duration: 0.5, ease: "easeOut" }}
                           >
-                            <h1 className="text-6xl ">چرا کارمونیا ؟</h1>
+                            <h1 className="md:text-6xl text-2xl ">چرا کارمونیا ؟</h1>
                           </motion.span>
 
                           <motion.h2
-                            className="mb-5 text-3xl  text-dark dark:text-white sm:text-[40px]/[48px]"
+                            className="mb-5 md:text-3xl text-lg text-right  text-dark dark:text-white sm:text-[40px]/[48px]"
                             initial={{ opacity: 0, x: -20 }}
                             animate={
                               text2InView
@@ -703,7 +703,7 @@ const Introduction = () => {
                             }
                             transition={{ duration: 0.6, ease: "easeOut" }}
                           >
-                            فرصت‌های ویژه برای مهاجرت و سرمایه‌گذاری در ترکیه و
+                            فرصت‌های ویژه برای مهاجرت و سرمایه‌ گذاری در ترکیه و
                             کانادا
                           </motion.h2>
 

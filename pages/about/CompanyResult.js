@@ -4,17 +4,18 @@ export default function CompanyResults() {
     return (
         <section className="py-20 bg-blue-100-900 dark:bg-gray-900">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <h2 className="font-manrope text-4xl text-center text-gray-600 font-bold mb-14">
+                <h2 className=" text-4xl text-center text-gray-600 font-bold mb-14">
 نتیجه تلاش های ما
                 </h2>
                 <div className="flex flex-col gap-5 xl:gap-8 lg:flex-row lg:justify-between">
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md dark:shadow-gray-900 shadow-gray-100">
+                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
                         <div className="flex gap-5">
-                            <div className="font-manrope text-2xl font-bold text-indigo-600">
+                            <div className="text-2xl font-bold text-indigo-600">
                                 240%
                             </div>
-                            <div className="flex-1">
-                                <h4 className="text-xl text-white font-semibold mb-2">
+                            <div className="flex-1  justify-between first-line:">
+                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
+                                
                                     رشد شرکت در زمینه مهاجرت
                                 </h4>
                                 <p className="text-xs text-gray-400 leading-5">
@@ -23,13 +24,14 @@ export default function CompanyResults() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md dark:shadow-gray-900 shadow-gray-100">
+                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
                         <div className="flex gap-5">
                             <div className="font-manrope text-2xl font-bold text-indigo-600">
                                 175+
                             </div>
-                            <div className="flex-1">
-                                <h4 className="text-xl text-white font-semibold mb-2">
+                            <div className="flex-1  justify-between first-line:">
+                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
+                                
                                     اعضای تیم مهاجرت و سرمایه‌گذاری
                                 </h4>
                                 <p className="text-xs text-gray-400 leading-5">
@@ -38,13 +40,13 @@ export default function CompanyResults() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md dark:shadow-gray-900 shadow-gray-100">
-                        <div className="flex gap-5">
+                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
+                        <div className="flex items-start gap-5">
                             <div className="font-manrope text-2xl font-bold text-indigo-600">
                                 625+
                             </div>
-                            <div className="flex-1">
-                                <h4 className="text-xl text-white font-semibold mb-2">
+                            <div className="flex-1  justify-between first-line:">
+                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
                                     پروژه‌های مهاجرت و سرمایه‌گذاری تکمیل‌شده
                                 </h4>
                                 <p className="text-xs text-gray-400 leading-5">
