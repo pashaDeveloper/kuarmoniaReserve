@@ -24,7 +24,8 @@ export default function CompanyResults() {
     ];
 
     return (
-        <section className="py-20 bg-gradient-to-r from-blue-50 to-blue-100 dark:bg-gray-900">
+        <section className="py-20 rounded-primary bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 dark:bg-gray-900">
+
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <h2 className="text-4xl text-center text-gray-700 font-extrabold mb-14 dark:text-gray-100">
                     نتیجه تلاش‌های ما
