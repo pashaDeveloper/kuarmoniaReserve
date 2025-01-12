@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import {  Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
 
 function TeamMembers() {
@@ -17,7 +17,7 @@ function TeamMembers() {
   const teamMembers = [
     {
       name: "احسان دربند",
-      role: "عضو هیئت مدیره",
+      role: "عضو هیئت مدیره و مشاور ارشد در امور مدیریتی",
       description:
         "آقای دربند به‌عنوان یکی از رهبران شرکت، با نظارت بر امور استراتژیک و تصمیم‌گیری‌های کلیدی، نقش مهمی در موفقیت و رشد شرکت ایفا می‌کند.",
       image: "/assets/about/ehsan.png"
@@ -27,7 +27,7 @@ function TeamMembers() {
       role: "عضو هیئت مدیره و متخصص خریدوفروش ملک",
       description:
         "خانم اسماعیلی با تجربه‌ای گسترده در حوزه معاملات املاک و مهارت‌های ترجمه حرفه‌ای، از ابتدای فرآیند خرید تا اتمام معاملات در کنار مشتریان است.",
-      image: "/assets/about/esmaili.png"
+      image: "/assets/about/Esmaili.png"
     },
     {
       name: "دانیال انشائی",
@@ -47,7 +47,8 @@ function TeamMembers() {
     },
     {
       name: "جانسو چانکایا",
-      role: "وکیل رسمی شرکت",
+      role: "وکیل رسمی شرکت و مسئول پیگیری امور حقوقی و قضائی",
+
       description:
         "خانم چانکایا با تسلط بر قوانین بین‌المللی و داخلی ترکیه، راهنمایی حقوقی لازم را برای اطمینان از امنیت سرمایه‌گذاری و تحقق اهداف مشتریان ارائه می‌دهد.",
       image: "/assets/about/jansou.png"
@@ -55,7 +56,8 @@ function TeamMembers() {
 
     {
       name: "علی کلیچ",
-      role: "حسابدار شرکت",
+      role: "حسابدار رسمی و مسئول نظارت بر امور مالی و حسابداری شرکت",
+
       description:
         "آقای کلیچ با مدیریت مالی دقیق و تجربه در امور حسابداری، تضمین می‌کند که تمامی فرآیندهای مالی شرکت با شفافیت و دقت انجام شوند.",
       image: "/assets/about/ali.png"
@@ -165,7 +167,7 @@ function TeamMembers() {
                         <h6 className="text-lg text-gray-900 dark:text-gray-100 mb-1">
                           {member.name}
                         </h6>
-                        <span className="text-sm text-gray-500 group-hover:text-indigo-600">
+                        <span className="text-sm text-center text-gray-500 group-hover:text-indigo-600">
                           {member.role}
                         </span>
                       </div>
