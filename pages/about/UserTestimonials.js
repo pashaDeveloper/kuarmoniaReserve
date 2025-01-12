@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 
 export default function KarmoniaTestimonials() {
-  // State برای ذخیره نظر شخص فعال
-  const [activeTestimonial, setActiveTestimonial] = useState();
-  const [fadeClass, setFadeClass] = useState("");
-
+  const [activeTestimonial, setActiveTestimonial] = useState("");
   const testimonials = [
     {
       id: 1,
@@ -31,18 +29,12 @@ export default function KarmoniaTestimonials() {
     }
   ];
 
-  // انتخاب یک نظر پیش‌فرض
   useEffect(() => {
-    setActiveTestimonial(testimonials[0].text); // اولین نظر به عنوان پیش‌فرض
+    setActiveTestimonial(testimonials[0].text);
   }, []);
 
-  // تابع برای مدیریت کلیک روی پروفایل
   const handleProfileClick = (testimonialText) => {
-    setFadeClass("fade-in-slide"); // اعمال انیمیشن Fade
-    setTimeout(() => {
-      setActiveTestimonial(testimonialText); // ذخیره نظر شخص کلیک شده
-      setFadeClass(""); // حذف انیمیشن بعد از مدتی
-    }, 0); // مدت زمان انیمیشن (هم‌زمان با مدت زمان انیمیشن CSS)
+    setActiveTestimonial(testimonialText);
   };
 
   return (
@@ -62,17 +54,19 @@ export default function KarmoniaTestimonials() {
           className="mySwiper2"
         >
           <SwiperSlide>
-            <div className="swiper-wrapper">
-              <div className="swiper-slide">
-                <div className={`relative mb-20 ${fadeClass}`}>
-                  <div className="max-w-max mx-auto lg:max-w-4xl">
-                    <p className="text-lg text-gray-500 leading-8 mb-8 text-center">
-                      {activeTestimonial}
-                    </p>
-                  </div>
-                </div>
+            <motion.div
+              key={activeTestimonial} // برای انیمیشن تغییر
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative mb-20"
+            >
+              <div className="max-w-max mx-auto lg:max-w-4xl">
+                <p className="text-lg text-gray-500 leading-8 mb-8 text-center">
+                  {activeTestimonial}
+                </p>
               </div>
-            </div>
+            </motion.div>
           </SwiperSlide>
         </Swiper>
 
@@ -80,7 +74,7 @@ export default function KarmoniaTestimonials() {
           spaceBetween={50}
           slidesPerView={3}
           loop={true}
-          className="mySwiper max-w-[320px] "
+          className="mySwiper max-w-[320px]"
         >
           {testimonials.map((testimonial) => (
             <SwiperSlide

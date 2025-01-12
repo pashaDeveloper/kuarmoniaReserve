@@ -1,62 +1,71 @@
-import React from 'react';
+import React from "react";
+import { useInView } from "react-intersection-observer";
 
 export default function CompanyResults() {
+    const cardsData = [
+        {
+            percentage: "240%",
+            title: "رشد شرکت در زمینه مهاجرت",
+            description:
+                "رشد چشمگیر شرکت در ارائه خدمات مهاجرتی و تسهیل فرآیندهای قانونی برای مشتریان.",
+        },
+        {
+            percentage: "175+",
+            title: "اعضای تیم مهاجرت و سرمایه‌گذاری",
+            description:
+                "تیمی متخصص و با تجربه که در زمینه مشاوره سرمایه‌گذاری و مهاجرت بین‌المللی فعالیت می‌کند.",
+        },
+        {
+            percentage: "625+",
+            title: "پروژه‌های مهاجرت و سرمایه‌گذاری تکمیل‌شده",
+            description:
+                "بیش از 625 پروژه در زمینه مهاجرت و سرمایه‌گذاری با موفقیت به پایان رسیده است.",
+        },
+    ];
+
     return (
-        <section className="py-20 bg-blue-100-900 dark:bg-gray-900">
+        <section className="py-20 bg-gradient-to-r from-blue-50 to-blue-100 dark:bg-gray-900">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <h2 className=" text-4xl text-center text-gray-600 font-bold mb-14">
-نتیجه تلاش های ما
+                <h2 className="text-4xl text-center text-gray-700 font-extrabold mb-14 dark:text-gray-100">
+                    نتیجه تلاش‌های ما
                 </h2>
                 <div className="flex flex-col gap-5 xl:gap-8 lg:flex-row lg:justify-between">
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
-                        <div className="flex gap-5">
-                            <div className="text-2xl font-bold text-indigo-600">
-                                240%
-                            </div>
-                            <div className="flex-1  justify-between first-line:">
-                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
-                                
-                                    رشد شرکت در زمینه مهاجرت
-                                </h4>
-                                <p className="text-xs text-gray-400 leading-5">
-                                    رشد چشمگیر شرکت در ارائه خدمات مهاجرتی و تسهیل فرآیندهای قانونی برای مشتریان.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
-                        <div className="flex gap-5">
-                            <div className="font-manrope text-2xl font-bold text-indigo-600">
-                                175+
-                            </div>
-                            <div className="flex-1  justify-between first-line:">
-                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
-                                
-                                    اعضای تیم مهاجرت و سرمایه‌گذاری
-                                </h4>
-                                <p className="text-xs text-gray-400 leading-5">
-                                    تیمی متخصص و با تجربه که در زمینه مشاوره سرمایه‌گذاری و مهاجرت بین‌المللی فعالیت می‌کند.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 dark:bg-gray-800 bg-white p-6 rounded-2xl shadow-md ">
-                        <div className="flex items-start gap-5">
-                            <div className="font-manrope text-2xl font-bold text-indigo-600">
-                                625+
-                            </div>
-                            <div className="flex-1  justify-between first-line:">
-                                <h4 className="text-md dark:text-white dark font-semibold mb-2">
-                                    پروژه‌های مهاجرت و سرمایه‌گذاری تکمیل‌شده
-                                </h4>
-                                <p className="text-xs text-gray-400 leading-5">
-                                    بیش از 625 پروژه در زمینه مهاجرت و سرمایه‌گذاری با موفقیت به پایان رسیده است.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    {cardsData.map((card, index) => (
+                        <Card key={index} card={card} delay={index * 0.2} />
+                    ))}
                 </div>
             </div>
         </section>
+    );
+}
+
+function Card({ card, delay }) {
+    const { ref, inView } = useInView({
+        threshold: 0.2, // 20% از کارت باید دیده شود تا انیمیشن اجرا شود
+        triggerOnce: true, // فقط یکبار انیمیشن اجرا شود
+    });
+
+    return (
+        <div
+            ref={ref}
+            className={`w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl transform transition-all duration-700 ease-in-out ${
+                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
+            style={{ transitionDelay: `${delay}s` }}
+        >
+            <div className="flex gap-5 items-start">
+                <div className="text-4xl font-extrabold text-indigo-600 animate-pulse">
+                    {card.percentage}
+                </div>
+                <div className="flex-1">
+                    <h4 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
+                        {card.title}
+                    </h4>
+                    <p className="text-sm text-gray-500 leading-6 dark:text-gray-400">
+                        {card.description}
+                    </p>
+                </div>
+            </div>
+        </div>
     );
 }

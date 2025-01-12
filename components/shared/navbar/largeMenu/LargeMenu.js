@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { IoHomeOutline, IoMailOutline, IoNewspaperOutline, IoReceiptOutline, IoInformationCircleOutline, IoHeadsetOutline } from "react-icons/io5";
