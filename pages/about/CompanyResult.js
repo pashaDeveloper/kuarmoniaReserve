@@ -24,7 +24,7 @@ export default function CompanyResults() {
     ];
 
     return (
-        <section className="py-20 rounded-primary bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 dark:bg-gray-900">
+        <section className="py-20 rounded-primary bg-gradient-to-b from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 dark:bg-gray-900 mt-8">
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <h2 className="text-4xl text-center text-gray-700 font-extrabold mb-14 dark:text-gray-100">
@@ -49,7 +49,7 @@ function Card({ card, delay }) {
     return (
         <div
             ref={ref}
-            className={`w-full max-lg:max-w-2xl mx-auto lg:mx-0 lg:w-1/3 bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl transform transition-all duration-700 ease-in-out ${
+            className={`w-full max-lg:max-w-2xl  mx-auto lg:mx-0 lg:w-1/3 bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl transform transition-all duration-700 ease-in-out ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: `${delay}s` }}

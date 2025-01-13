@@ -33,21 +33,21 @@ function TeamMembers() {
       name: "دانیال انشائی",
       role: "مترجم و مسئول روابط عمومی و امور مشتریان",
       description:
-        "آقای انشائی با توانایی برجسته در مدیریت ارتباطات و ارائه راهنمایی به مشتریان، پل ارتباطی قوی بین شرکت و مراجعان است. ایشان با دقت بالا به نیازهای مشتریان پاسخ می‌دهند.",
+        "آقای انشائی با توانایی برجسته در مدیریت ارتباطات و ارائه راهنمایی  ، پل ارتباطی قوی بین شرکت و مراجعان است. ایشان با دقت بالا به نیازهای مشتریان پاسخ می‌دهند.",
 
       image: "/assets/about/danial.png"
     },
     {
       name: "نگار سعیدی",
-      role: "مترجم رسمی و متخصص امور اداری و وکلا",
+      role: "مترجم رسمی و متخصص امور اداری و وکل و بایگانی ا",
       description:
-        "خانم سعیدی با ارائه ترجمه رسمی و مدیریت دقیق امور اداری، فرآیندهای قانونی و مهاجرتی را برای مشتریان آسان‌تر می‌کند. ایشان با دقت و سرعت بالا خدمات خود را ارائه می‌دهند.",
+        "خانم سعیدی با ارائه ترجمه رسمی و مدیریت دقیق امور اداری، فرآیندهای  ایشان با دقت و تعهد، مدارک را به موقع و به درستی آماده می‌کنند .",
 
       image: "/assets/about/negar.png"
     },
     {
       name: "جانسو چانکایا",
-      role: "وکیل رسمی شرکت و مسئول پیگیری امور حقوقی و قضائی",
+      role: "وکیل رسمی شرکت و مسئول پیگیری امور حقوقی  ",
 
       description:
         "خانم چانکایا با تسلط بر قوانین بین‌المللی و داخلی ترکیه، راهنمایی حقوقی لازم را برای اطمینان از امنیت سرمایه‌گذاری و تحقق اهداف مشتریان ارائه می‌دهد.",
@@ -56,7 +56,7 @@ function TeamMembers() {
 
     {
       name: "علی کلیچ",
-      role: "حسابدار رسمی و مسئول نظارت بر امور مالی و حسابداری شرکت",
+      role: " حسابدار رسمی و مسئول نظارت بر امور مالی و حسابداری ",
 
       description:
         "آقای کلیچ با مدیریت مالی دقیق و تجربه در امور حسابداری، تضمین می‌کند که تمامی فرآیندهای مالی شرکت با شفافیت و دقت انجام شوند.",
@@ -65,10 +65,9 @@ function TeamMembers() {
   ];
 
   return (
-    <section className="py-14 lg:py-24 relative ">
+    <section className="py-14 lg:py-24 relative mt-8 ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative md:min-h-[400px]">
-          {/* Custom Navigation */}
+        <div className="relative h-fit md:min-h-[400px]">
           <div className="absolute  bottom-0 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4">
             <button
               id="prev-btn"
@@ -94,9 +93,9 @@ function TeamMembers() {
               <div
                 className="h-1 bg-indigo-600 rounded-full absolute top-0 right-0"
                 style={{
-                  width: "60%", // عرض خط ثابت
-                  transform: `translateX(${position}%)`, // حرکت خط بر اساس موقعیت
-                  transition: "transform 0.5s ease" // انیمیشن حرکت
+                  width: "60%",
+                  transform: `translateX(${position}%)`, 
+                  transition: "transform 0.5s ease" 
                 }}
               ></div>
             </div>
@@ -149,7 +148,7 @@ function TeamMembers() {
             {teamMembers.map((member, index) => (
               <SwiperSlide
                 key={index}
-                className="flex gap-2 border dark:border-gray-100 border-gray-400 justify-between mr-4 rounded-primary"
+                className="flex gap-2 border mb-16 dark:border-gray-100 border-gray-400 justify-between mr-4 rounded-primary"
               >
                 <div className="swiper-slide  ">
                   <div className="group w-full flex-wrap flex items-center gap-8 transition-all duration-500 p-8 lg:flex-nowrap ">
@@ -171,7 +170,7 @@ function TeamMembers() {
                           {member.role}
                         </span>
                       </div>
-                      <p className="text-gray-500 text-justify leading-6 mb-7">
+                      <p className="text-gray-500 text-sm text-justify leading-6 mb-7">
                         {member.description}
                       </p>
                       <div class="flex items-center gap-4 justify-center lg:justify-start max-sm:bottom-0 relative">

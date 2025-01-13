@@ -32,7 +32,8 @@ const Introduction = () => {
   });
 
   return (
-    <section className="overflow-hidden z-9    curved-section pb-12  lg:pb-[90px]">
+    <section className="overflow-hidden z-9 py-4    curved-section">
+      <div className="rounded-primary bg-gradient-to-r mt-8 from-blue-100 to-blue-50 dark:from-gray-900 p-4 dark:to-gray-800 dark:bg-gray-900" >
       <div ref={image1Ref}>
         <div ref={image2Ref}>
           <div ref={image3Ref}>
@@ -743,6 +744,7 @@ const Introduction = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );
