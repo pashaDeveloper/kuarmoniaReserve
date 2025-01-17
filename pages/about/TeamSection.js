@@ -15,7 +15,7 @@ export default function TeamSection() {
   return (
     <div>
       {/* Section 1 */}
-      <section className="py-14 lg:py-24 relative text-justify">
+      <section className="py-8 lg:py-24 relative mt-8  text-justify rounded-primary bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-800  dark:to-gray-900 ">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 gap-9"
@@ -33,7 +33,7 @@ export default function TeamSection() {
                 className="max-lg:mx-auto rounded-primary object-cover"
               />
             </div>
-            <div className="lg:pl-[100px] flex items-center text">
+            <div className="lg:pr-[100px] flex items-center text">
               <div className="data w-full">
                 <h2 className="font-manrope font-bold md:text-4xl text-2xl lg:text-5xl text-black mb-9 max-lg:text-center relative">
                   رهبر تیم
@@ -52,7 +52,7 @@ export default function TeamSection() {
       </section>
 
       {/* Section 2 */}
-      <section className="py-14 lg:py-24 relative text-justify">
+      <section className="py-14 lg:py-24 relative text-justify rounded-primary bg-gradient-to-r from-blue-100 to-blue-50 dark:from-gray-900 p-4 dark:to-gray-800 dark:bg-gray-900 mt-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 lg:gap-9"
@@ -61,18 +61,9 @@ export default function TeamSection() {
             animate={inView2 ? "visible" : "hidden"}
             variants={fadeInUp}
           >
-             <div className="img-box">
-              <Image
-                alt="مدیر شرکت کارمونیا"
-                width={600}
-                height={600}
-                src="/assets/about/management.png"
-                className="max-lg:mx-auto rounded-primary object-cover"
-              />
-            </div>
-            <div className="lg:pr-24 flex mt-4 items-center">
+             <div className="lg:pl-24 flex mt-4 items-center">
               <div className="data w-full">
-                <h2 className="font-manrope font-bold md:text-4xl text-2xl lg:text-5xl text-black max-lg:text-center relative">
+                <h2 className="font-manrope font-bold md:text-4xl text-2xl lg:text-5xl text-black mb-4 md:mb-8 max-lg:text-center relative">
                   تیم ما
                 </h2>
                 <p className="md:text-xl text-md leading-8 text-gray-500 max-lg:text-center max-w-2xl mx-auto">
@@ -87,6 +78,16 @@ export default function TeamSection() {
                 </p>
               </div>
             </div>
+             <div className="img-box">
+              <Image
+                alt="مدیر شرکت کارمونیا"
+                width={600}
+                height={600}
+                src="/assets/about/management.png"
+                className="max-lg:mx-auto rounded-primary object-cover"
+              />
+            </div>
+           
            
           </motion.div>
         </div>

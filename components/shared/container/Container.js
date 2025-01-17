@@ -6,7 +6,7 @@ const Container = ({ children, className }) => {
   return (
     <section
       className={
-        " mx-auto px-primary" + (className ? ` ${className}` : ""+ "max-w-7xl") 
+        " mx-auto max-w-7xl px-primary" + (className ? ` ${className}` : ""+ "") 
       }
     >
       {children}

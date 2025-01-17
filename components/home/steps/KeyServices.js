@@ -38,7 +38,7 @@ const KeyServices  = () => {
   const router = useRouter();
 
   return (
-    <div className="relative grid grid-cols-2 mt-8 mb-4 lg:grid-cols-6 gap-5 sm:gap-16 xl:gap-10">
+    <div className="relative grid grid-cols-2 mt-8 lg:grid-cols-6 gap-5 sm:gap-16 xl:gap-10">
        <picture className="hidden md:block absolute inset-x-0 top-5">
           <source srcSet="/assets/home/steps/step-bg.svg" type="image/svg" />
           <img src="/assets/steps/step-bg.svg" alt="vector" />
