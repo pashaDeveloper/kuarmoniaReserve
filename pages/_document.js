@@ -15,6 +15,7 @@ export default function Document() {
     <Html lang="fa">
       <Head>
         {/* Primary Meta Tags */}
+        <meta name="google-site-verification" content="SOxkFOM1l2F4dTtdCrBXiUSxRSaOV_faLA-6YsW0F4U" />
         <meta
           name="title"
           content="مهاجرت و ازدواج در ترکیه و کانادا - راهنمای جامع برای تصمیم‌گیری بهتر"
@@ -45,7 +46,7 @@ export default function Document() {
         />
         <meta
           property="og:url"
-          content="https://your-website-url.com" // URL مربوط به وب‌سایت شما
+          content="https://your-website-url.com" // 
         />
         <meta
           property="og:description"
@@ -54,14 +55,14 @@ export default function Document() {
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/your-image-url.png" // URL تصویر مربوط به محتوا
+          content="https://res.cloudinary.com/your-image-url.png"
         />
 
         {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           property="twitter:url"
-          content="https://your-website-url.com" // URL مربوط به وب‌سایت شما
+          content="https://your-website-url.com" // 
         />
         <meta
           name="twitter:title"
